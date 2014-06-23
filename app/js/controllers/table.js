@@ -4,32 +4,23 @@
 angular.module('backAnd.controllers')
     .controller('tableController', ['$scope', 'tableService',
         function($scope, tableService) {
-            $scope.myData = [{
-                name: "Moroni",
-                age: 50
-            }, {
-                name: "Teancum",
-                age: 43
-            }, {
-                name: "Jacob",
-                age: 27
-            }, {
-                name: "Nephi",
-                age: 29
-            }, {
-                name: "Enos",
-                age: 34
-            }];
-            $scope.myOptions = {
-                data: 'myData'
-            };
+
             $scope.init = function() {
+                console.log($scope.myData)
                 tableService.queryjsonp({
                     table: 'test1'
                 }, function(data) {
                     console.log(data);
-
+                    $scope.myTable = data.data;
+                    console.log("========");
+                   
+                    $scope.myData = data.data;
+                     console.log($scope.myData);
                 });
+                $scope.myOptions = {
+                    data: 'myData'
+                };
+
             }
 
         }
