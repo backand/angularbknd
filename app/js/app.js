@@ -7,7 +7,7 @@
 angular.module('backAnd', [
     'ngRoute',
     'ngResource',
-    
+    'ngGrid',
     'backAnd.filters',
     'backAnd.services',
     'backAnd.directives',
