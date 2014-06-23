@@ -1,0 +1,27 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'start' ]
+2 info using npm@1.4.3
+3 info using node@v0.10.26
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info prestart angular-seed@0.0.0
+6 verbose unsafe-perm in lifecycle true
+7 info start angular-seed@0.0.0
+8 verbose unsafe-perm in lifecycle true
+9 info angular-seed@0.0.0 Failed to exec start script
+10 error angular-seed@0.0.0 start: `http-server -a localhost -p 8000`
+10 error Exit status 137
+11 error Failed at the angular-seed@0.0.0 start script.
+11 error This is most likely a problem with the angular-seed package,
+11 error not with npm itself.
+11 error Tell the author that this fails on your system:
+11 error     http-server -a localhost -p 8000
+11 error You can get their info via:
+11 error     npm owner ls angular-seed
+11 error There is likely additional logging output above.
+12 error System Linux 3.5.0-49-generic
+13 error command "/usr/local/bin/node" "/usr/local/bin/npm" "start"
+14 error cwd /home/rivka/devel/backand
+15 error node -v v0.10.26
+16 error npm -v 1.4.3
+17 error code ELIFECYCLE
+18 verbose exit [ 1, true ]
