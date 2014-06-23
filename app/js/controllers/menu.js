@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('backAnd.controllers', [])
+angular.module('backAnd.controllers')
     .controller('menuController', ['$scope', 'menuService', '$timeout',
         function($scope, menuService, $timeout) {
             $scope.init = function() {
