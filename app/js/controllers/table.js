@@ -2,8 +2,62 @@
 
 
 angular.module('backAnd.controllers')
-    .controller('tableController', ['$scope', 'tableService', 'configService',
-        function($scope, tableService, configService) {
+    .controller('tableController', ['$scope', 'tableService', 'configService', '$http',
+        function($scope, tableService, configService, $http) {
+            $scope.filterOptions = {
+                filterText: "",
+                useExternalFilter: true
+            };
+            $scope.totalServerItems = 0;
+            $scope.pagingOptions = {
+                pageSizes: [2, 5, 6],
+                pageSize: 2,
+                currentPage: 1
+            };
+            $scope.setPagingData = function(data, page, pageSize) {
+                var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
+                $scope.myData = pagedData;
+                $scope.totalServerItems = data.length;
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
+            };
+            $scope.getPagedDataAsync = function(pageSize, page, searchText) {
+                setTimeout(function() {
+                    var data;
+                    if (searchText) {
+                        var ft = searchText.toLowerCase();
+                        tableService.queryjsonp({
+                            table: 'test1'
+                        }, function(data) {
+                            dataSet = data.data.filter(function(item) {
+                                return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+                            });
+                            $scope.setPagingData(dataSet, page, pageSize);
+                        });
+                    } else {
+                        tableService.queryjsonp({
+                            table: 'test1'
+                        }, function(data) {
+                            console.log(data);
+                            $scope.setPagingData(data.data, page, pageSize);
+                        });
+                    }
+                }, 100);
+            };
+
+            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+            $scope.$watch('pagingOptions', function(newVal, oldVal) {
+                if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+                    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+                }
+            }, true);
+            $scope.$watch('filterOptions', function(newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+                }
+            }, true);
+
             $scope.init = function() {
                 configService.queryjsonp({
                     table: 'test1'
@@ -27,7 +81,12 @@ angular.module('backAnd.controllers')
                 });
                 $scope.myOptions = {
                     columnDefs: 'columns',
-                    data: 'myData'
+                    data: 'myData',
+                    enablePaging: true,
+                    showFooter: true,
+                    totalServerItems: 'totalServerItems',
+                    pagingOptions: $scope.pagingOptions,
+                    filterOptions: $scope.filterOptions
                 };
             }
 
