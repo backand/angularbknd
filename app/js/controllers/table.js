@@ -2,8 +2,12 @@
 
 
 angular.module('backAnd.controllers')
-    .controller('tableController', ['$scope', 'tableService', 'configService', '$http',
-        function($scope, tableService, configService, $http) {
+    .controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http',
+        function($scope, Global, tableService, configService, $http) {
+            $scope.global = Global;
+            $scope.global.currentTable = 'test2';
+
+
             $scope.filterOptions = {
                 filterText: "",
                 useExternalFilter: true
@@ -14,6 +18,15 @@ angular.module('backAnd.controllers')
                 pageSize: 2,
                 currentPage: 1
             };
+            $scope.myOptions = {
+                columnDefs: 'columns',
+                data: 'myData',
+                enablePaging: true,
+                showFooter: true,
+                totalServerItems: 'totalServerItems',
+                pagingOptions: $scope.pagingOptions,
+                filterOptions: $scope.filterOptions
+            };
             $scope.setPagingData = function(data, page, pageSize) {
                 var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
                 $scope.myData = pagedData;
@@ -22,25 +35,58 @@ angular.module('backAnd.controllers')
                     $scope.$apply();
                 }
             };
+
             $scope.getPagedDataAsync = function(pageSize, page, searchText) {
                 setTimeout(function() {
                     var data;
                     if (searchText) {
                         var ft = searchText.toLowerCase();
-                        tableService.queryjsonp({
-                            table: 'test1'
-                        }, function(data) {
-                            dataSet = data.data.filter(function(item) {
-                                return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
-                            });
-                            $scope.setPagingData(dataSet, page, pageSize);
-                        });
-                    } else {
-                        tableService.queryjsonp({
-                            table: 'test1'
+                        configService.queryjsonp({
+                            table: $scope.global.currentTable
                         }, function(data) {
                             console.log(data);
-                            $scope.setPagingData(data.data, page, pageSize);
+                            $scope.config = data.fields;
+                            $scope.columns = [];
+                            angular.forEach($scope.config, function(con) {
+                                $scope.columns.push({
+                                    field: con.type,
+                                    displayName: con.displayName,
+                                    cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity[col.displayName]}}</span></div>'
+                                });
+                            });
+                            tableService.queryjsonp({
+                                table: $scope.global.currentTable
+                            }, function(largeLoad) {
+                                console.log(largeLoad);
+                                $scope.myData = largeLoad.data;
+                                debugger
+                                data1 = largeLoad.data.filter(function(item) {
+                                    return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+                                });
+                                $scope.setPagingData(data1, page, pageSize);
+                            });
+                        });
+                    } else {
+                        configService.queryjsonp({
+                            table: $scope.global.currentTable
+                        }, function(data) {
+                            console.log(data);
+                            $scope.config = data.fields;
+                            $scope.columns = [];
+                            angular.forEach($scope.config, function(con) {
+                                $scope.columns.push({
+                                    field: con.type,
+                                    displayName: con.displayName,
+                                    cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity[col.displayName]}}</span></div>'
+                                });
+                            });
+                            tableService.queryjsonp({
+                                table: $scope.global.currentTable
+                            }, function(largeLoad) {
+                                console.log(largeLoad);
+                                $scope.myData = largeLoad.data;
+                                $scope.setPagingData(largeLoad.data, page, pageSize);
+                            });
                         });
                     }
                 }, 100);
@@ -58,37 +104,10 @@ angular.module('backAnd.controllers')
                 }
             }, true);
 
-            $scope.init = function() {
-                configService.queryjsonp({
-                    table: 'test1'
-                }, function(data) {
-                    console.log(data);
-                    $scope.config = data.fields;
-                    $scope.columns = [];
-                    angular.forEach($scope.config, function(con) {
-                        $scope.columns.push({
-                            field: con.type,
-                            displayName: con.displayName,
-                            cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity[col.displayName]}}</span></div>'
-                        });
-                    });
-                    tableService.queryjsonp({
-                        table: 'test1'
-                    }, function(data) {
-                        console.log(data);
-                        $scope.myData = data.data;
-                    });
-                });
-                $scope.myOptions = {
-                    columnDefs: 'columns',
-                    data: 'myData',
-                    enablePaging: true,
-                    showFooter: true,
-                    totalServerItems: 'totalServerItems',
-                    pagingOptions: $scope.pagingOptions,
-                    filterOptions: $scope.filterOptions
-                };
-            }
+            $scope.$on('aa', function() {
+                $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+            });
+
 
         }
     ])

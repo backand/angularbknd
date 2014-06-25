@@ -2,11 +2,12 @@
 
 
 angular.module('backAnd.controllers')
-    .controller('profileController', ['$scope', 'menuService',
-        function($scope, menuService) {
+    .controller('profileController', ['$scope','Global', 'menuService',
+        function($scope, Global , menuService) {
+            $scope.global = Global;
             $scope.init = function() {
                 menuService.queryjsonp({
-                    table: 'test1'
+                    table: $scope.global.currentTable
                 }, function(data) {
                     $scope.profile = data.company;
                      console.log($scope.profile);
