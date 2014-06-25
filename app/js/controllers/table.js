@@ -14,14 +14,15 @@ angular.module('backAnd.controllers')
             };
             $scope.totalServerItems = 0;
             $scope.pagingOptions = {
-                pageSizes: [2, 5, 6],
-                pageSize: 2,
+                pageSizes: [2, 50, 100, 500],
+                pageSize: 20,
                 currentPage: 1
             };
             $scope.myOptions = {
                 columnDefs: 'columns',
                 data: 'myData',
                 enablePaging: true,
+           
                 showFooter: true,
                 totalServerItems: 'totalServerItems',
                 pagingOptions: $scope.pagingOptions,
@@ -57,7 +58,7 @@ angular.module('backAnd.controllers')
                             tableService.queryjsonp({
                                 table: $scope.global.currentTable
                             }, function(largeLoad) {
-                                console.log(largeLoad);
+                                console.log(largeLoad.data.length);
                                 $scope.myData = largeLoad.data;
                                 debugger
                                 data1 = largeLoad.data.filter(function(item) {
@@ -81,7 +82,8 @@ angular.module('backAnd.controllers')
                                 });
                             });
                             tableService.queryjsonp({
-                                table: $scope.global.currentTable
+                                table: $scope.global.currentTable,
+                                query: '495'
                             }, function(largeLoad) {
                                 console.log(largeLoad);
                                 $scope.myData = largeLoad.data;
@@ -94,7 +96,9 @@ angular.module('backAnd.controllers')
 
             $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
             $scope.$watch('pagingOptions', function(newVal, oldVal) {
-                if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+                console.log(newVal)
+                console.log(oldVal)
+                if (newVal !== oldVal /*&& newVal.currentPage !== oldVal.currentPage*/ ) {
                     $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
                 }
             }, true);
@@ -104,7 +108,7 @@ angular.module('backAnd.controllers')
                 }
             }, true);
 
-            $scope.$on('aa', function() {
+            $scope.$on('loadData', function() {
                 $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
             });
 

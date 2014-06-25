@@ -2,15 +2,16 @@
 
 
 angular.module('backAnd.controllers')
-    .controller('menuController', ['$scope', 'Global', 'menuService', 'configService', '$rootScope',
+    .controller('menuController', ['$scope', 'Global', 'menuService', '$timeout', '$rootScope',
         function($scope, Global, menuService, $timeout, $rootScope) {
             $scope.global = Global;
             $scope.init = function() {
+                $scope.curTable = 3;
                 menuService.queryjsonp({
                     table: $scope.global.currentTable
                 }, function(data) {
-                    console.log(data);
                     $scope.pages = data.workspace.pages;
+
                     $timeout(function() {
                         adminLteInit();
                     });
@@ -18,9 +19,10 @@ angular.module('backAnd.controllers')
 
                 });
             }
-            $scope.setCurrentTable = function(table) {
+            $scope.setCurrentTable = function(table, index) {
+                $scope.curTable = index;
                 $scope.global.currentTable = table;
-                $rootScope.$broadcast('aa');
+                $rootScope.$broadcast('loadData');
             }
 
         }
