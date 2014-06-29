@@ -14,7 +14,7 @@ angular.module('backAnd.controllers')
             };
             $scope.totalServerItems = 0;
             $scope.pagingOptions = {
-                pageSizes: [2, 50, 100, 500],
+                pageSizes: [20, 50, 100, 500],
                 pageSize: 20,
                 currentPage: 1
             };
@@ -22,22 +22,28 @@ angular.module('backAnd.controllers')
                 columnDefs: 'columns',
                 data: 'myData',
                 enablePaging: true,
-           
+
                 showFooter: true,
                 totalServerItems: 'totalServerItems',
                 pagingOptions: $scope.pagingOptions,
                 filterOptions: $scope.filterOptions
             };
+
+
+
             $scope.setPagingData = function(data, page, pageSize) {
-                var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
+                var pagedData = data.data.slice((page - 1) * pageSize, page * pageSize);
                 $scope.myData = pagedData;
-                $scope.totalServerItems = data.length;
+                $scope.totalServerItems = data.totalRows;
+                console.log($scope.totalServerItems)
                 if (!$scope.$$phase) {
                     $scope.$apply();
                 }
             };
 
+
             $scope.getPagedDataAsync = function(pageSize, page, searchText) {
+
                 setTimeout(function() {
                     var data;
                     if (searchText) {
@@ -56,11 +62,12 @@ angular.module('backAnd.controllers')
                                 });
                             });
                             tableService.queryjsonp({
-                                table: $scope.global.currentTable
+                                table: $scope.global.currentTable,
+                                query: $scope.pagingOptions.pageSize
                             }, function(largeLoad) {
                                 console.log(largeLoad.data.length);
                                 $scope.myData = largeLoad.data;
-                                debugger
+
                                 data1 = largeLoad.data.filter(function(item) {
                                     return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
                                 });
@@ -81,24 +88,31 @@ angular.module('backAnd.controllers')
                                     cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity[col.displayName]}}</span></div>'
                                 });
                             });
+                            debugger
+                            console.log($scope.columns)
                             tableService.queryjsonp({
                                 table: $scope.global.currentTable,
-                                query: '495'
+                                query: $scope.pagingOptions.pageSize
+
                             }, function(largeLoad) {
                                 console.log(largeLoad);
                                 $scope.myData = largeLoad.data;
-                                $scope.setPagingData(largeLoad.data, page, pageSize);
+                                $scope.setPagingData(largeLoad, page, pageSize);
                             });
                         });
                     }
                 }, 100);
             };
 
+
+
+
+
             $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
             $scope.$watch('pagingOptions', function(newVal, oldVal) {
                 console.log(newVal)
                 console.log(oldVal)
-                if (newVal !== oldVal /*&& newVal.currentPage !== oldVal.currentPage*/ ) {
+                if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
                     $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
                 }
             }, true);
