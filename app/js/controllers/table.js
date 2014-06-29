@@ -25,22 +25,13 @@ angular.module('backAnd.controllers')
                 enablePaging: true,
                 showFooter: true,
                 totalServerItems: 'totalServerItems',
-                pagingOptions: $scope.pagingOptions,
-                filterOptions: $scope.filterOptions
+                pagingOptions: $scope.pagingOptions
             };
 
-
-
-            $scope.setPagingData = function(data, page, pageSize) {
-                $scope.totalServerItems = data.totalRows;
-                if (!$scope.$$phase) {
-                    $scope.$apply();
-                }
-            };
 
 
             $scope.getPagedDataAsync = function(pageSize, page, searchText) {
-                var data;
+                $scope.isLoad = true;
                 configService.queryjsonp({
                     table: $scope.global.currentTable
                 }, function(data) {
@@ -60,9 +51,14 @@ angular.module('backAnd.controllers')
 
                     }, function(largeLoad) {
                         $scope.dataFill = largeLoad.data;
-                        $scope.setPagingData(largeLoad, page, pageSize);
+                        $scope.totalServerItems = largeLoad.totalRows;
+                        if (!$scope.$$phase) {
+                            $scope.$apply();
+                        }
                     });
+                    $scope.isLoad = false;
                 });
+
 
             };
             if ($scope.global.currentTable) {
