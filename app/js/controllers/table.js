@@ -5,8 +5,6 @@ angular.module('backAnd.controllers')
     .controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http',
         function($scope, Global, tableService, configService, $http) {
             $scope.global = Global;
-            $scope.global.currentTable = 'test2';
-
 
             $scope.filterOptions = {
                 filterText: "",
@@ -21,11 +19,10 @@ angular.module('backAnd.controllers')
                 currentPage: 1
             };
 
-            $scope.myOptions = {
+            $scope.dataTable = {
                 columnDefs: 'columns',
-                data: 'myData',
+                data: 'dataFill',
                 enablePaging: true,
-
                 showFooter: true,
                 totalServerItems: 'totalServerItems',
                 pagingOptions: $scope.pagingOptions,
@@ -35,11 +32,7 @@ angular.module('backAnd.controllers')
 
 
             $scope.setPagingData = function(data, page, pageSize) {
-
-                $scope.myData = data.data;
-
                 $scope.totalServerItems = data.totalRows;
-
                 if (!$scope.$$phase) {
                     $scope.$apply();
                 }
@@ -47,7 +40,6 @@ angular.module('backAnd.controllers')
 
 
             $scope.getPagedDataAsync = function(pageSize, page, searchText) {
-
                 var data;
                 configService.queryjsonp({
                     table: $scope.global.currentTable
@@ -61,25 +53,25 @@ angular.module('backAnd.controllers')
                             cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity[col.displayName]}}</span></div>'
                         });
                     });
-                    //debugger    
                     tableService.queryjsonp({
                         table: $scope.global.currentTable,
                         pageSize: $scope.pagingOptions.pageSize,
                         pageNumber: page,
 
                     }, function(largeLoad) {
-                        $scope.myData = largeLoad.data;
+                        $scope.dataFill = largeLoad.data;
                         $scope.setPagingData(largeLoad, page, pageSize);
                     });
                 });
 
             };
-
-            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+            if ($scope.global.currentTable) {
+                $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+            }
 
             $scope.$watch('pagingOptions', function(newVal, oldVal) {
 
-                if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+                if (newVal !== oldVal) {
                     $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
                 }
             }, true);

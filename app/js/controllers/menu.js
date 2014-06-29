@@ -6,7 +6,6 @@ angular.module('backAnd.controllers')
         function($scope, Global, menuService, $timeout, $rootScope) {
             $scope.global = Global;
             $scope.init = function() {
-                $scope.curTable = 3;
                 menuService.queryjsonp({
                     table: $scope.global.currentTable
                 }, function(data) {
@@ -15,8 +14,7 @@ angular.module('backAnd.controllers')
                     $timeout(function() {
                         adminLteInit();
                     });
-                    // $scope.$evalAsync($scope.pages = data.workspace.pages);
-
+                   
                 });
             }
             $scope.setCurrentTable = function(table, index) {
