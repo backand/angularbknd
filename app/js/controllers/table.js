@@ -5,13 +5,10 @@ angular.module('backAnd.controllers')
     .controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http',
         function($scope, Global, tableService, configService, $http) {
             this.scope = $scope;
-            console.log($scope.tableName);
-            console.log("aa")
+
 
             $scope.$watch('tableName', function(val) {
-                console.log('-----------');
-                console.log(val);
-                $scope.global.currentTable = $scope.tableName ;
+                $scope.global.currentTable = $scope.tableName;
                 $scope.getConfigDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
 
 
