@@ -3,7 +3,7 @@
 /* Directives */
 
 
-angular.module('backAnd.directives', []).
+angular.module('backAnd.directives').
 directive('appVersion', ['version',
     function(version) {
         return function(scope, elm, attrs) {
@@ -15,7 +15,7 @@ directive('appVersion', ['version',
 
 
 
-angular.module('backAnd.directives', [])
+angular.module('backAnd.directives')
     .directive("customIcon", function() {
         return {
             restrict: "C",
@@ -34,15 +34,3 @@ angular.module('backAnd.directives', [])
             }
         }
     });
-
-/*angular.module('backAnd.directives', [])
-    .directive("getTata", function() {
-        return {
-        
-           
-            controller: function($scope) {
-                alert("dds")
-            }
-        }
-    });
-*/
