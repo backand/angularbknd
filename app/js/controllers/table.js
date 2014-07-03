@@ -10,8 +10,7 @@ angular.module('backAnd.controllers')
             // $scope.global.currentTable = "test1";
 
             $scope.$watch('tableName', function() {
-                $scope.global.currentTable = $scope.tableName;
-                if ($scope.global.currentTable)
+                if ($scope.tableName)
                     $scope.getConfigDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
 
             });
@@ -38,6 +37,13 @@ angular.module('backAnd.controllers')
                     $scope.pagingOptions.pageSize = $scope.pageSize;
             }
 
+            function impSortFn(a, b) {
+                console.log(a)
+                if (a == b) return 0;
+                if (a < b) return -1;
+                return 1;
+            }
+
 
             $scope.dataTable = {
                 columnDefs: 'columns',
@@ -48,12 +54,7 @@ angular.module('backAnd.controllers')
                 pagingOptions: $scope.pagingOptions
             };
 
-            function impSortFn(a, b) {
-                console.log(a)
-                if (a == b) return 0;
-                if (a < b) return -1;
-                return 1;
-            }
+
 
             // This is the call to get the data based on the table
             // and receives arguments of page suze and page number
@@ -69,7 +70,7 @@ angular.module('backAnd.controllers')
 
                 configService.queryjsonp({
                     // Need to change this to handle multiple tables on the same page
-                    table: $scope.global.currentTable
+                    table: $scope.tableName
                 }, function(data) {
 
                     $scope.config = data.fields;
@@ -79,7 +80,6 @@ angular.module('backAnd.controllers')
                     // this will also need to be changed to handle multiple tables on the same page
 
                     angular.forEach($scope.config, function(con) {
-
                         $scope.columns.push({
                             cellFilter: con.type,
                             displayName: con.displayName,
@@ -88,6 +88,7 @@ angular.module('backAnd.controllers')
                         });
 
                     });
+                    console.log($scope.columns)
                     $scope.getData()
                 });
 
@@ -102,7 +103,7 @@ angular.module('backAnd.controllers')
 
                 tableService.queryjsonp({
                     // This will also need to be adjusted to deal with mutiple tables on the same page
-                    table: $scope.global.currentTable,
+                    table: $scope.tableName,
                     pageSize: $scope.pagingOptions.pageSize,
                     pageNumber: $scope.pagingOptions.currentPage,
 
@@ -110,6 +111,8 @@ angular.module('backAnd.controllers')
 
                     // We have received table data and add the data to the scope
                     $scope.dataFill = largeLoad.data;
+                    console.log(largeLoad.data)
+                    console.log(largeLoad.totalRows)
                     $scope.totalServerItems = largeLoad.totalRows;
 
                     // apply changes
@@ -126,7 +129,6 @@ angular.module('backAnd.controllers')
 
 
             $scope.$watch('pagingOptions', function(newVal, oldVal) {
-
                 if (newVal !== oldVal) {
                     $scope.getData();
                 }
