@@ -5,14 +5,14 @@ angular.module('backAnd.controllers')
     .controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http',
         function($scope, Global, tableService, configService, $http) {
             $scope.global = Global;
-            this.scope = $scope;
-            $scope.global.currentTable = "test1";
-            
-            $scope.$watch('tableName', function(val) {
+
+
+            // $scope.global.currentTable = "test1";
+
+            $scope.$watch('tableName', function() {
                 $scope.global.currentTable = $scope.tableName;
-                $scope.getConfigDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-
-
+                if ($scope.global.currentTable)
+                    $scope.getConfigDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
 
             });
 
@@ -31,6 +31,13 @@ angular.module('backAnd.controllers')
                 pageSize: 20,
                 currentPage: 1
             };
+
+            if ($scope.pageSizes) {
+                $scope.pagingOptions.pageSizes = $scope.pageSizes;
+                if ($scope.pageSize)
+                    $scope.pagingOptions.pageSize = $scope.pageSize;
+            }
+
 
             $scope.dataTable = {
                 columnDefs: 'columns',
@@ -54,7 +61,6 @@ angular.module('backAnd.controllers')
             // arguments eg table name, and paging information
 
             $scope.getConfigDataAsync = function(pageSize, page) {
-
                 $scope.isLoad = true;
 
                 // Request to get the field information about the table

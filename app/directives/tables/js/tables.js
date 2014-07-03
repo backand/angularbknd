@@ -3,7 +3,10 @@ angular.module('backAnd.directives', [])
         return {
             restrict: 'E',
             scope: {
-                tableName: '='
+                tableName: '=',
+                pageSize: '=',
+                pageSizes: '=',
+
             },
             controller: 'tableController',
             replace: true,
