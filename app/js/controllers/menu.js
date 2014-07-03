@@ -20,7 +20,7 @@ angular.module('backAnd.controllers')
             $scope.setCurrentTable = function(table, index) {
                 $scope.curTable = index;
                 $scope.global.currentTable = table;
-                $rootScope.$broadcast('loadData');
+                //$rootScope.$broadcast('loadData');
             }
 
         }

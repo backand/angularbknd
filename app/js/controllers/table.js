@@ -4,18 +4,17 @@
 angular.module('backAnd.controllers')
     .controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http',
         function($scope, Global, tableService, configService, $http) {
+            $scope.global = Global;
             this.scope = $scope;
-
-
+            $scope.global.currentTable = "test1";
+            
             $scope.$watch('tableName', function(val) {
                 $scope.global.currentTable = $scope.tableName;
                 $scope.getConfigDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
 
 
+
             });
-
-
-            $scope.global = Global;
 
             // All of the configurations will be part of the directive and we can change things
             // like default page size in when we call the directive

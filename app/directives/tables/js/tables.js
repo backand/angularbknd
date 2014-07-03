@@ -7,7 +7,7 @@ angular.module('backAnd.directives', [])
             },
             controller: 'tableController',
             replace: true,
-            templateUrl: 'js/directives/views/table.html',
+            templateUrl: 'directives/tables/views/table.html',
 
         };
     });
