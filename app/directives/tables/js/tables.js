@@ -4,8 +4,7 @@ angular.module('backAnd.directives', [])
             restrict: 'E',
             scope: {
                 tableName: '=',
-                pageSize: '=',
-                pageSizes: '=',
+                options: '=',
 
             },
             controller: 'tableController',

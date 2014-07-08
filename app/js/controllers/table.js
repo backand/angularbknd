@@ -7,7 +7,6 @@ angular.module('backAnd.controllers')
             $scope.global = Global;
 
 
-            // $scope.global.currentTable = "test1";
 
             $scope.$watch('tableName', function() {
                 if ($scope.tableName)
@@ -30,12 +29,13 @@ angular.module('backAnd.controllers')
                 pageSize: 20,
                 currentPage: 1
             };
-
-            if ($scope.pageSizes) {
-                $scope.pagingOptions.pageSizes = $scope.pageSizes;
-                if ($scope.pageSize)
-                    $scope.pagingOptions.pageSize = $scope.pageSize;
-            }
+            if ($scope.options) {
+                if ($scope.options.pageSizes) {
+                    $scope.pagingOptions.pageSizes = $scope.options.pageSizes;
+                    if ($scope.options.pageSize)
+                        $scope.pagingOptions.pageSize = $scope.options.pageSize;
+                }
+            };
 
             function impSortFn(a, b) {
                 console.log(a)
@@ -67,7 +67,6 @@ angular.module('backAnd.controllers')
                 // Request to get the field information about the table
                 // This config call needs to be separated into a separate function
                 // that is only called once
-
                 configService.queryjsonp({
                     // Need to change this to handle multiple tables on the same page
                     table: $scope.tableName
