@@ -2,8 +2,11 @@
 
 
 angular.module('backAnd.controllers')
-    .controller('menuController', ['$scope', 'Global', 'menuService', '$timeout', '$rootScope',
-        function($scope, Global, menuService, $timeout, $rootScope) {
+    .controller('menuController', ['$scope', 'Global', 'menuService', '$timeout', '$rootScope','$http',
+        function($scope, Global, menuService, $timeout, $rootScope, $http) {
+
+            $http.defaults.headers.common['Authorization'] = 'bearer LyhMUueWnZAr3lpGSEp9zr6yaol21QK7b1LvPr_MT_eiUyh20wMTBX26TNzBPdVp1DvrQE9LooHBcBuVQARYQGM43ajAFeeqxLNCe53Xml2aJMSTlk905oxXW0ujZHyIYWVpbckehJ3QjBSJEvSJjBhKDFCsnfa5E6xP74uV1iEVxvQ_KxmJZAzq_OHV2KBOFieVORdhpuBNm42CNCGD2wW0Ztwd-7YfD64aEaHj3Bqdv4AVB6_dQrW70KK9LZsQ';
+
             $scope.global = Global;
             $scope.init = function() {
                 menuService.queryjsonp({
