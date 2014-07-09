@@ -15,8 +15,10 @@ angular.module('backAnd', [
 ]).config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.when('/login', {templateUrl: 'views/login.html'});
- /* $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
-  $routeProvider.otherwise({redirectTo: '/view1'});*/
+        $routeProvider.when('/tables', {templateUrl: 'views/tables.html'});
+
+        $routeProvider.otherwise({redirectTo: '/view1'});
+ 
     }
 ]);
 
