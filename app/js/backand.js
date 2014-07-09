@@ -14,6 +14,7 @@ var backand = {
         },
         /* general ajax call for backand rest api */
         ajax: function(url, data, verb, successCallback, erroCallback) {
+            alert("ajax")
 
         },
         verbs: {
@@ -49,13 +50,17 @@ var backand = {
                 });
             },
             login: function(username, password, appname, successCallback, errorCallback) {
+                alert("login")
                 backand.security.authentication.addLoginEvent();
+                console.log("*******")
                 backand.options.ajax(backand.options.url + backand.security.authentication.url, {
                         grant_type: "password",
                         username: username,
                         password: password,
                         appname: appname
                     }, backand.options.verbs.post, function(data) {
+                        console.log(data)
+                        console.log("-------")
                         backand.security.authentication.token = data.token_type + " " + data.access_token;
                         document.dispatchEvent(backand.security.authentication.onlogin);
                         if (successCallback) successCallback(data);
