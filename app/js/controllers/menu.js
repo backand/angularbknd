@@ -12,8 +12,6 @@ angular.module('backAnd.controllers')
                 if (!localStorage.getItem('Authorization'))
                     $location.path('/login');
                 else {
-                    alert("ddd")
-                    $location.url();
                     $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
                     menuService.queryjsonp({
                         table: $scope.global.currentTable
@@ -33,7 +31,7 @@ angular.module('backAnd.controllers')
                 $scope.global.currentTable = table;
                 //$rootScope.$broadcast('loadData');
             }
-             $scope.$on('load', function() {
+            $scope.$on('load', function() {
                 $scope.init();
             });
 
