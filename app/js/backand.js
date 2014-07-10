@@ -62,6 +62,7 @@ var backand = {
                         console.log(data)
                         console.log("-------")
                         backand.security.authentication.token = data.token_type + " " + data.access_token;
+                        alert(backand.security.authentication.token)
                         document.dispatchEvent(backand.security.authentication.onlogin);
                         if (successCallback) successCallback(data);
                     },

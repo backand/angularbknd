@@ -1,23 +1,23 @@
-<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="signInController">
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="signInController" ng-init="init()">
   <div class="modal-dialog">
   <div class="modal-content">
       <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">×</button>
           <h1 class="text-center">Login</h1>
       </div>
       <div class="modal-body">
-          <form class="form col-md-12 center-block">
+          <form class="form col-md-12 center-block" ng-submit="authentication()">
             <div class="form-group">
-              <input type="email" class="form-control input-lg" ng-model="user" placeholder="Email">
+              <input type="email" class="form-control input-lg" ng-model="user" placeholder="Email" required>
             </div>
             <div class="form-group">
-              <input type="password" class="form-control input-lg"  ng-model="password"  placeholder="Password">
+              <input type="password" class="form-control input-lg"  ng-model="password"  placeholder="Password" required>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control input-lg" ng-model="appName" placeholder="Application">
+              <input type="text" class="form-control input-lg" ng-model="appName" placeholder="Application" required>
             </div>            
             <div class="form-group">
-               <input class="btn btn-primary btn-lg btn-block" type="submit" ng-submit="authentication()" value="Sign In">
+               <input class="btn btn-primary btn-lg btn-block" type="submit"  value="Sign In">
             </div>
           </form>
       </div>
@@ -29,4 +29,5 @@
   </div>
   </div>
 </div>
+
 	

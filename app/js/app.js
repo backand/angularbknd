@@ -1,9 +1,5 @@
 'use strict';
 
-
-// Declare app level module which depends on filters, and services
-
-
 angular.module('backAnd', [
     'ngRoute',
     'ngResource',
@@ -14,11 +10,17 @@ angular.module('backAnd', [
     'backAnd.controllers'
 ]).config(['$routeProvider',
     function($routeProvider) {
-        $routeProvider.when('/login', {templateUrl: 'views/login.html'});
-        $routeProvider.when('/tables', {templateUrl: 'views/tables.html'});
+        backand.options.url = 'http://rivka.backand.info:8099';
+        $routeProvider.when('/login', {
+            templateUrl: 'views/login.html'
+        });
+        $routeProvider.when('/tables', {
+            templateUrl: 'views/tables.html'
+        });
+        $routeProvider.otherwise({
+            redirectTo: '/view1'
+        });
 
-        $routeProvider.otherwise({redirectTo: '/view1'});
- 
     }
 ]);
 

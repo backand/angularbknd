@@ -31,3 +31,6 @@
     opacity: 1;
     transition: 0.3s;
 }
+.modal-footer {
+    border-top: 0px;
+}
