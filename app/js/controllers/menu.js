@@ -13,16 +13,22 @@ angular.module('backAnd.controllers')
                     $location.path('/login');
                 else {
                     $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
-                    menuService.queryjsonp({
-                        table: $scope.global.currentTable
-                    }, function(data) {
-                        $scope.pages = data.workspace.pages;
+                    menuService.queryjsonp({}, 
+                   function success(data) {
+                            alert("success")
+                            $scope.pages = data.workspace.pages;
 
-                        $timeout(function() {
-                            adminLteInit();
+                            $timeout(function() {
+                                adminLteInit();
+                            });
+                        },
+                        function err(error) {
+                            if (error.status == 401) {
+                                 localStorage.clear();
+                                $scope.init();
+                            }
+
                         });
-
-                    });
                 }
 
             }

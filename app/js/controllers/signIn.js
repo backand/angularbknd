@@ -16,16 +16,17 @@ angular.module('backAnd.controllers')
                 return parts.join("&");
             }
             $scope.authentication = function() {
-
                 var data = toQueryString({
                     grant_type: "password",
                     username: $scope.user,
                     password: $scope.password,
                     appname: $scope.appName,
                 });
+                console.log(data)
+                console.log(request);
                 var request = $http({
                     method: 'POST',
-                    url: "http://rivka.backand.info:8099/token ",
+                    url: "http://rivka.backand.info:8099/token",
                     data: data,
                     headers: {
                         'Accept': '*/*',
@@ -38,6 +39,9 @@ angular.module('backAnd.controllers')
 
                     $rootScope.$broadcast('load');
                     $location.path('/');
+                });
+                request.error(function(data, status, headers, config) {
+                    console.log(status)
                 });
 
 
