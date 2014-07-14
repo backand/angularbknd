@@ -10,12 +10,11 @@ angular.module('backAnd.controllers')
                     table: $scope.global.currentTable
                 }, function(data) {
                     $scope.profile = data.company;
-                    console.log($scope.profile);
                     $scope.profile.img = decodeURIComponent($scope.profile.logo);
                 });
             }
             $scope.logOut = function() {
-                localStorage.clear();
+                localStorage.removeItem('Authorization');
                 window.location.reload();
             }
 
