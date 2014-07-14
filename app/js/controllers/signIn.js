@@ -2,8 +2,8 @@
 
 
 angular.module('backAnd.controllers')
-    .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope', '$route','$window',
-        function($scope, Global, $http, $location, $rootScope, $route, $window) {
+    .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope','$route',
+        function($scope, Global, $http, $location, $rootScope, $route) {
             $scope.global = Global;
 
             function toQueryString(obj) {
@@ -17,6 +17,7 @@ angular.module('backAnd.controllers')
             }
 
             $scope.authentication = function() {
+                localStorage.removeItem("Authorization");
                 var data = toQueryString({
                     grant_type: "password",
                     username: $scope.user,
@@ -36,10 +37,8 @@ angular.module('backAnd.controllers')
                     $http.defaults.headers.common['Authorization'] = data.token_type + ' ' + data.access_token;
                     localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
                     $location.path('/');
-                    $route.reload();
-                    $window.location.reload();
+                    window.location.reload()
                 });
-
                 request.error(function(data, status, headers, config) {
                     console.log(status)
                 });
