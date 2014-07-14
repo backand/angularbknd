@@ -20,6 +20,9 @@ angular.module('backAnd', [
         $routeProvider.when('/index', {
             templateUrl: 'index.html'
         });
+        $routeProvider.when('/chartsExample', {
+            templateUrl: 'views/chartsExample.html'
+        });
         $routeProvider.otherwise({
             redirectTo: '/view1'
         });
