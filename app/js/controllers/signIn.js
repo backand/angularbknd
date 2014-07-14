@@ -2,8 +2,8 @@
 
 
 angular.module('backAnd.controllers')
-    .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope',
-        function($scope, Global, $http, $location, $rootScope) {
+    .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope', '$route','$window',
+        function($scope, Global, $http, $location, $rootScope, $route, $window) {
             $scope.global = Global;
 
             function toQueryString(obj) {
@@ -15,6 +15,7 @@ angular.module('backAnd.controllers')
                 }
                 return parts.join("&");
             }
+
             $scope.authentication = function() {
                 var data = toQueryString({
                     grant_type: "password",
@@ -22,8 +23,6 @@ angular.module('backAnd.controllers')
                     password: $scope.password,
                     appname: $scope.appName,
                 });
-                console.log(data)
-                console.log(request);
                 var request = $http({
                     method: 'POST',
                     url: "http://rivka.backand.info:8099/token",
@@ -36,23 +35,15 @@ angular.module('backAnd.controllers')
                 request.success(function(data, status, headers, config) {
                     $http.defaults.headers.common['Authorization'] = data.token_type + ' ' + data.access_token;
                     localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
-
-                    $rootScope.$broadcast('load');
                     $location.path('/');
+                    $route.reload();
+                    $window.location.reload();
                 });
+
                 request.error(function(data, status, headers, config) {
                     console.log(status)
                 });
 
-
-
-                /*  loginService.queryjsonp({
-                    data: $scope.data
-                }, function(response) {
-                    console.log(response)
-                    $http.defaults.headers.common['Authorization'] = response.token_type + ' ' + response.access_token;
-                    alert($http.defaults.headers.common['Authorization'])
-                });*/
             }
 
 

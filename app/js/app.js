@@ -17,6 +17,9 @@ angular.module('backAnd', [
         $routeProvider.when('/tables', {
             templateUrl: 'views/tables.html'
         });
+        $routeProvider.when('/index', {
+            templateUrl: 'index.html'
+        });
         $routeProvider.otherwise({
             redirectTo: '/view1'
         });

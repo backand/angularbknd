@@ -7,15 +7,14 @@ angular.module('backAnd.controllers')
 
             $scope.global = Global;
             $scope.init = function() {
-                /*                localStorage.clear();
-                 */
-                if (!localStorage.getItem('Authorization'))
+                if (!localStorage.getItem('Authorization')) {
+                    console.log("ddd")
                     $location.path('/login');
-                else {
+
+                } else {
                     $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
-                    menuService.queryjsonp({}, 
-                   function success(data) {
-                            alert("success")
+                    menuService.queryjsonp({},
+                        function success(data) {
                             $scope.pages = data.workspace.pages;
 
                             $timeout(function() {
@@ -24,13 +23,11 @@ angular.module('backAnd.controllers')
                         },
                         function err(error) {
                             if (error.status == 401) {
-                                 localStorage.clear();
-                                $scope.init();
+                                localStorage.clear();
+                                window.location.reload();
                             }
-
                         });
                 }
-
             }
             $scope.setCurrentTable = function(table, index) {
                 $scope.curTable = index;

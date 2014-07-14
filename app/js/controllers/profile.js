@@ -11,7 +11,12 @@ angular.module('backAnd.controllers')
                 }, function(data) {
                     $scope.profile = data.company;
                     console.log($scope.profile);
+                    $scope.profile.img = decodeURIComponent($scope.profile.logo);
                 });
+            }
+            $scope.logOut = function() {
+                localStorage.clear();
+                window.location.reload();
             }
 
         }
