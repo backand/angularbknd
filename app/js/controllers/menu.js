@@ -6,10 +6,16 @@ angular.module('backAnd.controllers')
         function($scope, Global, menuService, $timeout, $rootScope, $http, $location, $route) {
 
             $scope.global = Global;
+            /*set contentType*/
+            $scope.global.typeContent = "dashboard/my-website"
+            $scope.templateUrl = function() {
+                return "views/" + $scope.global.typeContent + ".html";
+            }
+            /**/
             $scope.init = function() {
+                console.log("fff")
                 if (!localStorage.getItem('Authorization')) {
                     $location.path('/login');
-
                 } else {
                     $location.path('/');
                     $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
