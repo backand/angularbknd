@@ -7,7 +7,7 @@ angular.module('backAnd.controllers')
 
             $scope.global = Global;
             /*set contentType*/
-$scope.global.url = "dashboard/my-website"
+//$scope.global.url = "dashboard/my-website"
             $scope.templateUrl = function() {
                 return "views/" + $scope.global.url + ".html";
             }
@@ -39,7 +39,7 @@ $scope.global.url = "dashboard/my-website"
                 console.log(partType)
                 if (partType == "table")
                     $scope.global.url = "tables"
-                if (partType == "dashbboard")
+                if (partType == "dashboard")
                     $scope.global.url = "dashboard/my-website"
 
                 $scope.curTable = index;
