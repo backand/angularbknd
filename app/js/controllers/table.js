@@ -4,6 +4,8 @@
 angular.module('backAnd.controllers')
     .controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http',
         function($scope, Global, tableService, configService, $http) {
+
+
             $scope.global = Global;
 
 
@@ -123,7 +125,6 @@ angular.module('backAnd.controllers')
 
 
             }
-
 
 
 
