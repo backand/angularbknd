@@ -6,14 +6,14 @@ angular.module('backAnd.controllers')
         function($scope, Global, menuService, $timeout, $rootScope, $http, $location, $route) {
 
             $scope.global = Global;
-            /*set contentType*/
-//$scope.global.url = "dashboard/my-website"
+
             $scope.templateUrl = function() {
-                return "views/" + $scope.global.url + ".html";
+                if ($scope.global.url)
+                    return "views/" + $scope.global.url + ".html";
             }
-            /**/
+
             $scope.init = function() {
-                console.log("fff")
+
                 if (!localStorage.getItem('Authorization')) {
                     $location.path('/login');
                 } else {
@@ -36,7 +36,7 @@ angular.module('backAnd.controllers')
                 }
             }
             $scope.setCurrentTable = function(table, index, partType) {
-                console.log(partType)
+
                 if (partType == "table")
                     $scope.global.url = "tables"
                 if (partType == "dashboard")
@@ -46,6 +46,7 @@ angular.module('backAnd.controllers')
                 $scope.global.currentTable = table;
                 //$rootScope.$broadcast('loadData');
             }
+
             $scope.$on('load', function() {
                 $scope.init();
             });
