@@ -1,4 +1,8 @@
 <div>
  <img ng-show="isLoad" src="/img/ajax-loader.gif"></img>
-	<div ng-grid="dataTable"></div>
+  <strong>Search:</strong> </string>
+  <input type="text" ng-model="searchText"/>
+  <button ng-click="activateFilter()">Search</button>
+  <br/><br/>
+  <div ng-grid="dataTable"></div>
 </div>
