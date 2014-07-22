@@ -8,7 +8,9 @@ angular.module('backAnd').factory('tableService', ['$resource',
 		return $resource('http://api.backand.info:8099/1/view/data/:table?pageSize=:pageSize&pageNumber=:pageNumber', {
 			table: 'table',
 			pageSize: 'pageSize',
-			pageNumber: 'pageNumber'
+			pageNumber: 'pageNumber',
+			sort: 'sort',
+			search: 'search'
 		}, {
 			queryjsonp: {
 				method: 'GET',

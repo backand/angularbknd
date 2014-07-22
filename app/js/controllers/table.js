@@ -20,11 +20,25 @@ angular.module('backAnd.controllers')
             // like default page size in when we call the directive
 
             $scope.filterOptions = {
-                filterText: "",
+                filterText: '',
                 useExternalFilter: true
             };
+            
+            $scope.showColumnMenu = true;
+            $scope.showMenu = true;
 
+            /*Enables display of the filterbox in the column menu. 
+            If both showColumnMenu and showFilter are false the menu button will not display.*/
+            $scope.showFilter = true;
+
+            $scope.activateFilter = function() {
+              var searchText = $scope.searchText || null;
+              $scope.getData(searchText);  
+              };
+           
             $scope.totalServerItems = 0;
+
+          
 
             $scope.pagingOptions = {
                 pageSizes: [20, 50, 100, 500],
@@ -38,20 +52,25 @@ angular.module('backAnd.controllers')
                         $scope.pagingOptions.pageSize = $scope.options.pageSize;
                 }
             };
-
-            function impSortFn(a, b) {
-                console.log(a)
-                if (a == b) return 0;
-                if (a < b) return -1;
-                return 1;
-            }
-
-
+            
+            var isSort = true;
+            $scope.sortOptions = {};                           
+            $scope.$on('ngGridEventSorted', function(event, sortInfo) {
+                // don't call getPagedDataAsync here cos this function
+                // is called multiple times for the same update.
+                $scope.sortOptions = {
+                    fieldName: sortInfo.columns[0].displayName,
+                    order: sortInfo.directions[0]
+                };
+            });
+                      
             $scope.dataTable = {
                 columnDefs: 'columns',
                 data: 'dataFill',
                 enablePaging: true,
                 showFooter: true,
+                useExternalSorting: true,
+                sortOptions: $scope.sortOptions,
                 totalServerItems: 'totalServerItems',
                 pagingOptions: $scope.pagingOptions
             };
@@ -79,41 +98,42 @@ angular.module('backAnd.controllers')
 
                     // We are adding columns and its custom filter to the table based on type
                     // this will also need to be changed to handle multiple tables on the same page
-
                     angular.forEach($scope.config, function(con) {
                         $scope.columns.push({
                             cellFilter: con.type,
                             displayName: con.displayName,
-                            sortFn: impSortFn,
+
                             cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity[col.displayName]}}</span></div>'
                         });
 
                     });
-                    console.log($scope.columns)
                     $scope.getData()
+
                 });
 
 
 
             };
 
-            $scope.getData = function() {
+            $scope.getData = function(searchText) {
                 $scope.isLoad = true;
 
+                if(searchText == 'undefined') searchText == null;
                 // We are requesting data for the specific page of the table.
-
+                var sortString = '[' + JSON.stringify($scope.sortOptions) + ']';
                 tableService.queryjsonp({
                     // This will also need to be adjusted to deal with mutiple tables on the same page
                     table: $scope.tableName,
                     pageSize: $scope.pagingOptions.pageSize,
                     pageNumber: $scope.pagingOptions.currentPage,
+                    sort : sortString,
+                    search: searchText
+
 
                 }, function(largeLoad) {
-
+                 
                     // We have received table data and add the data to the scope
                     $scope.dataFill = largeLoad.data;
-                    console.log(largeLoad.data)
-                    console.log(largeLoad.totalRows)
                     $scope.totalServerItems = largeLoad.totalRows;
 
                     // apply changes
@@ -121,12 +141,11 @@ angular.module('backAnd.controllers')
                         $scope.$apply();
                     }*/
                     $scope.isLoad = false;
-                });
 
+                });
+                
 
             }
-
-
 
             $scope.$watch('pagingOptions', function(newVal, oldVal) {
                 if (newVal !== oldVal) {
@@ -140,9 +159,25 @@ angular.module('backAnd.controllers')
                 }
             }, true);
 
-            // this is the intitialization of the table data above
-            $scope.$on('loadData', function() {
-                $scope.getConfigDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-            });
-        }
-    ]);
+            $scope.$watch('sortOptions', function(newVal, oldVal) {
+                if (isSort && newVal !== oldVal) {
+                    $scope.getData();
+                    isSort = false;
+                    $scope.setIsSort();          
+                 }
+             }, true);  
+             
+
+
+            $scope.setIsSort = function() {
+              setTimeout(function(){isSort = true;}, 3000);
+            }
+ 
+             // this is the intitialization of the table data above
+             $scope.$on('loadData', function() {
+                $scope.getConfigDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage); 
+             });
+            
+         }
+     ]);
+
