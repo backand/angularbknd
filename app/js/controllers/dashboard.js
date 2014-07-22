@@ -6,8 +6,6 @@ angular.module('backAnd.controllers')
         function($scope, Global, $http, dashboardService) {
             $scope.global = Global;
             $scope.init = function() {
-                alert("dashboard");
-                console.log("dd")
                 dashboardService.queryjsonp({}, function(data) {
                     console.log(data)
                     $scope.numCol = 2;

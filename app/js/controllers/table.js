@@ -53,33 +53,24 @@ angular.module('backAnd.controllers')
                 }
             };
             
-            $scope.sortInfo = {};
-
-            $scope.useExternalSorting = true;
-            var isSorting = false;
-
+            var isSort = true;
+            $scope.sortOptions = {};                           
             $scope.$on('ngGridEventSorted', function(event, sortInfo) {
                 // don't call getPagedDataAsync here cos this function
                 // is called multiple times for the same update.
-                if (isSorting == false) {
-                    isSorting = true;
-                    $scope.sortInfo = {
-                        fieldName: sortInfo.columns[0].displayName,
-                        order: sortInfo.directions[0]
-                    };
-                }
+                $scope.sortOptions = {
+                    fieldName: sortInfo.columns[0].displayName,
+                    order: sortInfo.directions[0]
+                };
             });
-
-            
-            
-
+                      
             $scope.dataTable = {
                 columnDefs: 'columns',
                 data: 'dataFill',
                 enablePaging: true,
                 showFooter: true,
-                enableSorting: true,
                 useExternalSorting: true,
+                sortOptions: $scope.sortOptions,
                 totalServerItems: 'totalServerItems',
                 pagingOptions: $scope.pagingOptions
             };
@@ -116,7 +107,6 @@ angular.module('backAnd.controllers')
                         });
 
                     });
-                    console.log($scope.columns)
                     $scope.getData()
 
                 });
@@ -127,10 +117,10 @@ angular.module('backAnd.controllers')
 
             $scope.getData = function(searchText) {
                 $scope.isLoad = true;
+
                 if(searchText == 'undefined') searchText == null;
                 // We are requesting data for the specific page of the table.
-                var sortString = '[' + JSON.stringify($scope.sortInfo) + ']';
-                console.log(sortString);
+                var sortString = '[' + JSON.stringify($scope.sortOptions) + ']';
                 tableService.queryjsonp({
                     // This will also need to be adjusted to deal with mutiple tables on the same page
                     table: $scope.tableName,
@@ -141,7 +131,7 @@ angular.module('backAnd.controllers')
 
 
                 }, function(largeLoad) {
-
+                 
                     // We have received table data and add the data to the scope
                     $scope.dataFill = largeLoad.data;
                     $scope.totalServerItems = largeLoad.totalRows;
@@ -157,8 +147,6 @@ angular.module('backAnd.controllers')
 
             }
 
-
-
             $scope.$watch('pagingOptions', function(newVal, oldVal) {
                 if (newVal !== oldVal) {
                     $scope.getData();
@@ -171,17 +159,25 @@ angular.module('backAnd.controllers')
                 }
             }, true);
 
-            $scope.$watch('sortInfo', function (newVal, oldVal) {
-                if (newVal !== oldVal) {
-                    console.log('sortInfo-watch');
+            $scope.$watch('sortOptions', function(newVal, oldVal) {
+                if (isSort && newVal !== oldVal) {
                     $scope.getData();
-                }
-            }, true);  
-            
+                    isSort = false;
+                    $scope.setIsSort();          
+                 }
+             }, true);  
+             
 
-            // this is the intitialization of the table data above
-            $scope.$on('loadData', function() {
+
+            $scope.setIsSort = function() {
+              setTimeout(function(){isSort = true;}, 3000);
+            }
+ 
+             // this is the intitialization of the table data above
+             $scope.$on('loadData', function() {
                 $scope.getConfigDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage); 
-            });
-        }
-    ]);
+             });
+            
+         }
+     ]);
+
