@@ -1,9 +1,11 @@
-<div ng-controller="dashboardController" ng-init="init()">
-	
-<div  ng-repeat="col in [1,2,3,4]">
-	{{col}}
-</div>
-<barchart>	</barchart>	
-<linechart>  </linechart>
-<donutchart> </donutchart>
+<div data-ng-controller="dashboardController" data-ng-init="init()">
+	<div class="container-fluid">	
+		<div data-ng-repeat="chart in chartData">
+			<div class="col-xs-{{numCol}}" 
+			ng-switch on="chart.type">
+			<barchart chart-id="chart.id" ng-switch-when="Bar">	</barchart>	
+			<linechart chart-id="chart.id" ng-switch-when="Line">  </linechart>
+			<donutchart chart-id="chart.id" ng-switch-when="Pie"> </donutchart>
+		</div>
+	</div>
 </div>
