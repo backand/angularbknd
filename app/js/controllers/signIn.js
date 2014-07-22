@@ -26,7 +26,7 @@ angular.module('backAnd.controllers')
                 });
                 var request = $http({
                     method: 'POST',
-                    url: "http://rivka.backand.info:8099/token",
+                    url: "http://api.backand.info:8099/token",
                     data: data,
                     headers: {
                         'Accept': '*/*',
