@@ -22,6 +22,7 @@ angular.module('backAnd', [
         });
         $routeProvider.when('/chartsExample', {
             templateUrl: 'views/chartsExample.html'
+        });
         $routeProvider.when('/formsExample', {
             templateUrl: 'views/forms.html'
         });
