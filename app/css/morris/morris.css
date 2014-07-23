@@ -20,7 +20,7 @@
   white-space: nowrap;
   margin: 0.1em 0;
 }
-.box-body .xtitle {
+.box-body .ytitle {
   font-size: 15px;
   margin-left: -12px;
   position: absolute;
@@ -37,7 +37,7 @@
   -moz-transform-origin: 0 0;
   -webkit-transform-origin: 0 0;
 }
-.box-body .ytitle {
+.box-body .xtitle {
   font-size: 15px;
   text-align: center;
 }
