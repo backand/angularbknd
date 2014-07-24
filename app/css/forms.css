@@ -1,0 +1,168 @@
+
+/*= Nav tabs =*/
+
+.nav-tabs > li > a {
+  margin-right: -1px;
+  border-radius: 0;
+  font-weight: 600;
+  color: #333;
+  padding: 11px 14px 12px 14px;
+}
+
+.nav-tabs > li > a:hover, 
+.nav-tabs > li > a:focus {
+  border-color: #e5e5e5;
+  color: #676767;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  background-color: #fefefe;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: #428BCA;
+  border-top-color: #D65C4F;
+}
+
+.nav-tabs > li > a > i { 
+  float: left; 
+  margin: 0px 6px 0 0; 
+}
+
+.nav-tabs > li > a .label { 
+  margin: -5px -5px -5px 5px; 
+}
+
+.nav-tabs > li > a .label-text { 
+  font-weight: 700;
+  font-size: 11px;
+  margin-left: 4px; 
+}
+
+.nav-tabs .open > a, 
+.nav-tabs .open > a:hover, 
+.nav-tabs .open > a:focus {
+  background-color: #FCFCFC;
+  border-color: #DDD;
+  color: #428BCA;
+}
+
+.nav-tabs .dropdown-menu {
+  margin-top: 10px;
+}
+
+
+/* Toolbar tabs */
+
+.nav-tabs.toolbar-tabs {
+  margin: -1px -1px 0 -1px;
+}
+
+
+/* Img inside tab */
+
+.nav .tab-img {
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-right: 6px;
+  margin-top: -2px;
+}
+
+
+/* Justified tabs */
+
+.nav-tabs.nav-justified > li > a {
+  border-bottom: 1px solid #dddddd;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: -1px;
+  border-radius: 0;
+}
+.nav-tabs.nav-justified > li:first-child > a {
+  margin-left: 0;
+}
+
+.nav-tabs.nav-justified > .active > a,
+.nav-tabs.nav-justified > .active > a:hover,
+.nav-tabs.nav-justified > .active > a:focus {
+  border-top-color: #D65C4F;
+  border-bottom-color: #ffffff;
+}
+
+
+/* Page tabs */
+
+.page-tabs > .nav-tabs, .page-tabs > .nav-pills { margin-bottom: 35px; }
+.page-tabs > .tab-content { border: 0; }
+
+
+/* Tab and pill content */
+
+.tab-content { border: 1px solid #ddd; border-top: 0; background-color: #fff; }
+.panel > .tabbable > .tab-content { border: 0; }
+.modal .tab-content { border: 0; padding-top: 20px; }
+.pill-content {
+  border: 0; 
+  margin-top: 16px;
+}
+
+
+
+@media (max-width: 767px) {
+
+  .nav-tabs.nav-justified > li > a {
+    margin-left: 0;
+    border: 1px solid #ddd;
+  }
+  .nav-tabs.nav-justified > .active > a, 
+  .nav-tabs.nav-justified > .active > a:hover, 
+  .nav-tabs.nav-justified > .active > a:focus {
+    border-bottom-color: #ddd;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .nav-tabs > li {
+    float: none;
+  }
+  .nav-tabs > li.pull-right {
+    float: none!important;
+  }
+
+  .nav-tabs > li > a {
+    border: 1px solid #ddd;
+    margin-right: 0;
+  }
+
+  .nav-tabs > li.active > a, 
+  .nav-tabs > li.active > a:hover, 
+  .nav-tabs > li.active > a:focus {
+    border-bottom-color: #ddd;
+  }
+
+}
+
+/*Panels */
+
+.panel {
+  border-radius: 2px;
+  margin-bottom: 35px;
+  box-shadow: none;
+}
+/*intut in tab */
+.form-group label {  
+  width: 100%
+}
+.tab-content label {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
