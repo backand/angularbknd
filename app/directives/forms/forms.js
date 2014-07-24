@@ -3,7 +3,7 @@
 /* Directives */
 
 angular.module('backAnd.directives')
-  .directive('myform', function ($compile) {
+  .directive('myform', function ($sce) {
     return {
       restrict: 'A',
       transclude : false,
@@ -11,10 +11,11 @@ angular.module('backAnd.directives')
       <form role="form">\
         <div class="form-group" ng-repeat="field in formSchema.fields">\
           <hr ng-if="field.hr">\
-          <div ng-if="field.preLabel">{{field.preLabel}}</div>\
+          <div ng-bind-html="renderHtml(field.preLabel)"></div>\
           <label>{{field.name}}\
             <input type="text" class="form-control" placeholder="type: {{field.type}}">\
           </label>\
+          <div ng-bind-html="renderHtml(field.postLabel)"></div>\
         </div>\
         <div>\
           <ul class="nav nav-tabs" role="tablist">\
@@ -26,10 +27,11 @@ angular.module('backAnd.directives')
             <div class="tab-pane fade in" ng-class="{active : $first}" ng-repeat="category in formSchema.categories" id="{{category.catName}}">\
               <div class="form-group" ng-repeat="field in category.fields" style ="display: inline-block;width: {{100 / category.columnsInDialog * field.columns}}%;">\
                 <hr ng-if="field.hr">\
-                <div ng-if="field.preLabel">{{field.preLabel}}</div>\
+                <div ng-bind-html="renderHtml(field.preLabel)"></div>\
                 <label>{{field.name}}\
                   <input type="text" class="form-control" placeholder="type: {{field.type}}">\
                 </label>\
+                <div ng-bind-html="renderHtml(field.postLabel)"></div>\
               </div>\
             </div>\
           </div>\
@@ -49,7 +51,11 @@ angular.module('backAnd.directives')
               type : field.type,
               hr: field.addhorizontallineabouvethefield,
               columns: field.columnSpanInDialog,
-              preLabel: field.preLabel
+              preLabel: field.preLabel,
+              postLabel: field.postLabel
+            };
+            scope.renderHtml = function(html_code) {
+              return $sce.trustAsHtml(html_code);
             };
             if (field.categoryName) {
               if (!formSchema.categories[field.categoryName]) {
