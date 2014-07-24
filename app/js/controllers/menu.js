@@ -35,7 +35,7 @@ angular.module('backAnd.controllers')
                         });
                 }
             }
-            $scope.setCurrentTable = function(table, index, partType) {
+            $scope.setCurrentTable = function(table,name, index, partType) {
 
                 if (partType == "table")
                     $scope.global.url = "tables"
@@ -44,6 +44,7 @@ angular.module('backAnd.controllers')
 
                 $scope.curTable = index;
                 $scope.global.currentTable = table;
+                $scope.global.currentTableName = name;
                 //$rootScope.$broadcast('loadData');
             }
 

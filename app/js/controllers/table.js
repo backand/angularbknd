@@ -78,7 +78,7 @@ angular.module('backAnd.controllers')
 
 
             // This is the call to get the data based on the table
-            // and receives arguments of page suze and page number
+            // and receives arguments of page size and page number
             // should look into creating a table directive that receives 
             // arguments eg table name, and paging information
 
@@ -98,14 +98,14 @@ angular.module('backAnd.controllers')
 
                     // We are adding columns and its custom filter to the table based on type
                     // this will also need to be changed to handle multiple tables on the same page
-                    angular.forEach($scope.config, function(con) {
-                        $scope.columns.push({
-                            cellFilter: con.type,
-                            displayName: con.displayName,
-
-                            cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity[col.displayName]}}</span></div>'
-                        });
-
+                    angular.forEach($scope.config, function (col) {
+                        if (col.donotDisplayinGrid) {
+                            $scope.columns.push({
+                                cellFilter: col.type,
+                                displayName: col.displayName,
+                                cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity["' + col.name + '"]}}</span></div>'
+                            });
+                        }
                     });
                     $scope.getData()
 
