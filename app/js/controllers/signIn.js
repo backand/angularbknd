@@ -17,6 +17,7 @@ angular.module('backAnd.controllers')
             }
 
             $scope.authentication = function() {
+                $scope.loginError = '';
                 localStorage.removeItem("Authorization");
                 var data = toQueryString({
                     grant_type: "password",
@@ -39,7 +40,8 @@ angular.module('backAnd.controllers')
                     $location.path('/');
                     window.location.reload()
                 });
-                request.error(function(data, status, headers, config) {
+                request.error(function (data, status, headers, config) {
+                    $scope.loginError = data.error_description;
                     console.log(status)
                 });
 
