@@ -42,16 +42,16 @@ angular.module('backAnd.controllers')
 
             $scope.pagingOptions = {
                 pageSizes: [20, 50, 100, 500],
-                pageSize: 20,
+                pageSize: 0,
                 currentPage: 1
             };
-            if ($scope.options) {
-                if ($scope.options.pageSizes) {
-                    $scope.pagingOptions.pageSizes = $scope.options.pageSizes;
-                    if ($scope.options.pageSize)
-                        $scope.pagingOptions.pageSize = $scope.options.pageSize;
-                }
-            };
+            // if ($scope.options) {
+            //     if ($scope.options.pageSizes) {
+            //         $scope.pagingOptions.pageSizes = $scope.options.pageSizes;
+            //         if ($scope.options.pageSize)
+            //             $scope.pagingOptions.pageSize = $scope.options.pageSize;
+            //     }
+            // };
             
             var isSort = true;
             $scope.sortOptions = {};                           
@@ -92,17 +92,18 @@ angular.module('backAnd.controllers')
                     // Need to change this to handle multiple tables on the same page
                     table: $scope.tableName
                 }, function(data) {
-
                     $scope.config = data.fields;
                     $scope.columns = [];
+                    $scope.pagingOptions.pageSize = data.design.rowsperPage;
 
                     // We are adding columns and its custom filter to the table based on type
                     // this will also need to be changed to handle multiple tables on the same page
                     angular.forEach($scope.config, function(con) {
+                        console.log(con.columnWidth);
                         $scope.columns.push({
                             cellFilter: con.type,
                             displayName: con.displayName,
-
+                            width: con.columnWidth,
                             cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity[col.displayName]}}</span></div>'
                         });
 
@@ -170,7 +171,7 @@ angular.module('backAnd.controllers')
 
 
             $scope.setIsSort = function() {
-              setTimeout(function(){isSort = true;}, 3000);
+              setTimeout(function(){isSort = true;}, 1500);
             }
  
              // this is the intitialization of the table data above
