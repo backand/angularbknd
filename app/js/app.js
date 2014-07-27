@@ -10,7 +10,7 @@ angular.module('backAnd', [
     'backAnd.controllers'
 ]).config(['$routeProvider',
     function($routeProvider) {
-        backand.options.url = 'http://rivka.backand.info:8099';
+        backand.options.url = 'http://api.backand.info:8099';
         $routeProvider.when('/login', {
             templateUrl: 'views/login.html'
         });

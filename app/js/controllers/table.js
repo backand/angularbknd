@@ -99,7 +99,6 @@ angular.module('backAnd.controllers')
                     // We are adding columns and its custom filter to the table based on type
                     // this will also need to be changed to handle multiple tables on the same page
                     angular.forEach($scope.config, function(con) {
-                        console.log(con.columnWidth);
                         $scope.columns.push({
                             cellFilter: con.type,
                             displayName: con.displayName,
