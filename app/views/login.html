@@ -15,8 +15,11 @@
                     <div class="form-group">
                         <input type="text" class="form-control input-lg" ng-model="appName" placeholder="Application" required>
                     </div>
+                    <div class="form-group has-error">
+                        <span class="help-block">{{loginError}}</span>
+                    </div>
                     <div class="form-group">
-                        <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
+                            <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
                     </div>
                 </form>
             </div>
