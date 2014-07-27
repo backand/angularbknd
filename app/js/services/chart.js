@@ -4,7 +4,7 @@ value('version', '0.1');
 
 angular.module('backAnd').factory('chartService', ['$resource',
 	function($resource) {
-		return $resource('http://api.backand.info:8099/1/chart/data/:chart', {
+		return $resource(backandGlobal.url + '/1/chart/data/:chart', {
 			chart: 'chart'
 		}, {
 			queryjsonp: {
@@ -19,7 +19,7 @@ angular.module('backAnd').factory('chartService', ['$resource',
 
 angular.module('backAnd').factory('chartConfig', ['$resource',
 	function($resource) {
-		return $resource('http://api.backand.info:8099/1/chart/config/', {
+		return $resource(backandGlobal.url + '/1/chart/config/', {
 		}, {
 			queryjsonp: {
 				method: 'GET',

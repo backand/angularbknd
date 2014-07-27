@@ -3,7 +3,7 @@ value('version', '0.1');
 
 angular.module('backAnd.services').factory('menuService', ['$resource',
 	function($resource) {
-		return $resource('http://api.backand.info:8099/1/app/config', {}, {
+		return $resource(backandGlobal.url + '/1/app/config', {}, {
 			queryjsonp: {
 				method: 'GET',
 				params: {

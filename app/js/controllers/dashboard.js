@@ -15,7 +15,6 @@ angular.module('backAnd.controllers')
                 angular.forEach(data.data, function(value, key) { 
                     this.push({type :value.type, id : value.id});
                 }, $scope.chartData)
-
             });
             
         }
