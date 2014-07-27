@@ -169,8 +169,8 @@ angular.module('backAnd.directives')
     </div>\
     <div class="box-body chart-responsive">\
     <div class="chart"></div>\
-    <div class="xtitle">{{xTitle}}</div>\
-    <div class="ytitle">{{yTitle}}</div>\
+    <div class="xtitle">{{yTitle}}</div>\
+    <div class="ytitle">{{xTitle}}</div>\
     </div>\
     </div>',
     replace: true,
