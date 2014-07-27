@@ -16,6 +16,19 @@ angular.module('backAnd.controllers')
                 return parts.join("&");
             }
 
+            function getDefaultApp() {
+                if (backandGlobal.defaultApp)
+                    return backandGlobal.defaultApp;
+
+                var hostSegments = location.hostname.split('.');
+                if (hostSegments.length > 1) {
+                    return hostSegments[0];
+                }
+                return '';
+            }
+
+            $scope.appName = getDefaultApp();
+
             $scope.authentication = function() {
                 $scope.loginError = '';
                 localStorage.removeItem("Authorization");
