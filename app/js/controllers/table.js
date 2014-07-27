@@ -9,10 +9,10 @@ angular.module('backAnd.controllers')
             $scope.global = Global;
 
 
-
+            // Read the configuration of the current view
             $scope.$watch('tableName', function() {
                 if ($scope.tableName)
-                    $scope.getConfigDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                    $scope.getConfigDataAsync();
 
             });
 
@@ -82,7 +82,7 @@ angular.module('backAnd.controllers')
             // should look into creating a table directive that receives 
             // arguments eg table name, and paging information
 
-            $scope.getConfigDataAsync = function(pageSize, page) {
+            $scope.getConfigDataAsync = function() {
                 $scope.isLoad = true;
 
                 // Request to get the field information about the table
@@ -98,14 +98,15 @@ angular.module('backAnd.controllers')
 
                     // We are adding columns and its custom filter to the table based on type
                     // this will also need to be changed to handle multiple tables on the same page
-                    angular.forEach($scope.config, function(con) {
-                        console.log(con.columnWidth);
-                        $scope.columns.push({
-                            cellFilter: con.type,
-                            displayName: con.displayName,
-                            width: con.columnWidth,
-                            cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity[col.displayName]}}</span></div>'
-                        });
+                    angular.forEach($scope.config, function (col) {
+                        if (col.donotDisplayinGrid && col.type != 'MultiSelect') {
+                            $scope.columns.push({
+                                cellFilter: col.type,
+                                displayName: col.displayName,
+                                width: col.columnWidth,
+                                cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity["' + col.name + '"]}}</span></div>'
+                            });
+                        }
                     });
                     $scope.getData()
 
@@ -175,7 +176,7 @@ angular.module('backAnd.controllers')
  
              // this is the intitialization of the table data above
              $scope.$on('loadData', function() {
-                $scope.getConfigDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage); 
+                $scope.getConfigDataAsync(); 
              });
             
          }
