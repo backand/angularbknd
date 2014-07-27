@@ -26,7 +26,7 @@ angular.module('backAnd.controllers')
                 });
                 var request = $http({
                     method: 'POST',
-                    url: "http://api.backand.info:8099/token",
+                    url: backandGlobal.url + "/token",
                     data: data,
                     headers: {
                         'Accept': '*/*',
