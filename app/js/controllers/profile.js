@@ -11,6 +11,8 @@ angular.module('backAnd.controllers')
                 }, function(data) {
                     $scope.profile = data.company;
                     $scope.profile.img = decodeURIComponent($scope.profile.logo);
+                    $scope.profile.fullName = data.user.fullName;
+                    $scope.profile.username = data.user.username;
                 });
             }
             $scope.logOut = function() {
