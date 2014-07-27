@@ -300,3 +300,106 @@ angular.module('backAnd.directives')
     }
   }
 })
+
+
+
+.directive('columnchart', function(chartService) {
+  var metadata = {
+    "__metadata" : {
+      "id" : "2"
+    },
+    "title" : "Activity",
+    "subtitle" : "Example",
+    "type" : "Bar",
+    "height(Pixels)" : 340,
+    "query" : "SELECT top(10) substring(Controller,1,10) as Controller, COUNT(*) as [Count]  FROM [Durados_Log]  where logtype<=3 group by Controller Order By [Count] desc",
+    "showData" : false,
+    "xField" : "Controller",
+    "xTitle" : "Durados Views",
+    "yField" : "Count",
+    "yTitle" : "Count Activity",
+    "gaugeMinValue" : 0,
+    "greenBands(eg:0,80)" : "",
+    "gaugeMaxValue" : 0,
+    "yellowBands(eg:80,120)" : "",
+    "refreshInterval(min3sec)" : 0,
+    "redBands(eg:120,200)" : "",
+    "securityWorkspace" : 0,
+    "overrideinheritable" : false,
+    "allowRead" : "Developer,Admin,View Owner,User,ReadOnly"
+  }, data = {
+    "xAxis" : ["view", "app", "Account", "appConfig", "Home", "Admin", "Home - tes", "Home - dur", "chartConfi", "Default"],
+    "yPieAxis" : null,
+    "series" : [{
+      "name" : "Count",
+      "data" : [4218, 3028, 463, 418, 273, 82, 69, 53, 48, 43]
+    }],
+    "__metadata" : {
+      "id" : "2"
+    },
+    "data" : [{
+      "name" : "Count",
+      "data" : [4218, 3028, 463, 418, 273, 82, 69, 53, 48, 43]
+    }],
+    "title" : "Activity",
+    "subTitle" : "Example",
+    "type" : "bar",
+    "xTitle" : "Durados Views",
+    "yTitle" : "Count Activity",
+    "height" : "340",
+    "showTable" : false,
+    "neg" : false
+  };
+  return {
+    restrict: 'E',
+    template: '\
+      <div class="box">\
+          <div class="box-header">\
+              <h3 class="box-title">{{title}}</h3>\
+          </div>\
+          <div class="box-body chart-responsive">\
+              <div class="chart"></div>\
+              <div class="xtitle">{{xTitle}}</div>\
+              <div class="ytitle">{{yTitle}}</div>\
+          </div>\
+      </div>',
+    replace: true,
+    scope: {
+      chartId : '='
+    },
+    link: function($scope, element, attrs) {
+     
+                    // Need to change this to handle multiple tables on the same page
+                    chart: $scope.chartId;
+                    $scope.title = data.Title;
+                    $scope.xTitle = data.XTitle;
+                    $scope.yTitle = data.YTitle;
+                    var axises = 'bcdefghijklmnopqrstuvwxyz'; 
+                    var opt = {
+                      element: element.find('.chart'),
+                      data: data.xAxis.reduce(function(acc, el, idx) {
+                      var row = {a: el};
+
+                      for (var i=0; i < data.data.length; i++) {
+                        row[axises.charAt(i)] = data.data[i].data[idx];
+                      }
+                      acc.push(row);
+                      return acc;
+                    }, []),
+                    barColors: ['#00a65a', '#f56954'],
+                    xkey: 'a',
+                    ykeys: axises.substr(0, data.data.length).split(''),
+                    labels: data.data.map(function(el){
+                      return el.name
+                    }),
+                    horizontal : true,
+                    hideHover: 'auto',
+                    xLabelAngle: 45
+                  };
+                  Morris.Bar(opt);
+
+               
+
+}
+}
+})

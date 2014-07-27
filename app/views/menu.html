@@ -1,13 +1,14 @@
 <ul class="sidebar-menu">
-    <li class="treeview" ng-repeat="p in pages" ng-click="setCurrentTable(p.name ,$index ,p.partType)" ng-class={"curTable":$index==curTable}>
+    <li class="treeview" ng-repeat="p in pages" ng-click="setCurrentTable(p.partId, p.name ,$index ,p.partType)" ng-class={"curTable":$index=curTable}>
         <div icons></div>
         <a href="#">
-            <i class="custom-icon" icon-type="p.partType"></i> 
+            <i class="custom-icon" icon-type="p.partType"></i>
             <span>{{p.name}}</span>
             <i class="fa fa-angle-left pull-right" ng-show="p.pages"></i>
         </a>
         <ul class="treeview-menu" ng-show="p.pages">
-            <li ng-repeat="pages in p.pages" ><a href="/tables/simple.html"><i class="fa fa-angle-double-right"></i> {{pages.name}}</a>
+            <li ng-repeat="pages in p.pages">
+                <a href="/tables/simple.html"><i class="fa fa-angle-double-right"></i> {{pages.name}}</a>
             </li>
 
         </ul>

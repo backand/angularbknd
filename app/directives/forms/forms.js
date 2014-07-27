@@ -3,38 +3,47 @@
 /* Directives */
 
 angular.module('backAnd.directives')
-  .directive('myform', function ($compile) {
+  .directive('myform', function ($sce) {
     return {
       restrict: 'A',
       transclude : false,
       template: '\
       <form role="form">\
-        <div class="form-group" ng-repeat="field in formSchema.fields">\
-          <hr ng-if="field.hr">\
-          <div ng-if="field.preLabel">{{field.preLabel}}</div>\
-          <label>{{field.name}}\
-            <input type="text" class="form-control" placeholder="type: {{field.type}}">\
-          </label>\
-        </div>\
-        <div>\
-          <ul class="nav nav-tabs" role="tablist">\
-            <li ng-repeat="category in formSchema.categories" ng-class="{active : $first}">\
-              <a href="#{{category.catName}}" ng-click="toggleActive(category.catName, $event)" role="tab" data-toggle="tab">{{category.catName}}</a>\
-            </li>\
-          </ul>\
-          <div class="tab-content">\
-            <div class="tab-pane fade in" ng-class="{active : $first}" ng-repeat="category in formSchema.categories" id="{{category.catName}}">\
-              <div class="form-group" ng-repeat="field in category.fields" style ="display: inline-block;width: {{100 / category.columnsInDialog * field.columns}}%;">\
-                <hr ng-if="field.hr">\
-                <div ng-if="field.preLabel">{{field.preLabel}}</div>\
-                <label>{{field.name}}\
-                  <input type="text" class="form-control" placeholder="type: {{field.type}}">\
-                </label>\
+        <div class="panel panel-default">\
+          <div class="panel-body">\
+            <div class="form-group" ng-repeat="field in formSchema.fields">\
+              <hr ng-if="field.hr">\
+              <div ng-bind-html="renderHtml(field.preLabel)"></div>\
+              <label>{{field.name}}\
+                <input type="text" class="form-control" placeholder="type: {{field.type}}">\
+              </label>\
+              <div ng-bind-html="renderHtml(field.postLabel)"></div>\
+            </div>\
+            <div class="tabbable form-group">\
+              <ul class="nav nav-tabs" role="tablist">\
+                <li ng-repeat="category in formSchema.categories" ng-class="{active : $first}">\
+                  <a href="#{{category.catName}}" ng-click="toggleActive(category.catName, $event)" role="tab" data-toggle="tab">{{category.catName}}</a>\
+                </li>\
+              </ul>\
+              <div class="tab-content panel-body">\
+                <div class="tab-pane fade in" ng-class="{active : $first}" ng-repeat="category in formSchema.categories" id="{{category.catName}}">\
+                  <div class="form-group" ng-repeat="field in category.fields" style="display: inline-block;width: {{100 / category.columnsInDialog * field.columns}}%;">\
+                    <hr ng-if="field.hr">\
+                    <div ng-bind-html="renderHtml(field.preLabel)"></div>\
+                    <label>{{field.name}}\
+                      <input type="text" class="form-control" placeholder="type: {{field.type}}">\
+                    </label>\
+                    <div ng-bind-html="renderHtml(field.postLabel)"></div>\
+                  </div>\
+                </div>\
               </div>\
+            </div>\
+            <div class="form-actions text-right">\
+              <button type="reset" class="btn btn-danger">Cancel</button>\
+              <button type="submit" class="btn btn-primary">Submit</button>\
             </div>\
           </div>\
         </div>\
-        <button type="submit" class="btn btn-default">Submit</button>\
       </form>',
       link: function(scope, el, attrs) {
         var formSchema = {
@@ -49,7 +58,11 @@ angular.module('backAnd.directives')
               type : field.type,
               hr: field.addhorizontallineabouvethefield,
               columns: field.columnSpanInDialog,
-              preLabel: field.preLabel
+              preLabel: field.preLabel,
+              postLabel: field.postLabel
+            };
+            scope.renderHtml = function(html_code) {
+              return $sce.trustAsHtml(html_code);
             };
             if (field.categoryName) {
               if (!formSchema.categories[field.categoryName]) {

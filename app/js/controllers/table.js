@@ -78,7 +78,7 @@ angular.module('backAnd.controllers')
 
 
             // This is the call to get the data based on the table
-            // and receives arguments of page suze and page number
+            // and receives arguments of page size and page number
             // should look into creating a table directive that receives 
             // arguments eg table name, and paging information
 
@@ -106,7 +106,6 @@ angular.module('backAnd.controllers')
                             width: con.columnWidth,
                             cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity[col.displayName]}}</span></div>'
                         });
-
                     });
                     $scope.getData()
 
