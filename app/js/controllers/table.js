@@ -99,7 +99,7 @@ angular.module('backAnd.controllers')
                     // We are adding columns and its custom filter to the table based on type
                     // this will also need to be changed to handle multiple tables on the same page
                     angular.forEach($scope.config, function (col) {
-                        if (col.donotDisplayinGrid && col.type != 'MultiSelect') {
+                        if (!col.donotDisplayinGrid && col.type != 'MultiSelect') {
                             $scope.columns.push({
                                 cellFilter: col.type,
                                 displayName: col.displayName,
