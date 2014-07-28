@@ -1,6 +1,6 @@
 angular.module('backAnd.directives')
 // barchart
-.directive('barchart', function(chartService) {
+.directive('columnchart', function(chartService) {
   return {
     restrict: 'E',
     template: '\
@@ -159,7 +159,7 @@ angular.module('backAnd.directives')
   }
 })
 
-.directive('columnchart', function(chartService) {
+.directive('barchart', function(chartService) {
   return {
     restrict: 'E',
     template: '\
