@@ -6,7 +6,10 @@ angular.module('backAnd.controllers')
     function($scope, Global, $http, dashboardService, chartConfig) {
         $scope.global = Global;
         $scope.init = function() {
-            dashboardService.queryjsonp({}, function(data) {
+            dashboardService.queryjsonp({
+                dashboard : $scope.global.currentTableID
+            }, function(data) {
+                console.log(data);
                 $scope.numCol = 12 / data.columns;
             });
             chartConfig.queryjsonp({}, function(data) {

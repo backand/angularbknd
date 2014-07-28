@@ -41,8 +41,8 @@ angular.module('backAnd.controllers')
                     $scope.global.url = "tables"
                 if (partType == "dashboard")
                     $scope.global.url = "dashboard/my-website"
-
                 $scope.curTable = index;
+                $scope.global.currentTableID = 1;
                 $scope.global.currentTable = table;
                 $scope.global.currentTableName = name;
                 //$rootScope.$broadcast('loadData');
