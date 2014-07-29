@@ -2,25 +2,22 @@
 
 
 angular.module('backAnd.controllers')
-.controller('dashboardController', ['$scope', 'Global', '$http', 'dashboardService', 'chartConfig',
-    function($scope, Global, $http, dashboardService, chartConfig) {
+.controller('dashboardController', ['$scope', 'Global', '$http', 'dashboardService',
+    function($scope, Global, $http, dashboardService) {
         $scope.global = Global;
         $scope.init = function() {
             dashboardService.queryjsonp({
                 dashboard : $scope.global.currentTableID
             }, function(data) {
-                console.log(data);
                 $scope.numCol = 12 / data.columns;
-            });
-            chartConfig.queryjsonp({}, function(data) {
-                $scope.chartNumber = data.totalRows;
+                console.log(data.widgets);
                 $scope.chartData = [];
-                angular.forEach(data.data, function(value, key) { 
-                    this.push({type :value.type, id : value.id});
-                }, $scope.chartData)
+                angular.forEach(data.widgets, function(value, key) { 
+                    console.log(value.__metadata.id) 
+                    this.push({type :value.type, id : value.__metadata.id});
+                },  $scope.chartData)
             });
             
         }
-
     }
     ])

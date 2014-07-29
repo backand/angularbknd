@@ -36,13 +36,13 @@ angular.module('backAnd.controllers')
                 }
             }
             $scope.setCurrentTable = function(table,name, index, partType) {
-
                 if (partType == "table")
                     $scope.global.url = "tables"
                 if (partType == "dashboard")
                     $scope.global.url = "dashboard/my-website"
                 $scope.curTable = index;
-                $scope.global.currentTableID = 1;
+                console.log(table);
+                $scope.global.currentTableID = table;
                 $scope.global.currentTable = table;
                 $scope.global.currentTableName = name;
                 //$rootScope.$broadcast('loadData');
