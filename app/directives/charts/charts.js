@@ -7,6 +7,7 @@ angular.module('backAnd.directives')
     <div class="box">\
     <div class="box-header">\
     <h3 class="box-title">{{title}}</h3>\
+    <h4 class="sub-title">{{subTitle}}</h4>\
     </div>\
     <div class="box-body chart-responsive">\
     <div class="chart"></div>\
@@ -24,6 +25,7 @@ angular.module('backAnd.directives')
                     chart: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
+                    $scope.subTitle = data.SubTitle;
                     $scope.xTitle = data.XTitle;
                     $scope.yTitle = data.YTitle;
                     var axises = 'bcdefghijklmnopqrstuvwxyz'; 
@@ -64,6 +66,7 @@ angular.module('backAnd.directives')
     <div class="box">\
     <div class="box-header">\
     <h3 class="box-title">{{title}}</h3>\
+    <h4 class="sub-title">{{subTitle}}</h4>\
     </div>\
     <div class="box-body chart-responsive">\
     <div class="chart"></div>\
@@ -81,6 +84,7 @@ angular.module('backAnd.directives')
                     chart: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
+                    $scope.subTitle = data.SubTitle;
                     $scope.xTitle = data.XTitle;
                     $scope.yTitle = data.YTitle;
                     var axises = 'bcdefghijklmnopqrstuvwxyz';
@@ -121,6 +125,7 @@ angular.module('backAnd.directives')
     <div class="box">\
     <div class="box-header">\
     <h3 class="box-title">{{title}}</h3>\
+    <h4 class="sub-title">{{subTitle}}</h4>\
     </div>\
     <div class="box-body chart-responsive">\
     <div class="chart"></div>\
@@ -136,6 +141,7 @@ angular.module('backAnd.directives')
                     chart: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
+                    $scope.subTitle = data.SubTitle;
                     var total = 0;
                     data.Data[0].data.forEach(function (el) {
                       total = total + el[1];
@@ -166,6 +172,7 @@ angular.module('backAnd.directives')
     <div class="box">\
     <div class="box-header">\
     <h3 class="box-title">{{title}}</h3>\
+    <h4 class="sub-title">{{subTitle}}</h4>\
     </div>\
     <div class="box-body chart-responsive">\
     <div class="chart"></div>\
@@ -183,6 +190,7 @@ angular.module('backAnd.directives')
                     chart: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
+                    $scope.subTitle = data.SubTitle;
                     $scope.xTitle = data.XTitle;
                     $scope.yTitle = data.YTitle;
                     var axises = 'bcdefghijklmnopqrstuvwxyz'; 

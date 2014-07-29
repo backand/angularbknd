@@ -1318,6 +1318,15 @@ body > .header .logo .icon {
   float: left;
   cursor: default;
 }
+.box .box-header .sub-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  float: left;
+  cursor: default;
+  width: 100%;
+  padding-left: 10px;
+}
 .box .box-header a:not(.btn) {
   color: #444;
 }
