@@ -51,7 +51,7 @@ angular.module('backAnd.directives')
           categories: {}
         };
         configService.queryjsonp({
-            table: 'test1'
+            table: 'Employees'
         }, function(data) {
           processForm(data);
         })
