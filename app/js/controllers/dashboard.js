@@ -10,10 +10,8 @@ angular.module('backAnd.controllers')
                 dashboard : $scope.global.currentTableID
             }, function(data) {
                 $scope.numCol = 12 / data.columns;
-                console.log(data.widgets);
                 $scope.chartData = [];
                 angular.forEach(data.widgets, function(value, key) { 
-                    console.log(value.__metadata.id) 
                     this.push({type :value.type, id : value.__metadata.id});
                 },  $scope.chartData)
             });
