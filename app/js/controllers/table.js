@@ -40,9 +40,11 @@ angular.module('backAnd.controllers')
 
             $scope.editSelected = function () {
                 if ($scope.mySelections != null && $scope.mySelections.length == 1) {
-                    //alert($scope.mySelections[0].__metadata.id)
-                    //$location.path('/formsExample');
-                    $location.path('/formsExample');//?pk=' + $scope.mySelections[0].__metadata.id + '&viewid=' + $scope.tableName);
+                    $location.search({
+                      id: $scope.mySelections[0].__metadata.id,
+                      table: $scope.tableName
+                    });
+                    $location.path('/formsExample');
                 }
             };
 
