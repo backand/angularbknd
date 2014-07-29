@@ -223,3 +223,184 @@ angular.module('backAnd.directives')
 }
 }
 })
+
+//spline chart
+
+.directive('splinechart', function(chartService) {
+  return {
+    restrict: 'E',
+    template: '\
+    <div class="box">\
+    <div class="box-header">\
+    <h3 class="box-title">{{title}}</h3>\
+    <h4 class="sub-title">{{subTitle}}</h4>\
+    </div>\
+    <div class="box-body chart-responsive">\
+    <div class="chart"></div>\
+    <div class="xtitle">{{xTitle}}</div>\
+    <div class="ytitle">{{yTitle}}</div>\
+    </div>\
+    </div>',
+    replace: true,
+    scope: {
+      chartId : '='
+    },
+    link: function($scope, element, attrs) {
+      chartService.queryjsonp({
+                    // Need to change this to handle multiple tables on the same page
+                    chart: $scope.chartId
+                  }, function(data) {
+                    $scope.title = data.Title;
+                    $scope.subTitle = data.SubTitle;
+                    $scope.xTitle = data.XTitle;
+                    $scope.yTitle = data.YTitle;
+                    var axises = 'bcdefghijklmnopqrstuvwxyz';
+
+                    var opt = {
+                      element: element.find('.chart'),
+                      data: data.xAxis.reduce(function(acc, el, idx) {
+                        var row = {a: el};
+
+                        for (var i=0; i < data.Data.length; i++) {
+                          row[axises.charAt(i)] = data.Data[i].data[idx];
+                        }
+                        acc.push(row);
+                        return acc;
+                      }, []),
+                      lineColors: ['#0b62a4', '#7A92A3'],
+                      parseTime: false,
+                      xkey: 'a',
+                      ykeys: axises.substr(0, data.Data.length).split(''),
+                      labels: data.Data.map(function(el){
+                        return el.name
+                      }),
+                      hideHover: 'auto',
+                      xLabelAngle: 45
+                    };
+                    Morris.Line(opt);
+                  });
+
+}
+}
+})
+
+//Area chart
+
+.directive('areachart', function(chartService) {
+  return {
+    restrict: 'E',
+    template: '\
+    <div class="box">\
+    <div class="box-header">\
+    <h3 class="box-title">{{title}}</h3>\
+    <h4 class="sub-title">{{subTitle}}</h4>\
+    </div>\
+    <div class="box-body chart-responsive">\
+    <div class="chart"></div>\
+    <div class="xtitle">{{xTitle}}</div>\
+    <div class="ytitle">{{yTitle}}</div>\
+    </div>\
+    </div>',
+    replace: true,
+    scope: {
+      chartId : '='
+    },
+    link: function($scope, element, attrs) {
+      chartService.queryjsonp({
+                    // Need to change this to handle multiple tables on the same page
+                    chart: $scope.chartId
+                  }, function(data) {
+                    $scope.title = data.Title;
+                    $scope.subTitle = data.SubTitle;
+                    $scope.xTitle = data.XTitle;
+                    $scope.yTitle = data.YTitle;
+                    var axises = 'bcdefghijklmnopqrstuvwxyz';
+
+                    var opt = {
+                      element: element.find('.chart'),
+                      data: data.xAxis.reduce(function(acc, el, idx) {
+                        var row = {a: el};
+
+                        for (var i=0; i < data.Data.length; i++) {
+                          row[axises.charAt(i)] = data.Data[i].data[idx];
+                        }
+                        acc.push(row);
+                        return acc;
+                      }, []),
+                      lineColors: ['#0b62a4', '#7A92A3'],
+                      parseTime: false,
+                      xkey: 'a',
+                      ykeys: axises.substr(0, data.Data.length).split(''),
+                      labels: data.Data.map(function(el){
+                        return el.name
+                      }),
+                      hideHover: 'auto',
+                      xLabelAngle: 45
+                    };
+                    Morris.Area(opt);
+                  });
+
+}
+}
+})
+
+//Bubble chart
+.directive('bubblechart', function(chartService) {
+  return {
+    restrict: 'E',
+    template: '\
+    <div class="box">\
+    <div class="box-header">\
+    <h3 class="box-title">{{title}}</h3>\
+    <h4 class="sub-title">{{subTitle}}</h4>\
+    </div>\
+    <div class="box-body chart-responsive">\
+    <div class="chart"></div>\
+    <div class="xtitle">{{xTitle}}</div>\
+    <div class="ytitle">{{yTitle}}</div>\
+    </div>\
+    </div>',
+    replace: true,
+    scope: {
+      chartId : '='
+    },
+    link: function($scope, element, attrs) {
+      chartService.queryjsonp({
+                    // Need to change this to handle multiple tables on the same page
+                    chart: $scope.chartId
+                  }, function(data) {
+                    $scope.title = data.Title;
+                    $scope.subTitle = data.SubTitle;
+                    $scope.xTitle = data.XTitle;
+                    $scope.yTitle = data.YTitle;
+                    var axises = 'bcdefghijklmnopqrstuvwxyz';
+
+                    var opt = {
+                      element: element.find('.chart'),
+                      data: data.xAxis.reduce(function(acc, el, idx) {
+                        var row = {a: el};
+
+                        for (var i=0; i < data.Data.length; i++) {
+                          row[axises.charAt(i)] = data.Data[i].data[idx];
+                        }
+                        acc.push(row);
+                        return acc;
+                      }, []),
+                      lineColors: ['#0b62a4', '#7A92A3'],
+                      pointSize : 15,
+                      lineWidth: 0,
+                      parseTime: false,
+                      xkey: 'a',
+                      ykeys: axises.substr(0, data.Data.length).split(''),
+                      labels: data.Data.map(function(el){
+                        return el.name
+                      }),
+                      hideHover: 'auto',
+                      xLabelAngle: 45
+                    };
+                    Morris.Line(opt);
+                  });
+
+}
+}
+})
