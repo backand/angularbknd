@@ -35,3 +35,19 @@ angular.module('backAnd').factory('configService', ['$resource',
 		});
 	}
 ]);
+
+angular.module('backAnd').factory('viewDataItemService', ['$resource',
+    function($resource) {
+        return $resource(backandGlobal.url + '/1/view/data/:table/:id', {
+            table: 'table',
+            id: 'id',
+        }, {
+            queryjsonp: {
+                method: 'GET',
+                params: {
+                    callback: 'JSON_CALLBACK'
+                }
+            }
+        });
+    }
+]);
