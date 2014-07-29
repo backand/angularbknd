@@ -2,8 +2,8 @@
 
 
 angular.module('backAnd.controllers')
-    .controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http','$location','$route',
-        function ($scope, Global, tableService, configService, $http, $location, $route) {
+    .controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http','$location','$route','$sce',
+        function ($scope, Global, tableService, configService, $http, $location, $route, $sce) {
 
             $scope.global = Global;
 
@@ -124,16 +124,22 @@ angular.module('backAnd.controllers')
                     $scope.getData()
                 });
             };
+            $scope.renderHtml = function (html_code) {
+                return $sce.trustAsHtml(html_code);
+            };
 
             $scope.getCellTemplate = function (col, view) {
                 
-                if (col.type == 'Image'){
-                    var height = 'auto';// (view.rowHeight != '') ? view.rowHeight : 'auto';
-                    var width = (height != 'auto') ? 'auto' : col.columnWidth;
-                    return '<div class="ngCellText" ><span ng-cell-text ><img ng-src="' + col.urlPrefix + '/{{row.entity[\'' + col.name + '\']}}" width="' + width + '" height="' + height + '" lazy-src/></span></div>';
+                switch (col.type) {
+                    case 'Image':
+                        var height = 'auto';// (view.rowHeight != '') ? view.rowHeight : 'auto';
+                        var width = (height != 'auto') ? 'auto' : col.columnWidth;
+                        return '<div class="ngCellText"><span ng-cell-text><img ng-src="' + col.urlPrefix + '/{{row.entity[\'' + col.name + '\']}}" width="' + width + '" height="' + height + '" lazy-src/></span></div>';
+                    case 'Html':
+                        return '<p ng-bind-html="renderHtml(\'{{row.entity[\'' + col.name + '\']}}\')"></p>'; //'{{row.entity["' + col.name + '"]}}';
+                    default:
+                        return '<div class="ngCellText"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
                 }
-                else
-                    return '<div class="ngCellText" ><span ng-cell-text >{{row.entity["' + col.name + '"]}}</span></div>';
             }
 
             $scope.getData = function(searchText) {
