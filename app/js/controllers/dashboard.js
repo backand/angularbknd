@@ -8,7 +8,7 @@ angular.module('backAnd.controllers')
         $scope.init = function() {
             dashboardService.queryjsonp({
                 dashboard : $scope.global.currentTableID
-            }, function(data) {
+            }, function(data) { 
                 $scope.numCol = 12 / data.columns;
                 $scope.chartData = [];
                 angular.forEach(data.widgets, function(value, key) { 

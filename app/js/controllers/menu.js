@@ -8,8 +8,9 @@ angular.module('backAnd.controllers')
             $scope.global = Global;
 
             $scope.templateUrl = function() {
-                if ($scope.global.url)
+                if ($scope.global.url)  {
                     return "views/" + $scope.global.url + ".html";
+                }
             }
 
             $scope.init = function() {
