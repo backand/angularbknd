@@ -2,12 +2,10 @@
 
 
 angular.module('backAnd.controllers')
-    .controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http',
-        function($scope, Global, tableService, configService, $http) {
-
+    .controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http','$location','$route','$sce',
+        function ($scope, Global, tableService, configService, $http, $location, $route, $sce) {
 
             $scope.global = Global;
-
 
             // Read the configuration of the current view
             $scope.$watch('tableName', function() {
@@ -36,22 +34,35 @@ angular.module('backAnd.controllers')
               $scope.getData(searchText);  
               };
            
-            $scope.totalServerItems = 0;
+            $scope.refreshData = function () {
+                $scope.getData();
+            };
 
-          
+            $scope.editSelected = function () {
+                if ($scope.mySelections != null && $scope.mySelections.length == 1) {
+                    $location.search({
+                      id: $scope.mySelections[0].__metadata.id,
+                      table: $scope.tableName
+                    });
+                    $location.path('/formsExample');
+                }
+            };
+
+            $scope.deleteSelected = function () {
+                angular.forEach($scope.mySelections, function (rowItem) {
+                    $scope.dataFill.splice($scope.dataFill.indexOf(rowItem), 1);
+                    //alert('delete:' + $scope.dataFill.indexOf(rowItem));
+                    //todo: call the service to delete the record
+                });
+            }
+
+            $scope.totalServerItems = 0;
 
             $scope.pagingOptions = {
                 pageSizes: [5, 10, 15, 20, 30, 50, 100, 200, 500, 1000],
                 pageSize: 0,
                 currentPage: 1
             };
-            // if ($scope.options) {
-            //     if ($scope.options.pageSizes) {
-            //         $scope.pagingOptions.pageSizes = $scope.options.pageSizes;
-            //         if ($scope.options.pageSize)
-            //             $scope.pagingOptions.pageSize = $scope.options.pageSize;
-            //     }
-            // };
             
             var isSort = true;
             $scope.sortOptions = {};                           
@@ -63,19 +74,23 @@ angular.module('backAnd.controllers')
                     order: sortInfo.directions[0]
                 };
             });
-                      
+            $scope.mySelections = [];
+
             $scope.dataTable = {
                 columnDefs: 'columns',
                 data: 'dataFill',
+                selectedItems: $scope.mySelections,
                 enablePaging: true,
                 showFooter: true,
                 useExternalSorting: true,
                 sortOptions: $scope.sortOptions,
                 totalServerItems: 'totalServerItems',
-                pagingOptions: $scope.pagingOptions
+                pagingOptions: $scope.pagingOptions,
+                rowHeight: 60, //need to use config
+                headerRowHeight: 30,
+                footerRowHeight: 47,
+                multiSelect: false,
             };
-
-
 
             // This is the call to get the data based on the table
             // and receives arguments of page size and page number
@@ -104,17 +119,30 @@ angular.module('backAnd.controllers')
                                 cellFilter: col.type,
                                 displayName: col.displayName,
                                 width: col.columnWidth,
-                                cellTemplate: '<div class="ngCellText" ><span ng-cell-text >{{row.entity["' + col.name + '"]}}</span></div>'
+                                cellTemplate: $scope.getCellTemplate(col, data)
                             });
                         }
                     });
                     $scope.getData()
-
                 });
-
-
-
             };
+            $scope.renderHtml = function (html_code) {
+                return $sce.trustAsHtml(html_code);
+            };
+
+            $scope.getCellTemplate = function (col, view) {
+                
+                switch (col.type) {
+                    case 'Image':
+                        var height = 'auto';// (view.rowHeight != '') ? view.rowHeight : 'auto';
+                        var width = (height != 'auto') ? 'auto' : col.columnWidth;
+                        return '<div class="ngCellText"><span ng-cell-text><img ng-src="' + col.urlPrefix + '/{{row.entity[\'' + col.name + '\']}}" width="' + width + '" height="' + height + '" lazy-src/></span></div>';
+                    case 'Html':
+                        return '<p ng-bind-html="renderHtml(\'{{row.entity[\'' + col.name + '\']}}\')"></p>'; //'{{row.entity["' + col.name + '"]}}';
+                    default:
+                        return '<div class="ngCellText"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
+                }
+            }
 
             $scope.getData = function(searchText) {
                 $scope.isLoad = true;
@@ -130,22 +158,25 @@ angular.module('backAnd.controllers')
                     sort : sortString,
                     search: searchText
 
-
                 }, function(largeLoad) {
                  
                     // We have received table data and add the data to the scope
                     $scope.dataFill = largeLoad.data;
                     $scope.totalServerItems = largeLoad.totalRows;
 
-                    // apply changes
-                    /* if (!$scope.$$phase) {
-                        $scope.$apply();
-                    }*/
                     $scope.isLoad = false;
 
                 });
                 
 
+            }
+            $scope.afterSelectionChange = function (rowItem) {
+                if (rowItem.selected)  {  // I don't know if this is true or just truey
+                    //write code to execute only when selected.
+                    //rowItem.entity is the "data" here
+                } else {
+                    //write code on deselection.
+                }
             }
 
             $scope.$watch('pagingOptions', function(newVal, oldVal) {

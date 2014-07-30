@@ -3,64 +3,41 @@
 /* Directives */
 
 angular.module('backAnd.directives')
-  .directive('myform', function ($sce,configService) {
+  .directive('myform', function ($sce, $q, $location, configService, viewDataItemService) {
     return {
       restrict: 'A',
       transclude : false,
-      template: '\
-      <form role="form">\
-        <div class="panel panel-default">\
-          <div class="panel-body">\
-            <div class="form-group" ng-repeat="field in formSchema.fields">\
-              <hr ng-if="field.hr">\
-              <div ng-bind-html="renderHtml(field.preLabel)"></div>\
-              <label>{{field.name}}\
-                <input type="text" class="form-control" placeholder="type: {{field.type}}">\
-              </label>\
-              <div ng-bind-html="renderHtml(field.postLabel)"></div>\
-            </div>\
-            <div class="tabbable form-group">\
-              <ul class="nav nav-tabs" role="tablist">\
-                <li ng-repeat="category in formSchema.categories" ng-class="{active : $first}">\
-                  <a href="#{{category.catName}}" ng-click="toggleActive(category.catName, $event)" role="tab" data-toggle="tab">{{category.catName}}</a>\
-                </li>\
-              </ul>\
-              <div class="tab-content panel-body">\
-                <div class="tab-pane fade in" ng-class="{active : $first}" ng-repeat="category in formSchema.categories" id="{{category.catName}}">\
-                  <div class="form-group" ng-repeat="field in category.fields" style="display: inline-block;width: {{100 / category.columnsInDialog * field.columns}}%;">\
-                    <hr ng-if="field.hr">\
-                    <div ng-bind-html="renderHtml(field.preLabel)"></div>\
-                    <label>{{field.name}}\
-                      <input type="text" class="form-control" placeholder="type: {{field.type}}">\
-                    </label>\
-                    <div ng-bind-html="renderHtml(field.postLabel)"></div>\
-                  </div>\
-                </div>\
-              </div>\
-            </div>\
-            <div class="form-actions text-right">\
-              <button type="reset" class="btn btn-danger">Cancel</button>\
-              <button type="submit" class="btn btn-primary">Submit</button>\
-            </div>\
-          </div>\
-        </div>\
-      </form>',
+      templateUrl: 'directives/forms/views/form.html',
       link: function(scope, el, attrs) {
         var formSchema = {
           fields: [],
           categories: {}
-        };
+        },
+        params = $location.search(),
+        dataForm =  $q.defer(),
+        dataItem =  $q.defer();
+
         configService.queryjsonp({
-            table: 'Employees'
+            table: params.table
         }, function(data) {
-          processForm(data);
+          dataForm.resolve(data)
+        });
+
+        viewDataItemService.queryjsonp(params, function(data) {
+          dataItem.resolve(data)
+        });
+
+        $q.all([dataForm.promise, dataItem.promise]).then(function (data){
+          processForm(data[0], data[1]);
         })
-    
-        function processForm(data) {
+
+        function processForm(data, dataItem) {
           angular.forEach(data.fields, function (field) {
+            var value = dataItem[field.name] || '';
             var f = {
               name : field.name,
               type : field.type,
+              value : value,
               hr: field.formLayout.addhorizontallineabouvethefield,
               columns: field.formLayout.columnSpanInDialog,
               preLabel: field.formLayout.preLabel,
@@ -88,9 +65,9 @@ angular.module('backAnd.directives')
           return $sce.trustAsHtml(html_code);
         };
         scope.formSchema = formSchema;
-        scope.toggleActive = function(ind, $event){
+        scope.toggleActive = function($event){
           $event.preventDefault();
-          el.find('a[href="#' + ind + '"]').tab('show');
+          $($event.currentTarget).tab('show');
         };
       }
     };
