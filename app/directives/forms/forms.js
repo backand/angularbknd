@@ -20,11 +20,11 @@ angular.module('backAnd.directives')
         configService.queryjsonp({
             table: params.table
         }, function(data) {
-          dataForm.resolve(data)
+          dataForm.resolve(data);
         });
 
         viewDataItemService.queryjsonp(params, function(data) {
-          dataItem.resolve(data)
+          dataItem.resolve(data);
         });
 
         $q.all([dataForm.promise, dataItem.promise]).then(function (data){
@@ -33,11 +33,22 @@ angular.module('backAnd.directives')
 
         function processForm(data, dataItem) {
           angular.forEach(data.fields, function (field) {
-            var value = dataItem[field.name] || '';
+            var type;
+            switch (field.type) {
+              case 'DateTime':
+                type = 'date';
+                break;
+              case 'LongText':
+                type = 'textarea';
+                break;
+              default:
+                type = 'text'
+                console.log(field.type + ' : ' + field.name)
+            }
             var f = {
               name : field.name,
-              type : field.type,
-              value : value,
+              type : type,
+              value : dataItem[field.name] || '',
               hr: field.formLayout.addhorizontallineabouvethefield,
               columns: field.formLayout.columnSpanInDialog,
               preLabel: field.formLayout.preLabel,
@@ -60,6 +71,11 @@ angular.module('backAnd.directives')
               formSchema.categories[cat.name].columnsInDialog = cat.columnsInDialog;
             }
           });
+        };
+        scope.open = function($event, field) {
+          $event.preventDefault();
+          $event.stopPropagation();
+          field.opened = true;
         };
         scope.renderHtml = function(html_code) {
           return $sce.trustAsHtml(html_code);
