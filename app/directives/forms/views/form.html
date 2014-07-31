@@ -10,7 +10,7 @@
                 <hr ng-if="field.hr">
                 <div ng-bind-html="renderHtml(field.preLabel)"></div>
                 <label>{{field.name}}
-                  <input type="text" class="form-control" placeholder="type: {{field.type}}" value="{{field.value}}">
+                  <input type="text" name="{{field.name}}" class="form-control" placeholder="type: {{field.type}}" value="{{field.value}}">
                 </label>
                 <div ng-bind-html="renderHtml(field.postLabel)"></div>
               </div>
@@ -25,8 +25,15 @@
                     <div class="form-group" ng-repeat="field in category.fields" style="display: inline-block;width: {{100 / category.columnsInDialog * field.columns}}%;">
                       <hr ng-if="field.hr">
                       <div ng-bind-html="renderHtml(field.preLabel)"></div>
-                      <label>{{field.name}}
-                        <input type="text" class="form-control" placeholder="type: {{field.type}}" value="{{field.value}}">
+                      <label ng-switch on="field.type">{{field.name}}
+                         <p ng-switch-when="date" class="input-group">
+                           <input type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="field.value" is-open="field.opened" close-text="Close" />
+                           <span class="input-group-btn">
+                             <button type="button" class="btn btn-default" ng-click="open($event, field)"><i class="glyphicon glyphicon-calendar"></i></button>
+                           </span>
+                         </p>
+                        <textarea ng-switch-when="textarea" name="{{field.name}}" class="form-control" ng-model="field.value"></textarea>
+                        <input ng-switch-default type="{{field.type}}" name="{{field.name}}" class="form-control" placeholder="type: {{field.type}}" value="{{field.value}}">
                       </label>
                       <div ng-bind-html="renderHtml(field.postLabel)"></div>
                     </div>

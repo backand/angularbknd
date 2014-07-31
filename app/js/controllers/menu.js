@@ -8,8 +8,9 @@ angular.module('backAnd.controllers')
             $scope.global = Global;
 
             $scope.templateUrl = function() {
-                if ($scope.global.url)
+                if ($scope.global.url)  {
                     return "views/" + $scope.global.url + ".html";
+                }
             }
 
             $scope.init = function() {
@@ -36,14 +37,18 @@ angular.module('backAnd.controllers')
                 }
             }
             $scope.setCurrentTable = function(table,name, index, partType) {
-                if (partType == "table")
-                    $scope.global.url = "tables";
-                if (partType == "dashboard")
+                if (partType == "table")  {
+                  $scope.global.url = "tables"; 
+                  $scope.global.currentTable = table;
+                  $scope.global.currentTableName = name;   
+                }      
+                else if (partType == "dashboard")  {
                     $scope.global.url = "dashboard/my-website";
+                    $scope.global.currentTableID = table;
+                }
                 $scope.curTable = index;
-                $scope.global.currentTableID = table;
-                $scope.global.currentTable = table;
-                $scope.global.currentTableName = name;
+                
+                
                 //$rootScope.$broadcast('loadData');
             }
 
