@@ -7,7 +7,7 @@ angular.module('backAnd.directives')
     return {
       restrict: 'A',
       transclude : false,
-      templateUrl: 'directives/forms/views/form.html',
+      templateUrl: 'views/forms/form.html',
       link: function(scope, el, attrs) {
         var formSchema = {
           fields: [],
@@ -35,6 +35,9 @@ angular.module('backAnd.directives')
           angular.forEach(data.fields, function (field) {
             var type;
             switch (field.type) {
+              case 'Numeric':
+                type = 'number';
+                break;
               case 'DateTime':
                 type = 'date';
                 break;
@@ -43,8 +46,8 @@ angular.module('backAnd.directives')
                 break;
               default:
                 type = 'text'
-                console.log(field.type + ' : ' + field.name)
             }
+            //console.log(field.type + ' : ' + field.name + ' : ' + dataItem[field.name])
             var f = {
               name : field.name,
               type : type,
@@ -87,4 +90,30 @@ angular.module('backAnd.directives')
         };
       }
     };
-  });
+  })
+  .directive('toNumber', function () {
+    return {
+      require: 'ngModel',
+      link: function (scope, elem, attrs, ctrl) {
+        return ctrl.$parsers.push(function (value) {
+            return parseFloat(value || '');
+        });
+      }
+    };
+  })
+  .directive('isDate', function () {
+    return {
+      require: 'ngModel',
+      link: function (scope, elem, attr, ngModel) {
+        function validate(value) {
+          var d = Date.parse(value);
+          // it is a date
+          if (isNaN(d)) { // d.valueOf() could also work
+            ngModel.$setValidity('valid', false);
+          } else {
+            ngModel.$setValidity('valid', true);
+          }
+        }
+      }
+    };
+  })
