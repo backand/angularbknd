@@ -13,7 +13,6 @@ angular.module('backAnd.controllers')
                     $scope.getConfigDataAsync();
 
             });
-
             // All of the configurations will be part of the directive and we can change things
             // like default page size in when we call the directive
 
