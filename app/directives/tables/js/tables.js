@@ -5,10 +5,9 @@ angular.module('backAnd.directives', [])
             scope: {
                 tableName: '=',
                 options: '=',
-
             },
             controller: 'tableController',
-            replace: true,
+            replace: false,
             templateUrl: 'directives/tables/views/table.html',
 
         };
