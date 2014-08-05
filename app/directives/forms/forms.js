@@ -53,6 +53,7 @@ angular.module('backAnd.directives')
               type : type,
               value : dataItem[field.name] || '',
               hr: field.formLayout.addhorizontallineabouvethefield,
+              seperatorTitle: field.formLayout.seperatorTitle,
               columns: field.formLayout.columnSpanInDialog,
               preLabel: field.formLayout.preLabel,
               postLabel: field.formLayout.postLabel
