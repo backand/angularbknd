@@ -89,6 +89,7 @@ angular.module('backAnd.controllers')
                 sortOptions: $scope.sortOptions,
                 totalServerItems: 'totalServerItems',
                 pagingOptions: $scope.pagingOptions,
+                rowHeight: 30,
                 headerRowHeight: 30,
                 footerRowHeight: 47,
                 multiSelect: false

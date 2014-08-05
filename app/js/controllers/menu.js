@@ -65,18 +65,26 @@ angular.module('backAnd.controllers')
                     var tableElementScope = $("ngback-table").scope();
                     if(tableElementScope) {
                         //tableElementScope.$destroy();
+                        var linkFn = $compile(tableElementScope);
+                        var element = linkFn($scope);
+                        //tableElementScope.dataTable.$gridServices.DomUtilityService.RebuildGrid(
+                        //    tableElementScope.dataTable.$gridScope,
+                        //    tableElementScope.dataTable.ngGrid
+                        //);
                     }
-                    $("ngback-table").remove();
+                    else{
+                        $("ngback-table").remove();
 
-                    var html = '<ngback-table table-name="global.currentTable"></ngback-table>';
-                       // Step 1: parse HTML into DOM element
-                    var template = angular.element(html);
-                       // Step 2: compile the template
-                    var linkFn = $compile(template);
-                       //Step 3: link the compiled template with the scope.
-                    var element = linkFn($scope);
-                    // Step 4: Append to DOM 
-                    $(".right-side .ng-scope").append(element);
+                        var html = '<ngback-table table-name="global.currentTable"></ngback-table>';
+                           // Step 1: parse HTML into DOM element
+                        var template = angular.element(html);
+                           // Step 2: compile the template
+                        var linkFn = $compile(template);
+                           //Step 3: link the compiled template with the scope.
+                        var element = linkFn($scope);
+                        // Step 4: Append to DOM 
+                        $(".right-side .ng-scope").append(element);
+                    }
             });
         };
 
