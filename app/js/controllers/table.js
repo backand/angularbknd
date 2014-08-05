@@ -90,6 +90,7 @@ angular.module('backAnd.controllers')
                 headerRowHeight: 30,
                 footerRowHeight: 47,
                 multiSelect: false,
+                plugins: [new ngGridFlexibleHeightPlugin()]
             };
 
             // This is the call to get the data based on the table
