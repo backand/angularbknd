@@ -164,4 +164,12 @@
   padding-left: 15px;
   padding-right: 15px;
 }
-
+label .input-group {
+  display: inline-table;
+}
+label .input-group .btn {
+  border-radius: 0;
+}
+.form-group .form-control.ng-invalid, .form-group .form-control.ng-invalid:focus {
+  border-color: #f56954 !important;
+}
