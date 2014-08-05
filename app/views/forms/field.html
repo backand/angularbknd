@@ -1,4 +1,5 @@
 <hr ng-if="field.hr">
+<div class="subtitle text-info" ng-bind-html="renderHtml(field.seperatorTitle)"></div>
 <div ng-bind-html="renderHtml(field.preLabel)"></div>
 <label ng-switch on="field.type">{{field.name}}
   <div ng-switch-when="date">
