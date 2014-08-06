@@ -68,14 +68,14 @@ angular.module('backAnd.controllers')
 
         var isSort = true;
         $scope.sortOptions = {};                           
-        $scope.$on('ngGridEventSorted', function(event, sortInfo) {
-                // don't call getPagedDataAsync here cos this function
-                // is called multiple times for the same update.
-                $scope.sortOptions = {
-                    fieldName: sortInfo.columns[0].displayName,
-                    order: sortInfo.directions[0]
-                };
-            });
+        // $scope.$on('ngGridEventSorted', function(event, sortInfo) {
+        //         // don't call getPagedDataAsync here cos this function
+        //         // is called multiple times for the same update.
+        //         $scope.sortOptions = {
+        //             fieldName: sortInfo.columns[0].displayName,
+        //             order: sortInfo.directions[0]
+        //         };
+        //     });
         $scope.mySelections = [];
 
         if (!Global.configTable) {
@@ -119,6 +119,27 @@ angular.module('backAnd.controllers')
         // should look into creating a table directive that receives 
         // arguments eg table name, and paging information
 
+
+        var myHeaderCellTemplate = '<div class="ngHeaderSortColumn {{col.headerClass}}" ng-style="{cursor: col.cursor}" ng-class="{ ngSorted: !noSortVisible }">'+
+                               '<div ng-click="myCustomSort(col)"  class="ngHeaderText">{{col.displayName}}</div>'+
+                               '<div class="ngSortButtonDown" ng-show="col.showSortButtonDown()"></div>'+
+                               '<div class="ngSortButtonUp" ng-show="col.showSortButtonUp()"></div>'+
+                               '<div class="ngSortPriority">{{col.sortPriority}}</div>'+
+                               '</div>'+
+                               '<div ng-show="col.resizable" class="ngHeaderGrip" ng-click="col.gripClick($event)" ng-mousedown="col.gripOnMouseDown($event)"></div>';
+        
+        $scope.myCustomSort = function(col) {
+            if (!col.sortDirection || col.sortDirection == "asc")
+               col.sortDirection = "desc";
+            else
+                col.sortDirection = "asc";      
+            $scope.sortOptions = {
+                fieldName: col.displayName,
+                order: col.sortDirection
+            };
+            $scope.getData();
+        }
+        
         $scope.getConfigDataAsync = function() {
             $scope.isLoad = true;
             $scope.columns = [];
@@ -131,6 +152,7 @@ angular.module('backAnd.controllers')
             angular.forEach(Global.configTable.fields, function (col) {
                 if (!col.donotDisplayinGrid && col.type != 'MultiSelect') {
                     $scope.columns.push({
+                        headerCellTemplate: myHeaderCellTemplate,
                         cellFilter: col.type,
                         displayName: col.displayName,
                         width: col.columnWidth,
@@ -198,17 +220,17 @@ angular.module('backAnd.controllers')
             }
         }, true);
 
-        $scope.$watch('sortOptions', function(newVal, oldVal) {
-            if (isSort && newVal !== oldVal) {
-                $scope.getData();
-                isSort = false;
-                $scope.setIsSort();          
-            }
-        }, true);  
+        // $scope.$watch('sortOptions', function(newVal, oldVal) {
+        //     if (isSort && newVal !== oldVal) {
+        //         $scope.getData();
+        //         isSort = false;
+        //         $scope.setIsSort();          
+        //     }
+        // }, true);  
 
-        $scope.setIsSort = function() {
-            setTimeout(function(){isSort = true;}, 1500);
-        }
+        // $scope.setIsSort = function() {
+        //     setTimeout(function(){isSort = true;}, 1500);
+        // }
 
             // this is the intitialization of the table data above
             $scope.$on('loadData', function() {
