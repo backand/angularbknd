@@ -109,7 +109,8 @@ angular.module('backAnd.controllers')
                 rowHeight: Global.configTable.design && Global.configTable.design.rowHeightInPixels ? Global.configTable.design.rowHeightInPixels : 30, 
                 headerRowHeight: 30,
                 footerRowHeight: 47,
-                multiSelect: false
+                multiSelect: false,
+                plugins: [new ngGridFlexibleHeightPlugin()]
             };
         }
 
