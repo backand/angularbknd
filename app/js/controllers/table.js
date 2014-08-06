@@ -66,16 +66,7 @@ angular.module('backAnd.controllers')
             currentPage: 1,
         };
 
-        var isSort = true;
         $scope.sortOptions = {};                           
-        // $scope.$on('ngGridEventSorted', function(event, sortInfo) {
-        //         // don't call getPagedDataAsync here cos this function
-        //         // is called multiple times for the same update.
-        //         $scope.sortOptions = {
-        //             fieldName: sortInfo.columns[0].displayName,
-        //             order: sortInfo.directions[0]
-        //         };
-        //     });
         $scope.mySelections = [];
 
         if (!Global.configTable) {
@@ -110,18 +101,15 @@ angular.module('backAnd.controllers')
                 headerRowHeight: 30,
                 footerRowHeight: 47,
                 multiSelect: false,
-                enableColumnResize: true,
-                plugins: [new ngGridFlexibleHeightPlugin()]
+                enableColumnResize: true
+                //plugins: [new ngGridFlexibleHeightPlugin()]
             };
         }
-
 
         // This is the call to get the data based on the table
         // and receives arguments of page size and page number
         // should look into creating a table directive that receives 
         // arguments eg table name, and paging information
-
-
         var myHeaderCellTemplate = '<div class="ngHeaderSortColumn {{col.headerClass}}" ng-style="{cursor: col.cursor}" ng-class="{ ngSorted: !noSortVisible }">'+
                                '<div ng-click="myCustomSort(col)"  class="ngHeaderText">{{col.displayName}}</div>'+
                                '<div class="ngSortButtonDown" ng-show="col.showSortButtonDown()"></div>'+
@@ -222,20 +210,8 @@ angular.module('backAnd.controllers')
             }
         }, true);
 
-        // $scope.$watch('sortOptions', function(newVal, oldVal) {
-        //     if (isSort && newVal !== oldVal) {
-        //         $scope.getData();
-        //         isSort = false;
-        //         $scope.setIsSort();          
-        //     }
-        // }, true);  
-
-        // $scope.setIsSort = function() {
-        //     setTimeout(function(){isSort = true;}, 1500);
-        // }
-
-            // this is the intitialization of the table data above
-            $scope.$on('loadData', function() {
+        // this is the intitialization of the table data above
+        $scope.$on('loadData', function() {
             $scope.getConfigDataAsync(); 
         });
 
