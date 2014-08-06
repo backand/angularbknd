@@ -110,6 +110,7 @@ angular.module('backAnd.controllers')
                 headerRowHeight: 30,
                 footerRowHeight: 47,
                 multiSelect: false,
+                enableColumnResize: true,
                 plugins: [new ngGridFlexibleHeightPlugin()]
             };
         }
