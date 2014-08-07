@@ -32,6 +32,8 @@ a:focus {
 /* Layouts */
 .wrapper {
   min-height: 100%;
+  margin-top: -51px;
+  padding-top: 52px;
 }
 .wrapper:before,
 .wrapper:after {
@@ -64,10 +66,12 @@ body > .header {
   position: absolute;
   width: 220px;
   top: 0;
+  margin-top: -32px;
+  padding-top: 32px;
 }
 @media screen and (min-width: 992px) {
   .left-side {
-    top: 50px;
+    top: 82px;
   }
   /*Right side strech mode*/
   .right-side.strech {

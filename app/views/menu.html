@@ -1,5 +1,5 @@
 <ul class="sidebar-menu">
-    <li class="treeview" ng-repeat="p in pages" ng-if="p.partType == 'table' || p.partType == 'dashboard'" ng-click="setCurrentTable(p.partId, p.name ,$index ,p.partType)" ng-class={"curTable":$index=curTable}>
+    <li class="treeview" ng-repeat="p in pages" data-ng-if="p.partType == 'table' || p.partType == 'dashboard'" ng-click="setCurrentTable(p.partId, p.name ,$index ,p.partType)" ng-class={"curTable":$index=curTable}>
         <div icons></div>
         <a href="#">
             <i class="custom-icon" icon-type="p.partType"></i>

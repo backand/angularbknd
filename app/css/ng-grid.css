@@ -15,6 +15,7 @@
   -o-user-select: none;
   user-select: none;
 }
+
 .ngViewport {
   overflow: auto;
   min-height: 20px;
@@ -137,6 +138,10 @@
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.ngHeaderSortColumn {
+  text-align: center;
+  width: 100%;
 }
 .ngHeaderButtonArrow {
   position: absolute;

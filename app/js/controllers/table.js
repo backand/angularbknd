@@ -65,6 +65,7 @@ angular.module('backAnd.controllers')
             pageSize: 0,
             currentPage: 1,
         };
+         var layoutPlugin = new ngGridLayoutPlugin();
 
         $scope.sortOptions = {};                           
         $scope.mySelections = [];
@@ -83,7 +84,8 @@ angular.module('backAnd.controllers')
                 rowHeight: 30,
                 headerRowHeight: 30,
                 footerRowHeight: 47,
-                multiSelect: false
+                multiSelect: false,
+                //plugins: [layoutPlugin]
             };   
         }
         else {
@@ -101,8 +103,8 @@ angular.module('backAnd.controllers')
                 headerRowHeight: 30,
                 footerRowHeight: 47,
                 multiSelect: false,
-                enableColumnResize: true
-                //plugins: [new ngGridFlexibleHeightPlugin()]
+                enableColumnResize: true,
+               // plugins: [layoutPlugin]
             };
         }
 
@@ -214,6 +216,17 @@ angular.module('backAnd.controllers')
         $scope.$on('loadData', function() {
             $scope.getConfigDataAsync(); 
         });
+
+        $scope.getTableStyle = function() {
+           var height = ($(window).height() - $('.ngViewport').position().top) + 'px';
+           return {
+            'height': height
+           };
+        };
+
+        $scope.updateLayout = function(){
+            layoutPlugin.updateGridLayout();
+        };
 
     }
  ]);

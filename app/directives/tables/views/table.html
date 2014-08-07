@@ -14,5 +14,5 @@
         <img ng-show="isLoad" src="img/ajax-loader.gif"/>
     </div>
     
-    <div ng-grid="dataTable"></div>
+    <div ng-if="dataTable" ng-style="getTableStyle()" ng-grid="dataTable"></div>
 </div>
