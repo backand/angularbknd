@@ -15,7 +15,6 @@ angular.module('backAnd.controllers')
 
         });
             
-
         // All of the configurations will be part of the directive and we can change things
         // like default page size in when we call the directive
 
@@ -104,7 +103,7 @@ angular.module('backAnd.controllers')
                 footerRowHeight: 47,
                 multiSelect: false,
                 enableColumnResize: true,
-               // plugins: [layoutPlugin]
+                //plugins: [layoutPlugin]
             };
         }
 
@@ -155,21 +154,43 @@ angular.module('backAnd.controllers')
 
             $scope.getData();
         };
-        $scope.renderHtml = function (html_code) {
-            return $sce.trustAsHtml(html_code);
-        };
 
         $scope.getCellTemplate = function (col, view) {
             switch (col.type) {
                 case 'Image':
-                    var height = 'auto';// (view.rowHeight != '') ? view.rowHeight : 'auto';
-                    var width = (height != 'auto') ? 'auto' : col.columnWidth;
+                    var height = (view.design.rowHeightInPixels != '') ? view.design.rowHeightInPixels + 'px' : 'auto';
+                    var width = (height != 'auto') ? 'auto' : col.columnWidth + 'px';
                     return '<div class="ngCellText"><span ng-cell-text><img ng-src="' + col.urlPrefix + '/{{row.entity[\'' + col.name + '\']}}" width="' + width + '" height="' + height + '" lazy-src/></span></div>';
-                    case 'Html':
+                case 'Html':
                     return '<p ng-bind-html="renderHtml(\'{{row.entity[\'' + col.name + '\']}}\')"></p>'; //'{{row.entity["' + col.name + '"]}}';
-                    default:
+                case 'LongText':
+                    return '<div class="ngCellText" style="white-space: normal;"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
+                case 'Url':
+                    //return '<div class="ngCellText"><a ng-href="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')">ssss</a></div>'
+                    return '<div class="ngCellText"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
+                default:
                     return '<div class="ngCellText"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
             }
+        }
+        $scope.renderHtml = function (html_code) {
+            return $sce.trustAsHtml(html_code);
+        };
+
+        $scope.renderUrl = function (value) {
+            var html = '';
+            if(value != ''){
+                var urls = value.split('|');
+                if (urls.length == 1) {
+                    html = '<a href="' + urls[0] + '" target="_blank">' + urls[0] + '</a>';
+                }
+                else {
+                    var href = (urls[2] != undefined) ? urls[2] : '#';
+                    var target = (urls[1] != undefined) ? urls[1] : '_blank';
+                    var value = (urls[0] != undefined) ? urls[0] : href;
+                    html = '<a href="' + href + '" target="' + target + '">' + value + '</a>';
+                }
+            }
+            return $sce.trustAsHtml(html);
         }
 
         $scope.getData = function(searchText) {
@@ -217,11 +238,12 @@ angular.module('backAnd.controllers')
             $scope.getConfigDataAsync(); 
         });
 
-        $scope.getTableStyle = function() {
-           var height = ($(window).height() - $('.ngViewport').position().top) + 'px';
-           return {
-            'height': height
-           };
+        $scope.getTableStyle = function () {
+            var top = ($('.ngViewport').position() != undefined) ? $('.ngViewport').position().top : 0;
+            var height = ($(window).height() - top) + 'px';
+            return {
+                'height': height
+            };
         };
 
         $scope.updateLayout = function(){
