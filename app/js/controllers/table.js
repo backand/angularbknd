@@ -30,26 +30,38 @@ angular.module('backAnd.controllers')
         If both showColumnMenu and showFilter are false the menu button will not display.*/
         $scope.showFilter = true;
 
+        $scope.filterKeyPress = function (keyEvent) {
+            if (keyEvent.which === 13)
+                $scope.activateFilter();
+        }
         $scope.activateFilter = function() {
             var searchText = $scope.searchText || null;
             $scope.getData(searchText);  
         };
-
-        $scope.refreshData = function () {
-            $scope.getData();
+        $scope.deactivateFilter = function () {
+            $scope.searchText = '';
+            $scope.getData('');
         };
 
         $scope.editSelected = function () {
+            alert("Coming soon..");
+            return;
             if ($scope.mySelections != null && $scope.mySelections.length == 1) {
                 $location.search({
-                  id: $scope.mySelections[0].__metadata.id,
-                  table: $scope.tableName
-              });
+                    id: $scope.mySelections[0].__metadata.id,
+                    table: $scope.tableName
+                });
                 $location.path('/formsExample');
             }
         };
+        $scope.addRow = function () {
+            alert("Coming soon..");
+            return;
+        }
 
         $scope.deleteSelected = function () {
+            alert("Coming soon..");
+            return;
             angular.forEach($scope.mySelections, function (rowItem) {
                 $scope.dataFill.splice($scope.dataFill.indexOf(rowItem), 1);
                     //alert('delete:' + $scope.dataFill.indexOf(rowItem));

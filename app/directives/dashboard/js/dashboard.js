@@ -1,5 +1,4 @@
 angular.module('backAnd.directives')
-
 .directive('ngbackDashboard', function() {
 	return {
 		restrict: 'E',
