@@ -64,7 +64,13 @@ var backand = {
             addLoginEvent: function (appname) {
                 if (backand.security.authentication.onlogin != null) return;
                 // Create the event
-                backand.security.authentication.onlogin = new CustomEvent("onlogin", { "appname": appname });
+                if (window.navigator.userAgent.indexOf("MSIE ") > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+                    backand.security.authentication.onlogin = document.createEvent("CustomEvent");
+                    backand.security.authentication.onlogin.initCustomEvent('onlogin', false, false, { "appname": appname });
+                }
+                else {
+                    backand.security.authentication.onlogin = new CustomEvent("onlogin", { "appname": appname });
+                }
             },
             login: function (username, password, appname, successCallback, errorCallback) {
                 backand.security.authentication.addLoginEvent();
