@@ -350,6 +350,9 @@
 .ngCell.pinned {
   z-index: 1;
 }
+.ngCell div{
+  height: 100%;
+}
 .ngCellText {
   padding: 5px;
   -moz-box-sizing: border-box;
@@ -360,6 +363,16 @@
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   overflow: hidden;
+  height: 100%;
+  white-space: normal;
+  width: 100%;
+  display: table;
+}
+.ngCellText span{
+  height: auto;
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
 }
 .ngSelectionCell {
   margin-top: 9px;
