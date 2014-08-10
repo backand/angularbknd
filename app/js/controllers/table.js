@@ -22,7 +22,6 @@ angular.module('backAnd.controllers')
             filterText: '',
             useExternalFilter: true
         };
-            
         $scope.showColumnMenu = true;
         $scope.showMenu = true;
 
@@ -149,6 +148,9 @@ angular.module('backAnd.controllers')
 
             //update the configuration
             $scope.pagingOptions.pageSize = Global.configTable.design.rowsperPage;
+            $scope.newButton = Global.configTable.description.newButtonName;
+            $scope.editButton = Global.configTable.description.editButtonName;
+            $scope.deleteButton = Global.configTable.description.deleteButtonName;
 
             // We are adding columns and its custom filter to the table based on type
             // this will also need to be changed to handle multiple tables on the same page

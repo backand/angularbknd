@@ -1,9 +1,9 @@
 <div>
     <div class="btn-toolbar" role="toolbar">
         <div class="btn-group">
-            <button type="button" ng-click="addRow()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"> New</span></button>
-            <button type="button" ng-click="editSelected()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-pencil"> Edit</span></button>
-            <button type="button" ng-click="deleteSelected()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-trash"> Delete</span></button>
+            <button type="button" ng-click="addRow()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"> {{newButton}}</span></button>
+            <button type="button" ng-click="editSelected()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-pencil"> {{editButton}}</span></button>
+            <button type="button" ng-click="deleteSelected()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-trash"> {{deleteButton}}</span></button>
             <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-refresh"> Refresh</span></button>
         </div>
         <div class="btn-group">
