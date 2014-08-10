@@ -7,7 +7,6 @@ var backandGlobal = {
 
 function onready($scope) {
     angular.element(document).ready(function () {
-        //$('body').append("<script src='" + backandGlobal.url + "/api/banner'><\/script>");        
         backand.security.authentication.addLoginEvent();
         document.dispatchEvent(backand.security.authentication.onlogin);
     });

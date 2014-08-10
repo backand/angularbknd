@@ -96,7 +96,6 @@ angular.module('backAnd.controllers')
                 headerRowHeight: 30,
                 footerRowHeight: 47,
                 multiSelect: false,
-                //plugins: [layoutPlugin]
             };   
         }
         else {
@@ -115,7 +114,6 @@ angular.module('backAnd.controllers')
                 footerRowHeight: 47,
                 multiSelect: false,
                 enableColumnResize: true,
-                //plugins: [layoutPlugin]
             };
         }
 

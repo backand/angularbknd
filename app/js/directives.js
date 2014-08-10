@@ -34,15 +34,3 @@ angular.module('backAnd.directives', [])
             }
         }
     });
-
-/*angular.module('backAnd.directives', [])
-    .directive("getTata", function() {
-        return {
-        
-           
-            controller: function($scope) {
-                alert("dds")
-            }
-        }
-    });
-*/

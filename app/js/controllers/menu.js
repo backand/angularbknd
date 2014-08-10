@@ -48,10 +48,8 @@ angular.module('backAnd.controllers')
             $scope.global.currentTableID = table;
         }
         $scope.curTable = index;
-
-
-                //$rootScope.$broadcast('loadData');
         }
+        
         $scope.getConfigTable = function(table) {
             var configTable = {};
             // Request to get the field information about the table
