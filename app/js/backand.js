@@ -25,7 +25,7 @@ var backand = {
             url: '/api/banner',
             getAdminInfo: function () {
                 var adminInfo = null;
-                backand.options.ajax(backand.options.url + backand.security.banner.url, null, backand.options.verbs.post, function (data) { adminInfo = data; });
+                backand.options.ajax(backand.options.url + backand.security.banner.url, null, backand.options.verbs.post, function (data) { adminInfo = data; }, function (xhr, textStatus, err) { console.error("ERROR: " + ((xhr && xhr.responseJSON && xhr.responseJSON.error_description) ? xhr.responseJSON.error_description : "failed to getAdminInfo")); });
                 return adminInfo;
             }
 
