@@ -31,6 +31,14 @@ var backand = {
                             if (xhr.responseJSON.error_description) {
                                 console.error("ERROR: " + xhr.responseJSON.error_description)
                             }
+                            else {
+                                if (err) {
+                                    console.error("ERROR: " + JSON.stringify(err));
+                                }
+                                else {
+                                    console.error("ERROR: Failed to getAdminInfo");
+                                }
+                            }
                         }
                         else {
                             console.error("ERROR: " + JSON.stringify(xhr));
