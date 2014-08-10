@@ -25,7 +25,34 @@ var backand = {
             url: '/api/banner',
             getAdminInfo: function () {
                 var adminInfo = null;
-                backand.options.ajax(backand.options.url + backand.security.banner.url, null, backand.options.verbs.post, function (data) { adminInfo = data; });
+                backand.options.ajax(backand.options.url + backand.security.banner.url, null, backand.options.verbs.post, function (data) { adminInfo = data; }, function (xhr, textStatus, err) {
+                    if (xhr) {
+                        if (xhr.responseJSON) {
+                            if (xhr.responseJSON.error_description) {
+                                console.error("ERROR: " + xhr.responseJSON.error_description)
+                            }
+                            else {
+                                if (err) {
+                                    console.error("ERROR: " + JSON.stringify(err));
+                                }
+                                else {
+                                    console.error("ERROR: Failed to getAdminInfo");
+                                }
+                            }
+                        }
+                        else {
+                            console.error("ERROR: " + JSON.stringify(xhr));
+                        }
+                    }
+                    else {
+                        if (err) {
+                            console.error("ERROR: " + JSON.stringify(err));
+                        }
+                        else {
+                            console.error("ERROR: Failed to getAdminInfo");
+                        }
+                    }
+                });
                 return adminInfo;
             }
 
