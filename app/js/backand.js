@@ -216,7 +216,22 @@ var backand = {
             }
 
         },
+        content: {
+            config: {
+                url: '/content/config/',
+                /* get the configuration information of a specific content */
+                getItem: function (id, successCallback, errorCallback) {
+                    var url = backand.options.getUrl(backand.api.content.config.url + id);
+                    backand.options.ajax(url, null, backand.options.verbs.get, successCallback, errorCallback);
+                },
+                getList: function (withSelectOptions, pageNumber, pageSize, filter, sort, search, successCallback, errorCallback) {
+                    var url = backand.options.getUrl(backand.api.content.config.url);
+                    var data = { withSelectOptions: withSelectOptions, pageNumber: pageNumber, pageSize: pageSize, filter: JSON.stringify(filter), sort: JSON.stringify(sort), search: search };
+                    backand.options.ajax(url, data, backand.options.verbs.get, successCallback, errorCallback);
 
+                },
+            }
+        },
     },
     filter: {
         item: function (fieldName, operator, value) {

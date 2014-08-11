@@ -1,5 +1,5 @@
 <ul class="sidebar-menu">
-    <li class="treeview" ng-repeat="p in pages" data-ng-if="p.partType == 'table' || p.partType == 'dashboard'" ng-click="setCurrentTable(p.partId, p.name ,$index ,p.partType)" ng-class={"curTable":$index=curTable}>
+    <li class="treeview" ng-repeat="p in pages" data-ng-if="p.partType == 'table' || p.partType == 'dashboard'|| p.partType == 'content'" ng-click="setCurrentTable(p.partId, p.name ,$index ,p.partType)" ng-class={"curTable":$index =curTable}>
         <div icons></div>
         <a href="#">
             <i class="custom-icon" icon-type="p.partType"></i>
@@ -7,8 +7,20 @@
             <i class="fa fa-angle-left pull-right" ng-show="p.pages"></i>
         </a>
         <ul class="treeview-menu" ng-show="p.pages">
-            <li ng-repeat="pages in p.pages">
-                <a href="/tables/simple.html"><i class="fa fa-angle-double-right"></i> {{pages.name}}</a>
+            <li ng-repeat="page in p.pages" style="height:0;">
+                <a href="/tables/simple.html" style="padding:0;">
+                    <i class="">
+                    </i>
+                </a>
+            </li>
+
+            <li ng-repeat="page in p.pages" data-ng-if="page.partType == 'table' || page.partType == 'dashboard'|| page.partType == 'content'" ng-click="setCurrentTable(page.partId, page.name ,$index ,page.partType)" ng-class={"curTable":$index =curTable}>
+                <div icons></div>
+                <a href="#">
+                    <i class="custom-icon" icon-type="page.partType"></i>
+                    <span>{{page.name}}</span>
+
+                </a>
             </li>
 
         </ul>
