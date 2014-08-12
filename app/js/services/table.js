@@ -51,3 +51,19 @@ angular.module('backAnd').factory('viewDataItemService', ['$resource',
         });
     }
 ]);
+
+angular.module('backAnd').factory('deleteItemService', ['$resource',
+    function ($resource) {
+        return $resource(backandGlobal.url + '/1/view/data/:table/:id', {
+            table: 'table',
+            id: 'id',
+        }, {
+            queryjsonp: {
+                method: 'DELETE',
+                params: {
+                    callback: 'JSON_CALLBACK'
+                }
+            }
+        });
+    }
+]);

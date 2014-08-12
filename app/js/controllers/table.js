@@ -2,8 +2,8 @@
 
 
 angular.module('backAnd.controllers')
-.controller('tableController', ['$scope', 'Global', 'tableService', 'configService', '$http','$location','$route','$sce',
-    function ($scope, Global, tableService, configService, $http, $location, $route, $sce) {
+.controller('tableController', ['$scope', 'Global', 'tableService', 'deleteItemService', 'configService', '$http', '$location', '$route', '$sce',
+    function ($scope, Global, tableService, deleteItemService, configService, $http, $location, $route, $sce) {
 
         $scope.global = Global;
 
@@ -59,13 +59,73 @@ angular.module('backAnd.controllers')
         }
 
         $scope.deleteSelected = function () {
-            alert("Coming soon..");
-            return;
-            angular.forEach($scope.mySelections, function (rowItem) {
-                $scope.dataFill.splice($scope.dataFill.indexOf(rowItem), 1);
-                    //alert('delete:' + $scope.dataFill.indexOf(rowItem));
-                    //todo: call the service to delete the record
+            var messages = {
+                pleaseSelectRow: "Please select a row.",
+                confirm: "Are you sure that you want to delete the selected row?",
+                failure: "Failed to delete the row. Please contact your system administrator.",
+                idMissing: "id is missing.",
+                tableMissing: "table is missing.",
+            };
+
+            if (!$scope.isSingleRowSelected()) {
+                alert(messages.pleaseSelectRow);
+                return;
+            }
+
+            if (!confirm(messages.confirm)) {
+                return;
+            }
+
+            var id = $scope.getSelectedRowId();
+
+            if (!id) {
+                console.error(messages.idMissing)
+                alert(messages.failure);
+                return;
+            }
+
+            var table = $scope.tableName;
+            if (!table) {
+                console.error(messages.tableMissing)
+                alert(messages.failure);
+                return;
+            }
+
+            var params = {
+                id: id,
+                table: table
+            };
+
+            try {
+                deleteItemService.queryjsonp(params, function (data) {
+                    $scope.getData();
+                },
+                function (error) {
+                    if (error.status == 500) {
+                        console.error(error.data, error);
+                        alert(messages.failure);
+                    }
+                    else {
+                        console.warn(error.data, error);
+                        alert(error.data);
+                    }
                 });
+            }
+            catch (err) {
+                console.error(err.description)
+                alert(messages.failure);
+            }
+        }
+
+        $scope.isSingleRowSelected = function () {
+            return ($scope.mySelections != null && $scope.mySelections.length == 1);
+        }
+
+        $scope.getSelectedRowId = function () {
+            if (!$scope.isSingleRowSelected())
+                return null;
+
+            return $scope.mySelections[0].__metadata.id;
         }
 
         $scope.totalServerItems = 0;

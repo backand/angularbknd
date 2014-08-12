@@ -57,6 +57,9 @@ angular.module('backAnd.controllers')
                     var error_description = "The server is busy. Please contact your administrator or try again later.";
                     if (data && data.error_description)
                         error_description = data.error_description;
+                    else {
+                        //console.error(error_description, { data: data, status: status, headers: headers, config: config })
+                    }
                     $scope.loginError = error_description;
                     console.log(status)
                 });
