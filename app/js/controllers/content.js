@@ -5,8 +5,8 @@ angular.module('backAnd.controllers')
 .controller('contentController', ['$scope', 'Global', '$http', 'contentService', '$sce',
     function ($scope, Global, $http, contentService, $sce) {
         $scope.global = Global;
-        $scope.$watch('content2', function () {
-            if ($scope.content2)
+        $scope.$watch('content', function () {
+            if ($scope.content)
                 $scope.setData();
         });
         $scope.init = function() {
