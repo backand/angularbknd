@@ -46,7 +46,11 @@ angular.module('backAnd.controllers')
           else if (partType == "dashboard")  {
             $scope.global.url = "dashboard/my-website";
             $scope.global.currentTableID = table;
-        }
+          }
+          else if (partType == "content") {
+              $scope.global.url = "content";
+              $scope.global.currentTableID = table;
+          }
         $scope.curTable = index;
         }
         

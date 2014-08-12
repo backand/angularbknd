@@ -1,0 +1,9 @@
+ <div data-ng-controller="contentController" data-ng-init="init()">
+    <div ng-switch on="content.pageType">
+        <htmlcontent ng-switch-when="Content">	</htmlcontent>
+        <iframecontent ng-switch-when="IFrame">	</iframecontent>
+        <linkcontent ng-switch-when="External">	</linkcontent>
+
+    </div>
+    
+</div>

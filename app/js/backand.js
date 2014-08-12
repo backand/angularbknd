@@ -64,7 +64,13 @@ var backand = {
             addLoginEvent: function (appname) {
                 if (backand.security.authentication.onlogin != null) return;
                 // Create the event
-                backand.security.authentication.onlogin = new CustomEvent("onlogin", { "appname": appname });
+                if (window.navigator.userAgent.indexOf("MSIE ") > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+                    backand.security.authentication.onlogin = document.createEvent("CustomEvent");
+                    backand.security.authentication.onlogin.initCustomEvent('onlogin', false, false, { "appname": appname });
+                }
+                else {
+                    backand.security.authentication.onlogin = new CustomEvent("onlogin", { "appname": appname });
+                }
             },
             login: function (username, password, appname, successCallback, errorCallback) {
                 backand.security.authentication.addLoginEvent();
@@ -210,7 +216,22 @@ var backand = {
             }
 
         },
+        content: {
+            config: {
+                url: '/content/config/',
+                /* get the configuration information of a specific content */
+                getItem: function (id, successCallback, errorCallback) {
+                    var url = backand.options.getUrl(backand.api.content.config.url + id);
+                    backand.options.ajax(url, null, backand.options.verbs.get, successCallback, errorCallback);
+                },
+                getList: function (withSelectOptions, pageNumber, pageSize, filter, sort, search, successCallback, errorCallback) {
+                    var url = backand.options.getUrl(backand.api.content.config.url);
+                    var data = { withSelectOptions: withSelectOptions, pageNumber: pageNumber, pageSize: pageSize, filter: JSON.stringify(filter), sort: JSON.stringify(sort), search: search };
+                    backand.options.ajax(url, data, backand.options.verbs.get, successCallback, errorCallback);
 
+                },
+            }
+        },
     },
     filter: {
         item: function (fieldName, operator, value) {
