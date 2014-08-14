@@ -311,8 +311,12 @@ angular.module('backAnd.controllers')
         });
 
         $scope.getTableStyle = function () {
-            var top = ($('.ngViewport').position() != undefined) ? $('.ngViewport').position().top : 0;
-            var height = ($(window).height() - top) + 'px';
+            var top = ($('.ngViewport').offset() != undefined) ? $('.ngViewport').offset().top : 0;
+            var bottom = 0;
+            if ($('.ngFooterPanel').height() != undefined) {
+                bottom = $('.ngFooterPanel').height();
+            }
+            var height = ($(window).height() - top - bottom) + 'px';
             return {
                 'height': height
             };

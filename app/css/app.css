@@ -23,7 +23,7 @@
     padding: 0;
 }
 .ngViewport {
-    overflow: scroll !important;
+    /*overflow: scroll !important;*/
     min-height: 400px !important;
 }
 .curTable {
