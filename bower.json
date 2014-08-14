@@ -8,9 +8,14 @@
   "dependencies": {
     "angular": "1.2.x",
     "angular-route": "1.2.x",
-    "angular-resource": "1.2.x",
     "angular-loader": "1.2.x",
     "angular-mocks": "~1.2.x",
-    "html5-boilerplate": "~4.3.0"
+    "html5-boilerplate": "~4.3.0",
+    "angular-bootstrap": "latest",
+    "angular-resource": "latest",
+    "angular-route": "latest",
+    "jquery": "latest",
+    "ng-grid": "latest",
+    "raphael": "latest"
   }
 }

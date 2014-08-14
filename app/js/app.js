@@ -1,38 +1,16 @@
 'use strict';
 
-angular.module('backAnd', [
-    'ngRoute',
-    'ngResource',
-    'ngGrid',
-    'ui.bootstrap',
-    'backAnd.filters',
-    'backAnd.services',
-    'backAnd.directives',
-    'backAnd.controllers'
-]).config(['$routeProvider',
-    function($routeProvider) {
-        backand.options.url = backandGlobal.url;
-        $routeProvider.when('/login', {
-            templateUrl: 'views/login.html'
-        });
-        $routeProvider.when('/tables', {
-            templateUrl: 'views/tables.html'
-        });
-        $routeProvider.when('/index', {
-            templateUrl: 'index.html'
-        });
-        $routeProvider.when('/chartsExample', {
-            templateUrl: 'views/chartsExample.html'
-        });
-        $routeProvider.when('/formsExample', {
-            templateUrl: 'views/forms.html'
-        });
-        $routeProvider.otherwise({
-            redirectTo: '/view1'
-        });
 
-    }
-]);
-
-angular.module('backAnd.controllers', []);
-angular.module('backAnd.services', []);
+// Declare app level module which depends on filters, and services
+angular.module('myApp', [
+  'ngRoute',
+  'myApp.filters',
+  'myApp.services',
+  'myApp.directives',
+  'myApp.controllers'
+]).
+config(['$routeProvider', function($routeProvider) {
+  $routeProvider.when('/view1', {templateUrl: 'partials/partial1.html', controller: 'MyCtrl1'});
+  $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
+  $routeProvider.otherwise({redirectTo: '/view1'});
+}]);

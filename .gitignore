@@ -1,10 +1,8 @@
 logs/*
 !.gitkeep
-stubs/node_modules/
 node_modules/
+bower_components/
+app/bower_components
 tmp
 .DS_Store
 .idea
-.project
-App_Data/PublishProfiles/ngback.pubxml
-website.publishproj
