@@ -180,14 +180,33 @@ angular.module('backAnd.controllers')
         // and receives arguments of page size and page number
         // should look into creating a table directive that receives 
         // arguments eg table name, and paging information
-        var myHeaderCellTemplate = '<div class="ngHeaderSortColumn {{col.headerClass}}" ng-style="{cursor: col.cursor}" ng-class="{ ngSorted: !noSortVisible }">'+
-                               '<div ng-click="myCustomSort(col)"  class="ngHeaderText">{{col.displayName}}</div>'+
-                               '<div class="ngSortButtonDown" ng-show="col.showSortButtonDown()"></div>'+
-                               '<div class="ngSortButtonUp" ng-show="col.showSortButtonUp()"></div>'+
-                               '<div class="ngSortPriority">{{col.sortPriority}}</div>'+
-                               '</div>'+
-                               '<div ng-show="col.resizable" class="ngHeaderGrip" ng-click="col.gripClick($event)" ng-mousedown="col.gripOnMouseDown($event)"></div>';
+        //var myHeaderCellTemplate = '<div class="ngHeaderSortColumn {{col.headerClass}}" ng-style="{cursor: col.cursor}" ng-class="{ ngSorted: !noSortVisible }">' +
+        //                       '<div ng-click="myCustomSort(col)"  class="ngHeaderText" ng-style="{\'text-align\': \'{{col.textAlignment}}\'}">{{col.displayName}}-qqqqq-{{col.textAlignment}}</div>' +
+        //                       '<div class="ngSortButtonDown" ng-show="col.showSortButtonDown()"></div>'+
+        //                       '<div class="ngSortButtonUp" ng-show="col.showSortButtonUp()"></div>'+
+        //                       '<div class="ngSortPriority">{{col.sortPriority}}</div>'+
+        //                       '</div>'+
+        //                       '<div ng-show="col.resizable" class="ngHeaderGrip" ng-click="col.gripClick($event)" ng-mousedown="col.gripOnMouseDown($event)"></div>';
         
+        $scope.myHeaderCellTemplate = function (col, view) {
+            return '<div class="ngHeaderSortColumn {{col.headerClass}}" ng-style="{cursor: col.cursor}" ng-class="{ ngSorted: !noSortVisible }">' +
+                               '<div ng-click="myCustomSort(col)"  class="ngHeaderText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}">{{col.displayName}}</div>' +
+                               '<div class="ngSortButtonDown" ng-show="col.showSortButtonDown()"></div>' +
+                               '<div class="ngSortButtonUp" ng-show="col.showSortButtonUp()"></div>' +
+                               '<div class="ngSortPriority">{{col.sortPriority}}</div>' +
+                               '</div>' +
+                               '<div ng-show="col.resizable" class="ngHeaderGrip" ng-click="col.gripClick($event)" ng-mousedown="col.gripOnMouseDown($event)"></div>';
+        }
+
+        $scope.getTextAlignment = function (col, view) {
+            if (col.grid.textAlignment == "inherit") {
+                if (col.type == "Numeric" || col.type == "DateTime")
+                    return "right";
+                else return "left";
+            }
+            else return col.grid.textAlignment;
+        }
+
         $scope.myCustomSort = function(col) {
             if (!col.sortDirection || col.sortDirection == "asc")
                col.sortDirection = "desc";
@@ -215,9 +234,10 @@ angular.module('backAnd.controllers')
             angular.forEach(Global.configTable.fields, function (col) {
                 if (!col.donotDisplayinGrid && col.type != 'MultiSelect') {
                     $scope.columns.push({
-                        headerCellTemplate: myHeaderCellTemplate,
+                        headerCellTemplate: $scope.myHeaderCellTemplate(col, Global.configTable),
                         cellFilter: col.type,
                         displayName: col.displayName,
+                        textAlignment: 'fdsdfsdf',
                         width: col.columnWidth,
                         cellTemplate: $scope.getCellTemplate(col, Global.configTable)
                     });
@@ -239,9 +259,9 @@ angular.module('backAnd.controllers')
                     return '<div class="ngCellText" style="white-space: normal;"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
                 case 'Url':
                     //return '<div class="ngCellText"><a ng-href="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')">ssss</a></div>'
-                    return '<div class="ngCellText"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
+                    return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
                 default:
-                    return '<div class="ngCellText"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
+                    return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
             }
         }
         $scope.renderHtml = function (html_code) {
