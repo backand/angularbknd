@@ -2,6 +2,9 @@
     <h1>
         {{global.currentTableName}}
     </h1>
+    <ol class="breadcrumb" >
+        <li data-ng-repeat="breadcrumb in breadcrumbs" ng-click="setCurrentMenuSelection(breadcrumb, null)"><a href="#"><i class="fa custom-icon" icon-type="breadcrumb.partType"></i>{{breadcrumb.name}}</a></li>
+    </ol>
 </section>
 <section class="content">
     <ngback-table table-name="global.currentTable"></ngback-table>

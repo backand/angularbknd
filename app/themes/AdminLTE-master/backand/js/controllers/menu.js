@@ -36,24 +36,33 @@ angular.module('backAnd.controllers')
                     });
             }
         }
-        $scope.setCurrentTable = function(table,name, index, partType) {
-            if (partType == "table")  {
+        $scope.setCurrentMenuSelection = function (current, parent) {
+            if (current.partType == "table") {
                 $scope.global.url = "grids/grids"; 
-                $scope.global.currentTableName = name;
-                $scope.getConfigTable(table); 
+                $scope.global.currentTableName = current.name;
+                $scope.getConfigTable(current.partId);
                 
           }      
-          else if (partType == "dashboard")  {
+            else if (current.partType == "dashboard") {
             $scope.global.url = "dashboard/my-website";
-            $scope.global.currentTableID = table;
+            $scope.global.currentTableID = current.partId;
           }
-          else if (partType == "content") {
+            else if (current.partType == "content") {
               $scope.global.url = "content/content";
-              $scope.global.currentTableID = table;
+              $scope.global.currentTableID = current.partId;
           }
-        $scope.curTable = index;
+            $scope.curTable = current.index;
+
+            $scope.setBreadcrumbs(current, parent);
         }
         
+        $scope.setBreadcrumbs = function (current, parent) {
+            $scope.breadcrumbs = [{ name: "home" }];
+            if (parent)
+                $scope.breadcrumbs.push(parent);
+            $scope.breadcrumbs.push(current);
+        }
+
         $scope.getConfigTable = function(table) {
             var configTable = {};
             // Request to get the field information about the table
