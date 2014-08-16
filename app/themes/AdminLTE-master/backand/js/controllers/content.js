@@ -28,12 +28,5 @@ angular.module('backAnd.controllers')
             return height;
         };
 
-        //$scope.getIFrameStyle = function () {
-        //    return $scope.content.scroll ? {} : { "overflow": "hidden" };
-        //};
-
-        //$scope.renderHtml = function (html) {
-        //    return $sce.trustAsHtml(html);
-        //};
     }
     ])

@@ -2,8 +2,8 @@
 
 
 angular.module('backAnd.controllers')
-.controller('tableController', ['$scope', 'Global', 'tableService', 'deleteItemService', 'configService', '$http', '$location', '$route', '$sce',
-    function ($scope, Global, tableService, deleteItemService, configService, $http, $location, $route, $sce) {
+.controller('tableController', ['$scope', 'Global', 'tableService', 'deleteItemService', 'configService', '$http', '$location', '$route', '$sce','$compile',
+    function ($scope, Global, tableService, deleteItemService, configService, $http, $location, $route, $sce, $compile) {
 
         $scope.global = Global;
 
@@ -137,57 +137,35 @@ angular.module('backAnd.controllers')
         };
          var layoutPlugin = new ngGridLayoutPlugin();
 
+        //Toolbar setting
+        $scope.showToolbar = Global.configTable && Global.configTable.toolbarSettings.hideToolbar ? !Global.configTable.toolbarSettings.hideToolbar : true;
+        $scope.showSearch = Global.configTable && Global.configTable.design.hideSearchBox ? !Global.configTable.design.hideSearchBox : true;
+
+        //Grid Settings
         $scope.sortOptions = {};                           
         $scope.mySelections = [];
 
-        if (!Global.configTable) {
-            $scope.dataTable = {
-                columnDefs: 'columns',
-                data: 'dataFill',
-                selectedItems: $scope.mySelections,
-                enablePaging: true,
-                showFooter: true,
-                useExternalSorting: true,
-                sortOptions: $scope.sortOptions,
-                totalServerItems: 'totalServerItems',
-                pagingOptions: $scope.pagingOptions,
-                rowHeight: 30,
-                headerRowHeight: 30,
-                footerRowHeight: 47,
-                multiSelect: false,
-            };   
-        }
-        else {
-            $scope.dataTable = {
-                columnDefs: 'columns',
-                data: 'dataFill',
-                selectedItems: $scope.mySelections,
-                enablePaging: true,
-                showFooter: true,
-                useExternalSorting: true,
-                sortOptions: $scope.sortOptions,
-                totalServerItems: 'totalServerItems',
-                pagingOptions: $scope.pagingOptions,
-                rowHeight: Global.configTable.design && Global.configTable.design.rowHeightInPixels ? Global.configTable.design.rowHeightInPixels : 30, 
-                headerRowHeight: 30,
-                footerRowHeight: 47,
-                multiSelect: false,
-                enableColumnResize: true,
-            };
-        }
+        $scope.dataTable = {
+            columnDefs: 'columns',
+            data: 'dataFill',
+            selectedItems: $scope.mySelections,
+            enablePaging: true,
+            showFooter: Global.configTable.design && Global.configTable.toolbarSettings.hideFooter ? !Global.configTable.toolbarSettings.hideFooter : true,
+            useExternalSorting: true,
+            sortOptions: $scope.sortOptions,
+            totalServerItems: 'totalServerItems',
+            pagingOptions: $scope.pagingOptions,
+            rowHeight: Global.configTable.design && Global.configTable.design.rowHeightInPixels ? Global.configTable.design.rowHeightInPixels : 30, 
+            headerRowHeight: 30,
+            footerRowHeight: 47,
+            multiSelect: false,
+            enableColumnResize: true,
+        };
 
         // This is the call to get the data based on the table
         // and receives arguments of page size and page number
         // should look into creating a table directive that receives 
         // arguments eg table name, and paging information
-        //var myHeaderCellTemplate = '<div class="ngHeaderSortColumn {{col.headerClass}}" ng-style="{cursor: col.cursor}" ng-class="{ ngSorted: !noSortVisible }">' +
-        //                       '<div ng-click="myCustomSort(col)"  class="ngHeaderText" ng-style="{\'text-align\': \'{{col.textAlignment}}\'}">{{col.displayName}}-qqqqq-{{col.textAlignment}}</div>' +
-        //                       '<div class="ngSortButtonDown" ng-show="col.showSortButtonDown()"></div>'+
-        //                       '<div class="ngSortButtonUp" ng-show="col.showSortButtonUp()"></div>'+
-        //                       '<div class="ngSortPriority">{{col.sortPriority}}</div>'+
-        //                       '</div>'+
-        //                       '<div ng-show="col.resizable" class="ngHeaderGrip" ng-click="col.gripClick($event)" ng-mousedown="col.gripOnMouseDown($event)"></div>';
-        
         $scope.myHeaderCellTemplate = function (col, view) {
             return '<div class="ngHeaderSortColumn {{col.headerClass}}" ng-style="{cursor: col.cursor}" ng-class="{ ngSorted: !noSortVisible }">' +
                                '<div ng-click="myCustomSort(col)"  class="ngHeaderText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}">{{col.displayName}}</div>' +
@@ -197,6 +175,26 @@ angular.module('backAnd.controllers')
                                '</div>' +
                                '<div ng-show="col.resizable" class="ngHeaderGrip" ng-click="col.gripClick($event)" ng-mousedown="col.gripOnMouseDown($event)"></div>';
         }
+
+        // Grid footer custom style
+        $scope.dataTable.footerTemplate =
+            '<div class="ngFooterPanel row" ng-show="showFooter" style="height:{{footerRowHeight}}px;">' +
+                '<div class="col-xs-2 text-left" style="margin-top: 12px;">' +
+                    '<span>{{i18n.ngTotalItemsLabel}} {{maxRows()}}</span>' +
+                '</div>' +
+                '<div class="col-xs-2 text-right" style="margin-top: 12px;">' +
+                    '<span>{{i18n.ngPageSizeLabel}}</span>' +
+                    '<select style="height: 27px; width: 55px; border-color: rgb(221, 221, 221);" ng-model="pagingOptions.pageSize" >' +
+                        '<option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>' +
+                    '</select>' +
+                '</div>' +
+                '<div class="col-xs-7 text-right">' +
+                    '<pagination style="margin-top:6px;" total-items="maxRows()" ng-model="pagingOptions.currentPage" max-size="5" class="pagination" boundary-links="true" rotate="false" items-per-page="pagingOptions.pageSize"></pagination>' +
+                '</div>' +
+                '<div class="col-xs-1 text-right" style="margin-top: 12px;">' +
+                    '<span>Page: {{pagingOptions.currentPage}} / {{maxPages()}}</span>' +
+                '</div>' +
+            '</div>';
 
         $scope.getTextAlignment = function (col, view) {
             if (col.grid.textAlignment == "inherit") {
@@ -237,7 +235,6 @@ angular.module('backAnd.controllers')
                         headerCellTemplate: $scope.myHeaderCellTemplate(col, Global.configTable),
                         cellFilter: col.type,
                         displayName: col.displayName,
-                        textAlignment: 'fdsdfsdf',
                         width: col.columnWidth,
                         cellTemplate: $scope.getCellTemplate(col, Global.configTable)
                     });
@@ -254,11 +251,10 @@ angular.module('backAnd.controllers')
                     var width = (height != 'auto') ? 'auto' : col.columnWidth + 'px';
                     return '<div class="ngCellText"><span ng-cell-text><img ng-src="' + col.urlPrefix + '/{{row.entity[\'' + col.name + '\']}}" width="' + width + '" height="' + height + '" lazy-src/></span></div>';
                 case 'Html':
-                    return '<p ng-bind-html="renderHtml(\'{{row.entity[\'' + col.name + '\']}}\')"></p>'; //'{{row.entity["' + col.name + '"]}}';
+                    return '<p ng-bind-html="renderHtml(\'{{row.entity[\'' + col.name + '\']}}\')"></p>'; 
                 case 'LongText':
                     return '<div class="ngCellText" style="white-space: normal;"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
                 case 'Url':
-                    //return '<div class="ngCellText"><a ng-href="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')">ssss</a></div>'
                     return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
                 default:
                     return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
@@ -346,6 +342,8 @@ angular.module('backAnd.controllers')
             layoutPlugin.updateGridLayout();
         };
 
+
+        
     }
  ]);
 

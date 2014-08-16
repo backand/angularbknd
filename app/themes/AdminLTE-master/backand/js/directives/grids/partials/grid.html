@@ -1,16 +1,18 @@
 <div class="box">
     <div class="box-body table-responsive">
-        <div class="btn-toolbar" role="toolbar">
+        <div class="btn-toolbar" role="toolbar" ng-show="showToolbar">
             <div class="btn-group">
                 <button type="button" ng-click="addRow()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"> {{newButton}}</span></button>
                 <button type="button" ng-click="editSelected()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-pencil"> {{editButton}}</span></button>
                 <button type="button" ng-click="deleteSelected()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-trash"> {{deleteButton}}</span></button>
-                <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-refresh"> Refresh</span></button>
             </div>
             <div class="btn-group">
-                <input type="text" class="btn btn-default navbar-btn" ng-model="searchText" placeholder="" ng-keypress="filterKeyPress($event)" />
-                <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-search"> Search</span></button>
-                <button type="button" ng-click="deactivateFilter()" class="btn btn-default navbar-btn">X</button>
+                <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-refresh"></span></button>
+            </div>
+            <div class="btn-group pull-right" ng-show="showSearch">
+                <input type="text" class="btn btn-default navbar-btn" ng-model="searchText" placeholder="Search" ng-keypress="filterKeyPress($event)" />
+                <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-search"></span></button>
+                <button type="button" ng-click="deactivateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-remove"></span></button>
             </div>
             <img ng-show="isLoad" src="img/ajax-loader.gif" />
         </div>
