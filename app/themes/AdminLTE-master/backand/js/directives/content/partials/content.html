@@ -1,8 +1,9 @@
  <div data-ng-controller="contentController" data-ng-init="init()">
+     {{ontent.__metadata.id}}
     <div ng-switch on="content.pageType">
-        <htmlcontent ng-switch-when="Content">	</htmlcontent>
-        <iframecontent ng-switch-when="IFrame">	</iframecontent>
-        <linkcontent ng-switch-when="External">	</linkcontent>
+        <htmlcontent content-id="content.__metadata.id" ng-switch-when="Content">	</htmlcontent>
+        <iframecontent content-id="content.__metadata.id" ng-switch-when="IFrame">	</iframecontent>
+        <linkcontent content-id="content.__metadata.id" ng-switch-when="External">	</linkcontent>
 
     </div>
     

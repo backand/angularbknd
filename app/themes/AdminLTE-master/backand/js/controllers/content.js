@@ -5,8 +5,8 @@ angular.module('backAnd.controllers')
 .controller('contentController', ['$scope', 'Global', '$http', 'contentService', '$sce',
     function ($scope, Global, $http, contentService, $sce) {
         $scope.global = Global;
-        $scope.$watch('content', function () {
-            if ($scope.content)
+        $scope.$watch('contentName', function () {
+            if ($scope.contentName)
                 $scope.setData();
         });
         $scope.init = function() {
@@ -21,10 +21,11 @@ angular.module('backAnd.controllers')
             });
             
         }
+        $scope.contentService = contentService;
 
         $scope.getDefaultIFrameHeight = function () {
             var top = $('div[data-ng-controller="contentController"]').position().top;
-            var height = ($(window).height() - top - 10);
+            var height = ($(window).height() - top - 40);
             return height;
         };
 

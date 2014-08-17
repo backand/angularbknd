@@ -5,24 +5,32 @@ angular.module('backAnd.directives')
 		templateUrl: 'backand/js/directives/content/partials/iframecontent.html',
 		replace: false,
 		controller: 'contentController',
+		scope: {
+		    contentId: '='
+		},
 		link: function ($scope, element, attr) {
-		    var iframe = element.find('iframe');
-		    iframe.attr('src', $scope.content.iFrameURL);
-		    if ($scope.content.width) {
-		        iframe.attr('width', $scope.content.width);
-		    }
-		    else {
-		        iframe.attr('width','100%');
-		    }
-		    if ($scope.content.height) {
-		        iframe.attr('height', $scope.content.height);
-		    }
-		    else {
-		        iframe.attr('height', $scope.getDefaultIFrameHeight());
-		    }
-		    if (!$scope.content.scroll) {
-		        iframe.attr('scrolling', "no");
-		    }
+		    $scope.contentService.queryjsonp({
+		        content: $scope.global.currentTableID
+		    }, function (data) {
+		        var iframe = element.find('iframe');
+		        iframe.attr('src', data.iFrameURL);
+		        if (data.width) {
+		            iframe.attr('width', data.width);
+		        }
+		        else {
+		            iframe.attr('width', '100%');
+		        }
+		        if (data.height) {
+		            iframe.attr('height', data.height);
+		        }
+		        else {
+		            iframe.attr('height', $scope.getDefaultIFrameHeight());
+		        }
+		        if (data.scroll) {
+		            iframe.attr('scrolling', "no");
+		        }
+		    });
+		    
 		}
 	}
 });

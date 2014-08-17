@@ -4,11 +4,20 @@ angular.module('backAnd.directives')
 		restrict: 'E',
 		replace: false,
 		controller: 'contentController',
+		scope: {
+		    contentId: '='
+		},
 		link: function ($scope, element, attr) {
-		    if ($scope.content.openinaNewTab)
-		        window.open($scope.content.externalLink, $scope.content.target);
-		    else
-		        location.href = $scope.content.externalLink;
+		    $scope.contentService.queryjsonp({
+		        content: $scope.global.currentTableID
+		    }, function (data) {
+		        if (data.openinaNewTab)
+		            window.open(data.externalLink, data.target);
+		        else
+		            location.href = data.externalLink;
+		    });
+
+		    
 		}
 	}
 });

@@ -5,9 +5,17 @@ angular.module('backAnd.directives')
 		templateUrl: 'backand/js/directives/content/partials/htmlcontent.html',
 		replace: false,
 		controller: 'contentController',
+		scope: {
+		    contentId: '='
+		},
 		link: function ($scope, element, attr) {
-            var el = angular.element($scope.content.content);
-		    element.append(el);
+		    $scope.contentService.queryjsonp({
+		        content: $scope.global.currentTableID
+		    }, function (data) {
+		        var el = angular.element(data.content);
+		        element.append(el);
+		    });
+            
 		}
 	}
 });
