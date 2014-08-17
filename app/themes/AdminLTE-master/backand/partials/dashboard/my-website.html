@@ -1,3 +1,11 @@
-<div>
+<section class="content-header">
+    <h1>
+        {{global.currentName}}
+    </h1>
+    <ol class="breadcrumb">
+        <li data-ng-repeat="breadcrumb in breadcrumbs" ng-click="setCurrentMenuSelection(breadcrumb.current, breadcrumb.parent)"><a href="#"><i class="fa custom-icon" icon-type="breadcrumb.partType"></i>{{breadcrumb.current.name}}</a></li>
+    </ol>
+</section>
+<section class="content">
     <ngback-dashboard dashboard-name="global.currentTableID"></ngback-dashboard>
-</div>
+</section>

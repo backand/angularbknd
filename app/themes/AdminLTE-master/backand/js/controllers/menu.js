@@ -37,30 +37,30 @@ angular.module('backAnd.controllers')
             }
         }
         $scope.setCurrentMenuSelection = function (current, parent) {
+            $scope.global.currentName = current.name;
             if (current.partType == "table") {
-                $scope.global.url = "grids/grids"; 
-                $scope.global.currentTableName = current.name;
+                $scope.global.url = "grids/grids";
                 $scope.getConfigTable(current.partId);
-                
-          }      
+
+            }
             else if (current.partType == "dashboard") {
-            $scope.global.url = "dashboard/my-website";
-            $scope.global.currentTableID = current.partId;
-          }
+                $scope.global.url = "dashboard/my-website";
+                $scope.global.currentTableID = current.partId;
+            }
             else if (current.partType == "content") {
-              $scope.global.url = "content/content";
-              $scope.global.currentTableID = current.partId;
-          }
+                $scope.global.url = "content/content";
+                $scope.global.currentTableID = current.partId;
+            }
             $scope.curTable = current.index;
 
             $scope.setBreadcrumbs(current, parent);
         }
         
         $scope.setBreadcrumbs = function (current, parent) {
-            $scope.breadcrumbs = [{ name: "home" }];
+            $scope.breadcrumbs = [{ current: { name: "home" }, parent: null }];
             if (parent)
-                $scope.breadcrumbs.push(parent);
-            $scope.breadcrumbs.push(current);
+                $scope.breadcrumbs.push({ current: parent, parent: null });
+            $scope.breadcrumbs.push({ current: current, parent: parent });
         }
 
         $scope.getConfigTable = function(table) {
