@@ -178,13 +178,13 @@ angular.module('backAnd.controllers')
 
         // Grid footer custom style
         $scope.dataTable.footerTemplate =
-            '<div class="ngFooterPanel row" ng-show="showFooter" style="height:{{footerRowHeight}}px;">' +
+            '<div class="ngFooterPanel row" ng-show="showFooter" style="height:{{footerRowHeight}}px;color:#666;">' +
                 '<div class="col-xs-2 text-left" style="margin-top: 12px;">' +
                     '<span>{{i18n.ngTotalItemsLabel}} {{maxRows()}}</span>' +
                 '</div>' +
-                '<div class="col-xs-2 text-right" style="margin-top: 12px;">' +
-                    '<span>{{i18n.ngPageSizeLabel}}</span>' +
-                    '<select style="height: 27px; width: 55px; border-color: rgb(221, 221, 221);" ng-model="pagingOptions.pageSize" >' +
+                '<div class="col-xs-2 text-right" style="margin-top: 6px;">' +
+                    '<span>{{i18n.ngPageSizeLabel}}&nbsp;</span>' +
+                    '<select style="height: 32px; width: 55px; border-color: rgb(221, 221, 221);color:#666;" ng-model="pagingOptions.pageSize" >' +
                         '<option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>' +
                     '</select>' +
                 '</div>' +
