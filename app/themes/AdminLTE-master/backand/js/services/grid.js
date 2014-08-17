@@ -3,7 +3,7 @@
 angular.module('backAnd.services').
 value('version', '0.1');
 
-angular.module('backAnd').factory('tableService', ['$resource',
+angular.module('backAnd').factory('gridService', ['$resource',
 	function($resource) {
 		return $resource(backandGlobal.url + '/1/view/data/:table?pageSize=:pageSize&pageNumber=:pageNumber', {
 			table: 'table',
@@ -21,7 +21,7 @@ angular.module('backAnd').factory('tableService', ['$resource',
 		});
 	}
 ]);
-angular.module('backAnd').factory('configService', ['$resource',
+angular.module('backAnd').factory('gridConfigService', ['$resource',
 	function($resource) {
 		return $resource(backandGlobal.url + '/1/view/config/:table', {
 			table: 'table'
@@ -36,7 +36,7 @@ angular.module('backAnd').factory('configService', ['$resource',
 	}
 ]);
 
-angular.module('backAnd').factory('viewDataItemService', ['$resource',
+angular.module('backAnd').factory('gridViewDataItemService', ['$resource',
     function($resource) {
         return $resource(backandGlobal.url + '/1/view/data/:table/:id', {
             table: 'table',
@@ -52,7 +52,7 @@ angular.module('backAnd').factory('viewDataItemService', ['$resource',
     }
 ]);
 
-angular.module('backAnd').factory('deleteItemService', ['$resource',
+angular.module('backAnd').factory('gridDeleteItemService', ['$resource',
     function ($resource) {
         return $resource(backandGlobal.url + '/1/view/data/:table/:id', {
             table: 'table',

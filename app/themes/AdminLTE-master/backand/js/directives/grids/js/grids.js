@@ -6,7 +6,7 @@ angular.module('backAnd.directives', [])
                 tableName: '=',
                 options: '=',
             },
-            controller: 'tableController',
+            controller: 'gridController',
             replace: false,
             templateUrl: 'backand/js/directives/grids/partials/grid.html',
 

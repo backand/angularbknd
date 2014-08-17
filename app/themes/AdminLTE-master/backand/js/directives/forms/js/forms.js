@@ -3,7 +3,7 @@
 /* Directives */
 
 angular.module('backAnd.directives')
-  .directive('myform', function ($sce, $q, $location, configService, viewDataItemService) {
+  .directive('myform', function ($sce, $q, $location, gridConfigService, gridViewDataItemService) {
     return {
       restrict: 'A',
       transclude : false,
@@ -17,13 +17,13 @@ angular.module('backAnd.directives')
         dataForm =  $q.defer(),
         dataItem =  $q.defer();
 
-        configService.queryjsonp({
+        gridConfigService.queryjsonp({
             table: params.table
         }, function(data) {
           dataForm.resolve(data);
         });
 
-        viewDataItemService.queryjsonp(params, function(data) {
+        gridViewDataItemService.queryjsonp(params, function(data) {
           dataItem.resolve(data);
         });
 

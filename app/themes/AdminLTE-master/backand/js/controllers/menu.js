@@ -2,8 +2,8 @@
 
 
 angular.module('backAnd.controllers')
-.controller('menuController', ['$scope', 'Global', '$compile', 'configService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
-    function($scope, Global, $compile, configService, menuService, $timeout, $rootScope, $http, $location, $route) {
+.controller('menuController', ['$scope', 'Global', '$compile', 'gridConfigService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
+    function($scope, Global, $compile, gridConfigService, menuService, $timeout, $rootScope, $http, $location, $route) {
 
         $scope.global = Global;
 
@@ -68,7 +68,7 @@ angular.module('backAnd.controllers')
             // Request to get the field information about the table
             // This config call needs to be separated into a separate function
             // that is only called once
-            configService.queryjsonp({
+            gridConfigService.queryjsonp({
                 table: table
                 }, function(data) {
                     $scope.global.configTable = data;

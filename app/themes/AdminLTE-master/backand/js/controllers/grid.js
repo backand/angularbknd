@@ -2,8 +2,8 @@
 
 
 angular.module('backAnd.controllers')
-.controller('tableController', ['$scope', 'Global', 'tableService', 'deleteItemService', 'configService', '$http', '$location', '$route', '$sce','$compile',
-    function ($scope, Global, tableService, deleteItemService, configService, $http, $location, $route, $sce, $compile) {
+.controller('gridController', ['$scope', 'Global', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$http', '$location', '$route', '$sce','$compile',
+    function ($scope, Global, gridService, gridDeleteItemService, gridConfigService, $http, $location, $route, $sce, $compile) {
 
         $scope.global = Global;
 
@@ -97,7 +97,7 @@ angular.module('backAnd.controllers')
             };
 
             try {
-                deleteItemService.queryjsonp(params, function (data) {
+                gridDeleteItemService.queryjsonp(params, function (data) {
                     $scope.getData();
                 },
                 function (error) {
@@ -286,7 +286,7 @@ angular.module('backAnd.controllers')
             if(searchText == 'undefined') searchText == null;
             // We are requesting data for the specific page of the table.
             var sortString = '[' + JSON.stringify($scope.sortOptions) + ']';
-            tableService.queryjsonp({
+            gridService.queryjsonp({
                 // This will also need to be adjusted to deal with mutiple tables on the same page
                 table: $scope.tableName,
                 pageSize: $scope.pagingOptions.pageSize,
