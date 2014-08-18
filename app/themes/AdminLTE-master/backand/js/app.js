@@ -27,8 +27,8 @@ angular.module('backAnd', [
         $routeProvider.when('/content', {
             templateUrl: 'themes/AdminLTE-master/backand/partials/content/content.html'
         });
-        $routeProvider.when('/formsExample', {
-            templateUrl: 'themes/AdminLTE-master/partials/main-forms/forms.html'
+        $routeProvider.when('/forms', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/forms/forms.html'
         });
         $routeProvider.otherwise({
             redirectTo: '/view1'

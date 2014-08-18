@@ -2,8 +2,8 @@
 
 
 angular.module('backAnd.controllers')
-.controller('gridController', ['$scope', 'Global', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$http', '$location', '$route', '$sce','$compile',
-    function ($scope, Global, gridService, gridDeleteItemService, gridConfigService, $http, $location, $route, $sce, $compile) {
+.controller('gridController', ['$scope', 'Global', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$http', '$location', '$route', '$sce','$compile', '$window',
+    function ($scope, Global, gridService, gridDeleteItemService, gridConfigService, $http, $location, $route, $sce, $compile, $window) {
 
         $scope.global = Global;
 
@@ -43,14 +43,13 @@ angular.module('backAnd.controllers')
         };
 
         $scope.editSelected = function () {
-            alert("Coming soon..");
-            return;
+            $window.alert("editSelected"); 
             if ($scope.mySelections != null && $scope.mySelections.length == 1) {
                 $location.search({
                     id: $scope.mySelections[0].__metadata.id,
                     table: $scope.tableName
                 });
-                $location.path('/formsExample');
+                $location.path('/forms');
             }
         };
         $scope.addRow = function () {
