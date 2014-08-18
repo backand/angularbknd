@@ -135,6 +135,13 @@ var adminLteInit = (function() {
     });
 
 });
+
+$(function () {
+    $(window).bind("appConfigCompleted", function (data) {
+        adminLteInit();
+    });
+});
+
 function fix_sidebar() {
     //Make sure the body tag has the .fixed class
     if (!$("body").hasClass("fixed")) {

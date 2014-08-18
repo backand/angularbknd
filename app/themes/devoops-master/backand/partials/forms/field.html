@@ -1,0 +1,18 @@
+<hr ng-if="field.hr">
+<div class="subtitle text-info" ng-bind-html="renderHtml(field.seperatorTitle)"></div>
+<div ng-bind-html="renderHtml(field.preLabel)"></div>
+<label ng-switch on="field.type">{{field.name}}
+  <div ng-switch-when="date">
+    <p class="input-group">
+      <input name="date" required type="text" is-date class="form-control" datepicker-popup="MM/dd/yyyy" ng-model="field.value" is-open="field.opened" close-text="Close" />
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="open($event, field)"><i class="glyphicon glyphicon-calendar"></i></button>
+      </span>
+    </p>
+    <p class="text-danger"ng-show="subForm.date.$invalid">Date is invalid!</p>
+  </div>
+  <textarea ng-switch-when="textarea" name="{{field.name}}" class="form-control" ng-model="field.value"></textarea>
+  <input to-number ng-switch-when="number" ng-model="field.value" type="text" name="{{field.name}}" class="form-control" value="{{field.value}}">
+  <input ng-switch-default type="{{field.type}}" name="{{field.name}}" class="form-control" value="{{field.value}}">
+</label>
+<div ng-bind-html="renderHtml(field.postLabel)"></div>
