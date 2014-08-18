@@ -13,19 +13,22 @@ angular.module('backAnd', [
     function($routeProvider) {
         backand.options.url = backandGlobal.url;
         $routeProvider.when('/login', {
-            templateUrl: 'backand/partials/login/login.html'
+            templateUrl: 'themes/AdminLTE-master/backand/partials/login/login.html'
         });
         $routeProvider.when('/grids', {
-            templateUrl: 'backand/partials/grids/grids.html'
+            templateUrl: 'themes/AdminLTE-master/backand/partials/grids/grids.html'
         });
         $routeProvider.when('/index', {
-            templateUrl: 'index.html'
+            templateUrl: 'index-lte.html'
         });
-        $routeProvider.when('/chartsExample', {
-            templateUrl: 'partials/chartsExample.html'
+        $routeProvider.when('/dashboard', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/dashboard/dashboard.html'
+        });
+        $routeProvider.when('/content', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/content/content.html'
         });
         $routeProvider.when('/formsExample', {
-            templateUrl: 'partials/main-forms/forms.html'
+            templateUrl: 'themes/AdminLTE-master/partials/main-forms/forms.html'
         });
         $routeProvider.otherwise({
             redirectTo: '/view1'
