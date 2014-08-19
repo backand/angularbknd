@@ -1,11 +1,11 @@
-<section class="content-header">
-    <h1>
-        {{global.currentName}}
-    </h1>
-    <ol class="breadcrumb">
-        <li data-ng-repeat="breadcrumb in breadcrumbs"><a href="#" ng-style="{'cursor':'default'}"><i class="fa custom-icon" icon-type="breadcrumb.partType"></i>{{breadcrumb.name}}</a></li>
-    </ol>
-</section>
-<section class="content">
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li data-ng-repeat="breadcrumb in breadcrumbs"><a href="#" ng-style="{'cursor':'default'}">{{breadcrumb.name}}</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
     <ngback-dashboard dashboard-name="global.currentTableID"></ngback-dashboard>
-</section>
+</div>
