@@ -7,7 +7,7 @@ angular.module('backAnd.directives')
     return {
       restrict: 'A',
       transclude : false,
-      templateUrl: 'backand/partials/forms/form.html',
+      templateUrl: 'backand/js/directives/forms/partials/form.html',
       link: function(scope, el, attrs) {
         var formSchema = {
           fields: [],
@@ -15,21 +15,24 @@ angular.module('backAnd.directives')
         },
         params = $location.search();
         $log.debug("params", params);
-        dataForm =  $q.defer(),
-        dataItem =  $q.defer();
+        var dataForm =  $q.defer();
+        var dataItem =  $q.defer();
 
 
         gridConfigService.queryjsonp({
             table: params.table
         }, function(data) {
+          console.log("resolution from gridConfigService", data);
           dataForm.resolve(data);
         });
 
         gridViewDataItemService.queryjsonp(params, function(data) {
+          console.log("resolution from gridViewDataItemService", data);
           dataItem.resolve(data);
         });
 
         $q.all([dataForm.promise, dataItem.promise]).then(function (data){
+          console.log("$q.all", data);
           processForm(data[0], data[1]);
         })
 
@@ -64,7 +67,7 @@ angular.module('backAnd.directives')
               if (!formSchema.categories[field.categoryName]) {
                 formSchema.categories[field.categoryName] = {
                   catName : field.categoryName,
-                  fields: []
+                  fields: [f]
                 };
               }
               formSchema.categories[field.categoryName].fields.push(f);
