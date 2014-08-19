@@ -13,13 +13,13 @@
 
 <ul class="nav main-menu">
     <li class="dropdown" ng-repeat="p in pages" data-ng-if="p.partType == 'table' || p.partType == 'dashboard'|| p.partType == 'content'" ng-click="setCurrentMenuSelection({partId:p.partId, name:p.name ,index :$index ,partType:p.partType}, null)">
-        <a href="#" class="dropdown-toggle">
+        <a href="" class="dropdown-toggle">
             <i class="fa custom-icon" icon-type="p.partType"></i>
             <span>{{p.name}}</span>
         </a>
         <ul class="dropdown-menu" ng-show="p.pages">
             <li ng-repeat="page in p.pages" data-ng-if="page.partType == 'table' || page.partType == 'dashboard'|| page.partType == 'content'" ng-click="setCurrentMenuSelection({partId:page.partId, name:page.name ,index:$index ,partType:page.partType}, {partId:p.partId, name:p.name ,index :$index ,partType:p.partType}); $event.stopPropagation()">
-                <a href="#" class="ajax-link">
+                <a href="" class="ajax-link">
                     <i class="fa custom-icon" icon-type="page.partType"></i>
                     <span>{{page.name}}</span>
                 </a>

@@ -77,10 +77,12 @@
             </div>
             <!--Start Content-->
             <div id="content" class="col-xs-12 col-sm-10">
-                <div class="preloader">
-                    <img src="img/devoops_getdata.gif" class="devoops-getdata" alt="preloader" />
-                </div>
-                <div id="ajax-content" ng-include="templateUrl()"></div>
+                <!--<div class="preloader">
+                    <img src="themes/devoops-master/img/devoops_getdata.gif" class="devoops-getdata" alt="preloader" />
+                </div>-->
+                <div id="ajax-content" class="ngback-container" ng-view></div>
+                <!--<aside class="right-side" ng-view></aside>
+                <aside class="right-side" ng-include="templateUrl()"></aside>-->
             </div>
             <!--End Content-->
         </div>

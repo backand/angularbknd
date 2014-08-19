@@ -7,13 +7,6 @@ angular.module('backAnd.controllers')
 
         $scope.global = Global;
 
-        $scope.templateUrl = function() {
-            if ($scope.global.url) {
-                $location.path($scope.global.url);
-                //return "backand/partials/" + $scope.global.url  + ".html";
-            }
-        }
-
         $scope.init = function () {
 
             if (!localStorage.getItem('Authorization')) {
@@ -52,17 +45,16 @@ angular.module('backAnd.controllers')
         $scope.setCurrentMenuSelection = function (current, parent) {
             $scope.global.currentName = current.name;
             if (current.partType == "table") {
-                $scope.global.url = "/grids";
                 $scope.getConfigTable(current.partId);
-
+                $location.path("/grids");
             }
             else if (current.partType == "dashboard") {
-                $scope.global.url = "/dashboard";
                 $scope.global.currentTableID = current.partId;
+                $location.path("/dashboard");
             }
             else if (current.partType == "content") {
-                $scope.global.url = "/content";
                 $scope.global.currentTableID = current.partId;
+                $location.path("/content");
             }
             $scope.curTable = current.index;
 
@@ -76,7 +68,7 @@ angular.module('backAnd.controllers')
             $scope.breadcrumbs.push(current);
         }
 
-        $scope.getConfigTable = function(table) {
+        $scope.getConfigTable = function(table, elm) {
             var configTable = {};
             // Request to get the field information about the table
             // This config call needs to be separated into a separate function
@@ -96,7 +88,7 @@ angular.module('backAnd.controllers')
                     //Step 3: link the compiled template with the scope.
                     var element = linkFn($scope);
                     // Step 4: Append to DOM 
-                    $(".right-side .ng-scope").append(element);
+                    $(".ngback-container .ng-scope").append(element);
             });
         };
 

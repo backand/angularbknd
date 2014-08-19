@@ -11,8 +11,17 @@ angular.module('backAnd.directives')
 		    $scope.contentService.queryjsonp({
 		        content: $scope.global.currentTableID
 		    }, function (data) {
-		        if (data.openinaNewTab)
-		            window.open(data.externalLink, data.target);
+		        if (data.openinaNewTab) {
+		            //window.open(data.externalLink, data.target);
+
+		            var evLink = document.createElement('a');
+		            evLink.href = data.externalLink;
+		            evLink.target = data.target;
+		            document.body.appendChild(evLink);
+		            evLink.click();
+		            // Now delete it
+		            evLink.parentNode.removeChild(evLink);
+		        }
 		        else
 		            location.href = data.externalLink;
 		    });

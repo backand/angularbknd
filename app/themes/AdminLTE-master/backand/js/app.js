@@ -31,7 +31,7 @@ angular.module('backAnd', [
             templateUrl: 'themes/AdminLTE-master/backand/partials/forms/forms.html'
         });
         $routeProvider.otherwise({
-            redirectTo: '/view1'
+            redirectTo: ''
         });
 
     }

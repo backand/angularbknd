@@ -31,7 +31,7 @@ angular.module('backAnd', [
             templateUrl: 'themes/devoops-master/partials/main-forms/forms.html'
         });
         $routeProvider.otherwise({
-            redirectTo: '/view1'
+            redirectTo: ''
         });
 
     }

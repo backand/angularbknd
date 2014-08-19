@@ -1,11 +1,39 @@
-<section class="content-header">
-    <h1>
-        {{global.currentName}}
-    </h1>
-    <ol class="breadcrumb" >
-        <li data-ng-repeat="breadcrumb in breadcrumbs"><a href="#" ng-style="{'cursor':'default'}"><i class="fa custom-icon" icon-type="breadcrumb.partType"></i>{{breadcrumb.name}}</a></li>
-    </ol>
-</section>
-<section class="content">
-    <ngback-table table-name="global.currentTable"></ngback-table>
-</section>
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li data-ng-repeat="breadcrumb in breadcrumbs"><a href="#" ng-style="{'cursor':'default'}">{{breadcrumb.name}}</a></li>
+        </ol>
+    </div>
+</div>
+
+    
+
+
+<!--<div class="row">-->
+    <div class="col-xs-12">
+        <div class="box ui-draggable ui-droppable">
+            <div class="box-header">
+                <div class="box-name">
+                    <span>{{global.currentName}}</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content no-padding" style="display: block;">
+                <div id="datatable-1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                    <ngback-table table-name="global.currentTable"></ngback-table>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--</div>-->
