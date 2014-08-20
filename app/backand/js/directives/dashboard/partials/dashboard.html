@@ -2,13 +2,13 @@
  	<div class="container-fluid">	
  		<div data-ng-repeat="chart in chartData">
  			<div class="col-xs-{{numCol}}" ng-switch on="chart.type">
- 				<barchart chart-id="chart.id" ng-switch-when="Bar">	</barchart>	
- 				<linechart chart-id="chart.id" ng-switch-when="Line">  </linechart>
- 				<donutchart chart-id="chart.id" ng-switch-when="Pie"> </donutchart>
- 				<columnchart chart-id="chart.id" ng-switch-when="Column"> </columnchart>
- 				<splinechart chart-id="chart.id" ng-switch-when="spline">  </splinechart>
- 				<areachart chart-id="chart.id" ng-switch-when="Area">  </areachart>
- 				<bubblechart chart-id="chart.id" ng-switch-when="bubble">  </bubblechart>
+                 <barchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Bar">	</barchart>	
+                 <linechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Line">  </linechart>
+                 <donutchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Pie"> </donutchart>
+                 <columnchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Column"> </columnchart>
+                 <splinechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="spline">  </splinechart>
+                 <areachart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Area">  </areachart>
+                 <bubblechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="bubble">  </bubblechart>
  			</div>
  		</div>
  	</div>

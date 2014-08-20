@@ -3,18 +3,9 @@ angular.module('backAnd.directives')
 .directive('columnchart', function(chartService) {
   return {
     restrict: 'E',
-    template: '\
-    <div class="box">\
-    <div class="box-header">\
-    <h3 class="box-title">{{title}}</h3>\
-    <h4 class="sub-title">{{subTitle}}</h4>\
-    </div>\
-    <div class="box-body chart-responsive">\
-    <div class="chart"></div>\
-    <div class="xtitle">{{xTitle}}</div>\
-    <div class="ytitle">{{yTitle}}</div>\
-    </div>\
-    </div>',
+    templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'backand/js/directives/charts/partials/chart.html'
+    },
     replace: true,
     scope: {
       chartId : '='
@@ -62,18 +53,9 @@ angular.module('backAnd.directives')
 .directive('linechart', function(chartService) {
   return {
     restrict: 'E',
-    template: '\
-    <div class="box">\
-    <div class="box-header">\
-    <h3 class="box-title">{{title}}</h3>\
-    <h4 class="sub-title">{{subTitle}}</h4>\
-    </div>\
-    <div class="box-body chart-responsive">\
-    <div class="chart"></div>\
-    <div class="xtitle">{{xTitle}}</div>\
-    <div class="ytitle">{{yTitle}}</div>\
-    </div>\
-    </div>',
+    templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'backand/js/directives/charts/partials/chart.html'
+    },
     replace: true,
     scope: {
       chartId : '='
@@ -121,16 +103,9 @@ angular.module('backAnd.directives')
 .directive('donutchart', function(chartService) {
   return {
     restrict: 'E',
-    template: '\
-    <div class="box">\
-    <div class="box-header">\
-    <h3 class="box-title">{{title}}</h3>\
-    <h4 class="sub-title">{{subTitle}}</h4>\
-    </div>\
-    <div class="box-body chart-responsive">\
-    <div class="chart"></div>\
-    </div>\
-    </div>',
+    templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'backand/js/directives/charts/partials/donutchart.html'
+    },
     replace: true,
     scope: {
       chartId : '='
@@ -168,18 +143,9 @@ angular.module('backAnd.directives')
 .directive('barchart', function(chartService) {
   return {
     restrict: 'E',
-    template: '\
-    <div class="box">\
-    <div class="box-header">\
-    <h3 class="box-title">{{title}}</h3>\
-    <h4 class="sub-title">{{subTitle}}</h4>\
-    </div>\
-    <div class="box-body chart-responsive">\
-    <div class="chart"></div>\
-    <div class="xtitle">{{yTitle}}</div>\
-    <div class="ytitle">{{xTitle}}</div>\
-    </div>\
-    </div>',
+    templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'backand/js/directives/charts/partials/chart.html'
+    },
     replace: true,
     scope: {
       chartId : '='
@@ -229,18 +195,9 @@ angular.module('backAnd.directives')
 .directive('splinechart', function(chartService) {
   return {
     restrict: 'E',
-    template: '\
-    <div class="box">\
-    <div class="box-header">\
-    <h3 class="box-title">{{title}}</h3>\
-    <h4 class="sub-title">{{subTitle}}</h4>\
-    </div>\
-    <div class="box-body chart-responsive">\
-    <div class="chart"></div>\
-    <div class="xtitle">{{xTitle}}</div>\
-    <div class="ytitle">{{yTitle}}</div>\
-    </div>\
-    </div>',
+    templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'backand/js/directives/charts/partials/chart.html'
+    },
     replace: true,
     scope: {
       chartId : '='
@@ -289,18 +246,9 @@ angular.module('backAnd.directives')
 .directive('areachart', function(chartService) {
   return {
     restrict: 'E',
-    template: '\
-    <div class="box">\
-    <div class="box-header">\
-    <h3 class="box-title">{{title}}</h3>\
-    <h4 class="sub-title">{{subTitle}}</h4>\
-    </div>\
-    <div class="box-body chart-responsive">\
-    <div class="chart"></div>\
-    <div class="xtitle">{{xTitle}}</div>\
-    <div class="ytitle">{{yTitle}}</div>\
-    </div>\
-    </div>',
+    templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'backand/js/directives/charts/partials/chart.html'
+    },
     replace: true,
     scope: {
       chartId : '='
@@ -348,18 +296,9 @@ angular.module('backAnd.directives')
 .directive('bubblechart', function(chartService) {
   return {
     restrict: 'E',
-    template: '\
-    <div class="box">\
-    <div class="box-header">\
-    <h3 class="box-title">{{title}}</h3>\
-    <h4 class="sub-title">{{subTitle}}</h4>\
-    </div>\
-    <div class="box-body chart-responsive">\
-    <div class="chart"></div>\
-    <div class="xtitle">{{xTitle}}</div>\
-    <div class="ytitle">{{yTitle}}</div>\
-    </div>\
-    </div>',
+    templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'backand/js/directives/charts/partials/chart.html'
+    },
     replace: true,
     scope: {
       chartId : '='
