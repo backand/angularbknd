@@ -1,0 +1,10 @@
+<div class="row">
+    <h3 class="col-md-2"><i class="fa fa-angle-right"></i> {{global.currentName}}</h3>
+    <ol class="breadcrumb col-md-10 text-right">
+        <li data-ng-repeat="breadcrumb in breadcrumbs"><a href="#" ng-style="{'cursor':'default'}"><i class="fa custom-icon" icon-type="breadcrumb.partType"></i> {{breadcrumb.name}}</a></li>
+    </ol>
+</div>
+
+<div id="morris">
+    <ngback-dashboard dashboard-name="global.currentTableID"></ngback-dashboard>
+</div>
