@@ -18,6 +18,15 @@ angular.module('backAnd.directives')
         var dataForm =  $q.defer();
         var dataItem =  $q.defer();
 
+        $scope.kuku = {
+          name: "temp",
+          var: dt
+        };
+
+        $scope.kuku.var = "2009-08-24";
+
+
+
 
         gridConfigService.queryjsonp({
             table: params.table
