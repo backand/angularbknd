@@ -43,7 +43,10 @@ angular.module('backAnd.controllers')
         };
 
         $scope.editSelected = function () {
-            $window.alert("editSelected"); 
+            $window.alert("Coming soon..");
+            return;
+
+            //$window.alert("editSelected"); 
             if ($scope.mySelections != null && $scope.mySelections.length == 1) {
                 $location.search({
                     id: $scope.mySelections[0].__metadata.id,
@@ -53,7 +56,7 @@ angular.module('backAnd.controllers')
             }
         };
         $scope.addRow = function () {
-            alert("Coming soon..");
+            $window.alert("Coming soon..");
             return;
         }
 
@@ -67,7 +70,7 @@ angular.module('backAnd.controllers')
             };
 
             if (!$scope.isSingleRowSelected()) {
-                alert(messages.pleaseSelectRow);
+                $window.alert(messages.pleaseSelectRow);
                 return;
             }
 
@@ -79,14 +82,14 @@ angular.module('backAnd.controllers')
 
             if (!id) {
                 console.error(messages.idMissing)
-                alert(messages.failure);
+                $window.alert(messages.failure);
                 return;
             }
 
             var table = $scope.tableName;
             if (!table) {
                 console.error(messages.tableMissing)
-                alert(messages.failure);
+                $window.alert(messages.failure);
                 return;
             }
 
@@ -102,17 +105,17 @@ angular.module('backAnd.controllers')
                 function (error) {
                     if (error.status == 500) {
                         console.error(error.data, error);
-                        alert(messages.failure);
+                        $window.alert(messages.failure);
                     }
                     else {
                         console.warn(error.data, error);
-                        alert(error.data);
+                        $window.alert(error.data);
                     }
                 });
             }
             catch (err) {
                 console.error(err.description)
-                alert(messages.failure);
+                $window.alert(messages.failure);
             }
         }
 

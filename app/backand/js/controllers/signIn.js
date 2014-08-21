@@ -28,9 +28,11 @@ angular.module('backAnd.controllers')
             }
 
             $scope.appName = getDefaultApp();
+            $scope.waiting = false;
 
             $scope.authentication = function() {
                 $scope.loginError = '';
+                $scope.waiting = true;
                 localStorage.removeItem("Authorization");
                 var data = toQueryString({
                     grant_type: "password",
@@ -62,6 +64,7 @@ angular.module('backAnd.controllers')
                     }
                     $scope.loginError = error_description;
                     console.log(status)
+                    $scope.waiting = false;
                 });
 
             }

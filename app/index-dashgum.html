@@ -55,29 +55,7 @@
 <body>
 
     <!--Start Main Theme Body-->
-    <section id="container">
-        <!--header start-->
-        <header ng-include="'themes/DashGum/backand/partials/header/header.html'" class="header"></header>
-        <!--header end-->
-        <!--sidebar start-->
-        <aside ng-include="'themes/DashGum/backand/partials/sidebar/sidebar.html'"></aside>
-        <!--sidebar end-->
-        <!--main content start-->
-        <section id="main-content">
-            <section class="wrapper ngback-container" ng-view></section>
-        </section>
-        <!--main content end-->
-        <!--footer start-->
-        <footer class="site-footer">
-            <div class="text-center">
-                backand
-                <a href="#" class="go-top">
-                    <i class="fa fa-angle-up"></i>
-                </a>
-            </div>
-        </footer>
-        <!--footer end-->
-    </section>
+    <ng-include src="'themes/DashGum/backand/partials/index/index.html'"></ng-include>
     <!--End Main Theme Body-->
 
     <!-- jQuery 2.0.2 -->

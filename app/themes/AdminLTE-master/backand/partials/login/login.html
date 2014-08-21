@@ -5,7 +5,7 @@
                 <h1 class="text-center">Login</h1>
             </div>
             <div class="modal-body">
-                <form class="form col-md-12 center-block" ng-submit="authentication()">
+                <form class="form center-block" ng-submit="authentication()">
                     <div class="form-group">
                         <input type="email" class="form-control input-lg" ng-model="user" placeholder="Email" required>
                     </div>
@@ -15,17 +15,15 @@
                     <div class="form-group">
                         <input type="text" class="form-control input-lg" ng-model="appName" placeholder="Application" required>
                     </div>
-                    <div class="form-group has-error">
-                        <span class="help-block">{{loginError}}</span>
-                    </div>
-                    <div class="form-group">
-                            <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
+                    <div class="">
+                        <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In" ng-show="!waiting">
+                        <img class="img-responsive center-block" ng-show="waiting" src="backand/img/ajax-loader.gif" />
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <div class="col-md-12">
-
+                <div class="form-group has-error text-left">
+                    <span class="help-block">{{loginError}}</span>
                 </div>
             </div>
         </div>
