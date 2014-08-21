@@ -43,8 +43,8 @@ angular.module('backAnd.controllers')
         };
 
         $scope.editSelected = function () {
-            $window.alert("Coming soon..");
-            return;
+            // $window.alert("Coming soon..");
+            // return;
 
             //$window.alert("editSelected"); 
             if ($scope.mySelections != null && $scope.mySelections.length == 1) {

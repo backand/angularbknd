@@ -18,12 +18,27 @@ angular.module('backAnd.directives')
         var dataForm =  $q.defer();
         var dataItem =  $q.defer();
 
-        $scope.kuku = {
-          name: "temp",
-          var: dt
+        // scope.kuku = {
+        //   name: "temp",
+        //   var: dt
+        // };
+
+        // $scope.kuku.var = "2009-08-24";
+
+
+        scope.field = {
+          name: "firstName",
+          type: "text",
+          required: true,
+          disabled: false,
+          defaultValue: "Kuku",
+          show: true
         };
 
-        $scope.kuku.var = "2009-08-24";
+        scope.form = {
+          name: "myForm"
+        };
+
 
 
 
