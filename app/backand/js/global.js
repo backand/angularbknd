@@ -3,11 +3,10 @@ var backandGlobal = {
     defaultApp: null,
 };
 
-
-
-function onready($scope) {
+//load the backand banner
+$(document).ready(function () {
     angular.element(document).ready(function () {
         backand.security.authentication.addLoginEvent();
         document.dispatchEvent(backand.security.authentication.onlogin);
     });
-}
+});

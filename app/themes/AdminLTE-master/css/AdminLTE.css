@@ -677,6 +677,7 @@ body > .header .logo .icon {
 }
 .user-panel {
   padding: 10px;
+  padding-top:40px;
 }
 .user-panel:before,
 .user-panel:after {

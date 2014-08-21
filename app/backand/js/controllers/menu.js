@@ -27,7 +27,6 @@ angular.module('backAnd.controllers')
                         $scope.setDefaultMenu();
 
                         $timeout(function () {
-                            //adminLteInit();
                             $(window).trigger("appConfigCompleted", data);
                         });
                     },
