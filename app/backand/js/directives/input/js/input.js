@@ -6,8 +6,15 @@ angular.module('backAnd.directives').directive('input', function() {
     	restrict: 'A',
     	replace: true,
     	scope: {
-    		field: "="
+    		field: "=",
+    		value: "=",
+            form: "="
     	},
-    	templateUrl: 'backand/js/directives/input/partials/input.html'
+    	templateUrl: 'backand/js/directives/input/partials/input.html',
+    	link: function(scope, el, attrs) {
+    		if (!scope.value.val){
+	          scope.value.val = scope.field.defaultValue;
+	        }
+    	}
     }
 });

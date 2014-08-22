@@ -10,6 +10,7 @@ angular.module('backAnd.directives')
       templateUrl: 'backand/js/directives/forms/partials/form.html',
       scope: {
         form: "=",
+        formDetails: "=",
         value: "=",
         layout: "="
       },
@@ -29,7 +30,10 @@ angular.module('backAnd.directives')
 
         scope.y = scope.form.fields.text;
         scope.v = scope.value.text;
+        scope.z = scope.form.fields.input;
+        scope.i = scope.value.input;
         scope.nytimes = scope.value.link;   
+        
         $log.debug(scope.layout);  
 
         scope.computeFieldSpan = function(fieldId) {

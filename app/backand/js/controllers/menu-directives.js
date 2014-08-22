@@ -2,8 +2,8 @@
 
 
 angular.module('backAnd.controllers')
-.controller('menuDirectivesController', ['$scope', 'Global', '$compile', 'gridConfigService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route', '$interval',
-    function($scope, Global, $compile, gridConfigService, menuService, $timeout, $rootScope, $http, $location, $route, $interval) {
+.controller('menuDirectivesController', ['$scope', 'Global', '$compile', 'gridConfigService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route', '$interval', '$window',
+    function($scope, Global, $compile, gridConfigService, menuService, $timeout, $rootScope, $http, $location, $route, $interval, $window) {
 
 
         // directives experiments
@@ -12,22 +12,22 @@ angular.module('backAnd.controllers')
             fields: {
 
                 text: {
-
                     name: "firstName",
                     type: "text",
                     required: true,
                     disabled: false,
                     defaultValue: "Ruth",
-                    show: true,
-
-                    
-
+                    show: true
                 },
 
                 link: {
+                },
 
-                    
-
+                input: {
+                    name: "nickname",
+                    show: true,
+                    disabled: false,
+                    required: true,
                 }
 
             }
@@ -45,6 +45,10 @@ angular.module('backAnd.controllers')
             link: {
                 url: "http://www.nytimes.com",
                 linkText: "NY Times"
+            },
+
+            input: {
+                val: "cat"
             }
         };
 
@@ -56,7 +60,11 @@ angular.module('backAnd.controllers')
             link: {
                 span: 8
             }
-        }
+        };
+
+        $scope.formDetails = {
+            name: "surprise"
+        };
 
         $interval(function() {
           if ($scope.values.text.val == "Moshe") {
@@ -66,6 +74,10 @@ angular.module('backAnd.controllers')
             $scope.values.text.val = "Moshe";
           };
         }, 300);
+
+        $scope.$watch('values.input.val', function(newValue, oldValue) {
+            $window.alert("new input:" + newValue);
+        });
 
         ////////////////
 
