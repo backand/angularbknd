@@ -8,7 +8,15 @@ angular.module('backAnd.directives')
       restrict: 'A',
       transclude : false,
       templateUrl: 'backand/js/directives/forms/partials/form.html',
+      scope: {
+        form: "=",
+        value: "=",
+        layout: "="
+      },
       link: function(scope, el, attrs) {
+
+        $log.debug("forms.js", scope);
+
         var formSchema = {
           fields: [],
           categories: {}
@@ -18,45 +26,39 @@ angular.module('backAnd.directives')
         var dataForm =  $q.defer();
         var dataItem =  $q.defer();
 
-        // scope.kuku = {
-        //   name: "temp",
-        //   var: dt
-        // };
 
-        // $scope.kuku.var = "2009-08-24";
+        scope.y = scope.form.fields.text;
+        scope.v = scope.value.text;
+        scope.nytimes = scope.value.link;   
+        $log.debug(scope.layout);  
 
-
-        scope.field = {
-          name: "firstName",
-          type: "text",
-          required: true,
-          disabled: false,
-          defaultValue: "Kuku",
-          show: true
+        scope.computeFieldSpan = function(fieldId) {
+          $log.debug(fieldId);
+          var span = "col-md-" + scope.layout[fieldId]["span"];
+          $log.debug(span);
+          return span;
         };
 
-        scope.form = {
-          name: "myForm"
-        };
-
-
-
-
+        scope.newspaper = {};
+        scope.newspaper[scope.computeFieldSpan("link")] = true;
+        scope.editor = {};
+        scope.editor[scope.computeFieldSpan("text")] = true;
+        
 
         gridConfigService.queryjsonp({
             table: params.table
         }, function(data) {
-          console.log("resolution from gridConfigService", data);
+          $log.debug("resolution from gridConfigService", data);
           dataForm.resolve(data);
         });
 
         gridViewDataItemService.queryjsonp(params, function(data) {
-          console.log("resolution from gridViewDataItemService", data);
+          $log.debug("resolution from gridViewDataItemService", data);
           dataItem.resolve(data);
         });
 
         $q.all([dataForm.promise, dataItem.promise]).then(function (data){
-          console.log("$q.all", data);
+          $log.debug("$q.all", data);
           processForm(data[0], data[1]);
         })
 
@@ -76,7 +78,7 @@ angular.module('backAnd.directives')
               default:
                 type = 'text'
             }
-            //console.log(field.type + ' : ' + field.name + ' : ' + dataItem[field.name])
+            //$log.debug(field.type + ' : ' + field.name + ' : ' + dataItem[field.name])
             var f = {
               name : field.name,
               type : type,

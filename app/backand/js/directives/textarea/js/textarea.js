@@ -5,8 +5,17 @@ angular.module('backAnd.directives').directive('textarea', function() {
     	restrict: 'A',
     	replace: true,
     	scope: {
-    		field: "="
+    		field: "=",
+    		value: "="
     	},
-    	templateUrl: 'backand/js/directives/textarea/partials/textarea.html'
+    	templateUrl: 'backand/js/directives/textarea/partials/textarea.html',
+    	link: function(scope, el, attrs) {
+
+    		if (!scope.value.val){
+	          scope.value.val = scope.field.defaultValue;
+	        }
+
+
+    	}
     }
 });

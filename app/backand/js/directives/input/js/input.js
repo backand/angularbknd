@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('backAnd.directives').directive('ngbackInput', function() {
+angular.module('backAnd.directives').directive('input', function() {
 	console.log("input called");
     return {
     	restrict: 'A',
