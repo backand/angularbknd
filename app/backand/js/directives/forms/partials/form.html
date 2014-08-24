@@ -39,7 +39,7 @@
 </div>
  -->
 
-<form name="{{formDetails.name}}" noinvalidate>
+<form name="{{formDetails.name}}" novalidate role="form">
 lll
 <br/>
 
@@ -68,5 +68,10 @@ tttt
   <div input field="z" value="i" form="formDetails"></div>
 
   <br/>
+
+
+  <div input field="form.fields.anotherInput" value="value.anotherInput" form="formDetails"></div>
   mmmm
+  <br/>
+  <div class="alert alert-danger" role="alert" ng-show="{{formDetails.name}}.$invalid">Form Invalid</div>
 </form>

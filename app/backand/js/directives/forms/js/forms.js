@@ -48,6 +48,7 @@ angular.module('backAnd.directives')
         scope.editor = {};
         scope.editor[scope.computeFieldSpan("text")] = true;
         
+        // move to controller
 
         gridConfigService.queryjsonp({
             table: params.table
@@ -64,7 +65,9 @@ angular.module('backAnd.directives')
         $q.all([dataForm.promise, dataItem.promise]).then(function (data){
           $log.debug("$q.all", data);
           processForm(data[0], data[1]);
-        })
+        });
+
+        // end of controller
 
         function processForm(data, dataItem) {
           angular.forEach(data.fields, function (field) {

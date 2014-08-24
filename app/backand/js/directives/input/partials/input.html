@@ -1,4 +1,4 @@
-<div>
-	<input type="{{field.text}}" name="{{field.name}}" class="form-control" ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"></input>
-	<div class="alert alert-danger" role="alert" ng-show="{{form.name}}.{{field.name}}.$error.required">Missing</div>
-</div>
+<ng-form name="innerForm">
+	<input type="{{field.type}}" name="field" class="form-control" ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"></input>
+	<div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">Missing</div>
+</ng-form>

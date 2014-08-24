@@ -28,6 +28,15 @@ angular.module('backAnd.controllers')
                     show: true,
                     disabled: false,
                     required: true,
+                    type: "text"
+                },
+
+                anotherInput: {
+                    name: "fullName",
+                    show: true,
+                    disabled: false,
+                    required: true,
+                    type: "text"
                 }
 
             }
@@ -49,6 +58,10 @@ angular.module('backAnd.controllers')
 
             input: {
                 val: "cat"
+            },
+
+            anotherInput: {
+                val: "Yoram Kornatzky"
             }
         };
 
