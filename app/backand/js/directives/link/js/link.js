@@ -5,7 +5,9 @@ angular.module('backAnd.directives').directive('link', function() {
     restrict: 'A',
     replace: true,
     scope: {
-      field: '='
+      field: '=',
+      value: '=',
+      form: '='
     },
     templateUrl: 'backand/js/directives/link/partials/link.html'
   };

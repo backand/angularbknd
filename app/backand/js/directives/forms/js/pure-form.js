@@ -2,12 +2,12 @@
 
 /* Directives */
 
-angular.module('backAnd.directives')
-  .directive('myform', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, $log) {
+var backAndDirectives = angular.module('backAnd.directives');
+backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, $log) {
     return {
       restrict: 'A',
       transclude : false,
-      templateUrl: 'backand/js/directives/forms/partials/form.html',
+      templateUrl: 'backand/js/directives/forms/partials/pure-form.html',
       scope: {
         fields: "=",
         form: "=",
@@ -16,23 +16,12 @@ angular.module('backAnd.directives')
       },
       link: function(scope, el, attrs) {
 
-        $log.debug("forms.js", scope);
-
-        var formSchema = {
-          fields: [],
-          categories: {}
-        },
-        params = $location.search();
-        $log.debug("params", params);
-        var dataForm =  $q.defer();
-        var dataItem =  $q.defer();
+        $log.debug("pure-form.js", scope);
 
 
-        scope.y = scope.fields.text;
-        scope.v = scope.value.text;
-        scope.z = scope.fields.input;
-        scope.i = scope.value.input;
-        scope.nytimes = scope.value.link;   
+
+
+        
         
         $log.debug(scope.layout);  
 
@@ -48,28 +37,9 @@ angular.module('backAnd.directives')
         scope.editor = {};
         scope.editor[scope.computeFieldSpan("text")] = true;
         
-        // move to controller
+        
 
-        gridConfigService.queryjsonp({
-            table: params.table
-        }, function(data) {
-          $log.debug("resolution from gridConfigService", data);
-          dataForm.resolve(data);
-        });
-
-        gridViewDataItemService.queryjsonp(params, function(data) {
-          $log.debug("resolution from gridViewDataItemService", data);
-          dataItem.resolve(data);
-        });
-
-        $q.all([dataForm.promise, dataItem.promise]).then(function (data){
-          $log.debug("$q.all", data);
-          processForm(data[0], data[1]);
-        });
-
-        // end of controller
-
-        function processForm(data, dataItem) {
+        scope.processForm = function(data, dataItem) {
           angular.forEach(data.fields, function (field) {
             var type;
             switch (field.type) {
@@ -129,30 +99,6 @@ angular.module('backAnd.directives')
         };
       }
     };
-  })
-  .directive('toNumber', function () {
-    return {
-      require: 'ngModel',
-      link: function (scope, elem, attrs, ctrl) {
-        return ctrl.$parsers.push(function (value) {
-            return parseFloat(value || '');
-        });
-      }
-    };
-  })
-  .directive('isDate', function () {
-    return {
-      require: 'ngModel',
-      link: function (scope, elem, attr, ngModel) {
-        function validate(value) {
-          var d = Date.parse(value);
-          // it is a date
-          if (isNaN(d)) { // d.valueOf() could also work
-            ngModel.$setValidity('valid', false);
-          } else {
-            ngModel.$setValidity('valid', true);
-          }
-        }
-      }
-    };
-  })
+});
+  
+  

@@ -7,44 +7,42 @@ angular.module('backAnd.controllers')
 
 
         // directives experiments
-        $scope.form = {
+        $scope.fields = [
 
-            fields: {
+            {
+                name: "firstName",
+                type: "text",
+                required: true,
+                disabled: false,
+                defaultValue: "Ruth",
+                show: true
+            },
 
-                text: {
-                    name: "firstName",
-                    type: "text",
-                    required: true,
-                    disabled: false,
-                    defaultValue: "Ruth",
-                    show: true
-                },
+            {
+               name: "link", 
+            },
 
-                link: {
-                },
+            {
+                name: "nickname",
+                show: true,
+                disabled: false,
+                required: true,
+                type: "text"
+            },
 
-                input: {
-                    name: "nickname",
-                    show: true,
-                    disabled: false,
-                    required: true,
-                    type: "text"
-                },
+            {
+                name: "fullName",
+                show: true,
+                disabled: false,
+                required: true,
+                type: "text"
+            },
 
-                anotherInput: {
-                    name: "fullName",
-                    show: true,
-                    disabled: false,
-                    required: true,
-                    type: "text"
-                }
+            {
 
+                name: "date"
             }
-            
-
-
-            
-        };
+        ];
 
         $scope.values = {
             text: { 
@@ -62,6 +60,10 @@ angular.module('backAnd.controllers')
 
             anotherInput: {
                 val: "Yoram Kornatzky"
+            },
+
+            date: {
+                val: "2014-08-09"
             }
         };
 
@@ -97,6 +99,8 @@ angular.module('backAnd.controllers')
         $scope.global = Global;
 
         $scope.init = function () {
+            // hack to work on pure forms
+            return;
 
             if (!localStorage.getItem('Authorization')) {
                 $location.path('/login');
