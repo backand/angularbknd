@@ -10,3 +10,11 @@
     border-color: rgb(221, 221, 221);
     color: #666;
 }
+
+#backand-banner .navbar-header{
+    height:30px;
+}
+
+#backand-banner .dropdown-menu{
+    z-index: 9999;
+}
