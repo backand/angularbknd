@@ -1,4 +1,12 @@
-.ngFooterPanel {
-    margin-left: 1px;
-    margin-right: 1px;
+.ngFooterPanel{
+    background-color: #fdfdfd;
+    color: #666;
+}
+
+.ngBackGridSelect
+{
+    height: 32px; 
+    width: 55px; 
+    border-color: rgb(221, 221, 221);
+    color: #666;
 }
