@@ -29,13 +29,14 @@
         <!-- bootstrap wysihtml5 - text editor -->
         <link href="bower_components/bootstrap-wysihtml5/dist/bootstrap-wysihtml5-0.0.2.css" rel="stylesheet" type="text/css" />
 
+        <!-- NG-GRID STUFF !-->
+        <link href="bower_components/ng-grid/ng-grid.min.css" rel="stylesheet" type="text/css" />
+
         <!-- Forms style -->
         <link href="themes/devoops-master/backand/css/forms.css" rel="stylesheet" type="text/css" />
 
         <!-- Theme style -->
         <link href="themes/devoops-master/css/style.css" rel="stylesheet" type="text/css" />
-
-
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,44 +51,13 @@
         <!-- backand theme style -->
         <link href="themes/devoops-master/backand/css/app.css" rel="stylesheet" type="text/css" />
 
-        <!-- NG-GRID STUFF !-->
-        <link href="bower_components/ng-grid/ng-grid.min.css" rel="stylesheet" type="text/css" />
     </head>
 
 <body class="skin-blue">
 
-    <!--<header ng-include="'themes/AdminLTE-master/backand/partials/header/header.html'" class="header"></header>
-
-    <div class="wrapper row-offcanvas row-offcanvas-left">
-        <aside class="left-side sidebar-offcanvas" ng-include="'themes/AdminLTE-master/backand/partials/sidebar/sidebar.html'"></aside>
-        <aside class="right-side" ng-view></aside>
-        <aside class="right-side" ng-include="templateUrl()">
-        </aside>
-    </div>-->
-
-
-    <!--Start Header-->
-    <header ng-include="'themes/devoops-master/backand/partials/header/header.html'" class="header"></header>
-    <!--End Header-->
-    <!--Start Container-->
-    <div id="main" class="container-fluid">
-        <div class="row">
-            <div id="sidebar-left" class="col-xs-2 col-sm-2" ng-include="'themes/devoops-master/backand/partials/sidebar/sidebar.html'">
-                
-            </div>
-            <!--Start Content-->
-            <div id="content" class="col-xs-12 col-sm-10">
-                <!--<div class="preloader">
-                    <img src="themes/devoops-master/img/devoops_getdata.gif" class="devoops-getdata" alt="preloader" />
-                </div>-->
-                <div id="ajax-content" class="ngback-container" ng-view></div>
-                <!--<aside class="right-side" ng-view></aside>
-                <aside class="right-side" ng-include="templateUrl()"></aside>-->
-            </div>
-            <!--End Content-->
-        </div>
-    </div>
-
+    <!--Start Main Theme Body-->
+    <ng-include src="'themes/devoops-master/backand/partials/index/index.html'"></ng-include>
+    <!--End Main Theme Body-->
 
     <!-- jQuery 2.0.2 -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -122,8 +92,10 @@
     <script src="themes/devoops-master/backand/js/app.js"></script>
 
     <!-- BACKAND STUFF !-->
+    <script src="https://api.backand.com:8080/api/banner"></script>
     <script src="backand/js/backand.js"></script>
     <script src="backand/js/jquery.backand.js"></script>
+    <script src="backand/js/global.js"></script>
     <script src="backand/js/services/grid.js"></script>
     <script src="backand/js/services/chart.js"></script>
     <script src="backand/js/services/menu.js"></script>
@@ -146,8 +118,6 @@
     <script src="backand/js/directives/content/js/htmlcontent.js"></script>
     <script src="backand/js/directives/content/js/iframecontent.js"></script>
     <script src="backand/js/directives/content/js/linkcontent.js"></script>
-    <script src="backand/js/global.js"></script>
-    <script src="http://localhost:4109/backapi/api/banner"></script>
 
 </body>
 

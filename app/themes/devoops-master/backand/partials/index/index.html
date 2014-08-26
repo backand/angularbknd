@@ -1,0 +1,23 @@
+﻿<!--Start Main Theme Body-->
+    <!--Start Header-->
+<header ng-include="'themes/devoops-master/backand/partials/header/header.html'" class="header"></header>
+<!--End Header-->
+<!--Start Container-->
+<div id="main" class="container-fluid">
+    <div class="row">
+        <div id="sidebar-left" class="col-xs-2 col-sm-2" ng-include="'themes/devoops-master/backand/partials/sidebar/sidebar.html'">
+
+        </div>
+        <!--Start Content-->
+        <div id="content" class="col-xs-12 col-sm-10">
+            <!--<div class="preloader">
+                <img src="themes/devoops-master/img/devoops_getdata.gif" class="devoops-getdata" alt="preloader" />
+            </div>-->
+            <div id="ajax-content" class="ngback-container" ng-view></div>
+            <!--<aside class="right-side" ng-view></aside>
+            <aside class="right-side" ng-include="templateUrl()"></aside>-->
+        </div>
+        <!--End Content-->
+    </div>
+</div>
+<!--End Main Theme Body-->

@@ -33,7 +33,7 @@
 //        scope.z = scope.form.fields.input;
 //        scope.i = scope.value.input;
 //        scope.nytimes = scope.value.link;   
-        
+
 //        $log.debug(scope.layout);  
 
 //        scope.computeFieldSpan = function(fieldId) {
@@ -47,7 +47,7 @@
 //        scope.newspaper[scope.computeFieldSpan("link")] = true;
 //        scope.editor = {};
 //        scope.editor[scope.computeFieldSpan("text")] = true;
-        
+
 //        // move to controller
 
 //        gridConfigService.queryjsonp({
