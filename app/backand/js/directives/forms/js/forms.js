@@ -211,7 +211,7 @@ angular.module('backAnd.directives')
                       var f = {
                           name: field.name,
                           type: type,
-                          value: dataItem[field.name] || '',
+                          value: { val: dataItem[field.name] || '' },
                           hr: field.formLayout.addhorizontallineabouvethefield,
                           seperatorTitle: field.formLayout.seperatorTitle,
                           columns: field.formLayout.columnSpanInDialog,

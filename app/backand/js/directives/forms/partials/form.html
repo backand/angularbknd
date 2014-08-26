@@ -6,7 +6,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><h6 class="panel-title">Edit Employees</h6></div>
                         <div class="panel-body">
-                            <div ng-include="'backand/js/directives/forms/partials/field.html'" class="form-group" ng-repeat="field in formSchema.fields">
+                            <div ng-include="'backand/js/directives/forms/partials/field.html'" class="col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in formSchema.fields">
                                 <!-- feild -->
                             </div>
                             <div class="tabbable form-group">
