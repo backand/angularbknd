@@ -1,20 +1,21 @@
+/// <reference path="../directives/link/partials/link.html" />
 "use strict";
 
 
 angular.module('backAnd.controllers')
-.controller('gridController', ['$scope', 'Global', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$http', '$location', '$route', '$sce','$compile', '$window',
+.controller('gridController', ['$scope', 'Global', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$http', '$location', '$route', '$sce', '$compile', '$window',
     function ($scope, Global, gridService, gridDeleteItemService, gridConfigService, $http, $location, $route, $sce, $compile, $window) {
 
         $scope.global = Global;
 
         // Read the configuration of the current view
-        $scope.$watch('tableName', function() {
-            if ($scope.tableName)  {
+        $scope.$watch('tableName', function () {
+            if ($scope.tableName) {
                 $scope.getConfigDataAsync();
             }
 
         });
-            
+
         // All of the configurations will be part of the directive and we can change things
         // like default page size in when we call the directive
 
@@ -33,9 +34,9 @@ angular.module('backAnd.controllers')
             if (keyEvent.which === 13)
                 $scope.activateFilter();
         }
-        $scope.activateFilter = function() {
+        $scope.activateFilter = function () {
             var searchText = $scope.searchText || null;
-            $scope.getData(searchText);  
+            $scope.getData(searchText);
         };
         $scope.deactivateFilter = function () {
             $scope.searchText = '';
@@ -47,6 +48,12 @@ angular.module('backAnd.controllers')
             // return;
 
             //$window.alert("editSelected"); 
+
+            if (!$scope.isSingleRowSelected()) {
+                $window.alert(messages.pleaseSelectRow);
+                return;
+            }
+
             if ($scope.mySelections != null && $scope.mySelections.length == 1) {
                 $location.search({
                     id: $scope.mySelections[0].__metadata.id,
@@ -59,15 +66,16 @@ angular.module('backAnd.controllers')
             $window.alert("Coming soon..");
             return;
         }
+        var messages = {
+            pleaseSelectRow: "Please select a row.",
+            confirm: "Are you sure that you want to delete the selected row?",
+            failure: "Failed to delete the row. Please contact your system administrator.",
+            idMissing: "id is missing.",
+            tableMissing: "table is missing.",
+        };
 
         $scope.deleteSelected = function () {
-            var messages = {
-                pleaseSelectRow: "Please select a row.",
-                confirm: "Are you sure that you want to delete the selected row?",
-                failure: "Failed to delete the row. Please contact your system administrator.",
-                idMissing: "id is missing.",
-                tableMissing: "table is missing.",
-            };
+            
 
             if (!$scope.isSingleRowSelected()) {
                 $window.alert(messages.pleaseSelectRow);
@@ -137,14 +145,14 @@ angular.module('backAnd.controllers')
             pageSize: 0,
             currentPage: 1,
         };
-         var layoutPlugin = new ngGridLayoutPlugin();
+        var layoutPlugin = new ngGridLayoutPlugin();
 
         //Toolbar setting
         $scope.showToolbar = Global.configTable && Global.configTable.toolbarSettings.hideToolbar ? !Global.configTable.toolbarSettings.hideToolbar : true;
         $scope.showSearch = Global.configTable && Global.configTable.design.hideSearchBox ? !Global.configTable.design.hideSearchBox : true;
 
         //Grid Settings
-        $scope.sortOptions = {};                           
+        $scope.sortOptions = {};
         $scope.mySelections = [];
 
         $scope.dataTable = {
@@ -157,11 +165,14 @@ angular.module('backAnd.controllers')
             sortOptions: $scope.sortOptions,
             totalServerItems: 'totalServerItems',
             pagingOptions: $scope.pagingOptions,
-            rowHeight: Global.configTable && Global.configTable.design.rowHeightInPixels ? Global.configTable.design.rowHeightInPixels : 30, 
+            rowHeight: Global.configTable && Global.configTable.design.rowHeightInPixels ? Global.configTable.design.rowHeightInPixels : 30,
             headerRowHeight: 30,
             footerRowHeight: 47,
             multiSelect: false,
             enableColumnResize: true,
+
+            //// grid edititing
+            //enableCellEditOnFocus: true,
         };
 
         // This is the call to get the data based on the table
@@ -207,19 +218,19 @@ angular.module('backAnd.controllers')
             else return col.grid.textAlignment;
         }
 
-        $scope.myCustomSort = function(col) {
+        $scope.myCustomSort = function (col) {
             if (!col.sortDirection || col.sortDirection == "asc")
-               col.sortDirection = "desc";
+                col.sortDirection = "desc";
             else
-                col.sortDirection = "asc";      
+                col.sortDirection = "asc";
             $scope.sortOptions = {
                 fieldName: col.displayName,
                 order: col.sortDirection
             };
             $scope.getData();
         }
-        
-        $scope.getConfigDataAsync = function() {
+
+        $scope.getConfigDataAsync = function () {
             $scope.isLoad = true;
             $scope.columns = [];
 
@@ -238,7 +249,10 @@ angular.module('backAnd.controllers')
                         cellFilter: col.type,
                         displayName: col.displayName,
                         width: col.columnWidth,
-                        cellTemplate: $scope.getCellTemplate(col, Global.configTable)
+                        cellTemplate: $scope.getCellTemplate(col, Global.configTable),
+                        //// grid edititing
+                        //enableCellEditOnFocus: true,
+                        //editableCellTemplate: $scope.getEditableCellTemplate(col, Global.configTable),
                     });
                 }
             });
@@ -253,7 +267,7 @@ angular.module('backAnd.controllers')
                     var width = (height != 'auto') ? 'auto' : col.columnWidth + 'px';
                     return '<div class="ngCellText"><span ng-cell-text><img ng-src="' + col.urlPrefix + '/{{row.entity[\'' + col.name + '\']}}" width="' + width + '" height="' + height + '" lazy-src/></span></div>';
                 case 'Html':
-                    return '<p ng-bind-html="renderHtml(\'{{row.entity[\'' + col.name + '\']}}\')"></p>'; 
+                    return '<p ng-bind-html="renderHtml(\'{{row.entity[\'' + col.name + '\']}}\')"></p>';
                 case 'LongText':
                     return '<div class="ngCellText" style="white-space: normal;"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
                 case 'Url':
@@ -261,14 +275,31 @@ angular.module('backAnd.controllers')
                 default:
                     return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
             }
-        }
+        };
+        //// grid edititing
+        //$scope.cellValue;
+        //// grid edititing
+        //$scope.getEditableCellTemplate = function (col, view) {
+        //    switch (col.type) {
+        //        case 'Url':
+        //            return 'backand/js/directives/link/partials/link.html';
+        //        default:
+        //            return '<input ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" ng-blur="updateEntity(row)" />'; //"<input style=\"width: 90%\" step=\"any\" type=\"number\" ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-blur=\"updateEntity(col, row, cellValue)\" ng-model='cellValue'/>";
+        //    }
+        //};
+
+        //// grid edititing
+        //$scope.updateEntity = function (row) {
+        //    alert(1);
+        //};
+
         $scope.renderHtml = function (html_code) {
             return $sce.trustAsHtml(html_code);
         };
 
         $scope.renderUrl = function (value) {
             var html = '';
-            if(value != ''){
+            if (value != '') {
                 var urls = value.split('|');
                 if (urls.length == 1) {
                     html = '<a href="' + urls[0] + '" target="_blank">' + urls[0] + '</a>';
@@ -283,9 +314,9 @@ angular.module('backAnd.controllers')
             return $sce.trustAsHtml(html);
         }
 
-        $scope.getData = function(searchText) {
+        $scope.getData = function (searchText) {
             $scope.isLoad = true;
-            if(searchText == 'undefined') searchText == null;
+            if (searchText == 'undefined') searchText == null;
             // We are requesting data for the specific page of the table.
             var sortString = '[' + JSON.stringify($scope.sortOptions) + ']';
             gridService.queryjsonp({
@@ -293,9 +324,9 @@ angular.module('backAnd.controllers')
                 table: $scope.tableName,
                 pageSize: $scope.pagingOptions.pageSize,
                 pageNumber: $scope.pagingOptions.currentPage,
-                sort : sortString,
+                sort: sortString,
                 search: searchText
-            }, function(largeLoad) {
+            }, function (largeLoad) {
                 // We have received table data and add the data to the scope
                 $scope.dataFill = largeLoad.data;
                 $scope.totalServerItems = largeLoad.totalRows;
@@ -303,7 +334,7 @@ angular.module('backAnd.controllers')
             });
         }
         $scope.afterSelectionChange = function (rowItem) {
-            if (rowItem.selected)  {  // I don't know if this is true or just truey
+            if (rowItem.selected) {  // I don't know if this is true or just truey
                 //write code to execute only when selected.
                 //rowItem.entity is the "data" here
             } else {
@@ -311,21 +342,21 @@ angular.module('backAnd.controllers')
             }
         }
 
-        $scope.$watch('pagingOptions', function(newVal, oldVal) {
+        $scope.$watch('pagingOptions', function (newVal, oldVal) {
             if (newVal !== oldVal) {
                 $scope.getData();
             }
         }, true);
 
-        $scope.$watch('filterOptions', function(newVal, oldVal) {
+        $scope.$watch('filterOptions', function (newVal, oldVal) {
             if (newVal !== oldVal) {
                 $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
             }
         }, true);
 
         // this is the intitialization of the table data above
-        $scope.$on('loadData', function() {
-            $scope.getConfigDataAsync(); 
+        $scope.$on('loadData', function () {
+            $scope.getConfigDataAsync();
         });
 
         $scope.getTableStyle = function () {
@@ -340,12 +371,19 @@ angular.module('backAnd.controllers')
             };
         };
 
-        $scope.updateLayout = function(){
+        $scope.updateLayout = function () {
             layoutPlugin.updateGridLayout();
         };
 
 
-        
-    }
- ]);
 
+    }
+])
+
+.directive('ngBlur', function () {
+    return function (scope, elem, attrs) {
+        elem.bind('blur', function () {
+            scope.$apply(attrs.ngBlur);
+        });
+    };
+});

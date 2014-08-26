@@ -1,3 +1,41 @@
+<div class="show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="" style="width: 65%;">
+        <div class="">
+            <div class="">
+                <form role="form">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h6 class="panel-title">Edit Employees</h6></div>
+                        <div class="panel-body">
+                            <div ng-include="'backand/js/directives/forms/partials/field.html'" class="form-group" ng-repeat="field in formSchema.fields">
+                                <!-- feild -->
+                            </div>
+                            <div class="tabbable form-group">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li ng-repeat="category in formSchema.categories" ng-class="{active : $first}">
+                                        <a href="#{{category.catName}}" ng-click="toggleActive($event)" role="tab" data-toggle="tab">{{category.catName}}</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content panel-body">
+                                    <div class="tab-pane fade in" ng-class="{active : $first}" ng-repeat="category in formSchema.categories" id="{{category.catName}}" ng-form="subForm">
+                                        <div ng-include="'backand/js/directives/forms/partials/field.html'"
+                                             class="col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in category.fields"
+                                             style="display: inline-block;">
+                                            <!-- feild -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions text-right">
+                                <button type="reset" data-dismiss="modal" class="btn btn-danger">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- <div class="modal show" tabindex="-1" role="dialog" aria-hidden="true" >
     <div class="modal-dialog" style="width: 65%;">
         <div class="modal-content">
@@ -39,7 +77,7 @@
 </div>
  -->
 
-<form name="{{formDetails.name}}" novalidate role="form">
+<!--<form name="{{formDetails.name}}" novalidate role="form">
 lll
 <br/>
 
@@ -74,4 +112,4 @@ tttt
   mmmm
   <br/>
   <div class="alert alert-danger" role="alert" ng-show="{{formDetails.name}}.$invalid">Form Invalid</div>
-</form>
+</form>-->

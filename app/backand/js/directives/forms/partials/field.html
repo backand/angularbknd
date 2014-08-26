@@ -12,7 +12,7 @@
     <p class="text-danger" ng-show="subForm.date.$invalid">Date is invalid!</p>
   </div>
   <!-- <textarea ng-switch-when="textarea" name="{{field.name}}" class="form-control" ng-model="field.value"></textarea> -->
-  <div textarea field="field"></div>
+  <!--<div textarea field="field"></div>-->
   <input to-number ng-switch-when="number" ng-model="field.value" type="text" name="{{field.name}}" class="form-control" value="{{field.value}}">
   <input ng-switch-default type="{{field.type}}" name="{{field.name}}" class="form-control" value="{{field.value}}">
 </label>
