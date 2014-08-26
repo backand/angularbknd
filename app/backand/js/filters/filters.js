@@ -44,3 +44,9 @@ backAndFilters.filter('parseInt', function () {
         return (parseInt(a))
     }
 });
+
+backAndFilters.filter('removeSpaces', function () {
+    return function (text) {
+        return text.replace(' ', '');
+    }
+});

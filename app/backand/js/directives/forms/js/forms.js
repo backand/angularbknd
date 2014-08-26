@@ -227,7 +227,7 @@ angular.module('backAnd.directives')
                           }
                           formSchema.categories[field.categoryName].fields.push(f);
                       } else {
-                          formSchema.fields.push(F);
+                          formSchema.fields.push(f);
                       }
                   })
                   angular.forEach(data.categories, function (cat) {
