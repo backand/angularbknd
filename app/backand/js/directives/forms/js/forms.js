@@ -191,6 +191,8 @@ angular.module('backAnd.directives')
                   processForm(data[0], data[1]);
               })
 
+              scope.value = { val: "example" };
+
               function processForm(data, dataItem) {
                   angular.forEach(data.fields, function (field) {
                       var type;
@@ -216,7 +218,10 @@ angular.module('backAnd.directives')
                           seperatorTitle: field.formLayout.seperatorTitle,
                           columns: field.formLayout.columnSpanInDialog,
                           preLabel: field.formLayout.preLabel,
-                          postLabel: field.formLayout.postLabel
+                          postLabel: field.formLayout.postLabel,
+                          show: true,
+                          disabled:false,
+
                       };
                       if (field.categoryName) {
                           if (!formSchema.categories[field.categoryName]) {
