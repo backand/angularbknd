@@ -97,7 +97,7 @@ angular.module('backAnd.controllers')
         };
 
         $scope.formatArray = [
-          ["orange"], "green", { "yellow" : true }, ["orange", "green"], { "green" : true }
+          ["orange"], "green", { "yellow" : true, "red" : false }, ["orange", "green"], { "green" : true }
         ];
 
         $interval(function() {
