@@ -2,14 +2,6 @@
 
 /* Filters */
 
-
-
-
-
-'use strict';
-
-/* Filters */
-
 var backAndFilters = angular.module('backAnd.filters', []);
 
 backAndFilters = filter('interpolate', ['version', function(version) {
