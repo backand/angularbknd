@@ -12,31 +12,37 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
         fields: "=",
         form: "=",
         value: "=",
-        layout: "="
+        layout: "=",
+        format: "="
       },
       link: function(scope, el, attrs) {
 
+        
+
+        scope.nicknameClass = { 'yellow' : true };
+
+
         $log.debug("pure-form.js", scope);
-
-
-
-
         
         
         $log.debug(scope.layout);  
 
         scope.computeFieldSpan = function(fieldId) {
-          $log.debug(fieldId);
           var span = "col-md-" + scope.layout[fieldId]["span"];
-          $log.debug(span);
           return span;
         };
 
         scope.newspaper = {};
-        scope.newspaper[scope.computeFieldSpan("link")] = true;
+        scope.newspaper[scope.computeFieldSpan(1)] = true;
         scope.editor = {};
-        scope.editor[scope.computeFieldSpan("text")] = true;
+        scope.editor[scope.computeFieldSpan(0)] = true;
         
+
+        scope.fieldsArray = scope.fields.slice(2, 4);
+        scope.valuesArray = scope.value.slice(2,4);
+        scope.classesArray = [
+          ["orange"], "green" 
+        ];
         
 
         scope.processForm = function(data, dataItem) {
@@ -92,7 +98,7 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
         scope.renderHtml = function(html_code) {
           return $sce.trustAsHtml(html_code);
         };
-        scope.formSchema = formSchema;
+        // scope.formSchema = formSchema;
         scope.toggleActive = function($event){
           $event.preventDefault();
           $($event.currentTarget).tab('show');

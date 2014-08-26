@@ -11,7 +11,7 @@ angular.module('backAnd.controllers')
 
             {
                 name: "firstName",
-                type: "text",
+                
                 required: true,
                 disabled: false,
                 defaultValue: "Ruth",
@@ -44,49 +44,68 @@ angular.module('backAnd.controllers')
             }
         ];
 
-        $scope.values = {
-            text: { 
+        $scope.values = [
+            { 
                 val: "Dano"
             },
 
-            link: {
+            {
                 url: "http://www.nytimes.com",
                 linkText: "NY Times"
             },
 
-            input: {
+            {
                 val: "cat"
             },
 
-            anotherInput: {
+            {
                 val: "Yoram Kornatzky"
             },
 
-            date: {
+            {
                 val: "2014-08-09"
             }
-        };
+        ];
 
-        $scope.arrange = {
-            text: {
-                span: 4,
+        $scope.arrange = [
+            {
+                span: 2,
             },
 
-            link: {
+            {
+                span: 4
+            },
+
+
+            {
+                span: 6
+            },
+
+
+            {
                 span: 8
+            },
+
+
+            {
+                span: 10
             }
-        };
+        ];
 
         $scope.formDetails = {
             name: "surprise"
         };
 
+        $scope.formatArray = [
+          ["orange"], "green", { "yellow" : true }, ["orange", "green"], { "green" : true }
+        ];
+
         $interval(function() {
-          if ($scope.values.text.val == "Moshe") {
-            $scope.values.text.val = "Tami";
+          if ($scope.values[0].val == "Moshe") {
+            $scope.values[0].val = "Tami";
           } 
           else{
-            $scope.values.text.val = "Moshe";
+            $scope.values[0].val = "Moshe";
           };
         }, 300);
 

@@ -18,3 +18,15 @@
 #backand-banner .dropdown-menu{
     z-index: 9999;
 }
+
+.yellow {
+	color: yellow;
+}
+
+.orange {
+	color: orange;
+}
+
+.green {
+	color: #87c540;
+}

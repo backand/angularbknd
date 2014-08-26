@@ -40,38 +40,51 @@
  -->
 
 <form name="{{form.name}}" novalidate role="form">
-lll
-<br/>
 
-<div class="row">
-  <div ng-class="newspaper" style="background-color: red;">
-    <div link field="fields[1]" value="value.link"></div>
+
+  <div class="row" ng-repeat="field in fieldsArray">
+    <div  ng-class="computeFieldSpan($index)">  
+      <div input field="field" value="valuesArray[$index]" form="form" input-class="classesArray[$index]"></div>
+    </div>
   </div>
-</div>
- 
-<br/>
-kkkk
- 
- <br/>
 
-<div class="row">
-  <div ng-class="editor" >
-    <div textarea field="fields[0]" value="value.text" form="form"></div>
+
+  <div class="row">
+    <div ng-class="computeFieldSpan(1)" style="background-color: red;">
+      <div link field="fields[1]" value="value[1]"></div>
+    </div>
   </div>
-</div>
-
-<br/>
-<div datepicker field="fields[4]"></div>
-tttt
-<br/>
-  
-  <div input field="fields[2]" value="value.input" form="form"></div>
-
-  <br/>
+ 
 
 
-  <div input field="fields[3]" value="value.anotherInput" form="form"></div>
-  mmmm
-  <br/>
+  <div class="row">
+    <div  ng-class="computeFieldSpan(0)">
+      <div textarea field="fields[0]" value="value[0]" form="form"></div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div  ng-class="computeFieldSpan(4)">
+      <div datepicker field="fields[4]"></div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div  ng-class="computeFieldSpan(2)">  
+      <div input field="fields[2]" value="value[2]" form="form" input-class="format[2]"></div>
+    </div>
+  </div>
+
+ 
+
+
+  <div class="row">
+    <div  ng-class="computeFieldSpan(3)">
+      <div input field="fields[3]" value="value[3]" form="form" input-class="format[3]"></div>
+    </div>
+  </div>
+
   <div class="alert alert-danger" role="alert" ng-show="{{form.name}}.$invalid">Form Invalid</div>
 </form>

@@ -8,11 +8,12 @@ angular.module('backAnd.directives').directive('input', function() {
     	scope: {
     		field: "=",
     		value: "=",
-            form: "="
+            form: "=",
+            inputClass: "="
     	},
     	templateUrl: 'backand/js/directives/input/partials/input.html',
     	link: function(scope, el, attrs) {
-        
+            console.log("input.js", scope);
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
 	        }
