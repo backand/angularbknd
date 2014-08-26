@@ -109,7 +109,7 @@ angular.module('backAnd.controllers')
           };
         }, 300);
 
-        $scope.$watch('values.input.val', function(newValue, oldValue) {
+        $scope.$watch('values[2].val', function(newValue, oldValue) {
             $window.alert("new input:" + newValue);
         });
 
