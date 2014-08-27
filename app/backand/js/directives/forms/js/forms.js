@@ -169,13 +169,13 @@ angular.module('backAnd.directives')
           link: function (scope, el, attrs) {
               var formSchema = {
                   fields: [],
-                  categories: {}
+                  categories: {},
+                  title: ''
               },
               params = $location.search();
               $log.debug("params", params);
               var dataForm = $q.defer();
               var dataItem = $q.defer();
-
 
               gridConfigService.queryjsonp({
                   table: params.table
@@ -191,9 +191,9 @@ angular.module('backAnd.directives')
                   processForm(data[0], data[1]);
               })
 
-              scope.value = { val: "example" };
-
               function processForm(data, dataItem) {
+                  formSchema.title = data.captionText;
+
                   angular.forEach(data.fields, function (field) {
                       var type;
                       switch (field.type) {
@@ -219,9 +219,9 @@ angular.module('backAnd.directives')
                           columns: field.formLayout.columnSpanInDialog,
                           preLabel: field.formLayout.preLabel,
                           postLabel: field.formLayout.postLabel,
-                          show: true,
-                          disabled:false,
-
+                          show: field.form.hideInEdit,
+                          disabled: field.form.disableInEdit,
+                          required: field.advancedLayout.required
                       };
                       if (field.categoryName) {
                           if (!formSchema.categories[field.categoryName]) {
