@@ -1,34 +1,32 @@
-# ngback — the seed for Back& AngularJS apps
+# ngback — The seed for Backand AngularJS apps
 
-This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Back& back office.
-You can use it to quickly bootstrap your Back& angular webapp projects and dev environment for these
+This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Backand back office.
+You can use it to quickly Bootstrap your Backand Angular webapp projects and dev environment for these
 projects.
 
 It is based on the [angular-seed](https://github.com/angular/angular-seed) application.
 
-The seed contains a sample Back& AngularJS application and is preconfigured to install the Angular
-framework and a bunch of development and testing tools for instant web development gratification.
+The seed contains a sample Backand AngularJS application and is preconfigured to install the Angular framework and a combination of development and testing tools for instant web development gratification.
 
-The seed app doesn't do much, just shows how to wire two controllers and views together.
+The seed app doesn't do much, just shows you how to wire two controllers and views together.
 
 ## Themes
 
-We have a collection of themes built with [Bootstrap](http://getbootstrap.com) that offer a pre-built set of views.
+We have a collection of [Bootstrap](http://getbootstrap.com) themes that offer a pre-built set of views.
 
-**AdminLTE** -- is a fully responsive admin template. Based on **Bootstrap 3** framework. Highly customizable and easy to use. Fits many screen resolutions from small mobile devices to large desktops. Check out the live preview now and see for yourself. 
+**AdminLTE** -- is a fully responsive admin template. Based on the **Bootstrap 3** framework. Highly customizable and easy to use, it fits many screen resolutions from small mobile devices to large desktops. Check out the live preview now and see for yourself. 
 
 
 ## Getting Started
 
-To get you started you can simply clone the ngback repository and install the dependencies:
+To get started you can simply clone the ngback repository and install the dependencies:
 
 ### Prerequisites
 
 You need git to clone the ngback repository. You can get it from
 [http://git-scm.com/](http://git-scm.com/).
 
-We also use a number of node.js tools to initialize and test ngback. You must have node.js and
-its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
+We also use a number of node.js tools to initialize and test ngback. You must have node.js and its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
 
 ### Clone ngback
 
@@ -41,11 +39,10 @@ cd ngback
 
 ### Install Dependencies
 
-We have two kinds of dependencies in this project: tools and angular framework code.  The tools help
-us manage and test the application.
+We have two kinds of dependencies in this project: tools and Angular framework code.  The tools help us manage and test the application.
 
 * We get the tools we depend upon via `npm`, the [node package manager][npm].
-* We get the angular code via `bower`, a [client-side code package manager][bower].
+* We get the Angular code via `bower`, a [client-side code package manager][bower].
 
 We have preconfigured `npm` to automatically run `bower` so we can simply do:
 
@@ -53,20 +50,16 @@ We have preconfigured `npm` to automatically run `bower` so we can simply do:
 npm install
 ```
 
-Behind the scenes this will also call `bower install`.  You should find that you have two new
-folders in your project.
+Behind the scenes this will also call `bower install`.  You should find that you have two new folders in your project.
 
 * `node_modules` - contains the npm packages for the tools we need
 * `app/bower_components` - contains the angular framework files
 
-*Note that the `bower_components` folder would normally be installed in the root folder but
-ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes
-it easier to serve the files by a webserver.*
+*Note that the `bower_components` folder would normally be installed in the root folder but ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.*
 
 ### Run the Application
 
-We have preconfigured the project with a simple development web server.  The simplest way to start
-this server is:
+We have preconfigured the project with a simple development web server.  The simplest way to start this server is:
 
 ```
 npm start
@@ -111,16 +104,14 @@ After starting the server, browse to the app at `http://localhost:8000/app/theme
 
 ## Testing
 
-There are two kinds of tests in the ngback application: Unit tests and End to End tests.
+There are two kinds of tests in the ngback application: Unit tests and end-to-end tests.
 
 ### Running Unit Tests
 
-The ngback app comes preconfigured with unit tests. These are written in
-[Jasmine][jasmine], which we run with the [Karma Test Runner][karma]. We provide a Karma
-configuration file to run them.
+The ngback app comes preconfigured with unit tests. These are written in [Jasmine][jasmine], which we run with the [Karma Test Runner][karma]. We provide a Karma configuration file to run them.
 
-* the configuration is found at `test/karma.conf.js`
-* the unit tests are found in `test/unit/`.
+* The configuration is found at `test/karma.conf.js`
+* The unit tests are found in `test/unit/`.
 
 The easiest way to run the unit tests is to use the supplied npm script:
 
@@ -128,39 +119,29 @@ The easiest way to run the unit tests is to use the supplied npm script:
 npm test
 ```
 
-This script will start the Karma test runner to execute the unit tests. Moreover, Karma will sit and
-watch the source and test files for changes and then re-run the tests whenever any of them change.
-This is the recommended strategy; if your unit tests are being run every time you save a file then
-you receive instant feedback on any changes that break the expected code functionality.
+This script will start the Karma test runner to execute the unit tests. Moreover, Karma will sit and watch the source and test files for changes and then re-run the tests whenever any of them change. This is the recommended strategy; if your unit tests are being run every time you save a file then you receive instant feedback on any changes that break the expected code functionality.
 
-You can also ask Karma to do a single run of the tests and then exit.  This is useful if you want to
-check that a particular version of the code is operating as expected.  The project contains a
-predefined script to do this:
+You can also ask Karma to do a single run of the tests and then exit.  This is useful if you want to check that a particular version of the code is operating as expected.  The project contains a predefined script to do this:
 
 ```
 npm run test-single-run
 ```
 
 
-### End to end testing
+### End-to-end testing
 
-The ngback app comes with end-to-end tests, again written in [Jasmine][jasmine]. These tests
-are run with the [Protractor][protractor] End-to-End test runner.  It uses native events and has
-special features for Angular applications.
+The ngback app comes with end-to-end tests, again written in [Jasmine][jasmine]. These tests are run with the [Protractor][protractor] End-to-End test runner.  It uses native events and has special features for Angular applications.
 
 * the configuration is found at `test/protractor-conf.js`
 * the end-to-end tests are found in `test/e2e/`
 
-Protractor simulates interaction with our web app and verifies that the application responds
-correctly. Therefore, our web server needs to be serving up the application, so that Protractor
-can interact with it.
+Protractor simulates interaction with our web app and verifies that the application responds correctly. Therefore, our web server needs to be serving up the application, so that Protractor can interact with it.
 
 ```
 npm start
 ```
 
-In addition, since Protractor is built upon WebDriver we need to install this.  The ngback
-project comes with a predefined script to do this:
+In addition, since Protractor is built upon WebDriver you need to install this.  The ngback project comes with a predefined script to do this:
 
 ```
 npm run update-webdriver
@@ -168,22 +149,18 @@ npm run update-webdriver
 
 This will download and install the latest version of the stand-alone WebDriver tool.
 
-Once you have ensured that the development web server hosting our application is up and running
-and WebDriver is updated, you can run the end-to-end tests using the supplied npm script:
+Once you have ensured that the development web server hosting our application is up and running and WebDriver is updated, you can run the end-to-end tests using the supplied npm script:
 
 ```
 npm run protractor
 ```
 
-This script will execute the end-to-end tests against the application being hosted on the
-development server.
+This script will execute the end-to-end tests against the application being hosted on the development server.
 
 
 ## Updating Angular
 
-Previously we recommended that you merge in changes to ngback into your own fork of the project.
-Now that the angular framework library code and tools are acquired through package managers (npm and
-bower) you can use these tools instead to update the dependencies.
+Previously we recommended that you merge in changes to ngback into your own fork of the project. Now that the Angular framework library code and tools are acquired through package managers (npm and bower) you can use these tools instead to update the dependencies.
 
 You can update the tool dependencies by running:
 
@@ -204,47 +181,35 @@ This will find the latest versions that match the version ranges specified in th
 
 ## Loading Angular Asynchronously
 
-The ngback project supports loading the framework and application scripts asynchronously.  The
-special `index-async.html` is designed to support this style of loading.  For it to work you must
-inject a piece of Angular JavaScript into the HTML page.  The project has a predefined script to help
-do this.
+The ngback project supports loading the framework and application scripts asynchronously.  The special `index-async.html` is designed to support this style of loading.  For it to work you must inject a piece of Angular JavaScript into the HTML page.  The project has a predefined script to help do this.
 
 ```
 npm run update-index-async
 ```
 
-This will copy the contents of the `angular-loader.js` library file into the `index-async.html` page.
-You can run this every time you update the version of Angular that you are using.
+This will copy the contents of the `angular-loader.js` library file into the `index-async.html` page. You can run this every time you update the version of Angular that you are using.
 
 
 ## Serving the Application Files
 
-While angular is client-side-only technology and it's possible to create angular webapps that
-don't require a backend server at all, we recommend serving the project files using a local
-webserver during development to avoid issues with security restrictions (sandbox) in browsers. The
-sandbox implementation varies between browsers, but quite often prevents things like cookies, xhr,
-etc to function properly when an html page is opened via `file://` scheme instead of `http://`.
+While Angular is client-side-only technology and it's possible to create Angular webapps that don't require a backend server at all, we recommend serving the project files using a local webserver during development to avoid issues with security restrictions (sandbox) in browsers. The sandbox implementation varies between browsers, but quite often prevents things like cookies, xhr, etc to function properly when an html page is opened via `file://` scheme instead of `http://`.
 
 
 ### Running the App during Development
 
-The ngback project comes preconfigured with a local development webserver.  It is a node.js
-tool called [http-server][http-server].  You can start this webserver with `npm start` but you may choose to
-install the tool globally:
+The ngback project comes preconfigured with a local development webserver.  It is a node.js tool called [http-server][http-server].  You can start this webserver with `npm start` but you may choose to install the tool globally:
 
 ```
 sudo npm install -g http-server
 ```
 
-Then you can start your own development web server to serve static files from a folder by
-running:
+Then you can start your own development web server to serve static files from a folder by running:
 
 ```
 http-server
 ```
 
-Alternatively, you can choose to configure your own webserver, such as apache or nginx. Just
-configure your server to serve the files under the `app/` directory.
+Alternatively, you can choose to configure your own webserver, such as apache or nginx. Just configure your server to serve the files under the `app/` directory.
 
 
 ### Running the App in Production
