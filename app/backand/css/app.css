@@ -30,3 +30,12 @@
 .green {
 	color: #87c540;
 }
+
+.ta-editor {
+    min-height: 300px;
+    height: auto;
+    overflow: auto;
+    font-family: inherit;
+    font-size: 100%;
+    margin:20px 0;
+}

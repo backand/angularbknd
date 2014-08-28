@@ -59,11 +59,18 @@
     <!-- <header ng-include="'themes/AdminLTE-master/backand/partials/header/header.html'" class="header"></header>
     <ng-include src="'themes/AdminLTE-master/backand/partials/index/index.html'"></ng-include> -->
 
-    <div pure-form fields="fields" value="values" layout="arrange" form="formDetails" format="formatArray">
+    <div pure-form fields="fields" values="values" layout="arrange" form="formDetails" format="formatArray" errors="errors">
 
 
 
     </div>
+
+    
+
+    
+
+
+     
 
     <!--End Main Theme Body-->
     <!-- jQuery 2.0.2 -->
@@ -92,6 +99,8 @@
     <script src="bower_components/ng-grid/ng-grid-2.0.12.min.js"></script>
     <script src="bower_components/ng-grid/plugins/ng-grid-flexible-height.js"></script>
     <script src="bower_components/ng-grid/plugins/ng-grid-layout.js"></script>
+    <script src='/bower_components/textAngular/dist/textAngular-sanitize.min.js'></script>
+    <script src='/bower_components/textAngular/dist/textAngular.min.js'></script>
 
     <!-- BACKAND THEME STUFF !-->
     <script src="themes/AdminLTE-master/backand/js/app.js"></script>
@@ -128,6 +137,8 @@
     <script src="backand/js/directives/textarea/js/textarea.js"></script>
     <script src="backand/js/directives/input/js/input.js"></script>
     <script src="backand/js/directives/link/js/link.js"></script>
+    <script src="backand/js/directives/editor/js/editor.js"></script>
+    <script src="backand/js/directives/checkbox/js/checkbox.js"></script>
 
 </body>
 

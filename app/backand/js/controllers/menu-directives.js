@@ -1,8 +1,8 @@
 'use strict';
 
 
-angular.module('backAnd.controllers')
-.controller('menuDirectivesController', ['$scope', 'Global', '$compile', 'gridConfigService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route', '$interval', '$window',
+var backAndControllers = angular.module('backAnd.controllers');
+backAndControllers.controller('menuDirectivesController', ['$scope', 'Global', '$compile', 'gridConfigService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route', '$interval', '$window', 
     function($scope, Global, $compile, gridConfigService, menuService, $timeout, $rootScope, $http, $location, $route, $interval, $window) {
 
 
@@ -20,6 +20,7 @@ angular.module('backAnd.controllers')
 
             {
                name: "link", 
+               type: "button"
             },
 
             {
@@ -35,7 +36,9 @@ angular.module('backAnd.controllers')
                 show: true,
                 disabled: false,
                 required: true,
-                type: "text"
+                type: "number",
+                minimumValue: 6000,
+                maximumValue: 30000
             },
 
             {
@@ -51,7 +54,8 @@ angular.module('backAnd.controllers')
 
             {
                 url: "http://www.nytimes.com",
-                linkText: "NY Times"
+                linkText: "NY Times",
+                target: "_blank"
             },
 
             {
@@ -59,7 +63,7 @@ angular.module('backAnd.controllers')
             },
 
             {
-                val: "Yoram Kornatzky"
+                val: 3233
             },
 
             {
@@ -92,6 +96,18 @@ angular.module('backAnd.controllers')
             }
         ];
 
+        $scope.errors = [
+            {},
+            {},
+            {},
+            {
+                minimumValue: "Need min",
+                maximumValue: "Need max",
+                required: "Need required"
+            },
+            {}
+        ];
+
         $scope.formDetails = {
             name: "surprise"
         };
@@ -112,6 +128,8 @@ angular.module('backAnd.controllers')
         $scope.$watch('values[2].val', function(newValue, oldValue) {
             $window.alert("new input:" + newValue);
         });
+
+
 
         ////////////////
 

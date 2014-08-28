@@ -2,7 +2,7 @@
 
 /* Directives */
 
-var backAndDirectives = angular.module('backAnd.directives');
+var backAndDirectives = angular.module('backAnd.directives', ['textAngular']);
 backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, $log) {
     return {
       restrict: 'A',
@@ -11,13 +11,17 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
       scope: {
         fields: "=",
         form: "=",
-        value: "=",
+        values: "=",
         layout: "=",
-        format: "="
+        format: "=",
+        errors: "="
       },
       link: function(scope, el, attrs) {
 
         
+        scope.$watch('htmlValue.val', function(newValue, oldValue) {
+            $log.debug("new input:" + newValue);
+        });
 
         scope.nicknameClass = { 'yellow' : true };
 
@@ -39,11 +43,36 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
         
 
         scope.fieldsArray = scope.fields.slice(2, 4);
-        scope.valuesArray = scope.value.slice(2,4);
+        scope.valuesArray = scope.values.slice(2,4);
         scope.classesArray = [
           ["orange"], "green" 
         ];
         
+
+        scope.htmlField = {
+          required: false,
+          show: true,
+          disabled: false
+        };
+
+        scope.htmlValue = {
+          val: "xxx"
+        };
+
+        scope.booleanField = {
+          show: true,
+          disabled: false,
+          defaultValue: false
+        };
+
+        scope.booleanValue = {
+          
+        };
+
+        scope.$watch('booleanValue.val', function(newValue, oldValue) {
+            $log.debug("new input:" + newValue);
+        });
+
 
         scope.processForm = function(data, dataItem) {
           angular.forEach(data.fields, function (field) {

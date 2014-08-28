@@ -1,4 +1,4 @@
-<div style="background-color: green;">
-	<textarea name="{{field.name}}" class="form-control" ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"></textarea>
-	<div class="alert alert-danger" role="alert" ng-show="{{form.name}}.{{field.name}}.$error.required">Missing</div>
-</div>
+<ng-form name="innerForm">
+	<textarea name="field" class="form-control" ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled" ng-class="inputClass"></textarea>
+	<div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>
+</ng-form>

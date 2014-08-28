@@ -43,6 +43,7 @@
     "ionicons" : "latest",
     "jquery-resize" : "latest",
     "jquery-knob" : "latest",
-    "jquery.inputmask" : "latest"
+    "jquery.inputmask" : "latest",
+    "textAngular" : "latest"
   }
 }

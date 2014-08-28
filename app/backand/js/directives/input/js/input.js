@@ -1,7 +1,7 @@
 'use strict';
+var backAndDirectives = angular.module('backAnd.directives');
 
-angular.module('backAnd.directives').directive('input', function() {
-	console.log("input called");
+backAndDirectives.directive('input', function($log) {
     return {
     	restrict: 'A',
     	replace: true,
@@ -9,14 +9,14 @@ angular.module('backAnd.directives').directive('input', function() {
     		field: "=",
     		value: "=",
             form: "=",
-            inputClass: "="
+            inputClass: "=",
+            errors: "="
     	},
     	templateUrl: 'backand/js/directives/input/partials/input.html',
     	link: function(scope, el, attrs) {
-            console.log("input.js", scope);
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
-	        }
+	        };
     	}
     }
 });
