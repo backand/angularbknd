@@ -13,7 +13,7 @@
                             </div>
                             <div class="tabbable form-group">
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li ng-repeat="category in formSchema.categories" ng-class="{active : $first}">
+                                    <li ng-repeat="category in formSchema.categories" ng-class="{active : $first}" ng-click="getSubGrid(category, formSchema.id, this)">
                                         <a href="#{{category.catName | removeSpaces}}" ng-click="toggleActive($event)" role="tab" data-toggle="tab">{{category.catName}}</a>
                                     </li>
                                 </ul>

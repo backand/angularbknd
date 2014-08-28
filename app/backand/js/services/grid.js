@@ -9,6 +9,7 @@ angular.module('backAnd').factory('gridService', ['$resource',
 			table: 'table',
 			pageSize: 'pageSize',
 			pageNumber: 'pageNumber',
+			filter: 'filter',
 			sort: 'sort',
 			search: 'search'
 		}, {

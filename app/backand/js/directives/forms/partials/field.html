@@ -1,7 +1,7 @@
 <hr ng-if="field.hr">
 <div class="subtitle text-info" ng-bind-html="renderHtml(field.seperatorTitle)"></div>
 <div ng-bind-html="renderHtml(field.preLabel)"></div>
-<label ng-switch on="field.type">{{field.name}}
+<label ng-switch on="field.type">{{field.displayName | parseLabel:field}}
   <!--<div ng-switch-when="date">
     <p class="input-group">
       <input name="date" required type="text" is-date class="form-control" datepicker-popup="MM/dd/yyyy" ng-model="field.value" is-open="field.opened" close-text="Close" />
@@ -15,6 +15,8 @@
   <!--<div textarea field="field"></div>-->
   <!--<input to-number ng-switch-when="number" ng-model="field.value" type="text" name="{{field.name}}" class="form-control" value="{{field.value}}">
   <input ng-switch-default type="{{field.type}}" name="{{field.name}}" class="form-control" value="{{field.value}}">-->
-    <div input field="field" value="field.value" form="" input-class=""></div>
+    
+    <ngback-table ng-switch-when="subgrid" table-name="global.currentTable" filterOptions="global.filter"></ngback-table>
+    <div ng-switch-default input field="field" value="field.value" form="" input-class=""></div>
 </label>
 <div ng-bind-html="renderHtml(field.postLabel)"></div>

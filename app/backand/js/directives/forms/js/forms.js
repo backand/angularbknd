@@ -170,7 +170,8 @@ angular.module('backAnd.directives')
               var formSchema = {
                   fields: [],
                   categories: {},
-                  title: ''
+                  title: '',
+                  id: null
               },
               params = $location.search();
               $log.debug("params", params);
@@ -189,7 +190,8 @@ angular.module('backAnd.directives')
 
               $q.all([dataForm.promise, dataItem.promise]).then(function (data) {
                   processForm(data[0], data[1]);
-              })
+              });
+
 
               function processForm(data, dataItem) {
                   formSchema.title = data.captionText;
@@ -206,12 +208,21 @@ angular.module('backAnd.directives')
                           case 'LongText':
                               type = 'textarea';
                               break;
+                          case 'MultiSelect':
+                              if (field.displayFormat == "Grid")
+                                  type = 'subgrid';
+                              else if (field.displayFormat == "CheckList")
+                                  type = 'checklist';
+                              else
+                                  type = 'text';
+                              break;
                           default:
                               type = 'text'
                       }
                       //console.log(field.type + ' : ' + field.name + ' : ' + dataItem[field.name])
                       var f = {
                           name: field.name,
+                          displayName: field.displayName,
                           type: type,
                           value: { val: dataItem[field.name] || '' },
                           hr: field.formLayout.addhorizontallineabouvethefield,
@@ -221,7 +232,9 @@ angular.module('backAnd.directives')
                           postLabel: field.formLayout.postLabel,
                           show: field.form.hideInEdit,
                           disabled: field.form.disableInEdit,
-                          required: field.advancedLayout.required
+                          required: field.advancedLayout.required,
+                          relatedViewName: field.relatedViewName,
+                          relatedParentFieldName: field.relatedParentFieldName
                       };
                       if (field.categoryName) {
                           if (!formSchema.categories[field.categoryName]) {
@@ -238,8 +251,13 @@ angular.module('backAnd.directives')
                   angular.forEach(data.categories, function (cat) {
                       if (formSchema.categories[cat.name]) {
                           formSchema.categories[cat.name].columnsInDialog = cat.columnsInDialog;
+                          if (formSchema.categories[cat.name].fields.length == 1 && formSchema.categories[cat.name].fields[0].type == 'subgrid') {
+                              formSchema.categories[cat.name].fields[0].hideLabel = true;
+                          }
                       }
                   });
+
+                  scope.formSchema.id = dataItem.__metadata.id;
               };
               scope.open = function ($event, field) {
                   $event.preventDefault();
@@ -254,6 +272,7 @@ angular.module('backAnd.directives')
                   $event.preventDefault();
                   $($event.currentTarget).tab('show');
               };
+
           }
       };
   })
@@ -283,3 +302,10 @@ angular.module('backAnd.directives')
           }
       };
   })
+.filter('parseLabel', function () {
+    return function (label, field) {
+        if (field && field.hideLabel)
+            return '';
+        return label;
+    }
+});

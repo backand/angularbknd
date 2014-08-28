@@ -319,11 +319,13 @@ angular.module('backAnd.controllers')
             if (searchText == 'undefined') searchText == null;
             // We are requesting data for the specific page of the table.
             var sortString = '[' + JSON.stringify($scope.sortOptions) + ']';
+            var filterString = JSON.stringify(Global.configTable.filter);
             gridService.queryjsonp({
                 // This will also need to be adjusted to deal with mutiple tables on the same page
                 table: $scope.tableName,
                 pageSize: $scope.pagingOptions.pageSize,
                 pageNumber: $scope.pagingOptions.currentPage,
+                filter: filterString,
                 sort: sortString,
                 search: searchText
             }, function (largeLoad) {

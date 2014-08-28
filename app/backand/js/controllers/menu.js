@@ -91,6 +91,36 @@ angular.module('backAnd.controllers')
             });
         };
 
+        $scope.getSubGrid = function (category, id, elm) {
+            var field = category.fields[0];
+            var table = field.relatedViewName;
+            if (table) {
+                var relatedViewName = field.relatedViewName;
+                var relatedParentFieldName = field.relatedParentFieldName;
+                var filterItem = new backand.filter.item(relatedParentFieldName, backand.filter.operator.relation.in, id);
+                var filter = [filterItem];
+
+                gridConfigService.queryjsonp({
+                    table: table,
+                }, function (data) {
+                    $scope.global.configTable = data;
+                    $scope.global.configTable.filter = filter;
+                    $scope.global.currentTable = table;
+                    var tableElementScope = $("ngback-grid").scope();
+                    $("ngback-grid").remove();
+                    var html = '<ngback-grid table-name="global.currentTable"></ngback-grid>';
+                    // Step 1: parse HTML into DOM element
+                    var template = angular.element(html);
+                    // Step 2: compile the template
+                    var linkFn = $compile(template);
+                    //Step 3: link the compiled template with the scope.
+                    var element = linkFn($scope);
+                    // Step 4: Append to DOM 
+                    $(".ngback-container .ng-scope").append(element);
+                });
+            }
+        };
+
         $scope.$on('load', function() {
             $scope.init();
         });
