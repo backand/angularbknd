@@ -1,4 +1,5 @@
 'use strict';
+
 var backAndDirectives = angular.module('backAnd.directives');
 backAndDirectives.directive('numeric', function($log) {
     return {

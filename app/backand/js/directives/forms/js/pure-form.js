@@ -2,7 +2,7 @@
 
 /* Directives */
 
-var backAndDirectives = angular.module('backAnd.directives', []);
+var backAndDirectives = angular.module('backAnd.directives', ['ui.bootstrap']);
 backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, $log) {
     return {
       restrict: 'A',
@@ -155,8 +155,37 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
 
         // };
 
+        scope.dateField = {
+          show: true,
+          required: false,
+          disabled: false,
+          minimumValue: '2014-01-12',
+          maximumValue: '2015-06-22',
+          format: 'dd-MM-yyyy'
+        };
 
-        
+        scope.dateValue = {
+          val: new Date()
+        };
+
+
+            // scope.open = function($event) {
+            //   event.preventDefault();
+            //   event.stopPropagation();
+
+            //   scope.opened = true;
+            // };
+
+            // scope.dateOptions = {
+            //   formatYear: 'yy',
+            //   startingDay: 1
+            // };
+
+            
+            
+
+
+       
 
         scope.processForm = function(data, dataItem) {
           angular.forEach(data.fields, function (field) {
@@ -203,11 +232,11 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
             }
           });
         };
-        scope.open = function($event, field) {
-          $event.preventDefault();
-          $event.stopPropagation();
-          field.opened = true;
-        };
+        // scope.open = function($event, field) {
+        //   $event.preventDefault();
+        //   $event.stopPropagation();
+        //   field.opened = true;
+        // };
         scope.renderHtml = function(html_code) {
           return $sce.trustAsHtml(html_code);
         };

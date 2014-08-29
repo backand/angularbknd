@@ -1,0 +1,15 @@
+<div class="row"  style="height: 400px; width: 100%;">
+  <div class="col-md-6">
+    <div class="input-group" ng-show="field.show">
+      <input type="text" name="field" class="form-control" datepicker-popup="{{field.format}}" ng-model="value.val" is-open="opened" min-date="{{field.minimumValue}}" max-date="{{field.maximumValue}}" date-disabled="field.disabled" ng-disabled="field.disabled" ng-required="field.required" close-text="Close" />
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="open($event)" ng-disabled="field.disabled"><i class="glyphicon glyphicon-calendar"></i></button>
+      </span>
+      <div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>
+      <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.date">{{errors.date}}</div>
+      <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.min">{{errors.minimumValue}}</div>
+      <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.max">{{errors.maximumValue}}</div>
+
+    </div>
+  </div>
+</div>
