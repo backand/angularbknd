@@ -161,7 +161,7 @@
 /* Directives */
 
 angular.module('backAnd.directives')
-  .directive('myform', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, $log) {
+  .directive('myform', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, gridService, $log, Global) {
       return {
           restrict: 'A',
           transclude: false,
@@ -177,6 +177,7 @@ angular.module('backAnd.directives')
               $log.debug("params", params);
               var dataForm = $q.defer();
               var dataItem = $q.defer();
+              var selectOptions = $q.defer();
 
               gridConfigService.queryjsonp({
                   table: params.table
@@ -188,10 +189,42 @@ angular.module('backAnd.directives')
                   dataItem.resolve(data);
               });
 
-              $q.all([dataForm.promise, dataItem.promise]).then(function (data) {
-                  processForm(data[0], data[1]);
-              });
+              var loadSelectOptions = function () {
+                  gridService.queryjsonp({
+                      table: params.table,
+                      withSelectOptions: true,
+                      filter: null,
+                      sort: null,
+                      search: null
+                  }, function (data) {
+                      selectOptions.resolve(data);
+                      if (!Global.selectOptions) {
+                          Global.selectOptions = [];
+                      }
+                      if (!Global.selectOptions[params.table]) {
+                          Global.selectOptions[params.table] = data.selectOptions;
+                      }
 
+
+                  });
+              }
+
+              if (!Global.selectOptions) {
+                  Global.selectOptions = [];
+              }
+
+              if (!Global.selectOptions[params.table]) {
+                  loadSelectOptions();
+                  $q.all([dataForm.promise, dataItem.promise, selectOptions.promise]).then(function (data) {
+                      processForm(data[0], data[1]);
+                  });
+              }
+              else {
+                  $q.all([dataForm.promise, dataItem.promise]).then(function (data) {
+                      processForm(data[0], data[1]);
+                  });
+              }
+              
 
               function processForm(data, dataItem) {
                   formSchema.title = data.captionText;
@@ -208,11 +241,17 @@ angular.module('backAnd.directives')
                           case 'LongText':
                               type = 'textarea';
                               break;
+                          case 'SingleSelect':
+                              if (field.displayFormat == "AutoCompleteStratWith" || field.displayFormat == "AutoCompleteMatchAny")
+                                  type = "autocomplete"
+                              else
+                                  type = 'singleSelect';
+                              break;
                           case 'MultiSelect':
                               if (field.displayFormat == "Grid")
                                   type = 'subgrid';
                               else if (field.displayFormat == "CheckList")
-                                  type = 'checklist';
+                                  type = 'multiSelect';
                               else
                                   type = 'text';
                               break;
@@ -233,6 +272,7 @@ angular.module('backAnd.directives')
                           show: field.form.hideInEdit,
                           disabled: field.form.disableInEdit,
                           required: field.advancedLayout.required,
+                          viewName: params.table,
                           relatedViewName: field.relatedViewName,
                           relatedParentFieldName: field.relatedParentFieldName
                       };
@@ -246,6 +286,14 @@ angular.module('backAnd.directives')
                           formSchema.categories[field.categoryName].fields.push(f);
                       } else {
                           formSchema.fields.push(f);
+                      }
+                      if (f.type == "singleSelect" || f.type == "multiSelect") {
+                          if (Global.selectOptions && Global.selectOptions[params.table] && Global.selectOptions[params.table][f.name]) {
+                              f.options = Global.selectOptions[params.table][f.name];
+                          }
+                      }
+                      else if (type == "autocomplete") {
+                          f.value.val = dataItem.__metadata.autocomplete[f.name];
                       }
                   })
                   angular.forEach(data.categories, function (cat) {
