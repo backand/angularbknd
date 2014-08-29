@@ -1,6 +1,7 @@
 'use strict';
+
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('numeric', function($log) {
+backAndDirectives.directive('html', function($log) {
     return {
     	restrict: 'A',
     	replace: true,
@@ -8,15 +9,13 @@ backAndDirectives.directive('numeric', function($log) {
     		field: "=",
     		value: "=",
             form: "=",
-            inputClass: "=",
             errors: "="
     	},
-    	templateUrl: 'backand/js/directives/numeric/partials/numeric.html',
+    	templateUrl: 'backand/js/directives/html/partials/html.html',
     	link: function(scope, el, attrs) {
-            $log.debug("numeric scope", scope);
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
-	        };
+	        }
     	}
     }
 });

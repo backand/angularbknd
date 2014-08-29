@@ -1,8 +1,15 @@
 <ng-form name="innerForm">
-	<input ng-if="field.format" type="{{field.type}}" name="field" class="form-control"  ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"  ng-class="inputClass" ng-pattern="field.format" min="field.minimumValue" max="field.maximumValue"></input>
-	<input ng-if="!field.format" type="{{field.type}}" name="field" class="form-control"  ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"  ng-class="inputClass" min="field.minimumValue" max="field.maximumValue"></input>
+	<input ng-if="field.type == 'plain'" type="number" name="field" ng-model="value.val" class="form-control" 
+		ng-disabled="field.disabled" ng-required="field.required" ng-class="inputClass" ng-show="field.show"
+        min="{{field.minimumValue}}" max="{{field.maximumValue}}">
+    <div ng-if="field.type != 'plain'" class="input-group">
+      <input type="number" name="field" ng-model="value.val" class="form-control" 
+		ng-disabled="field.disabled" ng-required="field.required" ng-class="inputClass" ng-show="field.show"
+        min="{{field.minimumValue}}" max="{{field.maximumValue}}">
+      <div class="input-group-addon">{{ field.type == 'percentage' ? '%' : field.currencySymbol }}</div>
+    </div>
 	<div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>
-	<div ng-if="field.pattern" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.pattern">{{errors.pattern}}</div>
-	<div ng-if="field.type == 'number'" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.min">{{errors.minimumValue}}</div>
-	<div ng-if="field.type == 'number'" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.max">{{errors.maximumValue}}</div>
+	<div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.number">{{errors.number}}</div>
+	<div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.min">{{errors.minimumValue}}</div>
+	<div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.max">{{errors.maximumValue}}</div>
 </ng-form>

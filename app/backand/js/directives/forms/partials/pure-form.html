@@ -100,13 +100,50 @@
   </div>
 </div>
 
-   <!--  <div class="row">
+    <div class="row">
       <div class="col-md-8">
         
-          <text-angular name="field"  ng-model="htmlValue.val" ></text-angular>
+          <div html field="plainHtmlField"  value="plainHtmlValue" ></div>
 
       </div>
+    </div>
+    <br/>
+    before numeric
+    <br/>
+
+     <div class="row">
+      <div class="col-md-8">
+        
+          <div numeric field="numericField"  value="numericValue" errors="numericErrors"></div>
+
+      </div>
+    </div>
+
+    <br/>
+    after numeric
+    <br/>
+
+    <!-- <div class="row">
+      <div class="col-md-8">
+
+        <input type="file" ng-file-select="onFileSelect($files)">
+        <br/>
+        <button class="button" ng-click="start()" ng-show="progress < 0">Start</button>
+        <button ng-click="upload.abort()" ng-show="hasUploader() && progress < 100">Cancel Upload</button>
+        <br/>
+        <div class="err" ng-show="errorMsg != null">{{errorMsg}}</div>
+        <br/>
+
+        <span class="progress" ng-show="progress[$index] >= 0">           
+          <div style="width:{{progress[$index]}}%">{{progress[$index]}}%</div>
+        </span>       
+        <br/>
+        {{f.name}} - size: {{f.size}}B - type: {{f.type}}
+        <br/>
+      </div>
     </div> -->
+
+
 
 
 

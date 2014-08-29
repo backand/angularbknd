@@ -2,7 +2,7 @@
 
 /* Directives */
 
-var backAndDirectives = angular.module('backAnd.directives', ['textAngular']);
+var backAndDirectives = angular.module('backAnd.directives', []);
 backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, $log) {
     return {
       restrict: 'A',
@@ -69,10 +69,94 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
           
         };
 
+        scope.plainHtmlField = {
+          required: false,
+          show: true,
+          disabled: false
+        };
+
+        scope.plainHtmlValue = {
+          val: "<p>kuku</p>"
+        };
+
         scope.$watch('booleanValue.val', function(newValue, oldValue) {
             $log.debug("new input:" + newValue);
         });
 
+        scope.$watch('htmlValue.val', function(newValue, oldValue) {
+            $log.debug("new input:" + newValue);
+        });
+
+        scope.$watch('plainHtmlValue.val', function(newValue, oldValue) {
+            $log.debug("new plain html input:" + newValue);
+        });
+
+        scope.numericField = {
+          required: false,
+          disabled: false,
+          show: true,
+          minimumValue: -8,
+          maximumValue: 10,
+          type: "currency",
+          currencySymbol: "NIS"
+
+        };
+
+        scope.numericValue = {
+          val: 2
+        };
+
+        scope.numericErrors = {
+          required: "Value required",
+          number: "Number required",
+          minimumValue: "beyond minimum value" + scope.numericField.minimumValue,
+          maximumValue: "beyond maximum value" + scope.numericField.maximumValue
+        };
+
+        scope.$watch('numericValue.val', function(newValue, oldValue) {
+            $log.debug("new numeric input:" + newValue);
+        });
+
+        // $window.uploadUrl = $window.uploadUrl || 'upload';
+        // scope.uploadUrl = 'server/upload/url';
+        // scope.uploadMethod = 'POST';
+        // scope.uploadHeaders = {}; // {'header-key': 'header-value'}
+        // scope.withUploadCredentials = false;
+
+        // scope.onFileSelect = function($files) {
+        //   //$files: an array of files selected, each file has name, size, and type.
+        //   for (var i = 0; i < $files.length; i++) {
+        //     var file = $files[i];
+        //     scope.upload(file);
+           
+        //   }
+          
+        // };
+
+        // scope.upload = function(file) {
+
+        //    $upload.upload({
+        //       url: scope.uploadUrl, 
+        //       method: scope.uploadMethod,
+        //       headers: scope.uploadHeaders,
+        //       withCredentials: scope.withUploadCredentials,
+              
+        //       file: file, 
+        //     }).progress(function(evt) {
+        //       console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+        //     }).success(function(data, status, headers, config) {
+        //       // file is uploaded successfully
+        //       console.log(data);
+        //     });
+        //     //.error(...)
+        //     //.then(success, error, progress); 
+        //     // access or attach event listeners to the underlying XMLHttpRequest.
+        //     //.xhr(function(xhr){xhr.upload.addEventListener(...)})
+
+        // };
+
+
+        
 
         scope.processForm = function(data, dataItem) {
           angular.forEach(data.fields, function (field) {
