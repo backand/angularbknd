@@ -42,7 +42,7 @@
 <form name="{{form.name}}" novalidate role="form">
 
 
-  <!-- <div class="row" ng-repeat="field in fieldsArray">
+  <div class="row" ng-repeat="field in fieldsArray">
     <div  ng-class="computeFieldSpan($index)">  
       <div input field="field" value="valuesArray[$index]" form="form" input-class="classesArray[$index]"></div>
     </div>
@@ -58,57 +58,29 @@
     <div ng-class="computeFieldSpan(1)" style="background-color: red;">
       <div link field="fields[1]" value="values[1]"></div>
     </div>
-  </div> -->
+  </div>
  
 
 
-<div kuku field="dateField" value="dateValue"></div>
-  
-<!--     <div class="row"  style="height: 400px; width: 100%;">
-        <div class="col-md-6">
-          <ng-form name="innerForm">
-            <div class="input-group">
-              <input type="text" name="field" class="form-control" datepicker-popup="{{dateField.format}}" ng-model="dateValue.val" is-open="opened" min-date="{{dateField.minimumValue}}" max-date="{{dateField.maximumValue}}" date-disabled="dateField.disabled" ng-disabled="dateField.disabled" ng-required="dateField.required" close-text="Close" />
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event)" ng-disabled="dateField.disabled"><i class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-              <div ng-if="dateField.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>
-              <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.date">{{errors.date}}</div>
-              <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.min">{{errors.minimumValue}}</div>
-              <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.max">{{errors.maximumValue}}</div>
 
-            </div>
-          </ng-form>
-        </div>
-    </div> -->
+
     
 
-    <!-- <div class="row"  style="height: 400px; width: 100%;">
-      <div class="col-md-6">
-        <div datepicker field="dateField" value="dateValue"></div>
-      </div>
-    </div> -->
-
-
-
- <!--  <div class="row" style="height: 80%; width: 100%">
     
-      <div datepicker field="dateField" value="dateValue"></div>
-  
-
-  </div> -->
 
 
-  <!-- <div class="row">
+
+
+  <div class="row">
     <div  ng-class="computeFieldSpan(2)">  
       <div input field="fields[2]" value="values[2]" form="form" input-class="format[2]"></div>
     </div>
-  </div> -->
+  </div>
 
  
 
 
- <!--  <div class="row">
+  <div class="row">
     <div  ng-class="computeFieldSpan(3)">
       <div input field="fields[3]" value="values[3]" form="form" input-class="format[3]" errors="errors[3]"></div>
     </div>
@@ -119,9 +91,9 @@
   <div class="col-md-8">
     <div editor field="htmlField" value="htmlValue" form="form" input-class="" errors=""></div>
   </div>
-</div> -->
+</div>
 
-<!-- <div class="row">
+<div class="row">
   <div class="col-md-8">
     <div checkbox field="booleanField" value="booleanValue" form="form" input-class="" errors=""></div>
   </div>
@@ -136,9 +108,9 @@
     </div>
     <br/>
     before numeric
-    <br/> -->
+    <br/>
 
-    <!--  <div class="row">
+     <div class="row">
       <div class="col-md-8">
         
           <div numeric field="numericField"  value="numericValue" errors="numericErrors"></div>
@@ -148,30 +120,27 @@
 
     <br/>
     after numeric
-    <br/> -->
+    <br/>
 
-    <!-- <div class="row">
-      <div class="col-md-8">
-
-        <input type="file" ng-file-select="onFileSelect($files)">
-        <br/>
-        <button class="button" ng-click="start()" ng-show="progress < 0">Start</button>
-        <button ng-click="upload.abort()" ng-show="hasUploader() && progress < 100">Cancel Upload</button>
-        <br/>
-        <div class="err" ng-show="errorMsg != null">{{errorMsg}}</div>
-        <br/>
-
-        <span class="progress" ng-show="progress[$index] >= 0">           
-          <div style="width:{{progress[$index]}}%">{{progress[$index]}}%</div>
-        </span>       
-        <br/>
-        {{f.name}} - size: {{f.size}}B - type: {{f.type}}
-        <br/>
-      </div>
-    </div> -->
+   
 
 
 
+<div class="row">
+  <div class="col-md-12">    
+    <div time field="myTimeField" value="myTimeValue" errors="timeErrors"></div>
+  </div>
+</div>
+
+ 
+<div class="row">
+  <div class="col-md-12">    
+    <div date field="dateField" value="dateValue" errors="dateErrors"></div>
+  </div>
+</div>
+  
+
+  
 
 
   <div class="alert alert-danger" role="alert" ng-show="{{form.name}}.$invalid">Form Invalid</div>

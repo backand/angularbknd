@@ -165,24 +165,73 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
         };
 
         scope.dateValue = {
-          val: new Date()
+          val: '2014-01-12'
         };
 
+        
 
-            // scope.open = function($event) {
-            //   event.preventDefault();
-            //   event.stopPropagation();
+            scope.open = function($event) {
+              event.preventDefault();
+              event.stopPropagation();
 
-            //   scope.opened = true;
-            // };
+              scope.opened = true;
+            };
 
-            // scope.dateOptions = {
-            //   formatYear: 'yy',
-            //   startingDay: 1
-            // };
+            scope.dateOptions = {
+              formatYear: 'yy',
+              startingDay: 1
+            };
 
             
+            // timepicker
+
+            scope.dateErrors = {
+              date: "not a date",
+              min: "before min",
+              max: "after max"
+            }
+
+            scope.timeErrors = {
+              time: "not a time",
+              minimumValue: "before min",
+              maximumValue: "after max"
+            }
+
+
+            scope.myTimeField = {
+              format: "24",
+              required: false,
+              show: true,
+              disabled: false,
+              minimumValue: "2:30",
+              maximumValue: "4:20"
+            }
+
+            scope.myTimeValue = { 
+              val: "11:39"
+            };
+          
             
+
+
+            // scope.toggleMode = function() {
+            //   scope.ismeridian = ! scope.ismeridian;
+            // };
+
+            // scope.update = function() {
+            //   var d = new Date();
+            //   d.setHours( 14 );
+            //   d.setMinutes( 0 );
+            //   scope.mytime = d;
+            // };
+
+            // scope.changed = function () {
+            //   console.log('Time changed to: ' + scope.mytime);
+            // };
+
+            // scope.clear = function() {
+            //   scope.mytime = null;
+            // };
 
 
        

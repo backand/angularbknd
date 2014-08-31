@@ -16,7 +16,7 @@
     "ng-grid": "latest",
     "raphael": "latest",
     "bootstrap" : "latest",
-    "angular-bootstrap": "0.10.0",
+    "angular-bootstrap": "latest",
     "fontawesome" : "latest",
     "jquery-ui" : "latest",
     "morrisjs" : "latest",

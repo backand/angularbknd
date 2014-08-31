@@ -1,0 +1,7 @@
+<ng-form name="innerForm">
+     <timepicker name="field" class="form-control time" ng-required="field.required" ng-show="field.show" ng-disabled="field.disabled" ng-class="inputClass" ng-model="mytime" hour-step="1" minute-step="1" show-meridian="field.format == '12'"></timepicker>
+     <div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>
+    <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.time">{{errors.time}}</div>
+    <div ng-if="field.minimumValue" class="alert alert-danger" role="alert" ng-show="tooEarly()">{{errors.minimumValue}}</div>
+    <div ng-if="field.maximumValue" class="alert alert-danger" role="alert" ng-show="tooLate()">{{errors.maximumValue}}</div>
+</ng-form>
