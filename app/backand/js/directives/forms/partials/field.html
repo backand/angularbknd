@@ -16,9 +16,9 @@
   <!--<input to-number ng-switch-when="number" ng-model="field.value" type="text" name="{{field.name}}" class="form-control" value="{{field.value}}">
   <input ng-switch-default type="{{field.type}}" name="{{field.name}}" class="form-control" value="{{field.value}}">-->
     
-    <ngback-table ng-switch-when="subgrid" table-name="global.currentTable" filterOptions="global.filter"></ngback-table>
+    <ngback-grid ng-switch-when="subgrid" table-name="field.relatedViewName" filter-options="filterSubgrid(field)"></ngback-grid>
     <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class=""></div>
     <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class=""></div>
-<div ng-switch-default input field="field" value="field.value" form="" input-class=""></div>
+    <div ng-switch-default input field="field" value="field.value" form="" input-class=""></div>
 </label>
 <div ng-bind-html="renderHtml(field.postLabel)"></div>

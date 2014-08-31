@@ -321,6 +321,12 @@ angular.module('backAnd.directives')
                   $($event.currentTarget).tab('show');
               };
 
+              scope.filterSubgrid = function (field) {
+                  var relatedViewName = field.relatedViewName;
+                  var relatedParentFieldName = field.relatedParentFieldName;
+                  var filterItem = new backand.filter.item(relatedParentFieldName, backand.filter.operator.relation.in, 1);
+                  return [filterItem];
+              };
           }
       };
   })
