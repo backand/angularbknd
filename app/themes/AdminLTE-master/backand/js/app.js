@@ -30,6 +30,12 @@ angular.module('backAnd', [
         $routeProvider.when('/forms', {
             templateUrl: 'themes/AdminLTE-master/backand/partials/forms/forms.html'
         });
+        $routeProvider.when('/404', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/custom/404.html'
+        });
+        $routeProvider.when('/error', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/custom/error.html'
+        });
         $routeProvider.otherwise({
             redirectTo: ''
         });
