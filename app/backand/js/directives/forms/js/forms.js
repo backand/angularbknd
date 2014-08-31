@@ -285,7 +285,7 @@ angular.module('backAnd.directives')
                           columns: field.formLayout.columnSpanInDialog,
                           preLabel: field.formLayout.preLabel,
                           postLabel: field.formLayout.postLabel,
-                          show: true,
+                          show: field.form.hideInEdit,
                           disabled: field.form.disableInEdit,
                           required: field.advancedLayout.required,
                           viewName: params.table,
