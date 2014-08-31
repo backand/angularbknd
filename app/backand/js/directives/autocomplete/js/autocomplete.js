@@ -17,9 +17,13 @@ angular.module('backAnd.directives').directive('autocomplete', function () {
     	        return $http.get(backandGlobal.url + "/1/view/data/autocomplete/" + $scope.field.viewName + '/' + $scope.field.name, {
     	            params: { term: query, limit: 20 }
     	        })
-                              .then(function (response) {
-                                  return response.data;
-                              });
+                .then(function (response) {
+                    return response.data;
+                });
+    	    };
+
+    	    $scope.setPcode = function (item) {
+    	        $scope.field.value.val = item.value;
     	    };
     	}],
     	link: function(scope, el, attrs) {

@@ -54,6 +54,22 @@ angular.module('backAnd').factory('gridViewDataItemService', ['$resource',
     }
 ]);
 
+angular.module('backAnd').factory('gridUpdateItemService', ['$resource',
+    function ($resource) {
+        return $resource(backandGlobal.url + '/1/view/data/:table/:id', {
+            table: 'table',
+            id: 'id',
+        }, {
+            queryjsonp: {
+                method: 'PUT',
+                params: {
+                    callback: 'JSON_CALLBACK'
+                }
+            }
+        });
+    }
+]);
+
 angular.module('backAnd').factory('gridDeleteItemService', ['$resource',
     function ($resource) {
         return $resource(backandGlobal.url + '/1/view/data/:table/:id', {

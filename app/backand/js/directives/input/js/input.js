@@ -1,7 +1,7 @@
 'use strict';
 var backAndDirectives = angular.module('backAnd.directives');
 
-backAndDirectives.directive('input', function($log) {
+backAndDirectives.directive('input', function ($log) {
     return {
     	restrict: 'A',
     	replace: true,
