@@ -19,6 +19,8 @@
     <ngback-table ng-switch-when="subgrid" table-name="global.currentTable" filterOptions="global.filter"></ngback-table>
     <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class=""></div>
     <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class=""></div>
+    <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class=""></div>
+    <div ng-switch-when="checkbox" checkbox field="field" value="field.value" form="" input-class=""></div>
 <div ng-switch-default input field="field" value="field.value" form="" input-class=""></div>
 </label>
 <div ng-bind-html="renderHtml(field.postLabel)"></div>

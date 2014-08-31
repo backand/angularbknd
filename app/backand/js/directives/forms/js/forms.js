@@ -239,7 +239,12 @@ angular.module('backAnd.directives')
                               type = 'date';
                               break;
                           case 'LongText':
-                              type = 'textarea';
+                              if (field.displayFormat == "MultiLines")
+                                  type = 'textarea';
+                              else if (field.displayFormat == "MultiLinesEditor")
+                                  type = 'editor';
+                              else
+                                  type = 'text';
                               break;
                           case 'SingleSelect':
                               if (field.displayFormat == "AutoCompleteStratWith" || field.displayFormat == "AutoCompleteMatchAny")
@@ -255,6 +260,17 @@ angular.module('backAnd.directives')
                               else
                                   type = 'text';
                               break;
+                          case 'ShortText':
+                              if (field.displayFormat == "MultiLines")
+                                  type = 'textarea';
+                              else if (field.displayFormat == "MultiLinesEditor")
+                                  type = 'editor';
+                              else
+                                  type = 'text';
+                              break;
+                          case 'Boolean':
+                              type = 'checkbox';
+                              break;
                           default:
                               type = 'text'
                       }
@@ -269,7 +285,7 @@ angular.module('backAnd.directives')
                           columns: field.formLayout.columnSpanInDialog,
                           preLabel: field.formLayout.preLabel,
                           postLabel: field.formLayout.postLabel,
-                          show: field.form.hideInEdit,
+                          show: true,
                           disabled: field.form.disableInEdit,
                           required: field.advancedLayout.required,
                           viewName: params.table,
