@@ -1,3 +1,4 @@
+
 <hr ng-if="field.hr">
 <div class="subtitle text-info" ng-bind-html="renderHtml(field.seperatorTitle)"></div>
 <div ng-bind-html="renderHtml(field.preLabel)"></div>
@@ -21,6 +22,7 @@
     <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class=""></div>
     <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class=""></div>
     <div ng-switch-when="checkbox" checkbox field="field" value="field.value" form="" input-class=""></div>
-<div ng-switch-default input field="field" value="field.value" form="" input-class=""></div>
+    <!--<div ng-switch-when="hyperlink" link field="field" value="field.value" form="" input-class=""></div>-->
+    <div ng-switch-default input field="field" value="field.value" form="" input-class=""></div>
 </label>
 <div ng-bind-html="renderHtml(field.postLabel)"></div>

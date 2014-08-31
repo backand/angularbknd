@@ -2,7 +2,7 @@
     <div class="" style="width: 65%;">
         <div class="">
             <div class="">
-                <form role="form">
+                <form role="form" ng-submit="submit()">
                     <div class="panel panel-default">
                         <div class="panel-heading"><h6 class="panel-title">{{formSchema.title}}</h6></div>
                         <div class="panel-body">
@@ -20,8 +20,8 @@
                                 <div class="tab-content panel-body">
                                     <div class="tab-pane fade in" ng-class="{active : $first}" ng-repeat="category in formSchema.categories" id="{{category.catName | removeSpaces}}" ng-form="subForm">
                                         <div ng-include="'backand/js/directives/forms/partials/field.html'"
-                                            class="col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in category.fields"
-                                            ng-if="field.show">
+                                             class="col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in category.fields"
+                                             ng-if="field.show">
                                             <!-- feild -->
                                         </div>
                                     </div>
