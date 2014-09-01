@@ -20,13 +20,13 @@ backAndDirectives.directive('date', function($log) {
 
 
             scope.dateValue = {
-              val: scope.value.val.substr(0,10);
+              val: scope.value.val.substr(0,10)
             };
             scope.dateField = _.clone(scope.field);
             scope.dateField.format = scope.dateField.format.substr(0, 10);
 
             scope.timeValue = {
-              val: scope.value.val.substr(11, 5);
+              val: scope.value.val.substr(11, 5)
             };
             scope.timeField = _.clone(scope.field);
             scope.timeField.format = scope.timeField.format.substr(0, 10);
