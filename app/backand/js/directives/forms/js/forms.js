@@ -110,7 +110,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                                         dataToSubmit[field.name] = field.value.val.value;
                                         break;
                                     case 'hyperlink':
-                                        dataToSubmit[field.name] = field.value.val.value;
+                                        dataToSubmit[field.name] = field.value.linkText;
                                         break;
 
 
@@ -139,6 +139,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                     
               };
 
+              
               function processForm(data, dataItem) {
                   dataToSubmit = dataItem;
                   formSchema.title = data.captionText;
@@ -214,6 +215,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                           relatedViewName: field.relatedViewName,
                           relatedParentFieldName: field.relatedParentFieldName
                       };
+                      
                       if (field.categoryName) {
                           if (!formSchema.categories[field.categoryName]) {
                               formSchema.categories[field.categoryName] = {
