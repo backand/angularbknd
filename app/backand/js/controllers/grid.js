@@ -200,9 +200,12 @@ angular.module('backAnd.controllers')
             }
         };
         $scope.addRow = function () {
-            $window.alert("Coming soon..");
-            return;
+            $location.search({
+                table: $scope.tableName
+            });
+            $location.path('/forms');
         }
+
         var messages = {
             pleaseSelectRow: "Please select a row.",
             confirm: "Are you sure that you want to delete the selected row?",

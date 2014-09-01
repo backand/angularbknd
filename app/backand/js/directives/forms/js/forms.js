@@ -3,7 +3,7 @@
 /* Directives */
 
 angular.module('backAnd.directives')
-  .directive('myform', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, gridUpdateItemService, gridService, $log, Global) {
+  .directive('myform', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global) {
       return {
           restrict: 'A',
           transclude: false,
@@ -16,6 +16,8 @@ angular.module('backAnd.directives')
                   id: null
               },
               params = $location.search();
+              var isNew = !params.id;
+
               $log.debug("params", params);
               var dataForm = $q.defer();
               var dataItem = $q.defer();
@@ -27,9 +29,11 @@ angular.module('backAnd.directives')
                   dataForm.resolve(data);
               });
 
-              gridViewDataItemService.queryjsonp(params, function (data) {
-                  dataItem.resolve(data);
-              });
+              if (!isNew) {
+                  gridViewDataItemService.queryjsonp(params, function (data) {
+                      dataItem.resolve(data);
+                  });
+              }
 
               var loadSelectOptions = function () {
                   gridService.queryjsonp({
@@ -55,23 +59,49 @@ angular.module('backAnd.directives')
                   Global.selectOptions = [];
               }
 
-              if (!Global.selectOptions[params.table]) {
-                  loadSelectOptions();
-                  $q.all([dataForm.promise, dataItem.promise, selectOptions.promise]).then(function (data) {
-                      processForm(data[0], data[1]);
-                  });
+              if (!isNew) {
+                  if (!Global.selectOptions[params.table]) {
+                      loadSelectOptions();
+                      $q.all([dataForm.promise, dataItem.promise, selectOptions.promise]).then(function (data) {
+                          processForm(data[0], data[1]);
+                      });
+                  }
+                  else {
+                      $q.all([dataForm.promise, dataItem.promise]).then(function (data) {
+                          processForm(data[0], data[1]);
+                      });
+                  }
               }
               else {
-                  $q.all([dataForm.promise, dataItem.promise]).then(function (data) {
-                      processForm(data[0], data[1]);
-                  });
+                  if (!Global.selectOptions[params.table]) {
+                      loadSelectOptions();
+                      $q.all([dataForm.promise, selectOptions.promise]).then(function (data) {
+                          processForm(data[0], {});
+                      });
+                  }
+                  else {
+                      $q.all([dataForm.promise]).then(function (data) {
+                          processForm(data[0], {});
+                      });
+                  }
               }
               
               var dataToSubmit = null;
-              var messages = {
+              var updateMessages = {
                  failure: "Failed to update the row. Please contact your system administrator.",
               };
+              var createMessages = {
+                  failure: "Failed to create the row. Please contact your system administrator.",
+              };
+
               scope.submit = function () {
+                  var service = isNew ? gridCreateItemService : gridUpdateItemService;
+                  var messages = isNew ? createMessages : updateMessages;
+                  scope.submitAction(service, messages);
+              }
+              
+
+              scope.submitAction = function (service, messages) {
                     angular.forEach(scope.formSchema.categories, function (category) {
                         angular.forEach(category.fields, function (field) {
                             if (dataToSubmit[field.name]) {
@@ -90,8 +120,7 @@ angular.module('backAnd.directives')
                         });
                     });
 
-                  
-                    gridUpdateItemService.queryjsonp(params, JSON.stringify(dataToSubmit), function (data) {
+                    service.queryjsonp(params, JSON.stringify(dataToSubmit), function (data) {
                         params;
                     },
                     function (error) {
@@ -104,6 +133,7 @@ angular.module('backAnd.directives')
                             $window.alert(error.data);
                         }
                     });
+                    
               };
 
               function processForm(data, dataItem) {
@@ -195,7 +225,7 @@ angular.module('backAnd.directives')
                               f.options = Global.selectOptions[params.table][f.name];
                           }
                       }
-                      else if (type == "autocomplete") {
+                      else if (type == "autocomplete" && !isNew) {
                           f.selected = dataItem.__metadata.autocomplete[f.name];
                       }
                   })
@@ -208,7 +238,9 @@ angular.module('backAnd.directives')
                       }
                   });
 
-                  scope.formSchema.id = dataItem.__metadata.id;
+                  if (!isNew) {
+                      scope.formSchema.id = dataItem.__metadata.id;
+                  }
               };
               scope.open = function ($event, field) {
                   $event.preventDefault();
