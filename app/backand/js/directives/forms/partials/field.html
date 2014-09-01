@@ -18,15 +18,17 @@
   <input ng-switch-default type="{{field.type}}" name="{{field.name}}" class="form-control" value="{{field.value}}">-->
     
     <ngback-grid ng-switch-when="subgrid" table-name="field.relatedViewName" filter-options="filterSubgrid(field,formSchema.id)"></ngback-grid>
-    <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class=""></div>
-    <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class=""></div>
-    <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class=""></div>
-    <div ng-switch-when="textarea" textarea field="field" value="field.value" form="" input-class=""></div>
-    <div ng-switch-when="checkbox" checkbox field="field" value="field.value" form="" input-class=""></div>
-    <div ng-switch-when="date" date field="field" value="field.value" form="" input-class=""></div>
+    <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    <div ng-switch-when="textarea" textarea field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    <div ng-switch-when="checkbox" checkbox field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    <!--<div ng-switch-when="date" date field="field" value="field.value" form="" input-class="" errors="field.errors"></div>-->
+    <div ng-switch-when="number" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    <div ng-switch-when="currency" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="hyperlink">
-       <div link field="field" value="field.value" form="" input-class=""></div>
+        <div link field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     </div>
-    <div ng-switch-default input field="field" value="field.value" form="" input-class=""></div>
+    <div ng-switch-default input field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
 </label>
 <div ng-bind-html="renderHtml(field.postLabel)"></div>

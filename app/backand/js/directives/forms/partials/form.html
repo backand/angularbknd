@@ -2,7 +2,7 @@
     <div class="" style="width: 65%;">
         <div class="">
             <div class="">
-                <form role="form" ng-submit="submit()">
+                <form role="form" name="form" novalidate ng-submit="submit()">
                     <div class="panel panel-default">
                         <div class="panel-heading"><h6 class="panel-title">{{formSchema.title}}</h6></div>
                         <div class="panel-body">
@@ -28,8 +28,14 @@
                                 </div>
                             </div>
                             <div class="form-actions text-right">
-                                <button type="reset" data-dismiss="modal" class="btn btn-danger">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <div ng-style="{'display':'inline', 'text-align':'left'}">
+                                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+                                </div>
+                                <div ng-style="{'display':'inline'}">
+                                    <button type="reset" data-dismiss="modal" class="btn btn-danger">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" ng-show="!waiting" ng-disabled="form.$invalid">Submit</button>
+                                    <img class="img-responsive" ng-show="waiting" src="backand/img/ajax-loader.gif" ng-style="{'display':'inline-block'}" />
+                                </div>
                             </div>
                         </div>
                 </form>

@@ -88,10 +88,12 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
               
               var dataToSubmit = null;
               var updateMessages = {
-                 failure: "Failed to update the row. Please contact your system administrator.",
+                  failure: "Failed to update the row. Please contact your system administrator.",
+                  success: "Data submitted.",
               };
               var createMessages = {
                   failure: "Failed to create the row. Please contact your system administrator.",
+                  success: "Data submitted.",
               };
 
               scope.submit = function () {
@@ -104,18 +106,19 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
               scope.submitAction = function (service, messages) {
                     angular.forEach(scope.formSchema.categories, function (category) {
                         angular.forEach(category.fields, function (field) {
-                            if (dataToSubmit[field.name] || isNew) {
+                            var val = field.value.val;
+                            if (dataToSubmit[field.name] != undefined || isNew) {
                                 switch (field.type) {
                                     case 'singleSelect':
-                                        dataToSubmit[field.name] = field.value.val.value;
+                                        dataToSubmit[field.name] = val && val.value ? val.value : '';
                                         break;
                                     case 'hyperlink':
-                                        dataToSubmit[field.name] = field.value.linkText;
+                                        dataToSubmit[field.name] = field.value && field.value.linkText ? field.value.linkText : '';
                                         break;
 
 
                                     default:
-                                        dataToSubmit[field.name] = field.value.val;
+                                        dataToSubmit[field.name] = val ? val : '';
                                         break;
                                 }
                             }
@@ -123,17 +126,29 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                         });
                     });
 
+                    scope.waiting = true;
+                    scope.alerts = [];
+                    scope.closeAlert = function (index) {
+                        scope.alerts.splice(index, 1);
+                    };
                     service.queryjsonp(params, JSON.stringify(dataToSubmit), function (data) {
-                        params;
+                        scope.waiting = false;
+                        scope.alerts = [{ type: 'success', msg: messages.success }];
+                        window.setTimeout(function () {
+                            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                                $(this).remove();
+                            });
+                        }, 5000);
                     },
                     function (error) {
+                        scope.waiting = false;
                         if (error.status == 500) {
                             console.error(error.data, error);
-                            $window.alert(messages.failure);
+                            scope.alerts = [{ type: 'danger', msg: messages.failure }];
                         }
                         else {
                             console.warn(error.data, error);
-                            $window.alert(error.data);
+                            scope.alerts = [{ type: 'danger', msg: error.data }];
                         }
                     });
                     
@@ -146,9 +161,19 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
 
                   angular.forEach(data.fields, function (field) {
                       var type;
+                      var currencySymbol;
+                      var pattern;
                       switch (field.type) {
                           case 'Numeric':
                               type = 'number';
+                              if (field.displayFormat == "Currency") {
+                                  type = 'currency';
+                                  currencySymbol = '$';
+                              }
+                              else if (field.displayFormat == "Percentage") {
+                                  type = 'percentage';
+                              }
+
                               break;
                           case 'DateTime':
                               type = 'date';
@@ -176,6 +201,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                                   type = 'text';
                               break;
                           case 'ShortText':
+                              pattern = /[0-9]/;
                               if (field.displayFormat == "MultiLines")
                                   type = 'textarea';
                               else if (field.displayFormat == "MultiLinesEditor")
@@ -195,6 +221,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                               
                           default:
                               type = 'text'
+                              
                               break;
                       }
                       //console.log(field.type + ' : ' + field.name + ' : ' + dataItem[field.name])
@@ -212,6 +239,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                           disabled: field.form.disableInEdit,
                           required: field.advancedLayout.required,
                           viewName: params.table,
+                          pattern: pattern,
                           relatedViewName: field.relatedViewName,
                           relatedParentFieldName: field.relatedParentFieldName
                       };
@@ -235,6 +263,9 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                       else if (type == "autocomplete" && !isNew) {
                           f.selected = dataItem.__metadata.autocomplete[f.name];
                       }
+                      else if (type == "currency") {
+                          f.currencySymbol = currencySymbol;
+                      }
                       else if (type == 'hyperlink') {
                           var url = '';
                           var linkText = '';
@@ -256,6 +287,8 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                           f.value.linkText = linkText;
                           f.value.target = target;
                       }
+
+                      f.errors = { required: "required", minimumValue: "min", maximumValue: "max", number: "number" };
                   })
                   angular.forEach(data.categories, function (cat) {
                       if (formSchema.categories[cat.name]) {
