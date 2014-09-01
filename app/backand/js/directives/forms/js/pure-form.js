@@ -168,6 +168,19 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
           val: '2014-01-12'
         };
 
+        scope.dateField1 = {
+          show: true,
+          required: false,
+          disabled: false,
+          minimumValue: '2014-01-12',
+          maximumValue: '2015-06-22',
+          format: 'dd-MM-yyyy'
+        };
+
+        scope.dateValue1 = {
+          val: '2014-01-12'
+        };
+
         
 
             scope.open = function($event) {
@@ -191,6 +204,12 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
               max: "after max"
             }
 
+
+            scope.dateErrors1 = {
+              date: "not a date",
+              min: "before min",
+              max: "after max"
+            }
             scope.timeErrors = {
               time: "not a time",
               minimumValue: "before min",
