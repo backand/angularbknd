@@ -2,7 +2,7 @@
 
 /* Directives */
 
-var backAndDirectives = angular.module('backAnd.directives', ['ui.bootstrap']);
+var backAndDirectives = angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular']);
 backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, $log) {
     return {
       restrict: 'A',
