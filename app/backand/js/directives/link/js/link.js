@@ -10,7 +10,8 @@ backAndDirectives.directive('link', function($log) {
       form: '='
     },
     template: '<div ng-include="inputType()"></div>', 
-    link: function(scope, el, attrs) {
+    link: function (scope, el, attrs) {
+        $log.debug(scope);
       scope.inputType = function() {
           switch(scope.field.type)
           {

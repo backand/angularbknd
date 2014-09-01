@@ -2,11 +2,11 @@
 
 /* Directives */
 
-angular.module('backAnd.directives')
-  .directive('myform', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global) {
+var backAndDirectives = angular.module('backAnd.directives');
+backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global) {
       return {
           restrict: 'A',
-          transclude: false,
+          transclude: true,
           templateUrl: 'backand/js/directives/forms/partials/form.html',
           link: function (scope, el, attrs) {
               var formSchema = {
@@ -104,12 +104,15 @@ angular.module('backAnd.directives')
               scope.submitAction = function (service, messages) {
                     angular.forEach(scope.formSchema.categories, function (category) {
                         angular.forEach(category.fields, function (field) {
-                            if (dataToSubmit[field.name]) {
+                            if (dataToSubmit[field.name] || isNew) {
                                 switch (field.type) {
                                     case 'singleSelect':
                                         dataToSubmit[field.name] = field.value.val.value;
                                         break;
-                                    
+                                    case 'hyperlink':
+                                        dataToSubmit[field.name] = field.value.val.value;
+                                        break;
+
 
                                     default:
                                         dataToSubmit[field.name] = field.value.val;
@@ -176,6 +179,8 @@ angular.module('backAnd.directives')
                                   type = 'textarea';
                               else if (field.displayFormat == "MultiLinesEditor")
                                   type = 'editor';
+                              else if (field.displayFormat == "Hyperlink")
+                                  type = 'hyperlink';
                               else
                                   type = 'text';
                               break;
@@ -227,6 +232,27 @@ angular.module('backAnd.directives')
                       }
                       else if (type == "autocomplete" && !isNew) {
                           f.selected = dataItem.__metadata.autocomplete[f.name];
+                      }
+                      else if (type == 'hyperlink') {
+                          var url = '';
+                          var linkText = '';
+                          var target = '';
+                          if (dataItem[field.name]) {
+                              var segments = dataItem[field.name].split('|');
+                              if (segments.length == 3) {
+                                  url = segments[2];
+                                  linkText = segments[0];
+                                  target = segments[1];
+                              }
+                              else {
+                                  url = dataItem[field.name];
+                                  linkText = dataItem[field.name];
+                              }
+                          }
+
+                          f.value.url = url;
+                          f.value.linkText = linkText;
+                          f.value.target = target;
                       }
                   })
                   angular.forEach(data.categories, function (cat) {

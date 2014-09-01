@@ -21,8 +21,11 @@
     <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class=""></div>
     <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class=""></div>
     <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class=""></div>
+    <div ng-switch-when="textarea" textarea field="field" value="field.value" form="" input-class=""></div>
     <div ng-switch-when="checkbox" checkbox field="field" value="field.value" form="" input-class=""></div>
-    <!--<div ng-switch-when="hyperlink" link field="field" value="field.value" form="" input-class=""></div>-->
+    <div ng-switch-when="hyperlink">
+       <div link field="field" value="field.value" form="" input-class=""></div>
+    </div>
     <div ng-switch-default input field="field" value="field.value" form="" input-class=""></div>
 </label>
 <div ng-bind-html="renderHtml(field.postLabel)"></div>
