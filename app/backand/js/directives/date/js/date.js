@@ -18,7 +18,13 @@ backAndDirectives.directive('date', function($log) {
               scope.value.val = scope.field.defaultValue;
             };
 
-            scope.mydate = new Date(scope.value.val);
+            var date = new Date(scope.value.val);
+            if (scope.field.format == 'dd/MM/yyyy') {
+                var dateParts = scope.value.val.split("/");
+                date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+            }
+
+            scope.mydate = date;
 
 
             scope.opened = false;
@@ -33,11 +39,16 @@ backAndDirectives.directive('date', function($log) {
               startingDay: 1
             };
 
-            scope.$watch("mydate", function(newValue, oldValue) { 
-              if (newValue)
-                scope.value.val = newValue.toString();
-              else
-                scope.value.val = null;
+            var zfill = function (num, len) { return (Array(len).join("0") + num).slice(-len); }
+
+            scope.$watch("mydate", function (newValue, oldValue) {
+                if (newValue)
+                    if (scope.field.format == 'dd/MM/yyyy')
+                        scope.value.val = zfill((newValue.getDate() + 1), 2) + '/' + zfill((newValue.getMonth() + 1), 2) + '/' + newValue.getFullYear();
+                    else
+                        scope.value.val = zfill((newValue.getMonth() + 1), 2) + '/' + zfill((newValue.getDate() + 1), 2) + '/' + newValue.getFullYear();
+                else
+                    scope.value.val = null;
             });
 
             scope.tooEarly = function() {

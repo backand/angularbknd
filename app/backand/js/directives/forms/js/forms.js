@@ -310,6 +310,9 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                           f.value.linkText = linkText;
                           f.value.target = target;
                       }
+                      else if (type == "date") {
+                          f.format = field.advancedLayout.format;
+                      }
 
                       f.errors = { required: "Data required", minimumValue: "Must be more than " + f.minimumValue, maximumValue: "Must be less than " + f.maximumValue, number: "Must be a number" };
                   })
