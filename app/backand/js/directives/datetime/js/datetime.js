@@ -1,7 +1,7 @@
 'use strict';
 
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('date', function($log) {
+backAndDirectives.directive('datetime', function($log) {
     return {
     	restrict: 'A',
     	replace: true,
@@ -12,7 +12,7 @@ backAndDirectives.directive('date', function($log) {
         inputClass: "=",
         errors: "="
     	},
-    	templateUrl: 'backand/js/directives/date/partials/date.html',
+    	templateUrl: 'backand/js/directives/date/partials/datetime.html',
       link: function(scope, el, attrs) {
             if (!scope.value.val){
               scope.value.val = scope.field.defaultValue;
@@ -30,6 +30,8 @@ backAndDirectives.directive('date', function($log) {
             };
             scope.timeField = _.clone(scope.field);
             scope.timeField.format = scope.timeField.format.substr(0, 10);
+
+            
 
             scope.$watch("dateValue.val", function(newValue, oldValue) { 
               if (newValue)

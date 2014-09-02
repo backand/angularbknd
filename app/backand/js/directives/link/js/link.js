@@ -13,7 +13,7 @@ backAndDirectives.directive('link', function($log) {
     },
     template: '<div ng-include="inputType()"></div>', 
     link: function (scope, el, attrs) {
-        $log.debug(scope);
+
       scope.inputType = function() {
           switch(scope.field.type)
           {
@@ -35,11 +35,8 @@ backAndDirectives.directive('link', function($log) {
         scope.showEdit = !scope.showEdit;
       };
       scope.isTargetBlank = scope.value.target == "_blank";
-      $log.debug("blank:" + scope.isTargetBlank);
       scope.targetChange = function() {
-        $log.debug("isTargetBlank", scope.isTargetBlank);
         scope.value.target = scope.isTargetBlank ? "_blank" : null;
-        $log.debug("targetChange", scope.value.target);
       };
 
     },

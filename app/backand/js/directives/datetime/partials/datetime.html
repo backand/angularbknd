@@ -1,14 +1,6 @@
-<div style="height: 400px; width: 100%;"> 
-  <ng-form name="innerForm">
-    <div class="input-group">
-      <input type="text" name="field" class="form-control" datepicker-popup="{{field.format}}" ng-model="mydate" is-open="opened" date-disabled="field.disabled" ng-disabled="field.disabled" ng-required="field.required" close-text="Close" />
-      <span class="input-group-btn">
-        <button type="button" class="btn btn-default" ng-click="open($event)" ng-disabled="field.disabled"><i class="glyphicon glyphicon-calendar"></i></button>
-      </span>
-    </div>
-    <div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>
-    <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.date">{{errors.date}}</div>
-    <div ng-if="field.minimumValue" class="alert alert-danger" role="alert" ng-show="tooEarly()">{{errors.minimumValue}}</div>
-    <div ng-if="field.maximumValue" class="alert alert-danger" role="alert" ng-show="tooLate()">{{errors.maximumValue}}</div>
-  </ng-form>
+<div class="row">
+  <div class="col-md-12">    
+    <div time field="timeField" value="timeValue" errors="timeErrors">   
+    <div date field="dateField" value="dateValue" errors="dateErrors"></div>
+  </div>
 </div>

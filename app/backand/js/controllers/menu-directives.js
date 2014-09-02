@@ -20,15 +20,16 @@ backAndControllers.controller('menuDirectivesController', ['$scope', 'Global', '
 
             {
                name: "link", 
-               type: "button"
+               type: "link"
             },
 
             {
                 name: "nickname",
                 show: true,
                 disabled: false,
-                required: true,
-                type: "text"
+                required: false,
+                type: "text",
+                format: /[a-z]+/
             },
 
             {
@@ -99,7 +100,11 @@ backAndControllers.controller('menuDirectivesController', ['$scope', 'Global', '
         $scope.errors = [
             {},
             {},
-            {},
+            {
+                required: "required",
+                format: "pattern"
+
+            },
             {
                 minimumValue: "Need min",
                 maximumValue: "Need max",
@@ -125,9 +130,9 @@ backAndControllers.controller('menuDirectivesController', ['$scope', 'Global', '
           };
         }, 300);
 
-        $scope.$watch('values[2].val', function(newValue, oldValue) {
-            $window.alert("new input:" + newValue);
-        });
+        // $scope.$watch('values[2].val', function(newValue, oldValue) {
+        //     $window.alert("new input:" + newValue);
+        // });
 
 
 

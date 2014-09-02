@@ -161,11 +161,11 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
           disabled: false,
           minimumValue: '2014-01-12',
           maximumValue: '2015-06-22',
-          format: 'MM-dd-yyyy'
+          format: 'dd/MM/yyyy'
         };
 
         scope.dateValue = {
-          val: '2014-01-12'
+          val: '2014/01/12'
         };
 
         scope.dateField1 = {
@@ -174,11 +174,11 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
           disabled: false,
           minimumValue: '2014-01-12',
           maximumValue: '2015-06-22',
-          format: 'MM-dd-yyyy'
+          format: 'dd/MM/yyyy'
         };
 
         scope.dateValue1 = {
-          val: '2014-01-12'
+          val: '2014-07-12'
         };
 
         
@@ -210,12 +210,12 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
               min: "before min",
               max: "after max"
             }
+
             scope.timeErrors = {
               time: "not a time",
               minimumValue: "before min",
               maximumValue: "after max"
             }
-
 
             scope.myTimeField = {
               format: "24",
@@ -230,7 +230,25 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
               val: "11:39"
             };
           
-            
+
+            scope.timeErrors1 = {
+              time: "not a time",
+              minimumValue: "before min",
+              maximumValue: "after max"
+            }
+
+            scope.myTimeField1 = {
+              format: "24",
+              required: false,
+              show: true,
+              disabled: false,
+              minimumValue: "2:30",
+              maximumValue: "4:20"
+            }
+
+            scope.myTimeValue1 = { 
+              val: "13:39"
+            };            
 
 
             // scope.toggleMode = function() {
