@@ -7,7 +7,9 @@ backAndDirectives.directive('link', function($log) {
     scope: {
       field: '=',
       value: '=',
-      form: '='
+      form: '=',
+      inputClass: "=",
+      errors: '='
     },
     template: '<div ng-include="inputType()"></div>', 
     link: function (scope, el, attrs) {
@@ -27,6 +29,19 @@ backAndDirectives.directive('link', function($log) {
               break;
           }
       };
+
+      scope.showEdit = false;
+      scope.editLink = function() {
+        scope.showEdit = !scope.showEdit;
+      };
+      scope.isTargetBlank = scope.value.target == "_blank";
+      $log.debug("blank:" + scope.isTargetBlank);
+      scope.targetChange = function() {
+        $log.debug("isTargetBlank", scope.isTargetBlank);
+        scope.value.target = scope.isTargetBlank ? "_blank" : null;
+        $log.debug("targetChange", scope.value.target);
+      };
+
     },
   };
 });
