@@ -20,4 +20,16 @@ The following parameters are passed to the directives
 
 Directives support two-way data binding.
 
-To use a directive, include in the bottom of your file, the js file of the directive. 
+To use a directive, include in the bottom of your file, the js file of the directive.
+
+Include in the `head` of your file, a minimal css file, 
+
+    date.css
+
+To use the directive, install [Angular Bootstrap](http://angular-ui.github.io/bootstrap/#/top). It can be installed using bower:
+
+    bower install angular-bootstrap
+
+In your controller module, declare a dependency on the `textAngular` module:
+    
+    angular.module('myModule', ['textAngular']);

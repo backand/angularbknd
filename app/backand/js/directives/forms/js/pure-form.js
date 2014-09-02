@@ -161,7 +161,7 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
           disabled: false,
           minimumValue: '2014-01-12',
           maximumValue: '2015-06-22',
-          format: 'dd-MM-yyyy'
+          format: 'MM-dd-yyyy'
         };
 
         scope.dateValue = {
@@ -174,7 +174,7 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
           disabled: false,
           minimumValue: '2014-01-12',
           maximumValue: '2015-06-22',
-          format: 'dd-MM-yyyy'
+          format: 'MM-dd-yyyy'
         };
 
         scope.dateValue1 = {

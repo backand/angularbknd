@@ -6,3 +6,6 @@ Include in the `head` of your file, a minimal css file,
 
     editor.css
 
+In your controller module, declare a dependency on the `textAngular` module:
+    
+    angular.module('myModule', ['textAngular']);
