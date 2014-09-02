@@ -3,7 +3,7 @@
 /* Directives */
 
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global) {
+backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global) {
       return {
           restrict: 'A',
           transclude: true,
@@ -17,6 +17,8 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
               },
               params = $location.search();
               var isNew = !params.id;
+              scope.isNew = isNew;
+              scope.continue = false;
 
               $log.debug("params", params);
               var dataForm = $q.defer();
@@ -102,7 +104,6 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                   scope.submitAction(service, messages);
               }
               
-
               scope.submitAction = function (service, messages) {
                     angular.forEach(scope.formSchema.categories, function (category) {
                         angular.forEach(category.fields, function (field) {
@@ -133,12 +134,27 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                     };
                     service.queryjsonp(params, JSON.stringify(dataToSubmit), function (data) {
                         scope.waiting = false;
-                        scope.alerts = [{ type: 'success', msg: messages.success }];
-                        window.setTimeout(function () {
-                            $(".alert").fadeTo(500, 0).slideUp(500, function () {
-                                $(this).remove();
-                            });
-                        }, 5000);
+                        if (isNew) {
+                            if (scope.continue) {
+                                $route.reload();
+                            }
+                            else {
+                                $location.search({
+                                    table: params.table,
+                                    id: data.__metadata.id
+                                });
+                                $location.path('/forms');
+                            }
+                            
+                        }
+                        else {
+                            scope.alerts = [{ type: 'success', msg: messages.success }];
+                            window.setTimeout(function () {
+                                $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                                    $(this).remove();
+                                });
+                            }, 5000);
+                        }
                     },
                     function (error) {
                         scope.waiting = false;
@@ -162,7 +178,6 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                   angular.forEach(data.fields, function (field) {
                       var type;
                       var currencySymbol;
-                      var pattern;
                       switch (field.type) {
                           case 'Numeric':
                               type = 'number';
@@ -201,7 +216,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                                   type = 'text';
                               break;
                           case 'ShortText':
-                              pattern = /[0-9]/;
+                              //pattern = /[0-9]/;
                               if (field.displayFormat == "MultiLines")
                                   type = 'textarea';
                               else if (field.displayFormat == "MultiLinesEditor")
@@ -225,11 +240,12 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                               break;
                       }
                       //console.log(field.type + ' : ' + field.name + ' : ' + dataItem[field.name])
+                      var val = isNew ? field.advancedLayout.defaultValue || '' : dataItem[field.name] || '';
                       var f = {
                           name: field.name,
                           displayName: field.displayName,
                           type: type,
-                          value: { val: dataItem[field.name] || '' },
+                          value: { val: val },
                           hr: field.formLayout.addhorizontallineabouvethefield,
                           seperatorTitle: field.formLayout.seperatorTitle,
                           columns: field.formLayout.columnSpanInDialog,
@@ -239,9 +255,10 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                           disabled: field.form.disableInEdit,
                           required: field.advancedLayout.required,
                           viewName: params.table,
-                          pattern: pattern,
                           relatedViewName: field.relatedViewName,
-                          relatedParentFieldName: field.relatedParentFieldName
+                          relatedParentFieldName: field.relatedParentFieldName,
+                          minimumValue: field.advancedLayout.minimumValue,
+                          maximumValue: field.advancedLayout.maximumValue,
                       };
                       
                       if (field.categoryName) {
@@ -260,8 +277,14 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                               f.options = Global.selectOptions[params.table][f.name];
                           }
                       }
-                      else if (type == "autocomplete" && !isNew) {
-                          f.selected = dataItem.__metadata.autocomplete[f.name];
+                      else if (type == "autocomplete") {
+                          if (isNew) {
+                              f.selected = val;
+                              f.value.val = val.value;
+                          }
+                          else {
+                              f.selected = dataItem.__metadata.autocomplete[f.name];
+                          }
                       }
                       else if (type == "currency") {
                           f.currencySymbol = currencySymbol;
@@ -288,7 +311,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, gridConfigS
                           f.value.target = target;
                       }
 
-                      f.errors = { required: "required", minimumValue: "min", maximumValue: "max", number: "number" };
+                      f.errors = { required: "Data required", minimumValue: "Must be more than " + f.minimumValue, maximumValue: "Must be less than " + f.maximumValue, number: "Must be a number" };
                   })
                   angular.forEach(data.categories, function (cat) {
                       if (formSchema.categories[cat.name]) {
