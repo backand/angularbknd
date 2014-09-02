@@ -114,9 +114,11 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                                         dataToSubmit[field.name] = val && val.value ? val.value : '';
                                         break;
                                     case 'hyperlink':
-                                        dataToSubmit[field.name] = field.value && field.value.linkText ? field.value.linkText : '';
+                                        dataToSubmit[field.name] = field.value && field.value.linkText ? field.value.linkText + '|' + (field.value.target ? "_blank" : "_self") + '|' + field.value.url : '';
                                         break;
-
+                                    case 'percentage':
+                                        dataToSubmit[field.name] = field.value && field.value.val ? (val / 100).toFixed(2) : val;
+                                        break;
 
                                     default:
                                         dataToSubmit[field.name] = val ? val : '';
@@ -223,6 +225,10 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                                   type = 'editor';
                               else if (field.displayFormat == "Hyperlink")
                                   type = 'hyperlink';
+                              else if (field.displayFormat == "Email")
+                                  type = 'email';
+                              else if (field.displayFormat == "Password")
+                                  type = 'password';
                               else
                                   type = 'text';
                               break;
@@ -232,6 +238,9 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                           case 'Url':
                               type = 'hyperlink';
                               break;
+                          case 'Email':
+                              type = 'email';
+                              break;
 
                               
                           default:
@@ -239,7 +248,6 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                               
                               break;
                       }
-                      //console.log(field.type + ' : ' + field.name + ' : ' + dataItem[field.name])
                       var val = isNew ? field.advancedLayout.defaultValue || '' : dataItem[field.name] || '';
                       var f = {
                           name: field.name,
@@ -312,6 +320,9 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                       }
                       else if (type == "date") {
                           f.format = field.advancedLayout.format;
+                      }
+                      else if (type == "percentage") {
+                          f.value.val = val ? val * 100 : val;
                       }
 
                       f.errors = { required: "Data required", minimumValue: "Must be more than " + f.minimumValue, maximumValue: "Must be less than " + f.maximumValue, number: "Must be a number" };
