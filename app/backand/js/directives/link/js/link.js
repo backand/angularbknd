@@ -29,11 +29,6 @@ backAndDirectives.directive('link', function($log) {
               break;
           }
       };
-
-      scope.showEdit = false;
-      scope.editLink = function() {
-        scope.showEdit = !scope.showEdit;
-      };
       scope.isTargetBlank = scope.value.target == "_blank";
       scope.targetChange = function() {
         scope.value.target = scope.isTargetBlank ? "_blank" : null;
