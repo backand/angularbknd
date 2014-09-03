@@ -12,40 +12,46 @@ backAndDirectives.directive('datetime', function($log) {
         inputClass: "=",
         errors: "="
     	},
-    	templateUrl: 'backand/js/directives/date/partials/datetime.html',
+    	templateUrl: 'backand/js/directives/datetime/partials/datetime.html',
       link: function(scope, el, attrs) {
             if (!scope.value.val){
               scope.value.val = scope.field.defaultValue;
             };
 
-
-            scope.dateValue = {
-              val: scope.value.val.substr(0,10)
+            scope.combinedValue = {
+               val: scope.value.val? new Date(scope.value.val) : null
             };
-            scope.dateField = _.clone(scope.field);
-            scope.dateField.format = scope.dateField.format.substr(0, 10);
 
-            scope.timeValue = {
-              val: scope.value.val.substr(11, 5)
+            scope.combinedConfig = {
+              startView: "day",
+              minView: "minute",
+              minuteStep: 3,
+              weekStart: 0, 
+              dropdownSelector: '.my-toggle-select-' + scope.field.name
             };
-            scope.timeField = _.clone(scope.field);
-            scope.timeField.format = scope.timeField.format.substr(0, 10);
 
-            
-
-            scope.$watch("dateValue.val", function(newValue, oldValue) { 
-              if (newValue)
-                scope.value.val = newValue + " " + scope.value.val.subtr(11,5);
-              else
+            scope.onTimeSet = function (newDate, oldDate) {
+              if (newDate){
+                scope.value.val = moment(scope.combinedValue.val).format(scope.field.format);
+              }        
+              else{
                 scope.value.val = null;
-            });
+              }   
+            };
 
-            scope.$watch("timeValue.val", function(newValue, oldValue) { 
-              if (newValue)
-                scope.value.val = scope.value.val.subtr(0,10) + " " + newValue;
-              else
-                scope.value.val = null;
-            });
+            scope.tooEarly = function() {
+              if (!scope.field.minimumValue)
+                return false;
+              var current = moment(scope.combinedValue.val);
+              return current.isBefore(moment(scope.field.minimumValue));
+            };
+       
+            scope.tooLate = function() {
+              if (!scope.field.maximumValue)
+                return false;
+              var current = moment(scope.combinedValue.val);
+              return current.isAfter(moment(scope.field.maximumValue));
+            };
 
         }
     }         

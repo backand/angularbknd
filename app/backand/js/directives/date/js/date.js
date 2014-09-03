@@ -62,7 +62,7 @@ backAndDirectives.directive('date', function($log) {
               if (!scope.field.maximumValue)
                 return false;
               var current = moment(scope.mydate);
-              return current.isAfter(moment(scope.field.maximumValuea));
+              return current.isAfter(moment(scope.field.maximumValue));
             };
 
         }
