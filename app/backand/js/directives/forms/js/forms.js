@@ -323,6 +323,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                       }
                       else if (type == "date" || type == "datetime") {
                           f.format = field.advancedLayout.format;
+                          f.value.val = dataItem.__metadata.dates[field.name];
                       }
                       else if (type == "percentage") {
                           f.value.val = val ? val * 100 : val;
