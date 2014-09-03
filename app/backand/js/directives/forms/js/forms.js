@@ -193,7 +193,10 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
 
                               break;
                           case 'DateTime':
-                              type = 'date';
+                              if (field.displayFormat == "Date_mm_dd" || field.displayFormat == "Date_dd_mm")
+                                  type = 'date';
+                              else
+                                  type = 'datetime';
                               break;
                           case 'LongText':
                               if (field.displayFormat == "MultiLines")
@@ -318,7 +321,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                           f.value.linkText = linkText;
                           f.value.target = target;
                       }
-                      else if (type == "date") {
+                      else if (type == "date" || type == "datetime") {
                           f.format = field.advancedLayout.format;
                       }
                       else if (type == "percentage") {
