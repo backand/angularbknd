@@ -326,6 +326,12 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                       }
 
                       f.errors = { required: "Data required", minimumValue: "Must be more than " + f.minimumValue, maximumValue: "Must be less than " + f.maximumValue, number: "Must be a number" };
+
+                      /// subgrid
+                      f.filterSubgrid = function () {
+                          var filterItem = new backand.filter.item(f.relatedParentFieldName, backand.filter.operator.relation.in, dataItem.__metadata.id);
+                          return [filterItem];
+                      };
                   })
                   angular.forEach(data.categories, function (cat) {
                       if (formSchema.categories[cat.name]) {
@@ -354,12 +360,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                   $($event.currentTarget).tab('show');
               };
 
-              scope.filterSubgrid = function (field,id) {
-                  var relatedViewName = field.relatedViewName;
-                  var relatedParentFieldName = field.relatedParentFieldName;
-                  var filterItem = new backand.filter.item(relatedParentFieldName, backand.filter.operator.relation.in, 1);
-                  return [filterItem];
-              };
+              
           }
       };
   })
