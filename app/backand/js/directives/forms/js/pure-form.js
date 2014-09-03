@@ -49,6 +49,28 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
         ];
         
 
+        scope.editorsArray = [
+          {
+            required: true,
+            show: true,
+            disabled: false
+          },
+          {
+          required: false,
+          show: true,
+          disabled: false
+          }
+        ];
+
+        scope.valuesEd = [
+        {
+          val: null
+        },
+        {
+          val: "bbb"
+        }
+        ];
+
         scope.htmlField = {
           required: false,
           show: true,
@@ -57,6 +79,16 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
 
         scope.htmlValue = {
           val: "xxx"
+        };
+
+        scope.htmlField1 = {
+          required: false,
+          show: true,
+          disabled: false
+        };
+
+        scope.htmlValue1 = {
+          val: "<p>yyyy</p>"
         };
 
         scope.booleanField = {
