@@ -203,14 +203,14 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             if ($scope.mySelections != null && $scope.mySelections.length == 1) {
                 $location.search({
                     id: $scope.mySelections[0].__metadata.id,
-                    table: $scope.viewNameId
+                    viewName: $scope.viewNameId
                 });
                 $location.path('/forms');
             }
         };
         $scope.addRow = function () {
             $location.search({
-                table: $scope.viewNameId
+                viewName: $scope.viewNameId
             });
             $location.path('/forms');
         }
