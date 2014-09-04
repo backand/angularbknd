@@ -321,9 +321,14 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                           f.value.linkText = linkText;
                           f.value.target = target;
                       }
-                      else if (type == "date" || type == "datetime") {
+                      else if (type == "date") {
                           f.format = field.advancedLayout.format;
                           f.value.val = dataItem.__metadata.dates[field.name];
+                      }
+                      else if (type == "datetime") {
+                          f.type = 'text';
+                          f.value.val = dataItem[field.name];
+                          f.disabled = true;
                       }
                       else if (type == "percentage") {
                           f.value.val = val ? val * 100 : val;
