@@ -33,20 +33,20 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                   var selectOptions = $q.defer();
 
                   gridConfigService.queryjsonp({
-                      table: params.table
+                      table: params.viewName
                   }, function (data) {
                       dataForm.resolve(data);
                   });
 
                   if (!scope.isNew) {
-                      gridViewDataItemService.queryjsonp(params, function (data) {
+                      gridViewDataItemService.queryjsonp({ table: params.viewName, id: params.id }, function (data) {
                           dataItem.resolve(data);
                       });
                   }
 
                   var loadSelectOptions = function () {
                       gridService.queryjsonp({
-                          table: params.table,
+                          table: params.viewName,
                           withSelectOptions: true,
                           filter: null,
                           sort: null,
@@ -56,8 +56,8 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                           if (!Global.selectOptions) {
                               Global.selectOptions = [];
                           }
-                          if (!Global.selectOptions[params.table]) {
-                              Global.selectOptions[params.table] = data.selectOptions;
+                          if (!Global.selectOptions[params.viewName]) {
+                              Global.selectOptions[params.viewName] = data.selectOptions;
                           }
 
 
@@ -69,7 +69,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                   }
 
                   if (!scope.isNew) {
-                      if (!Global.selectOptions[params.table]) {
+                      if (!Global.selectOptions[params.viewName]) {
                           loadSelectOptions();
                           $q.all([dataForm.promise, dataItem.promise, selectOptions.promise]).then(function (data) {
                               scope.processForm(data[0], data[1], params);
@@ -82,7 +82,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                       }
                   }
                   else {
-                      if (!Global.selectOptions[params.table]) {
+                      if (!Global.selectOptions[params.viewName]) {
                           loadSelectOptions();
                           $q.all([dataForm.promise, selectOptions.promise]).then(function (data) {
                               scope.processForm(data[0], {}, params);
@@ -150,7 +150,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                               }
                               else {
                                   $location.search({
-                                      table: params.table,
+                                      table: params.viewName,
                                       id: data.__metadata.id
                                   });
                                   $location.path('/forms');
@@ -185,10 +185,10 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
               scope.$watch('viewName', function () {
                   if (scope.viewName) {
                       if (scope.id) {
-                          scope.init({ table: scope.viewName, id: scope.id });
+                          scope.init({ viewName: scope.viewName, id: scope.id });
                       }
                       else {
-                          scope.init({ table: scope.viewName });
+                          scope.init({ viewName: scope.viewName });
                       }
                   }
                   else {
@@ -292,7 +292,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                           show: field.form.hideInEdit,
                           disabled: field.form.disableInEdit,
                           required: field.advancedLayout.required,
-                          viewName: params.table,
+                          viewName: params.viewName,
                           relatedViewName: field.relatedViewName,
                           relatedParentFieldName: field.relatedParentFieldName,
                           minimumValue: field.advancedLayout.minimumValue,
@@ -311,8 +311,8 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                           scope.formSchema.fields.push(f);
                       }
                       if (f.type == "singleSelect" || f.type == "multiSelect") {
-                          if (Global.selectOptions && Global.selectOptions[params.table] && Global.selectOptions[params.table][f.name]) {
-                              f.options = Global.selectOptions[params.table][f.name];
+                          if (Global.selectOptions && Global.selectOptions[params.viewName] && Global.selectOptions[params.viewName][f.name]) {
+                              f.options = Global.selectOptions[params.viewName][f.name];
                           }
                       }
                       else if (type == "autocomplete") {
