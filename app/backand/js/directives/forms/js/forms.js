@@ -142,7 +142,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                       scope.closeAlert = function (index) {
                           scope.alerts.splice(index, 1);
                       };
-                      service.queryjsonp(params, JSON.stringify(scope.dataToSubmit), function (data) {
+                      service.queryjsonp({table: params.viewName, id: params.id}, JSON.stringify(scope.dataToSubmit), function (data) {
                           scope.waiting = false;
                           if (scope.isNew) {
                               if (scope.continue) {
@@ -150,7 +150,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                               }
                               else {
                                   $location.search({
-                                      table: params.viewName,
+                                      viewName: params.viewName,
                                       id: data.__metadata.id
                                   });
                                   $location.path('/forms');
