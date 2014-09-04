@@ -5,7 +5,7 @@ angular.module('backAnd.directives')
 		templateUrl:  'backand/js/directives/dashboard/partials/dashboard.html',
 		replace: false,
 		scope: {
-			dashboardName : '='
+			dashboardId : '='
 		},                 
 	}
 });

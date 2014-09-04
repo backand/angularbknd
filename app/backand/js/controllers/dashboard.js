@@ -5,8 +5,8 @@ angular.module('backAnd.controllers')
 .controller('dashboardController', ['$scope', 'Global', '$http', 'dashboardService',
     function($scope, Global, $http, dashboardService) {
         $scope.global = Global;
-        $scope.$watch('dashboardName', function() {
-            if ($scope.dashboardName)
+        $scope.$watch('dashboardId', function() {
+            if ($scope.dashboardId)
                 $scope.setData();
         });
         $scope.init = function() {
@@ -14,7 +14,7 @@ angular.module('backAnd.controllers')
         }
         $scope.setData = function() {
             dashboardService.queryjsonp({
-                dashboard : $scope.global.currentTableID
+                dashboard: $scope.dashboardId
             }, function(data) { 
                 $scope.numCol = 12 / data.columns;
                 $scope.chartData = [];

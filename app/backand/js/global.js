@@ -1,5 +1,5 @@
 var backandGlobal = {
-    url: "http://localhost:4109/backapi", //"http://api.backand.info:8099",// "http://localhost:4109/backapi", //
+    url: "https://api.backand.com:8080",// "http://localhost:4109/backapi", //
     defaultApp: null,
 };
 

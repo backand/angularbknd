@@ -4,7 +4,6 @@
 angular.module('backAnd.controllers')
 .controller('chartController', ['$scope', 'Global', '$http',  
     function ($scope, Global, $http) {
-        $scope.global = Global;
         
         $scope.setChartData = function (data, element) {
             $scope.title = data.Title;

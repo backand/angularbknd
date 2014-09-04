@@ -43,16 +43,18 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 var tableElementScope = $("#ngback-grid_" + $scope.tableName + " .ngGrid").scope();
                 if (tableElementScope) {
                     $("#ngback-grid_" + $scope.tableName + " .ngGrid").remove();
-                    var html = '<div ng-if="dataTable" ng-style="getTableStyle()" ng-grid="dataTable"></div>';
-                    // Step 1: parse HTML into DOM element
-                    var template = angular.element(html);
-                    // Step 2: compile the template
-                    var linkFn = $compile(template);
-                    //Step 3: link the compiled template with the scope.
-                    var element = linkFn($scope);
-                    // Step 4: Append to DOM 
-                    $("#ngback-grid_" + $scope.tableName).append(element);
                 }
+                var inputStyle = ($scope.inputStyle) ? angular.toJson($scope.inputStyle).replace(/\"/gi, "'") : 'getTableStyle()';
+                var html = '<div ng-if="dataTable" ng-style="' + inputStyle + '" ng-grid="dataTable"></div>';
+                // Step 1: parse HTML into DOM element
+                var template = angular.element(html);
+                // Step 2: compile the template
+                var linkFn = $compile(template);
+                //Step 3: link the compiled template with the scope.
+                var element = linkFn($scope);
+                // Step 4: Append to DOM 
+                $("#ngback-grid_" + $scope.tableName).append(element);
+
                 $scope.setNGGridConfiguration();
             });
         };
@@ -67,7 +69,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
 
             $scope.pagingOptions = {
                 pageSizes: [5, 10, 15, 20, 30, 50, 100, 200, 500, 1000],
-                pageSize: 0,
+                pageSize: $scope.configTable.design.rowsperPage,
                 currentPage: 1,
             };
 
@@ -93,24 +95,26 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             // Grid footer custom style
             $scope.dataTable.footerTemplate =
                 '<div class="ngFooterPanel" ng-show="showFooter" style="height:{{footerRowHeight}}px;">' +
-                    '<div class="col-xs-2 text-left" style="margin-top: 12px;">' +
-                        '<span>{{i18n.ngTotalItemsLabel}} {{maxRows()}}</span>' +
+                    '<div class="col-xs-3 text-left" style="margin-top: 12px;">' +
+                        '<span>Showing {{pagingOptions.pageSize * (pagingOptions.currentPage-1) +1}} to {{footerPageMax(pagingOptions.pageSize,pagingOptions.currentPage,maxRows())}} of {{maxRows()}} entries</span>' +
                     '</div>' +
-                    '<div class="col-xs-2 text-right" style="margin-top: 6px;">' +
+                    '<div class="col-xs-3 text-right" style="margin-top: 6px;">' +
                         '<span>{{i18n.ngPageSizeLabel}}&nbsp;</span>' +
                         '<select class="ngBackGridSelect" ng-model="pagingOptions.pageSize" >' +
                             '<option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>' +
                         '</select>' +
                     '</div>' +
-                    '<div class="col-xs-7 text-right">' +
+                    '<div class="col-xs-6 text-right">' +
                         '<pagination style="margin-top:6px;" total-items="maxRows()" ng-model="pagingOptions.currentPage" max-size="5" class="pagination" boundary-links="true" rotate="false" items-per-page="pagingOptions.pageSize"></pagination>' +
                     '</div>' +
-                    '<div class="col-xs-1 text-right" style="margin-top: 12px;">' +
-                        '<span>Page: {{pagingOptions.currentPage}} / {{maxPages()}}</span>' +
-                    '</div>' +
                 '</div>';
+
+            $scope.footerPageMax = function (pageSize, currentPage, max) {
+                var max = Math.min((pageSize * currentPage), max);
+                return max;
+            }
+
             //update the configuration
-            $scope.pagingOptions.pageSize = $scope.configTable.design.rowsperPage;
             $scope.newButton = $scope.configTable.description.newButtonName;
             $scope.editButton = $scope.configTable.description.editButtonName;
             $scope.deleteButton = $scope.configTable.description.deleteButtonName;

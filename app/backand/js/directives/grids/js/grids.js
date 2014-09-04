@@ -6,6 +6,7 @@ angular.module('backAnd.directives', [])
                 tableName: '=',
                 options: '=',
                 filterOptions: '=',
+                inputStyle: '=',
             },
             controller: 'gridController',
             replace: false,
