@@ -4,6 +4,7 @@ angular.module('backAnd.directives')
 		restrict: 'E',
 		templateUrl:  'backand/js/directives/dashboard/partials/dashboard.html',
 		replace: false,
+		controller: 'dashboardController',
 		scope: {
 			dashboardId : '='
 		},                 

@@ -24,7 +24,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
               var dataForm = $q.defer();
               var dataItem = $q.defer();
               var selectOptions = $q.defer();
-
+              
               gridConfigService.queryjsonp({
                   table: params.table
               }, function (data) {
