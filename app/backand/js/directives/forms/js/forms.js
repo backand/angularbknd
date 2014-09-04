@@ -193,7 +193,10 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
 
                               break;
                           case 'DateTime':
-                              type = 'date';
+                              if (field.displayFormat == "Date_mm_dd" || field.displayFormat == "Date_dd_mm")
+                                  type = 'date';
+                              else
+                                  type = 'datetime';
                               break;
                           case 'LongText':
                               if (field.displayFormat == "MultiLines")
@@ -320,12 +323,24 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                       }
                       else if (type == "date") {
                           f.format = field.advancedLayout.format;
+                          f.value.val = dataItem.__metadata.dates[field.name];
+                      }
+                      else if (type == "datetime") {
+                          f.type = 'text';
+                          f.value.val = dataItem[field.name];
+                          f.disabled = true;
                       }
                       else if (type == "percentage") {
                           f.value.val = val ? val * 100 : val;
                       }
 
                       f.errors = { required: "Data required", minimumValue: "Must be more than " + f.minimumValue, maximumValue: "Must be less than " + f.maximumValue, number: "Must be a number" };
+
+                      /// subgrid
+                      f.filterSubgrid = function () {
+                          var filterItem = new backand.filter.item(f.relatedParentFieldName, backand.filter.operator.relation.in, dataItem.__metadata.id);
+                          return [filterItem];
+                      };
                   })
                   angular.forEach(data.categories, function (cat) {
                       if (formSchema.categories[cat.name]) {
@@ -354,12 +369,7 @@ backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gri
                   $($event.currentTarget).tab('show');
               };
 
-              scope.filterSubgrid = function (field,id) {
-                  var relatedViewName = field.relatedViewName;
-                  var relatedParentFieldName = field.relatedParentFieldName;
-                  var filterItem = new backand.filter.item(relatedParentFieldName, backand.filter.operator.relation.in, 1);
-                  return [filterItem];
-              };
+              
           }
       };
   })

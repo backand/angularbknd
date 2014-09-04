@@ -42,9 +42,15 @@
 <form name="{{form.name}}" novalidate role="form">
 
 
- <!--  <div class="row" ng-repeat="field in fieldsArray">
+<!--    <div class="row" ng-repeat="field in fieldsArray">
     <div  ng-class="computeFieldSpan($index)">  
-      <div input field="field" value="valuesArray[$index]" form="form" input-class="classesArray[$index]"></div>
+      <div editor field="field" value="valuesArray[$index]" form="form" input-class="classesArray[$index]"></div>
+    </div>
+  </div> -->
+
+  <div class="row" ng-repeat="field in editorsArray">
+    <div  ng-class="">  
+      <div editor field="field" value="valuesEd[$index]" form="form" input-class=""></div>
     </div>
   </div>
 
@@ -53,7 +59,7 @@
       <div textarea field="fields[0]" value="values[0]" form="form"></div>
     </div>
   </div>
--->
+
   <div class="row">
     <div ng-class="computeFieldSpan(1)" style="background-color: red;">
       <div link field="fields[1]" value="values[1]"></div>
@@ -92,6 +98,13 @@
     <div editor field="htmlField" value="htmlValue" form="form" input-class="" errors=""></div>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div editor field="htmlField1" value="htmlValue1" form="form" input-class="" errors=""></div>
+  </div>
+</div>
+
 
 <!-- <div class="row">
   <div class="col-md-8">
@@ -153,7 +166,31 @@
   </div>
 </div>
 
-  
+<!-- <div class="row">
+  <div class="col-md-12" style="height: 400px;">  
+    <datetimepicker data-ng-model="combined.val" data-datetimepicker-config="combinedField"></datetimepicker>
+  </div>
+</div>
+
+<p>Selected Date: {{ combined.val | date:'yyyy-MM-dd HH:mm' }}</p> -->
+
+<!-- <div class="dropdown">
+    <a class="{{ 'dropdown-toggle my-toggle-select-' +  combinedField.name }}" id="{{combinedField.name}}" role="button" data-toggle="dropdown" data-target="#" href="">
+        <div class="input-append"><input type="text" class="input-large" data-ng-model="combined.val"><span class="add-on"><i
+                class="icon-calendar"></i></span>
+        </div>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="{{combinedField.name}}">
+        <datetimepicker data-ng-model="combined.val"
+                        data-datetimepicker-config="combinedConfig" data-on-set-time="onTimeSet"></datetimepicker>
+    </ul>
+</div> -->
+
+<div class="row">
+  <div class="col-md-12">    
+    <div datetime field="combinedField" value="combinedValue" errors="combinedErrors"></div>
+  </div>
+</div>
 
 
   <div class="alert alert-danger" role="alert" ng-show="{{form.name}}.$invalid">Form Invalid</div>

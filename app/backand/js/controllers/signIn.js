@@ -54,6 +54,7 @@ angular.module('backAnd.controllers')
                     localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
                     $location.path('/');
                     window.location.reload()
+                    //$route.reload();
                 });
                 request.error(function (data, status, headers, config) {
                     var error_description = "The server is busy. Please contact your administrator or try again later.";

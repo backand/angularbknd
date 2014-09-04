@@ -6,7 +6,7 @@
  *  @description controller that reads backand REST API config and data and implement ng-grid to display it
  *
  */
-var backAndControllers = angular.module('backAnd.controllers', ['ui.bootstrap', 'textAngular']);
+var backAndControllers = angular.module('backAnd.controllers', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker']);
 backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$http', '$location', '$route', '$sce', '$compile', '$window',
     function ($scope, gridService, gridDeleteItemService, gridConfigService, $http, $location, $route, $sce, $compile, $window) {
 

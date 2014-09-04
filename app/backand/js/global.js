@@ -10,3 +10,6 @@ $(document).ready(function () {
         document.dispatchEvent(backand.security.authentication.onlogin);
     });
 });
+
+
+var zfill = function (num, len) { return (Array(len).join("0") + num).slice(-len); }

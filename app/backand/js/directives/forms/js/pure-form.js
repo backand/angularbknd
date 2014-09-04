@@ -2,7 +2,7 @@
 
 /* Directives */
 
-var backAndDirectives = angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular']);
+var backAndDirectives = angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker']);
 backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfigService, gridViewDataItemService, $log) {
     return {
       restrict: 'A',
@@ -49,6 +49,28 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
         ];
         
 
+        scope.editorsArray = [
+          {
+            required: true,
+            show: true,
+            disabled: false
+          },
+          {
+          required: false,
+          show: true,
+          disabled: false
+          }
+        ];
+
+        scope.valuesEd = [
+        {
+          val: null
+        },
+        {
+          val: "bbb"
+        }
+        ];
+
         scope.htmlField = {
           required: false,
           show: true,
@@ -57,6 +79,16 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
 
         scope.htmlValue = {
           val: "xxx"
+        };
+
+        scope.htmlField1 = {
+          required: false,
+          show: true,
+          disabled: false
+        };
+
+        scope.htmlValue1 = {
+          val: "<p>yyyy</p>"
         };
 
         scope.booleanField = {
@@ -271,7 +303,35 @@ backAndDirectives.directive('pureForm', function ($sce, $q, $location, gridConfi
             // };
 
 
-       
+      scope.combinedValue = {
+        val: null // new Date(2013, 9, 12)
+      };
+
+      scope.combinedField = {
+        name: "combination",
+        format: "YYYY-MM-DD",
+        show: true,
+        required: true,
+        disabled: false,
+        minimumValue: "2014-05-01",
+        maximumValue: "2014-08-20"
+      };
+
+      scope.combinedConfig = {
+        startView: "day",
+        minView: "minute",
+        minuteStep: 1,
+        weekStart: 0, 
+        dropdownSelector: '.my-toggle-select-' + scope.combinedField.name
+      };
+
+      scope.combinedErrors = {
+        required: "combined",
+        minimumValue: "min",
+        maximumValue: "max"
+      };
+      
+      
 
         scope.processForm = function(data, dataItem) {
           angular.forEach(data.fields, function (field) {
