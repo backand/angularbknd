@@ -7,8 +7,8 @@
  *
  */
 var backAndControllers = angular.module('backAnd.controllers', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker']);
-backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$http', '$location', '$route', '$sce', '$compile', '$window',
-    function ($scope, gridService, gridDeleteItemService, gridConfigService, $http, $location, $route, $sce, $compile, $window) {
+backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$filter', '$location', '$route', '$sce', '$compile', '$window',
+    function ($scope, gridService, gridDeleteItemService, gridConfigService, $filter, $location, $route, $sce, $compile, $window) {
 
         /**
          * @ngdoc function
@@ -93,8 +93,9 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 footerRowHeight: 47,
                 multiSelect: false,
                 enableColumnResize: true,
+                rowTemplate: '<div ng-dblclick="editSelected(row)" ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div><div ng-cell></div></div>',
 
-                //// grid edititing
+                // grid edititing
                 //enableCellEditOnFocus: true,
             };
             // Grid footer custom style
@@ -127,7 +128,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             // We are adding columns and its custom filter to the table based on type
             // this will also need to be changed to handle multiple tables on the same page
             angular.forEach($scope.configTable.fields, function (col) {
-                if (!col.donotDisplayinGrid && col.type != 'MultiSelect') {
+                if (!col.donotDisplayinGrid) {
                     $scope.columns.push({
                         headerCellTemplate: $scope.myHeaderCellTemplate(col, $scope.configTable),
                         cellFilter: col.type,
@@ -156,7 +157,15 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             if (searchText == 'undefined') searchText == null;
             // We are requesting data for the specific page of the table.
             var sortString = '[' + JSON.stringify($scope.sortOptions) + ']';
-            var filterString = ($scope.filterOptions) ? JSON.stringify($scope.filterOptions) : null;
+            // Read the filter either from attribute or query string
+            var filterString = '';
+            if ($scope.filterOptions)
+                filterString = JSON.stringify($scope.filterOptions);
+            else if($location.search().filterOptions)
+                filterString = $location.search().filterOptions;
+            else
+                filterString = null;
+            //Read from the service configuration
             gridService.queryjsonp({
                 table: $scope.viewNameId,
                 pageSize: $scope.pagingOptions.pageSize,
@@ -190,10 +199,6 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
         };
 
         $scope.editSelected = function () {
-             //$window.alert("Coming soon..");
-             //return;
-
-            //$window.alert("editSelected"); 
 
             if (!$scope.isSingleRowSelected()) {
                 $window.alert(messages.pleaseSelectRow);
@@ -324,9 +329,6 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             $scope.getData();
         }
 
-
-
-
         $scope.getCellTemplate = function (col, view) {
             switch (col.type) {
                 case 'Image':
@@ -339,6 +341,8 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                     return '<div class="ngCellText" style="white-space: normal;"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
                 case 'Url':
                     return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
+                case 'MultiSelect':
+                    return '<div class="ngCellText" style="white-space: normal;"><p ng-bind-html="renderSubGridUrl(\'{{row.entity[\'' + col.name + '\']}}\',{{row.entity}})"></p></div>';
                 default:
                     return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
             }
@@ -365,6 +369,18 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             return $sce.trustAsHtml(html);
         }
 
+        $scope.renderSubGridUrl = function (value, row) {
+            var field = $filter('filter')($scope.configTable.fields, function (f) { return f.name === value; })[0];
+            var html = '';
+            if (field){
+                var filterItem = new backand.filter.item(field.relatedParentFieldName, backand.filter.operator.relation.in, row.__metadata.id);
+                var url = $location.$$absUrl;
+                var href = url.substring(0, url.indexOf('?')) + '?viewName=' + field.relatedViewName + '&filterOptions=' + encodeURIComponent(angular.toJson([filterItem]));
+
+                html = '<a href="' + href +  '" target="_self">' + field.displayName + '</a>';
+            }
+            return $sce.trustAsHtml(html);
+        }
 
         $scope.$watch('pagingOptions', function (newVal, oldVal) {
             if (newVal !== oldVal) {

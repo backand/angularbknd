@@ -18,9 +18,6 @@ angular.module('backAnd', [
         $routeProvider.when('/grids', {
             templateUrl: 'themes/devoops-master/backand/partials/grids/grids.html'
         });
-        $routeProvider.when('/index', {
-            templateUrl: 'index-devoops.html'
-        });
         $routeProvider.when('/dashboard', {
             templateUrl: 'themes/devoops-master/backand/partials/dashboard/dashboard.html'
         });
