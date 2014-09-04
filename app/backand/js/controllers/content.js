@@ -2,19 +2,20 @@
 
 
 angular.module('backAnd.controllers')
-.controller('contentController', ['$scope', 'Global', '$http', 'contentService', '$sce',
-    function ($scope, Global, $http, contentService, $sce) {
-        $scope.global = Global;
-        $scope.$watch('contentName', function () {
-            if ($scope.contentName)
-                $scope.setData();
+.controller('contentController', ['$scope', 'Global', '$http', 'contentService', '$sce','$location',
+    function ($scope, Global, $http, contentService, $sce, $location) {
+
+        $scope.$watch('contentId', function () {
+            if ($scope.contentId)
+                $scope.setData($scope.contentId);
+            else if ($location.search().contentId) {
+                $scope.setData($location.search().contentId);
+            }
         });
-        $scope.init = function() {
-            $scope.setData();
-        }
-        $scope.setData = function() {
+
+        $scope.setData = function(id) {
             contentService.queryjsonp({
-                content: $scope.global.currentTableID
+                content: id
             }, function (data) {
                 $scope.content = data;
                 

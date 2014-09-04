@@ -6,7 +6,7 @@ angular.module('backAnd.directives')
 		replace: false,
 		controller: 'contentController',
 		scope: {
-		    contentName: '='
+		    contentId: '='
 		},
 		
 	}

@@ -9,7 +9,7 @@ angular.module('backAnd.directives')
 		},
 		link: function ($scope, element, attr) {
 		    $scope.contentService.queryjsonp({
-		        content: $scope.global.currentTableID
+		        content: $scope.contentId
 		    }, function (data) {
 		        if (data.openinaNewTab) {
 		            //window.open(data.externalLink, data.target);

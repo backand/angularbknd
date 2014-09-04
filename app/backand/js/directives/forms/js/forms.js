@@ -3,139 +3,71 @@
 /* Directives */
 
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global) {
+backAndDirectives.directive('myform', function ($sce, $q, $location, $route, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global) {
       return {
           restrict: 'A',
           transclude: true,
           templateUrl: 'backand/js/directives/forms/partials/form.html',
-          scope: {
-              viewName: '=',
-              id: '=',
-          },
           link: function (scope, el, attrs) {
-              scope.formSchema = {
+              var formSchema = {
                   fields: [],
                   categories: {},
                   title: '',
                   id: null
-              };
-              var searchParams = $location.search();
+              },
+              params = $location.search();
+              var isNew = !params.id;
+              scope.isNew = isNew;
+              scope.continue = false;
 
+              $log.debug("params", params);
+              var dataForm = $q.defer();
+              var dataItem = $q.defer();
+              var selectOptions = $q.defer();
               
-              scope.init = function (params) {
+              gridConfigService.queryjsonp({
+                  table: params.table
+              }, function (data) {
+                  dataForm.resolve(data);
+              });
 
-                  scope.isNew = !params.id;
-                  scope.continue = false;
-
-                  $log.debug("params", params);
-                  var dataForm = $q.defer();
-                  var dataItem = $q.defer();
-                  var selectOptions = $q.defer();
-
-                  gridConfigService.queryjsonp({
-                      table: params.viewName
-                  }, function (data) {
-                      dataForm.resolve(data);
+              if (!isNew) {
+                  gridViewDataItemService.queryjsonp(params, function (data) {
+                      dataItem.resolve(data);
                   });
+              }
 
-                  if (!scope.isNew) {
-                      gridViewDataItemService.queryjsonp({ table: params.viewName, id: params.id }, function (data) {
-                          dataItem.resolve(data);
+              var loadSelectOptions = function () {
+                  gridService.queryjsonp({
+                      table: params.table,
+                      withSelectOptions: true,
+                      filter: null,
+                      sort: null,
+                      search: null
+                  }, function (data) {
+                      selectOptions.resolve(data);
+                      if (!Global.selectOptions) {
+                          Global.selectOptions = [];
+                      }
+                      if (!Global.selectOptions[params.table]) {
+                          Global.selectOptions[params.table] = data.selectOptions;
+                      }
+
+
+                  });
+              }
+
+              if (!Global.selectOptions) {
+                  Global.selectOptions = [];
+              }
+
+              if (!isNew) {
+                  if (!Global.selectOptions[params.table]) {
+                      loadSelectOptions();
+                      $q.all([dataForm.promise, dataItem.promise, selectOptions.promise]).then(function (data) {
+                          processForm(data[0], data[1]);
                       });
-                  }
 
-                  var loadSelectOptions = function () {
-                      gridService.queryjsonp({
-                          table: params.viewName,
-                          withSelectOptions: true,
-                          filter: null,
-                          sort: null,
-                          search: null
-                      }, function (data) {
-                          selectOptions.resolve(data);
-                          if (!Global.selectOptions) {
-                              Global.selectOptions = [];
-                          }
-                          if (!Global.selectOptions[params.viewName]) {
-                              Global.selectOptions[params.viewName] = data.selectOptions;
-                          }
-
-
-                      });
-                  }
-
-                  if (!Global.selectOptions) {
-                      Global.selectOptions = [];
-                  }
-
-                  if (!scope.isNew) {
-                      if (!Global.selectOptions[params.viewName]) {
-                          loadSelectOptions();
-                          $q.all([dataForm.promise, dataItem.promise, selectOptions.promise]).then(function (data) {
-                              scope.processForm(data[0], data[1], params);
-                          });
-                      }
-                      else {
-                          $q.all([dataForm.promise, dataItem.promise]).then(function (data) {
-                              scope.processForm(data[0], data[1], params);
-                          });
-                      }
-                  }
-                  else {
-                      if (!Global.selectOptions[params.viewName]) {
-                          loadSelectOptions();
-                          $q.all([dataForm.promise, selectOptions.promise]).then(function (data) {
-                              scope.processForm(data[0], {}, params);
-                          });
-                      }
-                      else {
-                          $q.all([dataForm.promise]).then(function (data) {
-                              scope.processForm(data[0], {}, params);
-                          });
-                      }
-                  }
-
-
-                  scope.dataToSubmit = null;
-                  var updateMessages = {
-                      failure: "Failed to update the row. Please contact your system administrator.",
-                      success: "Data submitted.",
-                  };
-                  var createMessages = {
-                      failure: "Failed to create the row. Please contact your system administrator.",
-                      success: "Data submitted.",
-                  };
-
-                  scope.submit = function () {
-                      var service = scope.isNew ? gridCreateItemService : gridUpdateItemService;
-                      var messages = scope.isNew ? createMessages : updateMessages;
-                      scope.submitAction(service, messages);
-                  }
-
-                  scope.submitAction = function (service, messages) {
-                      angular.forEach(scope.formSchema.categories, function (category) {
-                          angular.forEach(category.fields, function (field) {
-                              var val = field.value.val;
-                              if (scope.dataToSubmit[field.name] != undefined || scope.isNew) {
-                                  switch (field.type) {
-                                      case 'singleSelect':
-                                          scope.dataToSubmit[field.name] = val && val.value ? val.value : '';
-                                          break;
-                                      case 'hyperlink':
-                                          scope.dataToSubmit[field.name] = field.value && field.value.linkText ? field.value.linkText + '|' + (field.value.target ? "_blank" : "_self") + '|' + field.value.url : '';
-                                          break;
-                                      case 'percentage':
-                                          scope.dataToSubmit[field.name] = field.value && field.value.val ? (val / 100).toFixed(2) : val;
-                                          break;
-
-                                      default:
-                                          scope.dataToSubmit[field.name] = val ? val : '';
-                                          break;
-                                  }
-                              }
-
-                          });
-                      });
 
                       scope.waiting = true;
                       scope.alerts = [];
@@ -176,33 +108,112 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                               console.warn(error.data, error);
                               scope.alerts = [{ type: 'danger', msg: error.data }];
                           }
+
                       });
-
-                  };
-
+                  }
               }
-              
-              scope.$watch('viewName', function () {
-                  if (scope.viewName) {
-                      if (scope.id) {
-                          scope.init({ viewName: scope.viewName, id: scope.id });
-                      }
-                      else {
-                          scope.init({ viewName: scope.viewName });
-                      }
+              else {
+                  if (!Global.selectOptions[params.table]) {
+                      loadSelectOptions();
+                      $q.all([dataForm.promise, selectOptions.promise]).then(function (data) {
+                          processForm(data[0], {});
+                      });
                   }
                   else {
-                      scope.init(searchParams);
-
+                      $q.all([dataForm.promise]).then(function (data) {
+                          processForm(data[0], {});
+                      });
                   }
-              });
+              }
+              
+              var dataToSubmit = null;
+              var updateMessages = {
+                  failure: "Failed to update the row. Please contact your system administrator.",
+                  success: "Data submitted.",
+              };
+              var createMessages = {
+                  failure: "Failed to create the row. Please contact your system administrator.",
+                  success: "Data submitted.",
+              };
+
+              scope.submit = function () {
+                  var service = isNew ? gridCreateItemService : gridUpdateItemService;
+                  var messages = isNew ? createMessages : updateMessages;
+                  scope.submitAction(service, messages);
+              }
+              
+              scope.submitAction = function (service, messages) {
+                    angular.forEach(scope.formSchema.categories, function (category) {
+                        angular.forEach(category.fields, function (field) {
+                            var val = field.value.val;
+                            if (dataToSubmit[field.name] != undefined || isNew) {
+                                switch (field.type) {
+                                    case 'singleSelect':
+                                        dataToSubmit[field.name] = val && val.value ? val.value : '';
+                                        break;
+                                    case 'hyperlink':
+                                        dataToSubmit[field.name] = field.value && field.value.linkText ? field.value.linkText + '|' + (field.value.target ? "_blank" : "_self") + '|' + field.value.url : '';
+                                        break;
+                                    case 'percentage':
+                                        dataToSubmit[field.name] = field.value && field.value.val ? (val / 100).toFixed(2) : val;
+                                        break;
+
+                                    default:
+                                        dataToSubmit[field.name] = val ? val : '';
+                                        break;
+                                }
+                            }
+                            
+                        });
+                    });
+
+                    scope.waiting = true;
+                    scope.alerts = [];
+                    scope.closeAlert = function (index) {
+                        scope.alerts.splice(index, 1);
+                    };
+                    service.queryjsonp(params, JSON.stringify(dataToSubmit), function (data) {
+                        scope.waiting = false;
+                        if (isNew) {
+                            if (scope.continue) {
+                                $route.reload();
+                            }
+                            else {
+                                $location.search({
+                                    table: params.table,
+                                    id: data.__metadata.id
+                                });
+                                $location.path('/forms');
+                            }
+                            
+                        }
+                        else {
+                            scope.alerts = [{ type: 'success', msg: messages.success }];
+                            window.setTimeout(function () {
+                                $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                                    $(this).remove();
+                                });
+                            }, 5000);
+                        }
+                    },
+                    function (error) {
+                        scope.waiting = false;
+                        if (error.status == 500) {
+                            console.error(error.data, error);
+                            scope.alerts = [{ type: 'danger', msg: messages.failure }];
+                        }
+                        else {
+                            console.warn(error.data, error);
+                            scope.alerts = [{ type: 'danger', msg: error.data }];
+                        }
+                    });
+                    
+              };
 
               
-              
-              
-              scope.processForm = function(data, dataItem, params) {
-                  scope.dataToSubmit = dataItem;
-                  scope.formSchema.title = data.captionText;
+              function processForm(data, dataItem) {
+                  dataToSubmit = dataItem;
+                  formSchema.title = data.captionText;
 
                   angular.forEach(data.fields, function (field) {
                       var type;
@@ -278,7 +289,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                               
                               break;
                       }
-                      var val = scope.isNew ? field.advancedLayout.defaultValue || '' : dataItem[field.name] || '';
+                      var val = isNew ? field.advancedLayout.defaultValue || '' : dataItem[field.name] || '';
                       var f = {
                           name: field.name,
                           displayName: field.displayName,
@@ -292,7 +303,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                           show: field.form.hideInEdit,
                           disabled: field.form.disableInEdit,
                           required: field.advancedLayout.required,
-                          viewName: params.viewName,
+                          viewName: params.table,
                           relatedViewName: field.relatedViewName,
                           relatedParentFieldName: field.relatedParentFieldName,
                           minimumValue: field.advancedLayout.minimumValue,
@@ -300,23 +311,23 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                       };
                       
                       if (field.categoryName) {
-                          if (!scope.formSchema.categories[field.categoryName]) {
-                              scope.formSchema.categories[field.categoryName] = {
+                          if (!formSchema.categories[field.categoryName]) {
+                              formSchema.categories[field.categoryName] = {
                                   catName: field.categoryName,
                                   fields: []
                               };
                           }
-                          scope.formSchema.categories[field.categoryName].fields.push(f);
+                          formSchema.categories[field.categoryName].fields.push(f);
                       } else {
-                          scope.formSchema.fields.push(f);
+                          formSchema.fields.push(f);
                       }
                       if (f.type == "singleSelect" || f.type == "multiSelect") {
-                          if (Global.selectOptions && Global.selectOptions[params.viewName] && Global.selectOptions[params.viewName][f.name]) {
-                              f.options = Global.selectOptions[params.viewName][f.name];
+                          if (Global.selectOptions && Global.selectOptions[params.table] && Global.selectOptions[params.table][f.name]) {
+                              f.options = Global.selectOptions[params.table][f.name];
                           }
                       }
                       else if (type == "autocomplete") {
-                          if (scope.isNew) {
+                          if (isNew) {
                               f.selected = val;
                               f.value.val = val.value;
                           }
@@ -350,13 +361,11 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                       }
                       else if (type == "date") {
                           f.format = field.advancedLayout.format;
-                          if (!scope.isNew)
-                            f.value.val = dataItem.__metadata.dates[field.name];
+                          f.value.val = dataItem.__metadata.dates[field.name];
                       }
                       else if (type == "datetime") {
                           f.type = 'text';
-                          if (!scope.isNew)
-                            f.value.val = dataItem[field.name];
+                          f.value.val = dataItem[field.name];
                           f.disabled = true;
                       }
                       else if (type == "percentage") {
@@ -372,15 +381,15 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                       };
                   })
                   angular.forEach(data.categories, function (cat) {
-                      if (scope.formSchema.categories[cat.name]) {
-                          scope.formSchema.categories[cat.name].columnsInDialog = cat.columnsInDialog;
-                          if (scope.formSchema.categories[cat.name].fields.length == 1 && scope.formSchema.categories[cat.name].fields[0].type == 'subgrid') {
-                              scope.formSchema.categories[cat.name].fields[0].hideLabel = true;
+                      if (formSchema.categories[cat.name]) {
+                          formSchema.categories[cat.name].columnsInDialog = cat.columnsInDialog;
+                          if (formSchema.categories[cat.name].fields.length == 1 && formSchema.categories[cat.name].fields[0].type == 'subgrid') {
+                              formSchema.categories[cat.name].fields[0].hideLabel = true;
                           }
                       }
                   });
 
-                  if (!scope.isNew) {
+                  if (!isNew) {
                       scope.formSchema.id = dataItem.__metadata.id;
                   }
               };
@@ -392,6 +401,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
               scope.renderHtml = function (html_code) {
                   return $sce.trustAsHtml(html_code);
               };
+              scope.formSchema = formSchema;
               scope.toggleActive = function ($event) {
                   $event.preventDefault();
                   $($event.currentTarget).tab('show');

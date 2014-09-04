@@ -3,7 +3,7 @@ angular.module('backAnd.directives', [])
         return {
             restrict: 'E',
             scope: {
-                tableName: '=',
+                viewName: '=',
                 options: '=',
                 filterOptions: '=',
                 inputStyle: '=',

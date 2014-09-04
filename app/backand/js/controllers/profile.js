@@ -1,6 +1,5 @@
 'use strict';
 
-
 angular.module('backAnd.controllers')
     .controller('profileController', ['$scope', 'Global', 'menuService', '$http',
         function($scope, Global, menuService, $http) {

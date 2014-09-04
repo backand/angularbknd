@@ -12,14 +12,19 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
 
         /**
          * @ngdoc function
-         * @name tableName
+         * @name viewName
          * @methodOf backand.js.controllers:gridController
          * @description Get the new Backand's view name and re-load the configraion
          *              and data
          */
-        $scope.$watch('tableName', function () {
-            if ($scope.tableName) {
-                $scope.buildNewGrid($scope.tableName);
+        $scope.$watch('viewName', function () {
+            if ($scope.viewName) {
+                $scope.viewNameId = $scope.viewName;
+                $scope.buildNewGrid($scope.viewNameId);
+            }
+            else if ($location.search().viewName) {
+                $scope.viewNameId = $location.search().viewName;
+                $scope.buildNewGrid($scope.viewNameId);
             }
         });
 
@@ -30,19 +35,19 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
          * @description Due to limitations in ng-grid, in order to reload the settings,
          *              we must remove it and rebuild it.
          *              Configuration loaded async
-         * @param {string} tableName reference to view name
+         * @param {string} viewName reference to view name
          */
-        $scope.buildNewGrid = function (tableName) {
+        $scope.buildNewGrid = function (viewName) {
             $scope.isLoad = true;
             var configTable = {};
             //Read the View's configuration
             gridConfigService.queryjsonp({
-                table: tableName
+                table: viewName
             }, function (data) {
                 $scope.configTable = data;
-                var tableElementScope = $("#ngback-grid_" + $scope.tableName + " .ngGrid").scope();
+                var tableElementScope = $("#ngback-grid_" + $scope.viewNameId + " .ngGrid").scope();
                 if (tableElementScope) {
-                    $("#ngback-grid_" + $scope.tableName + " .ngGrid").remove();
+                    $("#ngback-grid_" + $scope.viewNameId + " .ngGrid").remove();
                 }
                 var inputStyle = ($scope.inputStyle) ? angular.toJson($scope.inputStyle).replace(/\"/gi, "'") : 'getTableStyle()';
                 var html = '<div ng-if="dataTable" ng-style="' + inputStyle + '" ng-grid="dataTable"></div>';
@@ -53,7 +58,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 //Step 3: link the compiled template with the scope.
                 var element = linkFn($scope);
                 // Step 4: Append to DOM 
-                $("#ngback-grid_" + $scope.tableName).append(element);
+                $("#ngback-grid_" + $scope.viewNameId).append(element);
 
                 $scope.setNGGridConfiguration();
             });
@@ -153,7 +158,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             var sortString = '[' + JSON.stringify($scope.sortOptions) + ']';
             var filterString = ($scope.filterOptions) ? JSON.stringify($scope.filterOptions) : null;
             gridService.queryjsonp({
-                table: $scope.tableName,
+                table: $scope.viewNameId,
                 pageSize: $scope.pagingOptions.pageSize,
                 pageNumber: $scope.pagingOptions.currentPage,
                 filter: filterString,
@@ -198,14 +203,14 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             if ($scope.mySelections != null && $scope.mySelections.length == 1) {
                 $location.search({
                     id: $scope.mySelections[0].__metadata.id,
-                    table: $scope.tableName
+                    table: $scope.viewNameId
                 });
                 $location.path('/forms');
             }
         };
         $scope.addRow = function () {
             $location.search({
-                table: $scope.tableName
+                table: $scope.viewNameId
             });
             $location.path('/forms');
         }
@@ -237,7 +242,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 return;
             }
 
-            var table = $scope.tableName;
+            var table = $scope.viewNameId;
             if (!table) {
                 console.error(messages.tableMissing)
                 $window.alert(messages.failure);

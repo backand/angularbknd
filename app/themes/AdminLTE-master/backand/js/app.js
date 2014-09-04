@@ -36,6 +36,9 @@ angular.module('backAnd', [
         $routeProvider.when('/', {
             templateUrl: 'themes/AdminLTE-master/backand/partials/default/default.html'
         });
+        $routeProvider.when('/example', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/custom/example.html'
+        });
 
         $routeProvider.otherwise({
             redirectTo: ''
