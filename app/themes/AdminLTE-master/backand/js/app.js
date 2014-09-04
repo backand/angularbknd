@@ -18,9 +18,6 @@ angular.module('backAnd', [
         $routeProvider.when('/grids', {
             templateUrl: 'themes/AdminLTE-master/backand/partials/grids/grids.html'
         });
-        $routeProvider.when('/index', {
-            templateUrl: 'index-lte.html'
-        });
         $routeProvider.when('/dashboard', {
             templateUrl: 'themes/AdminLTE-master/backand/partials/dashboard/dashboard.html'
         });
@@ -36,6 +33,10 @@ angular.module('backAnd', [
         $routeProvider.when('/error', {
             templateUrl: 'themes/AdminLTE-master/backand/partials/custom/error.html'
         });
+        $routeProvider.when('/', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/default/default.html'
+        });
+
         $routeProvider.otherwise({
             redirectTo: ''
         });

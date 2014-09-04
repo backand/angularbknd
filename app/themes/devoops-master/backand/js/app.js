@@ -27,8 +27,17 @@ angular.module('backAnd', [
         $routeProvider.when('/content', {
             templateUrl: 'themes/devoops-master/backand/partials/content/content.html'
         });
-        $routeProvider.when('/formsExample', {
-            templateUrl: 'themes/devoops-master/partials/main-forms/forms.html'
+        $routeProvider.when('/forms', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/forms/forms.html'
+        });
+        $routeProvider.when('/404', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/custom/404.html'
+        });
+        $routeProvider.when('/error', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/custom/error.html'
+        });
+        $routeProvider.when('/', {
+            templateUrl: 'themes/AdminLTE-master/backand/partials/default/default.html'
         });
         $routeProvider.otherwise({
             redirectTo: ''
