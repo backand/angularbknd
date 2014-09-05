@@ -368,7 +368,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     /// subgrid
                     f.filterSubgrid = function () {
                         var filterItem = new backand.filter.item(f.relatedParentFieldName, backand.filter.operator.relation.in, dataItem.__metadata.id);
-                        return [filterItem];
+                        return angular.toJson([filterItem]);
                     };
                 })
                 angular.forEach(data.categories, function (cat) {

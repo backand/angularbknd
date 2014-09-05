@@ -160,7 +160,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             // Read the filter either from attribute or query string
             var filterString = '';
             if ($scope.filterOptions)
-                filterString = JSON.stringify($scope.filterOptions);
+                filterString = $scope.filterOptions;
             else if($location.search().filterOptions)
                 filterString = $location.search().filterOptions;
             else

@@ -4,7 +4,7 @@
 <div ng-bind-html="renderHtml(field.preLabel)"></div>
 <label ng-hide="field.type == 'checkbox'">{{field.displayName | parseLabel:field}}</label>
 <div ng-switch on="field.type">
-    <ngback-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()"></ngback-grid>
+    <ngback-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()" input-style="{'height': 500}"></ngback-grid>
     <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
