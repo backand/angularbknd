@@ -42,7 +42,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             var configTable = {};
             //Read the View's configuration
             gridConfigService.queryjsonp({
-                table: viewName
+                viewName: viewName
             }, function (data) {
                 $scope.configTable = data;
                 var tableElementScope = $("#ngback-grid_" + $scope.viewNameId + " .ngGrid").scope();
@@ -167,7 +167,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 filterString = null;
             //Read from the service configuration
             gridService.queryjsonp({
-                table: $scope.viewNameId,
+                viewName: $scope.viewNameId,
                 pageSize: $scope.pagingOptions.pageSize,
                 pageNumber: $scope.pagingOptions.currentPage,
                 filter: filterString,
@@ -247,8 +247,8 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 return;
             }
 
-            var table = $scope.viewNameId;
-            if (!table) {
+            var viewName = $scope.viewNameId;
+            if (!viewName) {
                 console.error(messages.tableMissing)
                 $window.alert(messages.failure);
                 return;
@@ -256,7 +256,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
 
             var params = {
                 id: id,
-                table: table
+                viewName: viewName
             };
 
             try {

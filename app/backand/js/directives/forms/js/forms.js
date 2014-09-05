@@ -33,20 +33,20 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 var selectOptions = $q.defer();
 
                 gridConfigService.queryjsonp({
-                    table: params.viewName
+                    viewName: params.viewName
                 }, function (data) {
                     dataForm.resolve(data);
                 });
 
                 if (!scope.isNew) {
-                    gridViewDataItemService.queryjsonp({ table: params.viewName, id: params.id }, function (data) {
+                    gridViewDataItemService.queryjsonp({ viewName: params.viewName, id: params.id }, function (data) {
                         dataItem.resolve(data);
                     });
                 }
 
                 var loadSelectOptions = function () {
                     gridService.queryjsonp({
-                        table: params.viewName,
+                        viewName: params.viewName,
                         withSelectOptions: true,
                         filter: null,
                         sort: null,
@@ -142,7 +142,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     scope.closeAlert = function (index) {
                         scope.alerts.splice(index, 1);
                     };
-                    service.queryjsonp({ table: params.viewName, id: params.id }, JSON.stringify(scope.dataToSubmit), function (data) {
+                    service.queryjsonp(params, JSON.stringify(scope.dataToSubmit), function (data) {
                         scope.waiting = false;
                         if (scope.isNew) {
                             if (scope.continue) {
@@ -241,7 +241,10 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                             break;
                         case 'MultiSelect':
                             if (field.displayFormat == "Grid")
-                                type = 'subgrid';
+                                if (scope.isNew)
+                                    type = 'disabledSubgrid';
+                                else
+                                    type = 'subgrid';
                             else if (field.displayFormat == "CheckList")
                                 type = 'multiSelect';
                             else
