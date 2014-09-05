@@ -5,8 +5,8 @@ value('version', '0.1');
 
 angular.module('backAnd').factory('gridService', ['$resource',
 	function($resource) {
-		return $resource(backandGlobal.url + '/1/view/data/:table?pageSize=:pageSize&pageNumber=:pageNumber', {
-			table: 'table',
+		return $resource(backandGlobal.url + '/1/view/data/:viewName?pageSize=:pageSize&pageNumber=:pageNumber', {
+			viewName: 'viewName',
 			pageSize: 'pageSize',
 			pageNumber: 'pageNumber',
 			withSelectOptions: 'withSelectOptions',
@@ -25,8 +25,8 @@ angular.module('backAnd').factory('gridService', ['$resource',
 ]);
 angular.module('backAnd').factory('gridConfigService', ['$resource',
 	function($resource) {
-		return $resource(backandGlobal.url + '/1/view/config/:table', {
-			table: 'table'
+		return $resource(backandGlobal.url + '/1/view/config/:viewName', {
+			viewName: 'viewName'
 		}, {
 			queryjsonp: {
 				method: 'GET',
@@ -40,8 +40,8 @@ angular.module('backAnd').factory('gridConfigService', ['$resource',
 
 angular.module('backAnd').factory('gridViewDataItemService', ['$resource',
     function($resource) {
-        return $resource(backandGlobal.url + '/1/view/data/:table/:id', {
-            table: 'table',
+        return $resource(backandGlobal.url + '/1/view/data/:viewName/:id', {
+            viewName: 'viewName',
             id: 'id',
         }, {
             queryjsonp: {
@@ -56,8 +56,8 @@ angular.module('backAnd').factory('gridViewDataItemService', ['$resource',
 
 angular.module('backAnd').factory('gridCreateItemService', ['$resource',
     function ($resource) {
-        return $resource(backandGlobal.url + '/1/view/data/:table', {
-            table: 'table',
+        return $resource(backandGlobal.url + '/1/view/data/:viewName', {
+            viewName: 'viewName',
         }, {
             queryjsonp: {
                 method: 'POST',
@@ -71,8 +71,8 @@ angular.module('backAnd').factory('gridCreateItemService', ['$resource',
 
 angular.module('backAnd').factory('gridUpdateItemService', ['$resource',
     function ($resource) {
-        return $resource(backandGlobal.url + '/1/view/data/:table/:id', {
-            table: 'table',
+        return $resource(backandGlobal.url + '/1/view/data/:viewName/:id', {
+            viewName: 'viewName',
             id: 'id',
         }, {
             queryjsonp: {
@@ -87,8 +87,8 @@ angular.module('backAnd').factory('gridUpdateItemService', ['$resource',
 
 angular.module('backAnd').factory('gridDeleteItemService', ['$resource',
     function ($resource) {
-        return $resource(backandGlobal.url + '/1/view/data/:table/:id', {
-            table: 'table',
+        return $resource(backandGlobal.url + '/1/view/data/:viewName/:id', {
+            viewName: 'viewName',
             id: 'id',
         }, {
             queryjsonp: {

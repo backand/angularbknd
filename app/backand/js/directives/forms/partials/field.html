@@ -5,6 +5,7 @@
 <label ng-hide="field.type == 'checkbox'">{{field.displayName | parseLabel:field}}</label>
 <div ng-switch on="field.type">
     <ngback-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()"></ngback-grid>
+    <div ng-switch-when="disabledSubgrid" ngback-disabled-grid message="'Save first to add rows'"></div>
     <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
