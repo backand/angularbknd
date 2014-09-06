@@ -112,28 +112,36 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     scope.submitAction(service, messages);
                 }
 
+                scope.setFieldValue = function (field) {
+                    var val = field.value.val;
+                    if (scope.dataToSubmit[field.name] != undefined || scope.isNew) {
+                        switch (field.type) {
+                            case 'singleSelect':
+                                scope.dataToSubmit[field.name] = val && val.value ? val.value : '';
+                                break;
+                            case 'hyperlink':
+                                scope.dataToSubmit[field.name] = field.value && field.value.linkText ? field.value.linkText + '|' + (field.value.target ? "_blank" : "_self") + '|' + field.value.url : '';
+                                break;
+                            case 'percentage':
+                                scope.dataToSubmit[field.name] = field.value && field.value.val ? (val / 100).toFixed(2) : val;
+                                break;
+
+                            default:
+                                scope.dataToSubmit[field.name] = val ? val : '';
+                                break;
+                        }
+                    }
+                }
+
                 scope.submitAction = function (service, messages) {
+                    angular.forEach(scope.formSchema.fields, function (field) {
+                        scope.setFieldValue(field);
+                    });
+
                     angular.forEach(scope.formSchema.categories, function (category) {
                         angular.forEach(category.fields, function (field) {
-                            var val = field.value.val;
-                            if (scope.dataToSubmit[field.name] != undefined || scope.isNew) {
-                                switch (field.type) {
-                                    case 'singleSelect':
-                                        scope.dataToSubmit[field.name] = val && val.value ? val.value : '';
-                                        break;
-                                    case 'hyperlink':
-                                        scope.dataToSubmit[field.name] = field.value && field.value.linkText ? field.value.linkText + '|' + (field.value.target ? "_blank" : "_self") + '|' + field.value.url : '';
-                                        break;
-                                    case 'percentage':
-                                        scope.dataToSubmit[field.name] = field.value && field.value.val ? (val / 100).toFixed(2) : val;
-                                        break;
-
-                                    default:
-                                        scope.dataToSubmit[field.name] = val ? val : '';
-                                        break;
-                                }
-                            }
-
+                            
+                            scope.setFieldValue(field);
                         });
                     });
 

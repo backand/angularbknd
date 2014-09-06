@@ -16,7 +16,10 @@ backAndDirectives.directive('date', function($log) {
         link: function(scope, el, attrs) {
             var date = null;
             if (scope.value.val) {
-                date = new Date(scope.value.val);
+                if (scope.value.val == "Now")
+                    date = new Date();
+                else
+                    date = new Date(scope.value.val);
             };
 
             scope.mydate = date;
