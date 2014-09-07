@@ -342,7 +342,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 case 'Url':
                     return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
                 case 'MultiSelect':
-                    return '<div class="ngCellText" style="white-space: normal;"><p ng-bind-html="renderSubGridUrl(\'{{row.entity[\'' + col.name + '\']}}\',{{row.entity}})"></p></div>';
+                    return '<div class="ngCellText" style="white-space: normal;"><a href ng-click="renderSubGridUrl(\'' + col.name + '\',row.entity.__metadata.id)">' + col.displayName + '</a></div>';
                 default:
                     return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
             }
@@ -369,17 +369,17 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             return $sce.trustAsHtml(html);
         }
 
-        $scope.renderSubGridUrl = function (value, row) {
+        $scope.renderSubGridUrl = function (value, id) {
             var field = $filter('filter')($scope.configTable.fields, function (f) { return f.name === value; })[0];
-            var html = '';
             if (field){
-                var filterItem = new backand.filter.item(field.relatedParentFieldName, backand.filter.operator.relation.in, row.__metadata.id);
-                var url = $location.$$absUrl;
-                var href = url.substring(0, url.indexOf('?')) + '?viewName=' + field.relatedViewName + '&filterOptions=' + encodeURIComponent(angular.toJson([filterItem]));
+                var filterItem = new backand.filter.item(field.relatedParentFieldName, backand.filter.operator.relation.in, id);
 
-                html = '<a href="' + href +  '" target="_self">' + field.displayName + '</a>';
+                $location.search({
+                    viewName: field.relatedViewName,
+                    filterOptions: angular.toJson([filterItem])
+                });
+                $location.path('/grids');
             }
-            return $sce.trustAsHtml(html);
         }
 
         $scope.$watch('pagingOptions', function (newVal, oldVal) {
