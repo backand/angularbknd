@@ -18,9 +18,6 @@ angular.module('backAnd', [
         $routeProvider.when('/grids', {
             templateUrl: 'themes/DashGum/backand/partials/grids/grids.html'
         });
-        $routeProvider.when('/index', {
-            templateUrl: 'index-dashgum.html'
-        });
         $routeProvider.when('/dashboard', {
             templateUrl: 'themes/DashGum/backand/partials/dashboard/dashboard.html'
         });
@@ -28,16 +25,10 @@ angular.module('backAnd', [
             templateUrl: 'themes/DashGum/backand/partials/content/content.html'
         });
         $routeProvider.when('/forms', {
-            templateUrl: 'themes/AdminLTE-master/backand/partials/forms/forms.html'
-        });
-        $routeProvider.when('/404', {
-            templateUrl: 'themes/AdminLTE-master/backand/partials/custom/404.html'
-        });
-        $routeProvider.when('/error', {
-            templateUrl: 'themes/AdminLTE-master/backand/partials/custom/error.html'
+            templateUrl: 'themes/DashGum/backand/partials/forms/forms.html'
         });
         $routeProvider.when('/', {
-            templateUrl: 'themes/AdminLTE-master/backand/partials/default/default.html'
+            templateUrl: 'themes/DashGum/backand/partials/default/default.html'
         });
         $routeProvider.otherwise({
             redirectTo: ''
