@@ -3,10 +3,12 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h6 class="panel-title">{{formSchema.title}}</h6></div>
                 <div class="panel-body">
-                    <div ng-include="'backand/js/directives/forms/partials/field.html'"
-                            class="col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in formSchema.fields"
-                            ng-if="field.show">
-                        <!-- feild -->
+                    <div class="row">
+                        <div ng-include="'backand/js/directives/forms/partials/field.html'"
+                             class="col-md-{{12 / formSchema.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in formSchema.fields"
+                             ng-if="field.show">
+                            <!-- field -->
+                        </div>
                     </div>
                     <div class="tabbable form-group">
                         <ul class="nav nav-tabs" role="tablist">
@@ -19,7 +21,7 @@
                                 <div ng-include="'backand/js/directives/forms/partials/field.html'"
                                         class="col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in category.fields"
                                         ng-if="field.show">
-                                    <!-- feild -->
+                                    <!-- field -->
                                 </div>
                             </div>
                         </div>

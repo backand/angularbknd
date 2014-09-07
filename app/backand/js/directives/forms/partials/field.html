@@ -1,7 +1,7 @@
 
-<hr ng-if="field.hr">
+<!--<hr ng-if="field.hr">
 <div class="subtitle text-info" ng-bind-html="renderHtml(field.seperatorTitle)"></div>
-<div ng-bind-html="renderHtml(field.preLabel)"></div>
+<div ng-bind-html="renderHtml(field.preLabel)"></div>-->
 <label ng-hide="field.type == 'checkbox'">{{field.displayName | parseLabel:field}}</label>
 <div ng-switch on="field.type">
     <ngback-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()" input-style="{'height': 500}"></ngback-grid>
@@ -24,4 +24,4 @@
     </div>
     <div ng-switch-default input field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
 </div>
-<div ng-bind-html="renderHtml(field.postLabel)"></div>
+<!--<div ng-bind-html="renderHtml(field.postLabel)"></div>-->

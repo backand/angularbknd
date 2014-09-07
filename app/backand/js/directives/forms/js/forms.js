@@ -95,7 +95,6 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     }
                 }
 
-
                 scope.dataToSubmit = null;
                 var updateMessages = {
                     failure: "Failed to update the row. Please contact your system administrator.",
@@ -211,6 +210,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
             scope.processForm = function (data, dataItem, params) {
                 scope.dataToSubmit = dataItem;
                 scope.formSchema.title = data.captionText;
+                scope.formSchema.columnsInDialog = data.dataEditing.columnsInDialog;
 
                 angular.forEach(data.fields, function (field) {
                     var type;
@@ -374,7 +374,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                         f.value.val = val ? val * 100 : val;
                     }
 
-                    f.errors = { required: "Data required", minimumValue: "Must be more than " + f.minimumValue, maximumValue: "Must be less than " + f.maximumValue, number: "Must be a number" };
+                    f.errors = { required: "Data required", minimumValue: "Must be more than " + f.minimumValue, maximumValue: "Must be less than " + f.maximumValue, number: "Must be a number",email: "Must be a valid email" };
 
                     /// subgrid
                     f.filterSubgrid = function () {
