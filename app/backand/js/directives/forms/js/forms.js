@@ -15,7 +15,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
         link: function (scope, el, attrs) {
             scope.formSchema = {
                 fields: [],
-                categories: {},
+                categoriesDictionary: {},
                 title: '',
                 id: null
             };
@@ -104,6 +104,10 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     failure: "Failed to create the row. Please contact your system administrator.",
                     success: "Data submitted.",
                 };
+
+                scope.submitCaption = scope.isNew ? 'Create' : 'Update';
+                scope.submitAndContinueCaption = scope.isNew ? 'Create and Continue' : '';
+
 
                 scope.submit = function () {
                     var service = scope.isNew ? gridCreateItemService : gridUpdateItemService;
@@ -211,7 +215,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 scope.dataToSubmit = dataItem;
                 scope.formSchema.title = data.captionText;
                 scope.formSchema.columnsInDialog = data.dataEditing.columnsInDialog;
-
+                
                 angular.forEach(data.fields, function (field) {
                     var type;
                     var currencySymbol;
@@ -282,7 +286,9 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                         case 'Email':
                             type = 'email';
                             break;
-
+                        case 'Image':
+                            type = 'image';
+                            break;
 
                         default:
                             type = 'text'
@@ -300,8 +306,8 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                         columns: field.formLayout.columnSpanInDialog,
                         preLabel: field.formLayout.preLabel,
                         postLabel: field.formLayout.postLabel,
-                        show: field.form.hideInEdit,
-                        disabled: field.form.disableInEdit,
+                        show: scope.isNew ? !field.form.hideInCreate : !field.form.hideInEdit,
+                        disabled: scope.isNew ? field.form.disableInCreate : field.form.disableInEdit,
                         required: field.advancedLayout.required,
                         viewName: params.viewName,
                         relatedViewName: field.relatedViewName,
@@ -310,14 +316,14 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                         maximumValue: field.advancedLayout.maximumValue,
                     };
 
-                    if (field.categoryName) {
-                        if (!scope.formSchema.categories[field.categoryName]) {
-                            scope.formSchema.categories[field.categoryName] = {
+                    if (field.categoryName && f.show) {
+                        if (!scope.formSchema.categoriesDictionary[field.categoryName]) {
+                            scope.formSchema.categoriesDictionary[field.categoryName] = {
                                 catName: field.categoryName,
                                 fields: []
                             };
                         }
-                        scope.formSchema.categories[field.categoryName].fields.push(f);
+                        scope.formSchema.categoriesDictionary[field.categoryName].fields.push(f);
                     } else {
                         scope.formSchema.fields.push(f);
                     }
@@ -373,7 +379,9 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     else if (type == "percentage") {
                         f.value.val = val ? val * 100 : val;
                     }
-
+                    else if (type == "image") {
+                        f.urlPrefix = field.urlPrefix;
+                    }
                     f.errors = { required: "Data required", minimumValue: "Must be more than " + f.minimumValue, maximumValue: "Must be less than " + f.maximumValue, number: "Must be a number",email: "Must be a valid email" };
 
                     /// subgrid
@@ -382,12 +390,17 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                         return angular.toJson([filterItem]);
                     };
                 })
+
+                scope.formSchema.categories = [];
                 angular.forEach(data.categories, function (cat) {
-                    if (scope.formSchema.categories[cat.name]) {
-                        scope.formSchema.categories[cat.name].columnsInDialog = cat.columnsInDialog;
-                        if (scope.formSchema.categories[cat.name].fields.length == 1 && scope.formSchema.categories[cat.name].fields[0].type == 'subgrid') {
-                            scope.formSchema.categories[cat.name].fields[0].hideLabel = true;
+                    if (scope.formSchema.categoriesDictionary[cat.name]) {
+                        scope.formSchema.categoriesDictionary[cat.name].columnsInDialog = cat.columnsInDialog;
+                        if (scope.formSchema.categoriesDictionary[cat.name].fields.length == 1 && scope.formSchema.categoriesDictionary[cat.name].fields[0].type == 'subgrid') {
+                            scope.formSchema.categoriesDictionary[cat.name].fields[0].hideLabel = true;
+                            scope.formSchema.categoriesDictionary[cat.name].fields[0].tempRelatedViewName = scope.formSchema.categoriesDictionary[cat.name].fields[0].relatedViewName;
+                            scope.formSchema.categoriesDictionary[cat.name].fields[0].relatedViewName = '';
                         }
+                        scope.formSchema.categories.push(scope.formSchema.categoriesDictionary[cat.name]);
                     }
                 });
 
@@ -404,11 +417,16 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 return $sce.trustAsHtml(html_code);
             };
             scope.toggleActive = function ($event) {
+                $location.search('tab', 5);
                 $event.preventDefault();
                 $($event.currentTarget).tab('show');
             };
 
-
+            scope.tabClick = function (category) {
+                angular.forEach(category.fields, function (field) {
+                    field.relatedViewName = field.tempRelatedViewName;
+                });
+            }
         }
     };
 })

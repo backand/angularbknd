@@ -1,5 +1,5 @@
 var backandGlobal = {
-    url: "https://www.backand.com:8080",// 
+    url: "http://localhost:4109/backapi", //"https://api.backand.com:8080",// 
     defaultApp: null,
 };
 
@@ -10,5 +10,6 @@ $(document).ready(function () {
         document.dispatchEvent(backand.security.authentication.onlogin);
     });
 });
+
 
 var zfill = function (num, len) { return (Array(len).join("0") + num).slice(-len); }

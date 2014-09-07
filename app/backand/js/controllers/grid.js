@@ -21,10 +21,13 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             if ($scope.viewName) {
                 $scope.viewNameId = $scope.viewName;
                 $scope.buildNewGrid($scope.viewNameId);
+                //$scope.getData();
+
             }
-            else if ($location.search().viewName) {
+            else if ($location.$$path == '/grids' && $location.search().viewName) {
                 $scope.viewNameId = $location.search().viewName;
                 $scope.buildNewGrid($scope.viewNameId);
+                //$scope.getData();
             }
         });
 
@@ -142,7 +145,6 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 }
             });
 
-            $scope.getData();
         };
 
         /**
