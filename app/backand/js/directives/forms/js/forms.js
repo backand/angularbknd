@@ -417,7 +417,6 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 return $sce.trustAsHtml(html_code);
             };
             scope.toggleActive = function ($event) {
-                $location.search('tab', 5);
                 $event.preventDefault();
                 $($event.currentTarget).tab('show');
             };
