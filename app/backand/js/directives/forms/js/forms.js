@@ -331,6 +331,12 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                         if (Global.selectOptions && Global.selectOptions[params.viewName] && Global.selectOptions[params.viewName][f.name]) {
                             f.options = Global.selectOptions[params.viewName][f.name];
                         }
+                        if (scope.isNew) {
+                            f.inlineEditing = field.form.inlineAdding;
+                        }
+                        else {
+                            f.inlineEditing = field.form.inlineEditing;
+                        }
                     }
                     else if (type == "autocomplete") {
                         if (scope.isNew) {

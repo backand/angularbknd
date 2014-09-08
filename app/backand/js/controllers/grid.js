@@ -7,8 +7,10 @@
  *
  */
 var backAndControllers = angular.module('backAnd.controllers', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker']);
-backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$filter', '$location', '$route', '$sce', '$compile', '$window',
-    function ($scope, gridService, gridDeleteItemService, gridConfigService, $filter, $location, $route, $sce, $compile, $window) {
+backAndControllers.controller('gridController', ['$scope', 'Global', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$filter', '$location', '$route', '$sce', '$compile', '$window',
+    function ($scope, Global, gridService, gridDeleteItemService, gridConfigService, $filter, $location, $route, $sce, $compile, $window) {
+
+        $scope.global = Global;
 
         /**
          * @ngdoc function
@@ -101,6 +103,9 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 // grid edititing
                 //enableCellEditOnFocus: true,
             };
+
+            $scope.global.currentName = $scope.configTable.captionText;
+
             // Grid footer custom style
             $scope.dataTable.footerTemplate =
                 '<div class="ngFooterPanel" ng-show="showFooter" style="height:{{footerRowHeight}}px;">' +

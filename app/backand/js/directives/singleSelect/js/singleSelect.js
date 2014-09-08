@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('backAnd.directives').directive('singleSelect', function () {
+angular.module('backAnd.directives').directive('singleSelect', function ($location) {
     console.log("singleSelect called");
     return {
     	restrict: 'A',
@@ -26,6 +26,13 @@ angular.module('backAnd.directives').directive('singleSelect', function () {
     	                scope.value.val = option;
     	            }
     	        });
+    	    }
+
+    	    scope.inlineEditing = function () {
+    	        $location.search({
+    	            viewName: scope.field.relatedViewName,
+    	        });
+    	        $location.path('/grids');
     	    }
     	}
     }

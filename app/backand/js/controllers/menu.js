@@ -44,7 +44,6 @@ angular.module('backAnd.controllers')
         }
 
         $scope.setCurrentMenuSelection = function (current, parent) {
-            $scope.global.currentName = current.name;
             if (current.partType == "table") {
                 $location.search({
                     viewName: current.partId

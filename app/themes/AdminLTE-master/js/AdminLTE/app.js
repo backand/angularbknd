@@ -89,7 +89,9 @@ var adminLteInit = (function() {
     });
 
     /* Sidebar tree view */
-    $(".sidebar .treeview").tree();
+    setTimeout(function () {
+        $(".sidebar .treeview").tree();
+    }, 1000);
 
     /* 
      * Make sure that the sidebar is streched full height
