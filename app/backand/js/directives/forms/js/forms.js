@@ -229,10 +229,16 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                             else if (field.displayFormat == "Percentage") {
                                 type = 'percentage';
                             }
+                            else if (field.displayFormat == "NumberWithSeparator") {
+                                type = 'numberWithSeparator';
+                            }
+                            else {
+                                type = 'numeric';
+                            }
 
                             break;
                         case 'DateTime':
-                            if (field.displayFormat == "Date_mm_dd" || field.displayFormat == "Date_dd_mm")
+                            if (field.displayFormat == "Date_mm_dd" || field.displayFormat == "Date_dd_mm" || field.displayFormat == "None" || !field.displayFormat)
                                 type = 'date';
                             else
                                 type = 'datetime';

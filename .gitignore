@@ -10,3 +10,4 @@ website.publishproj
 app/App_Data/PublishProfiles/ngback.pubxml
 App_Data/PublishProfiles/ngback.pubxml
 app/backand/js/global.js
+app/backand/js/global.js

@@ -6,7 +6,7 @@
       <input type="number" name="field" ng-model="value.val" class="form-control" 
 		ng-disabled="field.disabled" ng-required="field.required" ng-class="inputClass" ng-show="field.show"
         min="{{field.minimumValue}}" max="{{field.maximumValue}}">
-      <div class="input-group-addon">{{ field.type == 'percentage' ? '%' : field.currencySymbol }}</div>
+      <div class="input-group-addon">{{ field.type == 'percentage' ? '%' : field.type == 'currency' ? field.currencySymbol : field.type == 'numberWithSeparator' ? '.00' : '#' }}</div>
     </div>
 	<div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>
 	<div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.number">{{errors.number}}</div>

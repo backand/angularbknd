@@ -1,9 +1,10 @@
 <ng-form name="innerForm">
 
 	<div class="input-group" ng-class="inputClass">
-        <a href="{{value.url}}" target="{{value.target}}" class="form-control">{{value.linkText}}</a>
+        <a ng-show="value.url" href="{{value.url}}" target="{{value.target}}" class="form-control">{{value.linkText}}</a>
+        <span ng-hide="value.url" class="form-control"></span>
       <span class="input-group-btn">
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="{{ '#myModal-' + field.name }}"><i class="glyphicon glyphicon-pencil"></i></button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="{{ '#myModal-' + field.name }}"><i class="fa fa-link" ></i></button>
       </span>
     </div>
 
