@@ -1,0 +1,10 @@
+<ng-form name="innerForm">
+    <div class="input-group">
+        <input type="{{field.type}}" name="field" class="form-control" ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled" ng-class="inputClass" />
+        <div class="input-group-addon">
+            <i class="fa fa-envelope"></i>
+        </div>
+    </div>
+	<div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>
+	<div ng-if="field.type == 'email'" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.email">{{errors.email}}</div>
+</ng-form>
