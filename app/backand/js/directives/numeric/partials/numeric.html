@@ -1,8 +1,5 @@
 <ng-form name="innerForm">
-	<input ng-if="field.type == 'plain'" type="number" name="field" ng-model="value.val" class="form-control" 
-		ng-disabled="field.disabled" ng-required="field.required" ng-class="inputClass" ng-show="field.show"
-        min="{{field.minimumValue}}" max="{{field.maximumValue}}">
-    <div ng-if="field.type != 'plain'" class="input-group">
+	<div class="input-group">
       <input type="number" name="field" ng-model="value.val" class="form-control" 
 		ng-disabled="field.disabled" ng-required="field.required" ng-class="inputClass" ng-show="field.show"
         min="{{field.minimumValue}}" max="{{field.maximumValue}}">

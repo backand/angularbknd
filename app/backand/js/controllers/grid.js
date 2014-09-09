@@ -225,9 +225,22 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
             }
         };
         $scope.addRow = function () {
+            var defaultOptions = null;
+
+            if ($scope.filterOptions) {
+                defaultOptions = [];
+                var filterOptions = JSON.parse($scope.filterOptions);
+                angular.forEach(filterOptions, function (filterOption) {
+                    var defaultOption = new backand.defaultOption(filterOption.fieldName, filterOption.value);
+                    defaultOptions.push(defaultOption);
+                });
+            }
+            
             $location.search({
-                viewName: $scope.viewNameId
+                viewName: $scope.viewNameId,
+                defaultOptions: angular.toJson(defaultOptions)
             });
+
             $location.path('/forms');
         }
 
