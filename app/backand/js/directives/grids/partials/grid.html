@@ -2,9 +2,9 @@
     <div class="box-body table-responsive">
         <div class="btn-toolbar" role="toolbar" ng-show="showToolbar">
             <div class="btn-group">
-                <button type="button" ng-click="addRow()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"> {{newButton}}</span></button>
-                <button type="button" ng-click="editSelected()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-pencil"> {{editButton}}</span></button>
-                <button type="button" ng-click="deleteSelected()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-trash"> {{deleteButton}}</span></button>
+                <button type="button" ng-click="addRow()" ng-show="showAdd" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"> {{newButton}}</span></button>
+                <button type="button" ng-click="editSelected()" ng-show="showEdit" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-pencil"> {{editButton}}</span></button>
+                <button type="button" ng-click="deleteSelected()" ng-show="showDelete" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-trash"> {{deleteButton}}</span></button>
             </div>
             <div class="btn-group">
                 <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-refresh"></span></button>
@@ -15,7 +15,6 @@
                 <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-search"></span></button>
                 <button type="button" ng-click="deactivateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-remove"></span></button>
             </div>
-           
         </div>
         <!--<div ng-if="dataTable" ng-style="getTableStyle()" ng-grid="dataTable"></div>-->
     </div>

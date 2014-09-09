@@ -104,7 +104,14 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
                 //enableCellEditOnFocus: true,
             };
 
+            //Grid caption
             $scope.global.currentName = $scope.configTable.captionText;
+            //Toolbar setting
+            $scope.showToolbar = $scope.configTable && $scope.configTable.toolbarSettings ? !$scope.configTable.toolbarSettings.hideToolbar : true;
+            $scope.showSearch = $scope.configTable && $scope.configTable.design ? !$scope.configTable.design.hideSearchBox : true;
+            $scope.showAdd = $scope.configTable && $scope.configTable.dataEditing ? $scope.configTable.dataEditing.allowAdd : true;
+            $scope.showEdit = $scope.configTable && $scope.configTable.dataEditing ? $scope.configTable.dataEditing.allowEdit : true;
+            $scope.showDelete = $scope.configTable && $scope.configTable.dataEditing ? $scope.configTable.dataEditing.allowDelete : true;
 
             // Grid footer custom style
             $scope.dataTable.footerTemplate =
@@ -188,9 +195,6 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
             });
         }
 
-        //Toolbar setting
-        $scope.showToolbar = $scope.configTable && $scope.configTable.toolbarSettings.hideToolbar ? !$scope.configTable.toolbarSettings.hideToolbar : true;
-        $scope.showSearch = $scope.configTable && $scope.configTable.design.hideSearchBox ? !$scope.configTable.design.hideSearchBox : true;
 
         $scope.filterKeyPress = function (keyEvent) {
             if (keyEvent.which === 13)
