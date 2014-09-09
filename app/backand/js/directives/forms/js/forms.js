@@ -11,6 +11,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
         scope: {
             viewName: '=',
             id: '=',
+            defaultOptions: '=',
         },
         link: function (scope, el, attrs) {
             scope.formSchema = {
@@ -82,15 +83,23 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     }
                 }
                 else {
+                    var dataToSubmit = {};
+                    if (params.defaultOptions) {
+                        var defaultOptions = JSON.parse(params.defaultOptions);
+                        angular.forEach(defaultOptions, function (defaultOption) {
+                            dataToSubmit[defaultOption.fieldName] = defaultOption.value;
+                        });
+                    }
+
                     if (!Global.selectOptions[params.viewName]) {
                         loadSelectOptions();
                         $q.all([dataForm.promise, selectOptions.promise]).then(function (data) {
-                            scope.processForm(data[0], {}, params);
+                            scope.processForm(data[0], dataToSubmit, params);
                         });
                     }
                     else {
                         $q.all([dataForm.promise]).then(function (data) {
-                            scope.processForm(data[0], {}, params);
+                            scope.processForm(data[0], dataToSubmit, params);
                         });
                     }
                 }
@@ -301,7 +310,14 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
 
                             break;
                     }
-                    var val = scope.isNew ? field.advancedLayout.defaultValue || '' : dataItem[field.name] || '';
+                    var val = '';
+                    if (scope.isNew) {
+                        val = dataItem[field.name] || field.advancedLayout.defaultValue || '';
+                    }
+                    else {
+                        val = dataItem[field.name] || '';
+                    }
+                        
                     var f = {
                         name: field.name,
                         displayName: field.displayName,
@@ -347,7 +363,8 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     else if (type == "autocomplete") {
                         if (scope.isNew) {
                             f.selected = val;
-                            f.value.val = val.value;
+                            if (val)
+                                f.value.val = val.value;
                         }
                         else {
                             f.selected = dataItem.__metadata.autocomplete[f.name];
