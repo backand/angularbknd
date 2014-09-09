@@ -224,7 +224,8 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 scope.dataToSubmit = dataItem;
                 scope.formSchema.title = data.captionText;
                 scope.formSchema.columnsInDialog = data.dataEditing.columnsInDialog;
-                
+                scope.formSchema.editable = (scope.isNew && data.dataEditing.allowAdd) || (!scope.isNew && data.dataEditing.allowEdit);
+
                 angular.forEach(data.fields, function (field) {
                     var type;
                     var currencySymbol;
