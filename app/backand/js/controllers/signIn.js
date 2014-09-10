@@ -2,8 +2,8 @@
 
 
 angular.module('backAnd.controllers')
-    .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope','$route',
-        function($scope, Global, $http, $location, $rootScope, $route) {
+ .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope','$route', '$routeParams','$cookies',
+        function ($scope, Global, $http, $location, $rootScope, $route, $routeParams, $cookies) {
             $scope.global = Global;
 
             function toQueryString(obj) {
@@ -50,10 +50,7 @@ angular.module('backAnd.controllers')
                     }
                 });
                 request.success(function(data, status, headers, config) {
-                    $http.defaults.headers.common['Authorization'] = data.token_type + ' ' + data.access_token;
-                    localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
-                    $location.path('/');
-                    window.location.reload()
+                    successLogin(data.token_type,data.access_token);
                 });
                 request.error(function (data, status, headers, config) {
                     var error_description = "The server is busy. Please contact your administrator or try again later.";
@@ -69,6 +66,58 @@ angular.module('backAnd.controllers')
 
             }
 
+   var successLogin = function (tokenType, tokenData) {
+                $http.defaults.headers.common['Authorization'] = tokenType+ ' ' + tokenData;
+                localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
+                $location.path('/');
+                window.location.reload()
+            }
 
+            $scope.externalAuthorizationList;
+
+			$scope.checkExternalLogin = function () {
+			    if (!($cookies.Bearer === undefined)) { // bearer is not null 
+			        successLogin("Bearer", $cookies.Bearer);
+			    }
+			}
+
+			$scope.externalSignin = function (url) {
+			    if ($scope.appName == '' || typeof $scope.appName == 'undefined') {
+			        $scope.loginError = "Please insert application name";
+			        return;
+			    }
+
+			    window.location = backandGlobal.url + '/api/' + url + "&appname=" + $scope.appName + "&returnAddress=" + $location.absUrl();
+			};
+
+            $scope.loadExternalAuthentification = function () {
+                var data = toQueryString({
+                    returnUrl: "http://localhost:44300/singin-google", // should be as appear in google console manager
+                    generateState: "false"
+                });
+
+                var request = $http({
+                    method: 'GET',
+                    url: backandGlobal.url + "/api/account/ExternalLogins?" + data,
+                    
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/json'
+                    }
+                  
+                });
+
+                request.success(function (data, status, headers, config) {
+                    console.log(data);
+                    $scope.externalAuthorizationList = data;
+                });
+
+                request.error(function (data, status, headers, config) {
+                    // don't do anything, user will not see any external login
+                });
+            };
+
+			$scope.checkExternalLogin();
+            $scope.loadExternalAuthentification();
         }
     ])

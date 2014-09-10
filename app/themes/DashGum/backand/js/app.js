@@ -3,6 +3,7 @@
 angular.module('backAnd', [
     'ngRoute',
     'ngResource',
+    'ngCookies',
     'ngGrid',
     'ui.bootstrap',
     'backAnd.filters',
