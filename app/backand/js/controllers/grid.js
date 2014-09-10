@@ -49,6 +49,8 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
             gridConfigService.queryjsonp({
                 viewName: viewName
             }, function (data) {
+                $scope.$emit('gridConfigCompleted', data);
+
                 $scope.configTable = data;
                 var tableElementScope = $("#ngback-grid_" + $scope.viewNameId + " .ngGrid").scope();
                 if (tableElementScope) {
@@ -201,6 +203,8 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
                 search: searchText
             }, function (largeLoad) {
                 // We have received table data and add the data to the scope
+                $scope.$emit('gridDataCompleted', { config: $scope.configTable, data: largeLoad });
+
                 $scope.dataFill = largeLoad.data;
                 $scope.totalServerItems = largeLoad.totalRows;
                 $scope.isLoad = false;
@@ -366,22 +370,34 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
         }
 
         $scope.getCellTemplate = function (col, view) {
+            var cellTemplate = '';
             switch (col.type) {
                 case 'Image':
                     var height = (view.design.rowHeightInPixels != '') ? view.design.rowHeightInPixels + 'px' : 'auto';
                     var width = (height != 'auto') ? 'auto' : col.columnWidth + 'px';
-                    return '<div class="ngCellText"><span ng-cell-text><img ng-src="' + col.urlPrefix + '/{{row.entity[\'' + col.name + '\']}}" width="' + width + '" height="' + height + '" lazy-src/></span></div>';
+                    cellTemplate = '<div class="ngCellText" ng-class=""><span ng-cell-text><img ng-src="' + col.urlPrefix + '/{{row.entity[\'' + col.name + '\']}}" width="' + width + '" height="' + height + '" lazy-src/></span></div>';
+                    break;
                 case 'Html':
-                    return '<p ng-bind-html="renderHtml(\'{{row.entity[\'' + col.name + '\']}}\')"></p>';
+                    cellTemplate = '<p ng-bind-html="renderHtml(\'{{row.entity[\'' + col.name + '\']}}\')"></p>';
+                    break;
                 case 'LongText':
-                    return '<div class="ngCellText" style="white-space: normal;"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
+                    cellTemplate = '<div class="ngCellText" ng-class="" style="white-space: normal;"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
+                    break;
                 case 'Url':
-                    return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
+                    cellTemplate = '<div class="ngCellText" ng-class="" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
+                    break;
                 case 'MultiSelect':
-                    return '<div class="ngCellText" style="white-space: normal;"><a href ng-click="renderSubGridUrl(\'' + col.name + '\',row.entity.__metadata.id)">' + col.displayName + '</a></div>';
+                    cellTemplate = '<div class="ngCellText" ng-class="" style="white-space: normal;"><a href ng-click="renderSubGridUrl(\'' + col.name + '\',row.entity.__metadata.id)">' + col.displayName + '</a></div>';
+                    break;
                 default:
-                    return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
+                    cellTemplate = '<div class="ngCellText" ng-class="" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
+                    break;
             }
+
+            var colAndCellTemplate = { col: col, cellTemplate: cellTemplate };
+            $scope.$emit('setCellTemplate', colAndCellTemplate);
+
+            return colAndCellTemplate.cellTemplate;
         };
 
         $scope.renderHtml = function (html_code) {

@@ -1,12 +1,22 @@
 'use strict';
 
 
+/**
+* @ngdoc overview
+* @name controller.dashboardController
+*/
 angular.module('backAnd.controllers')
 .controller('dashboardController', ['$scope', 'Global', '$http', 'dashboardService', '$location',
     function ($scope, Global, $http, dashboardService, $location) {
         $scope.global = Global;
 
-        $scope.$watch('dashboardId', function() {
+        /**
+        * @ngdoc function
+        * @name dashboardId
+        * @methodOf backand.js.controllers:dashboardController
+        * @description Get the new Backand's dashboard id and re-load the data
+        */
+        $scope.$watch('dashboardId', function () {
             if ($scope.dashboardId) {
                 $scope.setData($scope.dashboardId);
             }
@@ -15,7 +25,14 @@ angular.module('backAnd.controllers')
             }
         });
 
-        $scope.setData = function(id) {
+        /**
+        * @ngdoc function
+        * @name setData
+        * @methodOf backand.js.controllers:dashboardController
+        * @param {string} id reference to dashboard
+        * @description set the data
+        */
+        $scope.setData = function (id) {
             dashboardService.queryjsonp({
                 dashboard: id
             }, function(data) { 
@@ -28,4 +45,4 @@ angular.module('backAnd.controllers')
             
         }
     }
-    ])
+])

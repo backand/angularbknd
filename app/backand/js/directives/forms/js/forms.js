@@ -1,9 +1,22 @@
 'use strict';
 
-/* Directives */
-
+/**
+* @ngdoc overview
+* @name directive.ngbackForm
+*/
 var backAndDirectives = angular.module('backAnd.directives');
 backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global) {
+    /**
+    * @ngdoc directive
+    * @name directive.ngbackForm
+    * @description binding a form to a database table or view
+    * @param {string} viewName, required, reference to table or view name
+    * @param {string} id, optional, the row primary key, if provided then the form is in EDIT mode otherwise it is in a CREATE mode
+    *       if the primary key of the row has multiple column values then they should be comma delimited in the primary key columns' order
+    * @param {string} defaultOptions, optional, this is a JSON string of an array of backand.defaultOption with two properties: fieldName, value
+    *       if provided it precedes the default value of a field from configuration. it is only relevant in CREATE mode
+    * @returns {object} directive
+    */
     return {
         restrict: 'A',
         transclude: true,
@@ -13,8 +26,21 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
             id: '=',
             defaultOptions: '=',
         },
+         /**
+         * @name link
+         * @methodOf directive.ngbackForm
+         * @description manage the scope of the ngbackForm directive
+         * @param {object} scope, required, the scope of the directive
+         * @param {object} el, required, the element of the directive
+         * @param {object} attrs, required, the attributes of the directive
+         */
         link: function (scope, el, attrs) {
-            scope.formSchema = {
+            /**
+            * @name configInfo
+            * @propertyOf directive.ngbackForm {object} 
+            * @description configuration information of the form and its fields
+            */
+            scope.configInfo = {
                 fields: [],
                 categoriesDictionary: {},
                 title: '',
@@ -22,10 +48,25 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
             };
             var searchParams = $location.search();
 
-
+            /**
+             * @name init
+             * @methodOf directive.ngbackForm
+             * @description initiate the configuration of the form
+             * @param {object} params, required, either the search parameters or directive attributes containing the scope parameters
+             */
             scope.init = function (params) {
 
+                /**
+                * @name isNew
+                * @propertyOf directive.ngbackForm {boolean} 
+                * @description if isNew then CREATE mode, otherwise EDIT mode
+                */
                 scope.isNew = !params.id;
+                /**
+                * @name continue
+                * @propertyOf directive.ngbackForm {boolean} 
+                * @description relevant only in CREATE mode, if true then after submit show the in CREATE mode for new row, otherwise shows the new created row in an EDIT mode
+                */
                 scope.continue = false;
 
                 $log.debug("params", params);
@@ -104,6 +145,11 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     }
                 }
 
+                /**
+                * @name dataToSubmit
+                * @propertyOf directive.ngbackForm {object} 
+                * @description the data to submit to the database
+                */
                 scope.dataToSubmit = null;
                 var updateMessages = {
                     failure: "Failed to update the row. Please contact your system administrator.",
@@ -114,16 +160,37 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     success: "Data submitted.",
                 };
 
+                /**
+                * @name submitCaption
+                * @propertyOf directive.ngbackForm {string} 
+                * @description the submit button caption
+                */
                 scope.submitCaption = scope.isNew ? 'Create' : 'Update';
+                /**
+                * @name submitAndContinueCaption
+                * @propertyOf directive.ngbackForm {string} 
+                * @description the submit and continue button caption, relevant only in CREATE mode
+                */
                 scope.submitAndContinueCaption = scope.isNew ? 'Create and Continue' : '';
 
 
+                /**
+                * @name submit
+                * @methodOf directive.ngbackForm 
+                * @description submit the form data to the database
+                */
                 scope.submit = function () {
                     var service = scope.isNew ? gridCreateItemService : gridUpdateItemService;
                     var messages = scope.isNew ? createMessages : updateMessages;
                     scope.submitAction(service, messages);
                 }
 
+                /**
+                * @name setFieldValue
+                * @methodOf directive.ngbackForm 
+                * @description handles each field value
+                * @param {object} field, required, the field/column of the database table or view
+                */
                 scope.setFieldValue = function (field) {
                     var val = field.value.val;
                     if (scope.dataToSubmit[field.name] != undefined || scope.isNew) {
@@ -145,12 +212,19 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     }
                 }
 
+                /**
+                * @name submitAction
+                * @methodOf directive.ngbackForm 
+                * @description submit the form data to the database
+                * @param {object} service, required, if the mode is CREATE then the create service otherwise the edit service
+                * @param {object} messages, required, success and failure messages
+                */
                 scope.submitAction = function (service, messages) {
-                    angular.forEach(scope.formSchema.fields, function (field) {
+                    angular.forEach(scope.configInfo.fields, function (field) {
                         scope.setFieldValue(field);
                     });
 
-                    angular.forEach(scope.formSchema.categories, function (category) {
+                    angular.forEach(scope.configInfo.categories, function (category) {
                         angular.forEach(category.fields, function (field) {
                             
                             scope.setFieldValue(field);
@@ -202,6 +276,13 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
 
             }
 
+            /**
+            * @ngdoc function
+            * @name viewName
+            * @methodOf directive.ngbackForm 
+            * @description Get the new Backand's view name and re-load the configraion
+            *              and data
+            */
             scope.$watch('viewName', function () {
                 if (scope.viewName) {
                     if (scope.id) {
@@ -219,14 +300,21 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
 
 
 
-
-            scope.processForm = function (data, dataItem, params) {
+            /**
+            * @name processForm
+            * @methodOf directive.ngbackForm 
+            * @description initiate each field configuration
+            * @param {object} viewConfig, required, configuration of the view or table from the database and all its columns
+            * @param {object} dataItem, required, the row from the database, if CREATE mode the an empty object
+            * @param {object} params, required, either the search parameters or directive attributes containing the scope parameters
+            */
+            scope.processForm = function (viewConfig, dataItem, params) {
                 scope.dataToSubmit = dataItem;
-                scope.formSchema.title = data.captionText;
-                scope.formSchema.columnsInDialog = data.dataEditing.columnsInDialog;
-                scope.formSchema.editable = (scope.isNew && data.dataEditing.allowAdd) || (!scope.isNew && data.dataEditing.allowEdit);
+                scope.configInfo.title = viewConfig.captionText;
+                scope.configInfo.columnsInDialog = viewConfig.dataEditing.columnsInDialog;
+                scope.configInfo.editable = (scope.isNew && viewConfig.dataEditing.allowAdd) || (!scope.isNew && viewConfig.dataEditing.allowEdit);
 
-                angular.forEach(data.fields, function (field) {
+                angular.forEach(viewConfig.fields, function (field) {
                     var type;
                     var currencySymbol;
                     switch (field.type) {
@@ -279,7 +367,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                                 type = 'text';
                             break;
                         case 'ShortText':
-                            //pattern = /[0-9]/;
+                            //pattern example = /[0-9]/;
                             if (field.displayFormat == "MultiLines")
                                 type = 'textarea';
                             else if (field.displayFormat == "MultiLinesEditor")
@@ -340,15 +428,15 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     };
 
                     if (field.categoryName && f.show) {
-                        if (!scope.formSchema.categoriesDictionary[field.categoryName]) {
-                            scope.formSchema.categoriesDictionary[field.categoryName] = {
+                        if (!scope.configInfo.categoriesDictionary[field.categoryName]) {
+                            scope.configInfo.categoriesDictionary[field.categoryName] = {
                                 catName: field.categoryName,
                                 fields: []
                             };
                         }
-                        scope.formSchema.categoriesDictionary[field.categoryName].fields.push(f);
+                        scope.configInfo.categoriesDictionary[field.categoryName].fields.push(f);
                     } else {
-                        scope.formSchema.fields.push(f);
+                        scope.configInfo.fields.push(f);
                     }
                     if (f.type == "singleSelect" || f.type == "multiSelect") {
                         if (Global.selectOptions && Global.selectOptions[params.viewName] && Global.selectOptions[params.viewName][f.name]) {
@@ -421,36 +509,51 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     };
                 })
 
-                scope.formSchema.categories = [];
-                angular.forEach(data.categories, function (cat) {
-                    if (scope.formSchema.categoriesDictionary[cat.name]) {
-                        scope.formSchema.categoriesDictionary[cat.name].columnsInDialog = cat.columnsInDialog;
-                        if (scope.formSchema.categoriesDictionary[cat.name].fields.length == 1 && scope.formSchema.categoriesDictionary[cat.name].fields[0].type == 'subgrid') {
-                            scope.formSchema.categoriesDictionary[cat.name].fields[0].hideLabel = true;
-                            scope.formSchema.categoriesDictionary[cat.name].fields[0].tempRelatedViewName = scope.formSchema.categoriesDictionary[cat.name].fields[0].relatedViewName;
-                            scope.formSchema.categoriesDictionary[cat.name].fields[0].relatedViewName = '';
+                scope.configInfo.categories = [];
+                angular.forEach(viewConfig.categories, function (cat) {
+                    if (scope.configInfo.categoriesDictionary[cat.name]) {
+                        scope.configInfo.categoriesDictionary[cat.name].columnsInDialog = cat.columnsInDialog;
+                        if (scope.configInfo.categoriesDictionary[cat.name].fields.length == 1 && scope.configInfo.categoriesDictionary[cat.name].fields[0].type == 'subgrid') {
+                            scope.configInfo.categoriesDictionary[cat.name].fields[0].hideLabel = true;
+                            scope.configInfo.categoriesDictionary[cat.name].fields[0].tempRelatedViewName = scope.configInfo.categoriesDictionary[cat.name].fields[0].relatedViewName;
+                            scope.configInfo.categoriesDictionary[cat.name].fields[0].relatedViewName = '';
                         }
-                        scope.formSchema.categories.push(scope.formSchema.categoriesDictionary[cat.name]);
+                        scope.configInfo.categories.push(scope.configInfo.categoriesDictionary[cat.name]);
                     }
                 });
 
                 if (!scope.isNew) {
-                    scope.formSchema.id = dataItem.__metadata.id;
+                    scope.configInfo.id = dataItem.__metadata.id;
                 }
             };
-            scope.open = function ($event, field) {
-                $event.preventDefault();
-                $event.stopPropagation();
-                field.opened = true;
-            };
+
+            /**
+            * @name renderHtml
+            * @methodOf directive.ngbackForm 
+            * @description render text to html
+            * @param {string} html_code, required, text to render to html
+            * @returns {string} the rendred html
+            */
             scope.renderHtml = function (html_code) {
                 return $sce.trustAsHtml(html_code);
             };
+            /**
+            * @name toggleActive
+            * @methodOf directive.ngbackForm 
+            * @description activate the selected tab
+            * @param {object} $event, required, the click event
+            */
             scope.toggleActive = function ($event) {
                 $event.preventDefault();
                 $($event.currentTarget).tab('show');
             };
 
+            /**
+            * @name tabClick
+            * @methodOf directive.ngbackForm 
+            * @description handles subgrids, only activates them when the user select their tabs, to increase performance
+            * @param {object} category, required, the category of the tab
+            */
             scope.tabClick = function (category) {
                 angular.forEach(category.fields, function (field) {
                     field.relatedViewName = field.tempRelatedViewName;
@@ -459,32 +562,11 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
         }
     };
 })
-  .directive('toNumber', function () {
-      return {
-          require: 'ngModel',
-          link: function (scope, elem, attrs, ctrl) {
-              return ctrl.$parsers.push(function (value) {
-                  return parseFloat(value || '');
-              });
-          }
-      };
-  })
-  .directive('isDate', function () {
-      return {
-          require: 'ngModel',
-          link: function (scope, elem, attr, ngModel) {
-              function validate(value) {
-                  var d = Date.parse(value);
-                  // it is a date
-                  if (isNaN(d)) { // d.valueOf() could also work
-                      ngModel.$setValidity('valid', false);
-                  } else {
-                      ngModel.$setValidity('valid', true);
-                  }
-              }
-          }
-      };
-  })
+/**
+* @ngdoc filter
+* @name filter.parseLabel
+* @description when need to hide the input label it returns an empty string instead of hiding the entire label element that contains the input element
+*/
 .filter('parseLabel', function () {
     return function (label, field) {
         if (field && field.hideLabel)

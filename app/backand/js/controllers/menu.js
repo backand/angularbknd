@@ -28,6 +28,8 @@ angular.module('backAnd.controllers')
                         $scope.additionalWorkspaces = data.additionalWorkspaces;
                         $scope.setDefaultMenu();
 
+                        $scope.$broadcast('appConfigCompleted', data);
+
                         $timeout(function () {
                             $(window).trigger("appConfigCompleted", data);
                         });
@@ -65,6 +67,9 @@ angular.module('backAnd.controllers')
             $scope.curTable = current.index;
 
             $scope.setBreadcrumbs(current, parent);
+
+            $scope.$broadcast('menuItemSelected', current);
+
         }
         
         $scope.setBreadcrumbs = function (current, parent) {
