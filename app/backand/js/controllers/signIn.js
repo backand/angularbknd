@@ -28,6 +28,10 @@ angular.module('backAnd.controllers')
             }
 
             $scope.appName = getDefaultApp();
+            if ($location.search().username)
+                $scope.user = $location.search().username;
+            if ($location.search().password)
+                $scope.password = $location.search().password;
             $scope.waiting = false;
 
             $scope.authentication = function() {

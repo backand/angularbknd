@@ -2,19 +2,22 @@
 
 
 angular.module('backAnd.controllers')
-.controller('dashboardController', ['$scope', 'Global', '$http', 'dashboardService',
-    function($scope, Global, $http, dashboardService) {
+.controller('dashboardController', ['$scope', 'Global', '$http', 'dashboardService', '$location',
+    function ($scope, Global, $http, dashboardService, $location) {
         $scope.global = Global;
-        $scope.$watch('dashboardName', function() {
-            if ($scope.dashboardName)
-                $scope.setData();
+
+        $scope.$watch('dashboardId', function() {
+            if ($scope.dashboardId) {
+                $scope.setData($scope.dashboardId);
+            }
+            else if ($location.search().dashboardId) {
+                $scope.setData($location.search().dashboardId);
+            }
         });
-        $scope.init = function() {
-            $scope.setData();
-        }
-        $scope.setData = function() {
+
+        $scope.setData = function(id) {
             dashboardService.queryjsonp({
-                dashboard : $scope.global.currentTableID
+                dashboard: id
             }, function(data) { 
                 $scope.numCol = 12 / data.columns;
                 $scope.chartData = [];

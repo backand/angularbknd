@@ -19,9 +19,6 @@ angular.module('backAnd', [
         $routeProvider.when('/grids', {
             templateUrl: 'themes/DashGum/backand/partials/grids/grids.html'
         });
-        $routeProvider.when('/index', {
-            templateUrl: 'index-dashgum.html'
-        });
         $routeProvider.when('/dashboard', {
             templateUrl: 'themes/DashGum/backand/partials/dashboard/dashboard.html'
         });
@@ -30,6 +27,9 @@ angular.module('backAnd', [
         });
         $routeProvider.when('/forms', {
             templateUrl: 'themes/DashGum/backand/partials/forms/forms.html'
+        });
+        $routeProvider.when('/', {
+            templateUrl: 'themes/DashGum/backand/partials/default/default.html'
         });
         $routeProvider.otherwise({
             redirectTo: ''

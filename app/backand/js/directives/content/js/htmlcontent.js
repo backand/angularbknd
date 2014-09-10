@@ -10,7 +10,7 @@ angular.module('backAnd.directives')
 		},
 		link: function ($scope, element, attr) {
 		    $scope.contentService.queryjsonp({
-		        content: $scope.global.currentTableID
+		        content: $scope.contentId
 		    }, function (data) {
 		        var el = angular.element(data.content);
 		        element.append(el);

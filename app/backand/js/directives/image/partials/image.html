@@ -1,0 +1,12 @@
+<ng-form name="innerForm">
+    <div class="input-group" ng-class="inputClass">
+        <input type="text" name="field" class="form-control" ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled" ng-class="inputClass"></input>
+        <span class="input-group-btn" ng-show="!field.largeImage">
+            <img ng-src="{{field.urlPrefix}}/{{value.val}}" class="btn btn-default" style="padding: 0; margin-right: 34px; width: 34px;" />
+        </span>
+    </div>
+    <img ng-src="{{field.urlPrefix}}/{{value.val}}" style="width: 300px;" ng-show="field.largeImage" />
+
+    <div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>
+    <div ng-if="field.format" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.pattern">{{errors.format}}</div>
+</ng-form>

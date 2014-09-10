@@ -1,0 +1,12 @@
+<div class="ng-back-grid box" id="ngback-grid_{{viewNameId}}">
+    <div class="btn-group btn-group-sm" ng-show="showToolbar">
+        <button type="button" ng-click="addRow()" ng-show="showAdd" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"></span></button>
+        <button type="button" ng-click="editSelected()" ng-show="showEdit" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-pencil"></span></button>
+        <button type="button" ng-click="deleteSelected()" ng-show="showDelete" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-trash"></span></button>
+    </div>
+    <div class="btn-group btn-group-sm">
+        <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-refresh"></span></button>
+        <img ng-show="isLoad" src="backand/img/ajax-loader.gif" style="height:30px;margin-top:8px;" />
+    </div>
+    <!--<div ng-if="dataTable" ng-style="getTableStyle()" ng-grid="dataTable"></div>-->
+</div>

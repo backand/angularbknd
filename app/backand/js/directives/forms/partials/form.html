@@ -3,14 +3,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h6 class="panel-title">{{formSchema.title}}</h6></div>
                 <div class="panel-body">
-                    <div ng-include="'backand/js/directives/forms/partials/field.html'"
-                            class="col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in formSchema.fields"
-                            ng-if="field.show">
-                        <!-- feild -->
+                    <div class="row">
+                        <div ng-include="'backand/js/directives/forms/partials/field.html'"
+                             class="col-md-{{12 / formSchema.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in formSchema.fields"
+                             ng-if="field.show">
+                            <!-- field -->
+                        </div>
                     </div>
                     <div class="tabbable form-group">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li ng-repeat="category in formSchema.categories" ng-class="{active : $first}">
+                            <li ng-repeat="category in formSchema.categories" ng-class="{active : $first}" ng-click="tabClick(category)">
                                 <a href="#{{category.catName | removeSpaces}}" ng-click="toggleActive($event)" role="tab" data-toggle="tab">{{category.catName}}</a>
                             </li>
                         </ul>
@@ -19,7 +21,7 @@
                                 <div ng-include="'backand/js/directives/forms/partials/field.html'"
                                         class="col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in category.fields"
                                         ng-if="field.show">
-                                    <!-- feild -->
+                                    <!-- field -->
                                 </div>
                             </div>
                         </div>
@@ -31,8 +33,8 @@
                         <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><span ng-bind-html="alert.msg"></span></alert>
                     </div>
                     <div class="=col-md-2 text-right">
-                        <button type="submit" class="btn btn-primary" ng-show="!waiting && isNew" ng-disabled="form.$invalid" ng-click="continue = true">Save &amp; Continue</button>
-                        <button type="submit" class="btn btn-primary" ng-show="!waiting" ng-disabled="form.$invalid" ng-click="continue = false">Save</button>
+                        <button type="submit" class="btn btn-primary" ng-show="formSchema.editable && isNew"  ng-hide="waiting || !isNew" ng-disabled="form.$invalid" ng-click="continue = true">{{submitAndContinueCaption}}</button>
+                        <button type="submit" class="btn btn-primary" ng-show="formSchema.editable" ng-hide="waiting" ng-disabled="form.$invalid" ng-click="continue = false">{{submitCaption}}</button>
                         <img class="img-responsive" ng-show="waiting" src="backand/img/ajax-loader.gif" ng-style="{'display':'inline-block'}" />
                     </div>
                 </div>

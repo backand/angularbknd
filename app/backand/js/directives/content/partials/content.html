@@ -1,10 +1,7 @@
- <div data-ng-controller="contentController" data-ng-init="init()">
-     {{ontent.__metadata.id}}
+ <div>
     <div ng-switch on="content.pageType">
         <htmlcontent content-id="content.__metadata.id" ng-switch-when="Content">	</htmlcontent>
         <iframecontent content-id="content.__metadata.id" ng-switch-when="IFrame">	</iframecontent>
         <linkcontent content-id="content.__metadata.id" ng-switch-when="External">	</linkcontent>
-
     </div>
-    
 </div>

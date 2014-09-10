@@ -3,10 +3,33 @@
     color: #666;
 }
 
-.ngBackGridSelect
-{
-    height: 32px; 
-    width: 55px; 
-    border-color: rgb(221, 221, 221);
-    color: #666;
+ngback-grid input[type="text"].navbar-btn{width:initial;}
+
+ngback-grid .btn-toolbar {
+    margin: 20px;
+    height: 32px;
+    border-radius:0;
 }
+
+ngback-grid .btn-toolbar button,  ngback-grid .btn-toolbar input[type="text"] {
+    height: 32px;
+    border-radius:0;
+}
+
+ngback-grid .btn-toolbar button{
+    background-color:#eaeaea;
+}
+
+ngback-grid .btn-default:hover, ngback-grid .btn-default:focus, ngback-grid .btn-default:active, ngback-grid .btn-default.active, ngback-grid .open .dropdown-toggle.btn-default {
+  color: #505050;
+  background-color: #eaeaea;
+  border-color: #d4d4d4;
+}
+
+ngback-grid .glyphicon{
+    color: #505050;
+  font-size:13px;
+  height:13px;
+  font-family:'Glyphicons Halflings',"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+

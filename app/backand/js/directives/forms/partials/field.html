@@ -1,10 +1,11 @@
 
-<hr ng-if="field.hr">
+<!--<hr ng-if="field.hr">
 <div class="subtitle text-info" ng-bind-html="renderHtml(field.seperatorTitle)"></div>
-<div ng-bind-html="renderHtml(field.preLabel)"></div>
+<div ng-bind-html="renderHtml(field.preLabel)"></div>-->
 <label ng-hide="field.type == 'checkbox'">{{field.displayName | parseLabel:field}}</label>
 <div ng-switch on="field.type">
-    <ngback-grid ng-switch-when="subgrid" table-name="field.relatedViewName" filter-options="field.filterSubgrid()"></ngback-grid>
+    <ngback-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()" input-style="{'height': 500}"></ngback-grid>
+    <div ng-switch-when="disabledSubgrid" ngback-disabled-grid message="'Save first to add rows'"></div>
     <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
@@ -14,13 +15,17 @@
         {{field.displayName | parseLabel:field}}
     </label>
     <div ng-switch-when="date" date field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
-    <div ng-switch-when="datetime" datetime field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    <!--<div ng-switch-when="datetime" datetime field="field" value="field.value" form="" input-class="" errors="field.errors"></div>-->
+    <div ng-switch-when="image" image field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="number" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="currency" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="percentage" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    <div ng-switch-when="numberWithSeparator" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    <div ng-switch-when="numeric" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    <div ng-switch-when="email" email field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="hyperlink">
         <div link field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     </div>
     <div ng-switch-default input field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
 </div>
-<div ng-bind-html="renderHtml(field.postLabel)"></div>
+<!--<div ng-bind-html="renderHtml(field.postLabel)"></div>-->

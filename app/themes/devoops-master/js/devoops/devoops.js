@@ -2429,9 +2429,16 @@ var devoopsInit = (function () {
 	});
 });
 
+function alignBanner() {
+    if ($('#backand-banner').length == 1) {
+        $('header.navbar.ng-scope').css('top', '30px');
+        $('div#main').css('margin-top', '80px');
+    }
+}
 
 $(function () {
     $(window).bind("appConfigCompleted", function (data) {
         devoopsInit();
+        alignBanner();
     });
 });

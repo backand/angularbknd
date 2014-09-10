@@ -1,6 +1,7 @@
 <ng-form name="innerForm">
-	<input ng-if="field.format" type="{{field.type}}" name="field" class="form-control"  ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"  ng-class="inputClass" ng-pattern="field.format"></input>
-	<input ng-if="!field.format" type="{{field.type}}" name="field" class="form-control"  ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"  ng-class="inputClass"></input>
+	<input ng-if="field.format" type="{{field.type}}" name="field" class="form-control"  ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"  ng-class="inputClass" ng-pattern="field.format" />
+	<input ng-if="!field.format" type="{{field.type}}" name="field" class="form-control"  ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"  ng-class="inputClass" />
 	<div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>
 	<div ng-if="field.format" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.pattern">{{errors.format}}</div>
+    <div ng-if="field.type == 'email'" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.email">{{errors.email}}</div>
 </ng-form>

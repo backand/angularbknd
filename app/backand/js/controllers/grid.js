@@ -7,19 +7,29 @@
  *
  */
 var backAndControllers = angular.module('backAnd.controllers', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker']);
-backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$http', '$location', '$route', '$sce', '$compile', '$window',
-    function ($scope, gridService, gridDeleteItemService, gridConfigService, $http, $location, $route, $sce, $compile, $window) {
+backAndControllers.controller('gridController', ['$scope', 'Global', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$filter', '$location', '$route', '$sce', '$compile', '$window',
+    function ($scope, Global, gridService, gridDeleteItemService, gridConfigService, $filter, $location, $route, $sce, $compile, $window) {
 
+        $scope.global = Global;
+        $scope.isMobile = $(window).width() < 768;
         /**
          * @ngdoc function
-         * @name tableName
+         * @name viewName
          * @methodOf backand.js.controllers:gridController
          * @description Get the new Backand's view name and re-load the configraion
          *              and data
          */
-        $scope.$watch('tableName', function () {
-            if ($scope.tableName) {
-                $scope.buildNewGrid($scope.tableName);
+        $scope.$watch('viewName', function () {
+            if ($scope.viewName) {
+                $scope.viewNameId = $scope.viewName;
+                $scope.buildNewGrid($scope.viewNameId);
+                //$scope.getData();
+
+            }
+            else if ($location.$$path == '/grids' && $location.search().viewName) {
+                $scope.viewNameId = $location.search().viewName;
+                $scope.buildNewGrid($scope.viewNameId);
+                //$scope.getData();
             }
         });
 
@@ -30,29 +40,31 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
          * @description Due to limitations in ng-grid, in order to reload the settings,
          *              we must remove it and rebuild it.
          *              Configuration loaded async
-         * @param {string} tableName reference to view name
+         * @param {string} viewName reference to view name
          */
-        $scope.buildNewGrid = function (tableName) {
+        $scope.buildNewGrid = function (viewName) {
             $scope.isLoad = true;
             var configTable = {};
             //Read the View's configuration
             gridConfigService.queryjsonp({
-                table: tableName
+                viewName: viewName
             }, function (data) {
                 $scope.configTable = data;
-                var tableElementScope = $("#ngback-grid_" + $scope.tableName + " .ngGrid").scope();
+                var tableElementScope = $("#ngback-grid_" + $scope.viewNameId + " .ngGrid").scope();
                 if (tableElementScope) {
-                    $("#ngback-grid_" + $scope.tableName + " .ngGrid").remove();
-                    var html = '<div ng-if="dataTable" ng-style="getTableStyle()" ng-grid="dataTable"></div>';
-                    // Step 1: parse HTML into DOM element
-                    var template = angular.element(html);
-                    // Step 2: compile the template
-                    var linkFn = $compile(template);
-                    //Step 3: link the compiled template with the scope.
-                    var element = linkFn($scope);
-                    // Step 4: Append to DOM 
-                    $("#ngback-grid_" + $scope.tableName).append(element);
+                    $("#ngback-grid_" + $scope.viewNameId + " .ngGrid").remove();
                 }
+                var inputStyle = ($scope.inputStyle) ? angular.toJson($scope.inputStyle).replace(/\"/gi, "'") : 'getTableStyle()';
+                var html = '<div ng-if="dataTable" ng-style="' + inputStyle + '" ng-grid="dataTable"></div>';
+                // Step 1: parse HTML into DOM element
+                var template = angular.element(html);
+                // Step 2: compile the template
+                var linkFn = $compile(template);
+                //Step 3: link the compiled template with the scope.
+                var element = linkFn($scope);
+                // Step 4: Append to DOM 
+                $("#ngback-grid_" + $scope.viewNameId).append(element);
+
                 $scope.setNGGridConfiguration();
             });
         };
@@ -67,7 +79,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
 
             $scope.pagingOptions = {
                 pageSizes: [5, 10, 15, 20, 30, 50, 100, 200, 500, 1000],
-                pageSize: 0,
+                pageSize: $scope.configTable.design.rowsperPage,
                 currentPage: 1,
             };
 
@@ -86,31 +98,56 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 footerRowHeight: 47,
                 multiSelect: false,
                 enableColumnResize: true,
-
-                //// grid edititing
+                rowTemplate: '<div ng-dblclick="editSelected(row)" ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div><div ng-cell></div></div>', 
+                // grid edititing
                 //enableCellEditOnFocus: true,
             };
+            if ($scope.isMobile)
+                $scope.dataTable.plugins = [new ngGridFlexibleHeightPlugin()];
+
+            //Grid caption
+            $scope.global.currentName = $scope.configTable.captionText;
+            //Toolbar setting
+            $scope.showToolbar = $scope.configTable && $scope.configTable.toolbarSettings ? !$scope.configTable.toolbarSettings.hideToolbar : true;
+            $scope.showSearch = $scope.configTable && $scope.configTable.design ? !$scope.configTable.design.hideSearchBox : true;
+            $scope.showAdd = $scope.configTable && $scope.configTable.dataEditing ? $scope.configTable.dataEditing.allowAdd : true;
+            $scope.showEdit = $scope.configTable && $scope.configTable.dataEditing ? $scope.configTable.dataEditing.allowEdit : true;
+            $scope.showDelete = $scope.configTable && $scope.configTable.dataEditing ? $scope.configTable.dataEditing.allowDelete : true;
+
             // Grid footer custom style
-            $scope.dataTable.footerTemplate =
+            if (!$scope.isMobile)
+                $scope.dataTable.footerTemplate =
                 '<div class="ngFooterPanel" ng-show="showFooter" style="height:{{footerRowHeight}}px;">' +
-                    '<div class="col-xs-2 text-left" style="margin-top: 12px;">' +
-                        '<span>{{i18n.ngTotalItemsLabel}} {{maxRows()}}</span>' +
+                    '<div class="col-xs-3 text-left" style="margin-top: 12px;">' +
+                        '<span>Showing {{pagingOptions.pageSize * (pagingOptions.currentPage-1) +1}} to {{footerPageMax(pagingOptions.pageSize,pagingOptions.currentPage,maxRows())}} of {{maxRows()}} rows</span>' +
                     '</div>' +
-                    '<div class="col-xs-2 text-right" style="margin-top: 6px;">' +
+                    '<div class="col-xs-3 text-right" style="margin-top: 6px;">' +
                         '<span>{{i18n.ngPageSizeLabel}}&nbsp;</span>' +
                         '<select class="ngBackGridSelect" ng-model="pagingOptions.pageSize" >' +
                             '<option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>' +
                         '</select>' +
                     '</div>' +
-                    '<div class="col-xs-7 text-right">' +
+                    '<div class="col-xs-6 text-right">' +
                         '<pagination style="margin-top:6px;" total-items="maxRows()" ng-model="pagingOptions.currentPage" max-size="5" class="pagination" boundary-links="true" rotate="false" items-per-page="pagingOptions.pageSize"></pagination>' +
                     '</div>' +
-                    '<div class="col-xs-1 text-right" style="margin-top: 12px;">' +
-                        '<span>Page: {{pagingOptions.currentPage}} / {{maxPages()}}</span>' +
+                '</div>';
+            else
+                $scope.dataTable.footerTemplate =
+                '<div class="ngFooterPanel" ng-show="showFooter" style="height:{{footerRowHeight}}px;">' +
+                    '<div class="col-xs-6 text-left" style="margin-top: 12px;">' +
+                        '<span>{{pagingOptions.pageSize * (pagingOptions.currentPage-1) +1}} to {{footerPageMax(pagingOptions.pageSize,pagingOptions.currentPage,maxRows())}} of {{maxRows()}} rows</span>' +
+                    '</div>' +
+                    '<div class="col-xs-6 text-right">' +
+                        '<pagination style="margin-top:6px;" total-items="maxRows()" ng-model="pagingOptions.currentPage" max-size="0" class="pagination pagination-sm" boundary-links="false" rotate="false" items-per-page="pagingOptions.pageSize"></pagination>' +
                     '</div>' +
                 '</div>';
+
+            $scope.footerPageMax = function (pageSize, currentPage, max) {
+                var max = Math.min((pageSize * currentPage), max);
+                return max;
+            }
+
             //update the configuration
-            $scope.pagingOptions.pageSize = $scope.configTable.design.rowsperPage;
             $scope.newButton = $scope.configTable.description.newButtonName;
             $scope.editButton = $scope.configTable.description.editButtonName;
             $scope.deleteButton = $scope.configTable.description.deleteButtonName;
@@ -118,7 +155,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             // We are adding columns and its custom filter to the table based on type
             // this will also need to be changed to handle multiple tables on the same page
             angular.forEach($scope.configTable.fields, function (col) {
-                if (!col.donotDisplayinGrid && col.type != 'MultiSelect') {
+                if (!col.donotDisplayinGrid) {
                     $scope.columns.push({
                         headerCellTemplate: $scope.myHeaderCellTemplate(col, $scope.configTable),
                         cellFilter: col.type,
@@ -132,7 +169,6 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 }
             });
 
-            $scope.getData();
         };
 
         /**
@@ -147,9 +183,17 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             if (searchText == 'undefined') searchText == null;
             // We are requesting data for the specific page of the table.
             var sortString = '[' + JSON.stringify($scope.sortOptions) + ']';
-            var filterString = ($scope.filterOptions) ? JSON.stringify($scope.filterOptions) : null;
+            // Read the filter either from attribute or query string
+            var filterString = '';
+            if ($scope.filterOptions)
+                filterString = $scope.filterOptions;
+            else if($location.search().filterOptions)
+                filterString = $location.search().filterOptions;
+            else
+                filterString = null;
+            //Read from the service configuration
             gridService.queryjsonp({
-                table: $scope.tableName,
+                viewName: $scope.viewNameId,
                 pageSize: $scope.pagingOptions.pageSize,
                 pageNumber: $scope.pagingOptions.currentPage,
                 filter: filterString,
@@ -163,9 +207,6 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             });
         }
 
-        //Toolbar setting
-        $scope.showToolbar = $scope.configTable && $scope.configTable.toolbarSettings.hideToolbar ? !$scope.configTable.toolbarSettings.hideToolbar : true;
-        $scope.showSearch = $scope.configTable && $scope.configTable.design.hideSearchBox ? !$scope.configTable.design.hideSearchBox : true;
 
         $scope.filterKeyPress = function (keyEvent) {
             if (keyEvent.which === 13)
@@ -181,10 +222,6 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
         };
 
         $scope.editSelected = function () {
-             //$window.alert("Coming soon..");
-             //return;
-
-            //$window.alert("editSelected"); 
 
             if (!$scope.isSingleRowSelected()) {
                 $window.alert(messages.pleaseSelectRow);
@@ -194,15 +231,28 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             if ($scope.mySelections != null && $scope.mySelections.length == 1) {
                 $location.search({
                     id: $scope.mySelections[0].__metadata.id,
-                    table: $scope.tableName
+                    viewName: $scope.viewNameId
                 });
                 $location.path('/forms');
             }
         };
         $scope.addRow = function () {
+            var defaultOptions = null;
+
+            if ($scope.filterOptions) {
+                defaultOptions = [];
+                var filterOptions = JSON.parse($scope.filterOptions);
+                angular.forEach(filterOptions, function (filterOption) {
+                    var defaultOption = new backand.defaultOption(filterOption.fieldName, filterOption.value);
+                    defaultOptions.push(defaultOption);
+                });
+            }
+            
             $location.search({
-                table: $scope.tableName
+                viewName: $scope.viewNameId,
+                defaultOptions: angular.toJson(defaultOptions)
             });
+
             $location.path('/forms');
         }
 
@@ -233,8 +283,8 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                 return;
             }
 
-            var table = $scope.tableName;
-            if (!table) {
+            var viewName = $scope.viewNameId;
+            if (!viewName) {
                 console.error(messages.tableMissing)
                 $window.alert(messages.failure);
                 return;
@@ -242,7 +292,7 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
 
             var params = {
                 id: id,
-                table: table
+                viewName: viewName
             };
 
             try {
@@ -315,9 +365,6 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             $scope.getData();
         }
 
-
-
-
         $scope.getCellTemplate = function (col, view) {
             switch (col.type) {
                 case 'Image':
@@ -330,6 +377,8 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
                     return '<div class="ngCellText" style="white-space: normal;"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
                 case 'Url':
                     return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
+                case 'MultiSelect':
+                    return '<div class="ngCellText" style="white-space: normal;"><a href ng-click="renderSubGridUrl(\'' + col.name + '\',row.entity.__metadata.id)">' + col.displayName + '</a></div>';
                 default:
                     return '<div class="ngCellText" ng-style="{\'text-align\': \'' + $scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
             }
@@ -356,6 +405,18 @@ backAndControllers.controller('gridController', ['$scope', 'gridService', 'gridD
             return $sce.trustAsHtml(html);
         }
 
+        $scope.renderSubGridUrl = function (value, id) {
+            var field = $filter('filter')($scope.configTable.fields, function (f) { return f.name === value; })[0];
+            if (field){
+                var filterItem = new backand.filter.item(field.relatedParentFieldName, backand.filter.operator.relation.in, id);
+
+                $location.search({
+                    viewName: field.relatedViewName,
+                    filterOptions: angular.toJson([filterItem])
+                });
+                $location.path('/grids');
+            }
+        }
 
         $scope.$watch('pagingOptions', function (newVal, oldVal) {
             if (newVal !== oldVal) {

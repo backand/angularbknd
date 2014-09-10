@@ -19,17 +19,17 @@ angular.module('backAnd', [
         $routeProvider.when('/grids', {
             templateUrl: 'themes/devoops-master/backand/partials/grids/grids.html'
         });
-        $routeProvider.when('/index', {
-            templateUrl: 'index-devoops.html'
-        });
         $routeProvider.when('/dashboard', {
             templateUrl: 'themes/devoops-master/backand/partials/dashboard/dashboard.html'
         });
         $routeProvider.when('/content', {
             templateUrl: 'themes/devoops-master/backand/partials/content/content.html'
         });
-        $routeProvider.when('/formsExample', {
-            templateUrl: 'themes/devoops-master/partials/main-forms/forms.html'
+        $routeProvider.when('/forms', {
+            templateUrl: 'themes/devoops-master/backand/partials/forms/forms.html'
+        });
+        $routeProvider.when('/', {
+            templateUrl: 'themes/devoops-master/backand/partials/default/default.html'
         });
         $routeProvider.otherwise({
             redirectTo: ''

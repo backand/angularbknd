@@ -3,12 +3,13 @@ angular.module('backAnd.directives', [])
         return {
             restrict: 'E',
             scope: {
-                tableName: '=',
+                viewName: '=',
                 options: '=',
                 filterOptions: '=',
+                inputStyle: '=',
             },
             controller: 'gridController',
             replace: false,
-            templateUrl: 'backand/js/directives/grids/partials/grid.html',
+            templateUrl: ($(window).width() > 768) ? 'backand/js/directives/grids/partials/grid.html' : 'backand/js/directives/grids/partials/grid-mobile.html',
         };
     });

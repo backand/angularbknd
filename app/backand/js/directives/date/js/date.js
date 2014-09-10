@@ -14,15 +14,13 @@ backAndDirectives.directive('date', function($log) {
     	},
     	templateUrl: 'backand/js/directives/date/partials/date.html',
         link: function(scope, el, attrs) {
-            if (!scope.value.val){
-              scope.value.val = scope.field.defaultValue;
+            var date = null;
+            if (scope.value.val) {
+                if (scope.value.val == "Now")
+                    date = new Date();
+                else
+                    date = new Date(scope.value.val);
             };
-
-            var date = new Date(scope.value.val);
-            if (scope.field.format == 'dd/MM/yyyy') {
-                var dateParts = scope.value.val.split("/");
-                date = new Date(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]));
-            }
 
             scope.mydate = date;
 
@@ -41,10 +39,7 @@ backAndDirectives.directive('date', function($log) {
 
             scope.$watch("mydate", function (newValue, oldValue) {
                 if (newValue)
-                    if (scope.field.format == 'dd/MM/yyyy')
-                        scope.value.val = zfill(newValue.getDate(), 2) + '/' + zfill((newValue.getMonth() + 1), 2) + '/' + newValue.getFullYear();
-                    else
-                        scope.value.val = zfill((newValue.getMonth() + 1), 2) + '/' + zfill(newValue.getDate(), 2) + '/' + newValue.getFullYear();
+                    scope.value.val = JSON.stringify(newValue);
                 else
                     scope.value.val = null;
             });

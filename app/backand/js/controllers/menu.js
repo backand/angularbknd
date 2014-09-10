@@ -12,7 +12,9 @@ angular.module('backAnd.controllers')
             if (!localStorage.getItem('Authorization')) {
                 $location.path('/login');
             } else {
-                $location.path('/');
+                if ($location.$$path == "/login") {
+                    $location.path('/');
+                }
                 $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
                 $scope.loadPages();
             }
@@ -42,18 +44,22 @@ angular.module('backAnd.controllers')
         }
 
         $scope.setCurrentMenuSelection = function (current, parent) {
-            $scope.global.currentName = current.name;
             if (current.partType == "table") {
-                //$scope.getConfigTable(current.partId);
-                $scope.global.currentTableID = current.partId;
+                $location.search({
+                    viewName: current.partId
+                });
                 $location.path("/grids");
             }
             else if (current.partType == "dashboard") {
-                $scope.global.currentTableID = current.partId;
+                $location.search({
+                    dashboardId: current.partId
+                });
                 $location.path("/dashboard");
             }
             else if (current.partType == "content") {
-                $scope.global.currentTableID = current.partId;
+                $location.search({
+                    contentId: current.partId
+                });
                 $location.path("/content");
             }
             $scope.curTable = current.index;
