@@ -2,4 +2,18 @@
     margin-left: 1px;
     margin-right: 1px;
 }
+@media screen and (max-width: 767px) {
+    .right-side > .content-header > h1 {
+        font-size: 14px;
+    }
+    .right-side > .content-header{
+        padding: 2px;
+    }
+    .content{
+        padding: 2px;
+    }
 
+    .breadcrumb{
+        display:none;
+    }
+}

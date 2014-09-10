@@ -10,6 +10,6 @@ angular.module('backAnd.directives', [])
             },
             controller: 'gridController',
             replace: false,
-            templateUrl: 'backand/js/directives/grids/partials/grid.html',
+            templateUrl: ($(window).width() > 768) ? 'backand/js/directives/grids/partials/grid.html' : 'backand/js/directives/grids/partials/grid-mobile.html',
         };
     });

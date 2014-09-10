@@ -3,14 +3,6 @@
     color: #666;
 }
 
-.ngBackGridSelect
-{
-    height: 32px; 
-    width: 55px; 
-    border-color: rgb(221, 221, 221);
-    color: #666;
-}
-
 ngback-grid input[type="text"].navbar-btn{width:initial;}
 
 ngback-grid .btn-toolbar {

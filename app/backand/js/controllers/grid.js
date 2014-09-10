@@ -11,7 +11,7 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
     function ($scope, Global, gridService, gridDeleteItemService, gridConfigService, $filter, $location, $route, $sce, $compile, $window) {
 
         $scope.global = Global;
-
+        $scope.isMobile = $(window).width() < 768;
         /**
          * @ngdoc function
          * @name viewName
@@ -98,11 +98,12 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
                 footerRowHeight: 47,
                 multiSelect: false,
                 enableColumnResize: true,
-                rowTemplate: '<div ng-dblclick="editSelected(row)" ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div><div ng-cell></div></div>',
-
+                rowTemplate: '<div ng-dblclick="editSelected(row)" ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div><div ng-cell></div></div>', 
                 // grid edititing
                 //enableCellEditOnFocus: true,
             };
+            if ($scope.isMobile)
+                $scope.dataTable.plugins = [new ngGridFlexibleHeightPlugin()];
 
             //Grid caption
             $scope.global.currentName = $scope.configTable.captionText;
@@ -114,10 +115,11 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
             $scope.showDelete = $scope.configTable && $scope.configTable.dataEditing ? $scope.configTable.dataEditing.allowDelete : true;
 
             // Grid footer custom style
-            $scope.dataTable.footerTemplate =
+            if (!$scope.isMobile)
+                $scope.dataTable.footerTemplate =
                 '<div class="ngFooterPanel" ng-show="showFooter" style="height:{{footerRowHeight}}px;">' +
                     '<div class="col-xs-3 text-left" style="margin-top: 12px;">' +
-                        '<span>Showing {{pagingOptions.pageSize * (pagingOptions.currentPage-1) +1}} to {{footerPageMax(pagingOptions.pageSize,pagingOptions.currentPage,maxRows())}} of {{maxRows()}} entries</span>' +
+                        '<span>Showing {{pagingOptions.pageSize * (pagingOptions.currentPage-1) +1}} to {{footerPageMax(pagingOptions.pageSize,pagingOptions.currentPage,maxRows())}} of {{maxRows()}} rows</span>' +
                     '</div>' +
                     '<div class="col-xs-3 text-right" style="margin-top: 6px;">' +
                         '<span>{{i18n.ngPageSizeLabel}}&nbsp;</span>' +
@@ -127,6 +129,16 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
                     '</div>' +
                     '<div class="col-xs-6 text-right">' +
                         '<pagination style="margin-top:6px;" total-items="maxRows()" ng-model="pagingOptions.currentPage" max-size="5" class="pagination" boundary-links="true" rotate="false" items-per-page="pagingOptions.pageSize"></pagination>' +
+                    '</div>' +
+                '</div>';
+            else
+                $scope.dataTable.footerTemplate =
+                '<div class="ngFooterPanel" ng-show="showFooter" style="height:{{footerRowHeight}}px;">' +
+                    '<div class="col-xs-6 text-left" style="margin-top: 12px;">' +
+                        '<span>{{pagingOptions.pageSize * (pagingOptions.currentPage-1) +1}} to {{footerPageMax(pagingOptions.pageSize,pagingOptions.currentPage,maxRows())}} of {{maxRows()}} rows</span>' +
+                    '</div>' +
+                    '<div class="col-xs-6 text-right">' +
+                        '<pagination style="margin-top:6px;" total-items="maxRows()" ng-model="pagingOptions.currentPage" max-size="0" class="pagination pagination-sm" boundary-links="false" rotate="false" items-per-page="pagingOptions.pageSize"></pagination>' +
                     '</div>' +
                 '</div>';
 
