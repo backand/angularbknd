@@ -6,15 +6,11 @@ projects.
 
 It is based on the [angular-seed](https://github.com/angular/angular-seed) application.
 
-The seed contains a sample Backand AngularJS application and is preconfigured to install the Angular framework and a combination of development and testing tools for instant web development gratification.
-
-The seed app doesn't do much, just shows you how to wire two controllers and views together.
-
 ## Themes
 
-We have a collection of [Bootstrap](http://getbootstrap.com) themes that offer a pre-built set of views.
+We have a collection of [Bootstrap](https://www.backand.com/bootstrap-theme) themes that offer a pre-built set of views.
 
-**AdminLTE** -- is a fully responsive admin template. Based on the **Bootstrap 3** framework. Highly customizable and easy to use, it fits many screen resolutions from small mobile devices to large desktops. Check out the live preview now and see for yourself. 
+All the themes are fully responsive Admin template. Based on the **Bootstrap 3** framework. Highly customizable and easy to use, it fits many screen resolutions from small mobile devices to large desktops.
 
 
 ## Getting Started
