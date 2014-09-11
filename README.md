@@ -124,9 +124,8 @@ Backand Service provide hosting not just the backend but also to the AngularJS c
 
 ## Contact
 
-For more information on AngularJS please check out http://angularjs.org/
+For more information on Backand please check out https://www.backand.com
 
-[backand]: https://www.backand.com
 [git]: http://git-scm.com/
 [bower]: http://bower.io
 [npm]: https://www.npmjs.org/
