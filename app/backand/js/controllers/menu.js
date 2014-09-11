@@ -16,6 +16,7 @@ angular.module('backAnd.controllers')
                     $location.path('/');
                 }
                 $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
+                backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
                 $scope.loadPages();
             }
         }

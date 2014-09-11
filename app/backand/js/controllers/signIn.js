@@ -56,6 +56,7 @@ angular.module('backAnd.controllers')
                 request.success(function(data, status, headers, config) {
                     $http.defaults.headers.common['Authorization'] = data.token_type + ' ' + data.access_token;
                     localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
+                    backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
                     $location.path('/');
                     window.location.reload()
                     //$route.reload();

@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>Backand Example</title>
+</head>
+<body>
+    <!-- Backand Rocks -->
+    <script src="http://api.backand.net/bower_components/jquery/dist/jquery.min.js"></script>
+    <!--<script src="http://api.backand.net/bower_components/angular/angular.js" type="text/javascript"></script>-->
+    <!--<script src="http://api.backand.net/backand/js/backand.js" type="text/javascript"></script>
+    <script src="http://api.backand.net/backand/js/jquery.backand.js" type="text/javascript"></script>-->
+    <script src="app/backand/js/backand.js"></script>
+    <script src="app/backand/js/jquery.backand.js"></script>
+
+    <script type="text/javascript">
+
+        function initBackandAPI() {
+            //backand.options.url = 'https://api.backand.com:8080';
+            
+            //var username = 'udi@myfriends.co.il';
+            //var password = 'Password44';
+            //var appname = 'moduholdings1';
+
+            backand.options.url = 'http://localhost:4109/backapi';
+            //var username = 'relly@devitout.com';
+            //var password = '123456';
+            //var appname = 'bugit';
+            var username = 'admin03@devitout.com';
+            var password = '123456';
+            var appname = 'qa55';
+
+
+            backand.security.authentication.login(username, password, appname,
+                    function (data) {
+                        if (data) {
+                            loadData();
+                        }
+                    },
+                    function (xhr, textStatus, err) {
+                        if (xhr && xhr.responseJSON && xhr.responseJSON.error_description) alert(xhr.responseJSON.error_description);
+                    });
+        }
+        function loadData() {
+            //var filterItem = new backand.filter.item("Active", backand.filter.operator.boolean.equals, true);
+            //var filter = [filterItem];
+            //var sortItem = new backand.sort.item("Order", backand.sort.order.asc);
+            //var sort = [sortItem];
+
+            //backand.api.view.data.getList('HomePage', null, 1, null, filter, sort, null, function (data) {
+            backand.api.view.data.getList('Employees', false, 1, 100, null, null, '', function (data) {
+                var div = $("#backand");
+                $(data.data).each(function () {
+                    var field = this;
+                    var section = '<div>';
+                    section += filed.Company;
+                    section += '</div>';
+                    div.append(section);
+                });
+            },
+            function (xhr) { alert(JSON.stringify(xhr)); });
+
+        }
+
+        $(document).ready(function () {
+            initBackandAPI();
+        });
+
+    </script>
+
+    <div id="backand"></div>
+</body>
+
+</html>

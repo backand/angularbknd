@@ -5,7 +5,7 @@
         type: verb,
         beforeSend: function (xhr) {
             if (!forToken)
-                xhr.setRequestHeader('Authorization', localStorage.getItem('Authorization'));
+                xhr.setRequestHeader('Authorization', backand.security.authentication.token);
         },
         data: data,
         dataType: 'json', 
