@@ -19,10 +19,10 @@ To get started you can simply clone the ngback repository and install the depend
 
 ### Prerequisites
 
-You need git to clone the ngback repository. You can get it from
+You need git to clone the ngback repository. You can get Git from
 [http://git-scm.com/](http://git-scm.com/).
 
-We also use a number of node.js tools to initialize and test ngback. You must have node.js and its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
+We also use a number of node.js tools to initialize and test ngback. You must have node.js and its package manager (npm) installed.  You can donwload node.js from [http://nodejs.org/download//](http://nodejs.org/download/).
 
 ### Clone ngback
 
@@ -35,7 +35,7 @@ cd ngback
 
 ### Install Dependencies
 
-We have two kinds of dependencies in this project: tools and Angular framework code.  The tools help us manage and test the application.
+We have two kinds of dependencies in this project: tools and Angular framework code. The tools help us manage and test the application.
 
 * We get the tools we depend upon via `npm`, the [node package manager][npm].
 * We get the Angular code via `bower`, a [client-side code package manager][bower].
@@ -51,7 +51,8 @@ Behind the scenes this will also call `bower install`.  You should find that you
 * `node_modules` - contains the npm packages for the tools we need
 * `app/bower_components` - contains the angular framework files
 
-*Note that the `bower_components` folder would normally be installed in the root folder but ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.*
+*-In Windows you need to manually create C:\Users\<user name>\AppData\Roaming\npm folder.*
+*-Note that the `bower_components` folder would normally be installed in the root folder but ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.*
 
 ### Run the Application
 
@@ -65,7 +66,8 @@ Now browse to the app at `http://localhost:8000/app/index.html`.
 
 ### Run the Themes
 
-After starting the server, browse to the app at `http://localhost:8000/app/themes/<theme name>/index.html`.
+The default theme is LTE at `http://localhost:8000/app/index-lte.html`.
+You can select other theme like Devopps by browse to `http://localhost:8000/app/index-devoops.html`.
 
 ## Directory Layout
 
