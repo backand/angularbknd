@@ -1,6 +1,17 @@
+
 angular.module('backAnd.directives')
-// barchart
-.directive('columnchart', function(chartService) {
+/**
+* @ngdoc overview
+* @name directive.columnchart
+*/
+.directive('columnchart', function (chartService) {
+    /**
+    * @ngdoc directive
+    * @name directive.columnchart
+    * @description display a morris bar chart which is a column chart
+    * @param {string} chartId, required, the id of the chart
+    * @returns {object} directive
+    */
   return {
     restrict: 'E',
     templateUrl: function (elem, attrs) {
@@ -48,9 +59,18 @@ angular.module('backAnd.directives')
 }
 })
 
-//line chart
-
-.directive('linechart', function(chartService) {
+/**
+* @ngdoc overview
+* @name directive.linechart
+*/
+.directive('linechart', function (chartService) {
+    /**
+    * @ngdoc directive
+    * @name directive.linechart
+    * @description display a morris line chart
+    * @param {string} chartId, required, the id of the chart
+    * @returns {object} directive
+    */
   return {
     restrict: 'E',
     templateUrl: function (elem, attrs) {
@@ -99,8 +119,18 @@ angular.module('backAnd.directives')
 }
 })
 
-// Donut chart
-.directive('donutchart', function(chartService) {
+/**
+* @ngdoc overview
+* @name directive.donutchart
+*/
+.directive('donutchart', function (chartService) {
+    /**
+    * @ngdoc directive
+    * @name directive.donutchart
+    * @description display a morris donut chart
+    * @param {string} chartId, required, the id of the chart
+    * @returns {object} directive
+    */
   return {
     restrict: 'E',
     templateUrl: function (elem, attrs) {
@@ -140,7 +170,18 @@ angular.module('backAnd.directives')
   }
 })
 
-.directive('barchart', function(chartService) {
+/**
+* @ngdoc overview
+* @name directive.barchart
+*/
+.directive('barchart', function (chartService) {
+    /**
+    * @ngdoc directive
+    * @name directive.barchart
+    * @description display a morris bar chart
+    * @param {string} chartId, required, the id of the chart
+    * @returns {object} directive
+    */
   return {
     restrict: 'E',
     templateUrl: function (elem, attrs) {
@@ -190,9 +231,18 @@ angular.module('backAnd.directives')
 }
 })
 
-//spline chart
-
-.directive('splinechart', function(chartService) {
+/**
+* @ngdoc overview
+* @name directive.splinechart
+*/
+.directive('splinechart', function (chartService) {
+    /**
+    * @ngdoc directive
+    * @name directive.splinechart
+    * @description display a morris spline chart
+    * @param {string} chartId, required, the id of the chart
+    * @returns {object} directive
+    */
   return {
     restrict: 'E',
     templateUrl: function (elem, attrs) {
@@ -241,9 +291,18 @@ angular.module('backAnd.directives')
 }
 })
 
-//Area chart
-
-.directive('areachart', function(chartService) {
+/**
+* @ngdoc overview
+* @name directive.areachart
+*/
+.directive('areachart', function (chartService) {
+    /**
+    * @ngdoc directive
+    * @name directive.areachart
+    * @description display a morris area chart
+    * @param {string} chartId, required, the id of the chart
+    * @returns {object} directive
+    */
   return {
     restrict: 'E',
     templateUrl: function (elem, attrs) {
@@ -292,8 +351,18 @@ angular.module('backAnd.directives')
 }
 })
 
-//Bubble chart
-.directive('bubblechart', function(chartService) {
+/**
+* @ngdoc overview
+* @name directive.bubblechart
+*/
+.directive('bubblechart', function (chartService) {
+    /**
+    * @ngdoc directive
+    * @name directive.bubblechart
+    * @description display a morris bubble chart
+    * @param {string} chartId, required, the id of the chart
+    * @returns {object} directive
+    */
   return {
     restrict: 'E',
     templateUrl: function (elem, attrs) {

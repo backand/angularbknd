@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+* @ngdoc overview
+* @name controller.signInController
+*/
 
 angular.module('backAnd.controllers')
     .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope','$route',
@@ -27,13 +31,31 @@ angular.module('backAnd.controllers')
                 return '';
             }
 
-            $scope.appName = getDefaultApp();
+            /**
+            * @name appName
+            * @propertyOf directive.signInController {string} 
+            * @description application name
+            */
+            s$scope.appName = getDefaultApp();
+
             if ($location.search().username)
                 $scope.user = $location.search().username;
             if ($location.search().password)
                 $scope.password = $location.search().password;
-            $scope.waiting = false;
 
+            /**
+            * @name waiting
+            * @propertyOf directive.signInController {boolean} 
+            * @description on and off switch to display waiting while authentication is processed
+            */
+            s$scope.waiting = false;
+
+            /**
+            * @ngdoc function
+            * @name authentication
+            * @methodOf backand.js.controllers:signInController
+            * @description authenticate the user
+            */
             $scope.authentication = function() {
                 $scope.loginError = '';
                 $scope.waiting = true;
@@ -59,14 +81,13 @@ angular.module('backAnd.controllers')
                     backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
                     $location.path('/');
                     window.location.reload()
-                    //$route.reload();
                 });
                 request.error(function (data, status, headers, config) {
                     var error_description = "The server is busy. Please contact your administrator or try again later.";
                     if (data && data.error_description)
                         error_description = data.error_description;
                     else {
-                        //console.error(error_description, { data: data, status: status, headers: headers, config: config })
+                        console.error(error_description, { data: data, status: status, headers: headers, config: config })
                     }
                     $scope.loginError = error_description;
                     console.log(status)

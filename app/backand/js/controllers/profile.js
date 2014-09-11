@@ -1,7 +1,16 @@
 'use strict';
-
+/**
+* @ngdoc overview
+* @name controller.profileController
+*/
 angular.module('backAnd.controllers')
     .controller('profileController', ['$scope', 'Global', 'menuService', '$http',
+        /**
+        * @ngdoc function
+        * @name init
+        * @methodOf backand.js.controllers:profileController
+        * @description initiate the configuration of the user profile
+        */
         function($scope, Global, menuService, $http) {
             $scope.global = Global;
             $scope.init = function() {

@@ -1,12 +1,21 @@
 'use strict';
 
-
+/**
+* @ngdoc overview
+* @name controller.menuController
+*/
 angular.module('backAnd.controllers')
 .controller('menuController', ['$scope', 'Global', '$compile', 'gridConfigService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
     function($scope, Global, $compile, gridConfigService, menuService, $timeout, $rootScope, $http, $location, $route) {
 
         $scope.global = Global;
 
+        /**
+        * @ngdoc function
+        * @name init
+        * @methodOf backand.js.controllers:menuController
+        * @description initiate the configuration of the menu
+        */
         $scope.init = function () {
 
             if (!localStorage.getItem('Authorization')) {
@@ -17,18 +26,24 @@ angular.module('backAnd.controllers')
                 }
                 $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
                 backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
-                $scope.loadPages();
+                $scope.loadMenu();
             }
         }
 
-        $scope.loadPages = function (workspaceId) {
+        /**
+        * @ngdoc function
+        * @name loadMenu
+        * @methodOf backand.js.controllers:menuController
+        * @description loads the menu with api
+        * @param {object} workspaceId, required, each workspace have a different menu
+        */
+        $scope.loadMenu = function (workspaceId) {
             menuService.queryjsonp({ workspaceId: workspaceId },
                     function success(data) {
                         $scope.pages = data.workspace.pages;
                         $scope.currentWorkspace = data.workspace;
                         $scope.additionalWorkspaces = data.additionalWorkspaces;
-                        $scope.setDefaultMenu();
-
+                        
                         $scope.$broadcast('appConfigCompleted', data);
 
                         $timeout(function () {
@@ -43,9 +58,15 @@ angular.module('backAnd.controllers')
                     });
         }
 
-        $scope.setDefaultMenu = function () {
-        }
-
+        
+        /**
+        * @ngdoc function
+        * @name setCurrentMenuSelection
+        * @methodOf backand.js.controllers:menuController
+        * @description set the selected menu and opens the selected part
+        * @param {object} current, required, current selected menu
+        * @param {object} parent, optional, parent selected menu for breadcrumbs
+        */
         $scope.setCurrentMenuSelection = function (current, parent) {
             if (current.partType == "table") {
                 $location.search({
@@ -73,6 +94,14 @@ angular.module('backAnd.controllers')
 
         }
         
+        /**
+        * @ngdoc function
+        * @name setBreadcrumbs
+        * @methodOf backand.js.controllers:menuController
+        * @description set the breadcrumbs
+        * @param {object} current, required, current selected menu
+        * @param {object} parent, optional, parent selected menu 
+        */
         $scope.setBreadcrumbs = function (current, parent) {
             $scope.breadcrumbs = [{ name: $scope.currentWorkspace.name }];
             if (parent)
@@ -80,9 +109,7 @@ angular.module('backAnd.controllers')
             $scope.breadcrumbs.push(current);
         }
 
-        $scope.$on('load', function() {
-            $scope.init();
-        });
+        
 
-}
+    }
 ])

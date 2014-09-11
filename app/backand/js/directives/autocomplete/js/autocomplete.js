@@ -1,7 +1,21 @@
 'use strict';
+/**
+* @ngdoc overview
+* @name directive.autocomplete
+*/
 
 angular.module('backAnd.directives').directive('autocomplete', function () {
     console.log("autocomplete called");
+    /**
+    * @ngdoc directive
+    * @name directive.autocomplete
+    * @description automatic complition for parent relation
+    * @param {object} field, required, field configuration and data
+    * @param {object} value, optional, value of the field, could be null 
+    * @param {object} form, required, the form that contains the field
+    * @param {string} inputClass, optional, optional css class
+    * @returns {object} directive
+    */
     return {
     	restrict: 'A',
     	replace: true,
