@@ -51,7 +51,7 @@ Behind the scenes this will also call `bower install`.  You should find that you
 * `node_modules` - contains the npm packages for the tools we need
 * `app/bower_components` - contains the angular framework files
 
-*-In Windows you need to manually create C:\Users\<user name>\AppData\Roaming\npm folder.*
+*-In Windows you need to manually create `C:\Users\<user name>\AppData\Roaming\npm` folder.*
 
 *-Note that the `bower_components` folder would normally be installed in the root folder but ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.*
 
