@@ -14,6 +14,7 @@ angular.module('backAnd.directives').directive('autocomplete', function () {
     * @param {object} value, optional, value of the field, could be null 
     * @param {object} form, required, the form that contains the field
     * @param {string} inputClass, optional, optional css class
+    * @param {string} errors, optional, error messages
     * @returns {object} directive
     */
     return {
@@ -23,8 +24,9 @@ angular.module('backAnd.directives').directive('autocomplete', function () {
     		field: "=",
     		value: "=",
             form: "=",
-            inputClass: "="
-    	},
+            inputClass: "=",
+    	    errors: "="
+        },
     	templateUrl: 'backand/js/directives/autocomplete/partials/autocomplete.html',
     	controller: ['$scope', '$http', function ($scope, $http) {
     	    $scope.options = function (query) {

@@ -1,6 +1,17 @@
+/**
+* @ngdoc overview
+* @name directive.htmlcontent
+*/
 angular.module('backAnd.directives')
 .directive('htmlcontent', function () {
-	return {
+    /**
+   * @ngdoc directive
+   * @name directive.htmlcontent
+   * @description html content 
+   * @param {string} contentId, required, id of the content
+   * @returns {object} directive
+   */
+    return {
 		restrict: 'E',
 		templateUrl: 'backand/js/directives/content/partials/htmlcontent.html',
 		replace: false,

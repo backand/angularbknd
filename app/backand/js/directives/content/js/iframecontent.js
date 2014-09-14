@@ -1,6 +1,17 @@
+/**
+* @ngdoc overview
+* @name directive.iframecontent
+*/
 angular.module('backAnd.directives')
 .directive('iframecontent', function () {
-	return {
+    /**
+      * @ngdoc directive
+      * @name directive.iframecontent
+      * @description iframe content 
+      * @param {string} contentId, required, id of the content
+      * @returns {object} directive
+      */
+    return {
 		restrict: 'E',
 		templateUrl: 'backand/js/directives/content/partials/iframecontent.html',
 		replace: false,

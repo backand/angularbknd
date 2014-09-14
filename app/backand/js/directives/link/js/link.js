@@ -1,7 +1,22 @@
 'use strict';
+/**
+* @ngdoc overview
+* @name directive.link
+*/
 var backAndDirectives = angular.module('backAnd.directives');
 backAndDirectives.directive('link', function($log) {
-  return {
+    /**
+    * @ngdoc directive
+    * @name directive.link
+    * @description link element
+    * @param {object} field, required, field configuration and data
+    * @param {object} value, optional, value of the field, could be null 
+    * @param {object} form, required, the form that contains the field
+    * @param {string} inputClass, optional, optional css class
+    * @param {string} errors, optional, error messages
+    * @returns {object} directive
+    */
+    return {
     restrict: 'A',
     replace: true,
     scope: {
@@ -29,8 +44,18 @@ backAndDirectives.directive('link', function($log) {
               break;
           }
       };
+        /**
+        * @name isTargetBlank
+        * @propertyOf directive.link {boolean} 
+        * @description blank target flag
+        */
       scope.isTargetBlank = scope.value.target == "_blank";
-      scope.targetChange = function() {
+        /**
+        * @name targetChange
+        * @methodOf directive.link
+        * @description change event callback to set the blank flag
+        */
+      scope.targetChange = function () {
         scope.value.target = scope.isTargetBlank ? "_blank" : null;
       };
 

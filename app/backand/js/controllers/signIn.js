@@ -36,7 +36,7 @@ angular.module('backAnd.controllers')
             * @propertyOf directive.signInController {string} 
             * @description application name
             */
-            s$scope.appName = getDefaultApp();
+            $scope.appName = getDefaultApp();
 
             if ($location.search().username)
                 $scope.user = $location.search().username;
@@ -48,7 +48,7 @@ angular.module('backAnd.controllers')
             * @propertyOf directive.signInController {boolean} 
             * @description on and off switch to display waiting while authentication is processed
             */
-            s$scope.waiting = false;
+            $scope.waiting = false;
 
             /**
             * @ngdoc function

@@ -1,7 +1,21 @@
 'use strict';
+/**
+* @ngdoc overview
+* @name directive.editor
+*/
 
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('editor', function($log, $timeout) {
+backAndDirectives.directive('editor', function ($log, $timeout) {
+    /**
+    * @ngdoc directive
+    * @name directive.editor
+    * @description html editor element
+    * @param {object} field, required, field configuration and data
+    * @param {object} value, optional, value of the field, could be null 
+    * @param {object} form, required, the form that contains the field
+    * @param {string} errors, optional, error messages
+    * @returns {object} directive
+    */
     return {
     	restrict: 'A',
     	replace: true,
@@ -16,28 +30,47 @@ backAndDirectives.directive('editor', function($log, $timeout) {
             $log.debug("editor", scope);
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
-	        }
+    		}
+
+    	    /**
+            * @name innerVal
+            * @propertyOf directive.editor {string} 
+            * @description set the value from configuration
+            */
             scope.innerVal = {
                 val: scope.value.val
             }
 
+    	    /**
+            * @name isInFocus
+            * @propertyOf directive.editor {boolean} 
+            * @description in focus flag, focus bug fix
+            */
             scope.isInFocus = false;
-            scope.inFocus = function() {
+    	    /**
+             * @name inFocus
+             * @methodOf directive.editor
+             * @description set focus flag to true, focus bug fix
+             */
+            scope.inFocus = function () {
                 $log.debug("inFocus");
                 scope.isInFocus = true;
             };
             
+    	    /**
+            * @name isEmpty
+            * @propertyOf directive.editor {boolean} 
+            * @description empty flag 
+            */
             scope.isEmpty = !scope.innerVal.val;
-            scope.outFocus = function() {
+
+    	    /**
+             * @name outFocus
+             * @methodOf directive.editor
+             * @description set focus flag to false, focus bug fix
+             */
+            scope.outFocus = function () {
                 
-                // scope.isInFocus = false;
-                // el[0].focus()
-                // $timeout(function() {
-                //     if (!scope.isInFocus){
-                //         $log.debug("outFocus");
-                //         el[0].blur;
-                //     }
-                // }, 300);
                 $log.debug("outFocus");
 
                 scope.value.val = scope.innerVal.val;

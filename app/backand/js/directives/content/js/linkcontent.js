@@ -1,6 +1,17 @@
+/**
+* @ngdoc overview
+* @name directive.linkcontent
+*/
 angular.module('backAnd.directives')
 .directive('linkcontent', function () {
-	return {
+    /**
+      * @ngdoc directive
+      * @name directive.linkcontent
+      * @description link to content 
+      * @param {string} contentId, required, id of the content
+      * @returns {object} directive
+      */
+    return {
 		restrict: 'E',
 		replace: false,
 		controller: 'contentController',
@@ -12,8 +23,6 @@ angular.module('backAnd.directives')
 		        content: $scope.contentId
 		    }, function (data) {
 		        if (data.openinaNewTab) {
-		            //window.open(data.externalLink, data.target);
-
 		            var evLink = document.createElement('a');
 		            evLink.href = data.externalLink;
 		            evLink.target = data.target;

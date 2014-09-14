@@ -1,7 +1,21 @@
 'use strict';
-
+/**
+* @ngdoc overview
+* @name directive.singleSelect
+*/
 angular.module('backAnd.directives').directive('singleSelect', function ($location) {
     console.log("singleSelect called");
+    /**
+    * @ngdoc directive
+    * @name directive.singleSelect
+    * @description select element
+    * @param {object} field, required, field configuration and data
+    * @param {object} value, optional, value of the field, could be null 
+    * @param {object} form, required, the form that contains the field
+    * @param {string} inputClass, optional, optional css class
+    * @param {string} errors, optional, error messages
+    * @returns {object} directive
+    */
     return {
     	restrict: 'A',
     	replace: true,
@@ -9,18 +23,21 @@ angular.module('backAnd.directives').directive('singleSelect', function ($locati
     		field: "=",
     		value: "=",
             form: "=",
-            inputClass: "="
-    	},
+            inputClass: "=",
+    	    errors: "="
+        },
     	templateUrl: 'backand/js/directives/singleSelect/partials/singleSelect.html',
     	link: function(scope, el, attrs) {
     	    console.log("singleSelect.js", scope);
 
+    	    /**
+            * @name options
+            * @propertyOf directive.singleSelect {array} 
+            * @description get the select options from configuration
+            */
     	    scope.options = scope.field.options;
 
-    	    if (!scope.value.val) {
-    	        scope.value.val = scope.options[0];
-    	    }
-    	    else {
+    	    if (scope.value.val) {
     	        angular.forEach(scope.options, function (option) {
     	            if (option.value == scope.value.val) {
     	                scope.value.val = option;
@@ -28,11 +45,26 @@ angular.module('backAnd.directives').directive('singleSelect', function ($locati
     	        });
     	    }
 
+    	    /**
+             * @name inlineEditing
+             * @methodOf directive.singleSelect
+             * @description when configured adds a button that links to the related table of the select options
+             */
     	    scope.inlineEditing = function () {
     	        $location.search({
     	            viewName: scope.field.relatedViewName,
     	        });
     	        $location.path('/grids');
+    	    }
+
+    	    /**
+            * @name changed
+            * @methodOf directive.singleSelect
+            * @description change callback to set the back the selected value
+            */
+    	    scope.changed = function () {
+    	        if (!scope.value.val.value)
+    	            scope.value.val = null;
     	    }
     	}
     }
