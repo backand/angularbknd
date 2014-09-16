@@ -4,8 +4,19 @@
 * @name directive.email
 */
 var backAndDirectives = angular.module('backAnd.directives');
-
-backAndDirectives.directive('email', function ($log) {
+backAndDirectives.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/email/partials/email.html", '<ng-form name="innerForm">\n' +
+    '    <div class="input-group">\n' +
+    '        <input type="{{field.type}}" name="field" class="form-control" ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled" ng-class="inputClass" />\n' +
+    '        <div class="input-group-addon">\n' +
+    '            <i class="fa fa-envelope"></i>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+	'    <div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>\n' +
+	'    <div ng-if="field.type == \'email\'" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.email">{{errors.email}}</div>\n' +
+    '</ng-form>')
+})
+.directive('email', function ($log, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.email

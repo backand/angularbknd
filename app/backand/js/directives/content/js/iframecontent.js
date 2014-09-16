@@ -2,8 +2,11 @@
 * @ngdoc overview
 * @name directive.iframecontent
 */
-angular.module('backAnd.directives')
-.directive('iframecontent', function () {
+var backAndDirectives = angular.module('backAnd.directives');
+backAndDirectives.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/content/partials/iframecontent.html", '<div><iframe></iframe></div>')
+})
+.directive('iframecontent', function ($templateCache) {
     /**
       * @ngdoc directive
       * @name directive.iframecontent

@@ -4,8 +4,10 @@
 * @name directive.ngbackDisabledGrid
 */
 var backAndDirectives = angular.module('backAnd.directives');
-
-backAndDirectives.directive('ngbackDisabledGrid', function () {
+backAndDirectives.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/grids/partials/disabledGrid.html", '<div>{{message}}</div>')
+})
+.directive('ngbackDisabledGrid', function ($templateCache) {
     /**
     * @ngdoc directive
     * @name directive.ngbackDisabledGrid

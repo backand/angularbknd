@@ -1,10 +1,35 @@
 
-angular.module('backAnd.directives')
+var backAndDirectives = angular.module('backAnd.directives');
+backAndDirectives.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/charts/partials/chart.html", '<div class="box">\n' +
+       '<div class="box-header">\n' +
+            '<h3 class="box-title">{{title}}</h3>\n' +
+            '<h4 class="sub-title">{{subTitle}}</h4>\n' +
+        '</div>\n' +
+        '<div class="box-body chart-responsive">\n' +
+            '<div class="chart"></div>\n' +
+            '<div class="xtitle">{{xTitle}}</div>\n' +
+            '<div class="ytitle">{{yTitle}}</div>\n' +
+        '</div>\n' +
+    '</div>')
+})
+.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/charts/partials/donutchart.html", '<div class="box">\n' +
+    '<div class="box-header">\n' +
+        '<h3 class="box-title">{{title}}</h3>\n' +
+        '<h4 class="sub-title">{{subTitle}}</h4>\n' +
+    '</div>\n' +
+    '<div class="box-body chart-responsive">\n' +
+        '<div class="chart"></div>\n' +
+    '</div>\n' +
+'</div>')
+})
+
 /**
 * @ngdoc overview
 * @name directive.columnchart
 */
-.directive('columnchart', function (chartService) {
+.directive('columnchart', function (chartService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.columnchart
@@ -63,7 +88,7 @@ angular.module('backAnd.directives')
 * @ngdoc overview
 * @name directive.linechart
 */
-.directive('linechart', function (chartService) {
+.directive('linechart', function (chartService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.linechart
@@ -123,7 +148,7 @@ angular.module('backAnd.directives')
 * @ngdoc overview
 * @name directive.donutchart
 */
-.directive('donutchart', function (chartService) {
+.directive('donutchart', function (chartService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.donutchart
@@ -174,7 +199,7 @@ angular.module('backAnd.directives')
 * @ngdoc overview
 * @name directive.barchart
 */
-.directive('barchart', function (chartService) {
+.directive('barchart', function (chartService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.barchart
@@ -235,7 +260,7 @@ angular.module('backAnd.directives')
 * @ngdoc overview
 * @name directive.splinechart
 */
-.directive('splinechart', function (chartService) {
+.directive('splinechart', function (chartService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.splinechart
@@ -295,7 +320,7 @@ angular.module('backAnd.directives')
 * @ngdoc overview
 * @name directive.areachart
 */
-.directive('areachart', function (chartService) {
+.directive('areachart', function (chartService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.areachart
@@ -355,7 +380,7 @@ angular.module('backAnd.directives')
 * @ngdoc overview
 * @name directive.bubblechart
 */
-.directive('bubblechart', function (chartService) {
+.directive('bubblechart', function (chartService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.bubblechart

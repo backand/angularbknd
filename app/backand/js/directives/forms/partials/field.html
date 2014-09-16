@@ -1,7 +1,4 @@
 
-<!--<hr ng-if="field.hr">
-<div class="subtitle text-info" ng-bind-html="renderHtml(field.seperatorTitle)"></div>
-<div ng-bind-html="renderHtml(field.preLabel)"></div>-->
 <label ng-hide="field.type == 'checkbox'">{{field.displayName | parseLabel:field}}</label>
 <div ng-switch on="field.type">
     <ngback-ng-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()" input-style="{'height': 500}"></ngback-ng-grid>
@@ -15,7 +12,6 @@
         {{field.displayName | parseLabel:field}}
     </label>
     <div ng-switch-when="date" date field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
-    <!--<div ng-switch-when="datetime" datetime field="field" value="field.value" form="" input-class="" errors="field.errors"></div>-->
     <div ng-switch-when="image" image field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="number" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
     <div ng-switch-when="currency" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
@@ -28,4 +24,3 @@
     </div>
     <div ng-switch-default input field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
 </div>
-<!--<div ng-bind-html="renderHtml(field.postLabel)"></div>-->

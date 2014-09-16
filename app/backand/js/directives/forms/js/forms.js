@@ -4,8 +4,79 @@
 * @ngdoc overview
 * @name directive.ngbackForm
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global) {
+var backAndDirectives = angular.module('backAnd.directives'); var backAndDirectives = angular.module('backAnd.directives');
+backAndDirectives.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/forms/partials/form.html", '<div class="show" tabindex="-1" role="dialog" aria-hidden="true">\n' +
+    '        <form role="form" name="form" novalidate ng-submit="submit()">\n' +
+    '            <div class="panel panel-default">\n' +
+    '                <div class="panel-heading"><h6 class="panel-title">{{configInfo.title}}</h6></div>\n' +
+    '                <div class="panel-body">\n' +
+    '                    <div class="row">\n' +
+    '                        <div ng-include="\'backand/js/directives/forms/partials/field.html\'"\n' +
+    '                             class="col-md-{{12 / configInfo.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in configInfo.fields"\n' +
+    '                             ng-if="field.show">\n' +
+    '   <!-- field -->\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '<div class="tabbable form-group">\n' +
+    '    <ul class="nav nav-tabs" role="tablist">\n' +
+    '        <li ng-repeat="category in configInfo.categories" ng-class="{active : $first}" ng-click="tabClick(category)">\n' +
+    '            <a href="#{{category.catName | removeSpaces}}" ng-click="toggleActive($event)" role="tab" data-toggle="tab">{{category.catName}}</a>\n' +
+    '        </li>\n' +
+    '    </ul>\n' +
+    '    <div class="tab-content panel-body">\n' +
+    '        <div class="tab-pane fade in" ng-class="{active : $first}" ng-repeat="category in configInfo.categories" id="{{category.catName | removeSpaces}}" ng-form="subForm">\n' +
+    '            <div ng-include="\'backand/js/directives/forms/partials/field.html\'"\n' +
+    '                                        class="col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in category.fields"\n' +
+    '                                        ng-if="field.show">\n' +
+    '<!-- field -->\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '<div class="form-actions panel-footer">\n' +
+    '    <div class="=col-md-10 text-left">\n' +
+    '        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><span ng-bind-html="alert.msg"></span></alert>\n' +
+    '    </div>\n' +
+    '    <div class="=col-md-2 text-right">\n' +
+    '        <button type="submit" class="btn btn-primary" ng-show="configInfo.editable && isNew"  ng-hide="waiting || !isNew" ng-disabled="form.$invalid" ng-click="continue = true">{{submitAndContinueCaption}}</button>\n' +
+    '        <button type="submit" class="btn btn-primary" ng-show="configInfo.editable" ng-hide="waiting" ng-disabled="form.$invalid" ng-click="continue = false">{{submitCaption}}</button>\n' +
+    '        <img class="img-responsive" ng-show="waiting" src="backand/img/ajax-loader.gif" ng-style="{\'display\':\'inline-block\'}" />\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '</form>\n' +
+    '</div>\n' +
+    '<script type="text/ng-template" id="backand/js/directives/forms/partials/field.html">\n' +
+    '    <label ng-hide="field.type == \'checkbox\'">{{field.displayName | parseLabel:field}}</label>\n' +
+    '    <div ng-switch on="field.type">\n' +
+    '        <ngback-ng-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()" input-style="{\'height\': 500}"></ngback-ng-grid>\n' +
+    '        <div ng-switch-when="disabledSubgrid" ngback-disabled-grid message="\'Save first to add rows\'"></div>\n' +
+    '        <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '        <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '        <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '        <div ng-switch-when="textarea" textarea field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '        <label ng-switch-when="checkbox" class="checkbox-inline">\n' +
+    '            <div checkbox field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '            {{field.displayName | parseLabel:field}}\n' +
+    '</label>\n' +
+    '<div ng-switch-when="date" date field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="image" image field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="number" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="currency" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="percentage" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="numberWithSeparator" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="numeric" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="email" email field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="hyperlink">\n' +
+    '    <div link field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '</div>\n' +
+    '<div ng-switch-default input field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '</div>\n' +
+    '</script>')
+})
+.directive('ngbackForm', function ($sce, $q, $location, $route, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.ngbackForm
