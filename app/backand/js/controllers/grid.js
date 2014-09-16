@@ -234,27 +234,27 @@ backAndControllers.controller('gridController', ['$scope', 'Global', 'gridServic
 
             if ($scope.mySelections != null && $scope.mySelections.length == 1) {
                 $location.search({
-                    id: $scope.mySelections[0].__metadata.id,
+                    rowId: $scope.mySelections[0].__metadata.id,
                     viewName: $scope.viewNameId
                 });
                 $location.path('/forms');
             }
         };
         $scope.addRow = function () {
-            var defaultOptions = null;
+            var defaultFieldsValues = null;
 
             if ($scope.filterOptions) {
-                defaultOptions = [];
+                defaultFieldsValues = [];
                 var filterOptions = JSON.parse($scope.filterOptions);
                 angular.forEach(filterOptions, function (filterOption) {
-                    var defaultOption = new backand.defaultOption(filterOption.fieldName, filterOption.value);
-                    defaultOptions.push(defaultOption);
+                    var defaultFieldValue = new backand.defaultFieldValue(filterOption.fieldName, filterOption.value);
+                    defaultFieldsValues.push(defaultFieldValue);
                 });
             }
             
             $location.search({
                 viewName: $scope.viewNameId,
-                defaultOptions: angular.toJson(defaultOptions)
+                defaultFieldsValues: angular.toJson(defaultFieldsValues)
             });
 
             $location.path('/forms');

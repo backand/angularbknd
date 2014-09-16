@@ -1,17 +1,17 @@
 /**
 * @ngdoc overview
-* @name directive.ngbackGrid
+* @name directive.ngbackNgGrid
 */
 angular.module('backAnd.directives', [])
-    .directive('ngbackGrid', function() {
+    .directive('ngbackNgGrid', function() {
         /**
         * @ngdoc directive
-        * @name directive.ngbackGrid
+        * @name directive.ngbackNgGrid
         * @description grid element, ng-grid wrapper that binds to backand rest api
         * @param {string} viewName, view or table from the database
         * @param {object} options, ng-grid options
         * @param {object} filterOptions, backand rest api filter options: {fieldName, operator, value} 
-        * @param {string} inputClass, optional, optional css class
+        * @param {string} inputStyle, optional, optional css class
         * @returns {object} directive
         */
         return {

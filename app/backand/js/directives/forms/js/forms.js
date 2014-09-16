@@ -11,9 +11,9 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
     * @name directive.ngbackForm
     * @description binding a form to a database table or view
     * @param {string} viewName, required, reference to table or view name
-    * @param {string} id, optional, the row primary key, if provided then the form is in EDIT mode otherwise it is in a CREATE mode
+    * @param {string} rowId, optional, the row primary key, if provided then the form is in EDIT mode otherwise it is in a CREATE mode
     *       if the primary key of the row has multiple column values then they should be comma delimited in the primary key columns' order
-    * @param {string} defaultOptions, optional, this is a JSON string of an array of backand.defaultOption with two properties: fieldName, value
+    * @param {string} defaultFieldsValues, optional, this is a JSON string of an array of backand.defaultOption with two properties: fieldName, value
     *       if provided it precedes the default value of a field from configuration. it is only relevant in CREATE mode
     * @returns {object} directive
     */
@@ -23,8 +23,8 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
         templateUrl: 'backand/js/directives/forms/partials/form.html',
         scope: {
             viewName: '=',
-            id: '=',
-            defaultOptions: '=',
+            rowId: '=',
+            defaultFieldsValues: '=',
         },
          /**
          * @name link
@@ -61,7 +61,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 * @propertyOf directive.ngbackForm {boolean} 
                 * @description if isNew then CREATE mode, otherwise EDIT mode
                 */
-                scope.isNew = !params.id;
+                scope.isNew = !params.rowId;
                 /**
                 * @name continue
                 * @propertyOf directive.ngbackForm {boolean} 
@@ -81,7 +81,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 });
 
                 if (!scope.isNew) {
-                    gridViewDataItemService.queryjsonp({ viewName: params.viewName, id: params.id }, function (data) {
+                    gridViewDataItemService.queryjsonp({ viewName: params.viewName, id: params.rowId }, function (data) {
                         dataItem.resolve(data);
                     });
                 }
@@ -125,9 +125,9 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 }
                 else {
                     var dataToSubmit = {};
-                    if (params.defaultOptions) {
-                        var defaultOptions = JSON.parse(params.defaultOptions);
-                        angular.forEach(defaultOptions, function (defaultOption) {
+                    if (params.defaultFieldsValues) {
+                        var defaultFieldsValues = JSON.parse(params.defaultFieldsValues);
+                        angular.forEach(defaultFieldsValues, function (defaultOption) {
                             dataToSubmit[defaultOption.fieldName] = defaultOption.value;
                         });
                     }
@@ -236,7 +236,16 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     scope.closeAlert = function (index) {
                         scope.alerts.splice(index, 1);
                     };
-                    service.queryjsonp(params, JSON.stringify(scope.dataToSubmit), function (data) {
+
+                    var submitParams = null;
+                    if (scope.isNew) {
+                        submitParams = { viewName: params.viewName };
+                    }
+                    else {
+                        submitParams = { viewName: params.viewName, id: params.rowId };
+                    }
+
+                    service.queryjsonp(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
                         scope.waiting = false;
                         if (scope.isNew) {
                             if (scope.continue) {
@@ -245,7 +254,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                             else {
                                 $location.search({
                                     viewName: params.viewName,
-                                    id: data.__metadata.id
+                                    rowId: data.__metadata.id
                                 });
                                 $location.path('/forms');
                             }
@@ -285,8 +294,8 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
             */
             scope.$watch('viewName', function () {
                 if (scope.viewName) {
-                    if (scope.id) {
-                        scope.init({ viewName: scope.viewName, id: scope.id });
+                    if (scope.rowId) {
+                        scope.init({ viewName: scope.viewName, rowId: scope.rowId });
                     }
                     else {
                         scope.init({ viewName: scope.viewName });
@@ -510,13 +519,19 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 })
 
                 scope.configInfo.categories = [];
+                var firstCategory = true;
                 angular.forEach(viewConfig.categories, function (cat) {
                     if (scope.configInfo.categoriesDictionary[cat.name]) {
                         scope.configInfo.categoriesDictionary[cat.name].columnsInDialog = cat.columnsInDialog;
                         if (scope.configInfo.categoriesDictionary[cat.name].fields.length == 1 && scope.configInfo.categoriesDictionary[cat.name].fields[0].type == 'subgrid') {
                             scope.configInfo.categoriesDictionary[cat.name].fields[0].hideLabel = true;
                             scope.configInfo.categoriesDictionary[cat.name].fields[0].tempRelatedViewName = scope.configInfo.categoriesDictionary[cat.name].fields[0].relatedViewName;
-                            scope.configInfo.categoriesDictionary[cat.name].fields[0].relatedViewName = '';
+                            if (!firstCategory) {
+                                scope.configInfo.categoriesDictionary[cat.name].fields[0].relatedViewName = '';
+                            }
+                            else {
+                                firstCategory = false;
+                            }
                         }
                         scope.configInfo.categories.push(scope.configInfo.categoriesDictionary[cat.name]);
                     }

@@ -40,11 +40,9 @@
     <link href="backand/css/app.css" rel="stylesheet" type="text/css" />
 
     <!-- backand demo html formater -->
-    <link href="backand_directives/css/html.format.css" rel="stylesheet" />
+    <link href="../misc/demo/css/html.format.css" rel="stylesheet" />
     <!-- backand demo javascript formater -->
-    <link rel="stylesheet" id="crayon-css" href="http://blog.backand.com/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=2.6.1" type="text/css" media="all">
-    <link rel="stylesheet" id="crayon-theme-classic-css" href="http://blog.backand.com/wp-content/plugins/crayon-syntax-highlighter/themes/classic/classic.css?ver=2.6.1" type="text/css" media="all">
-    <link rel="stylesheet" id="crayon-font-monaco-css" href="http://blog.backand.com/wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=2.6.1" type="text/css" media="all">
+    <link href="../misc/demo/css/js.format.css" rel="stylesheet" />
 
 </head>
 <body>
@@ -80,7 +78,7 @@
     <script type="text/javascript" src="bower_components/moment/moment.js"></script>
     <script type="text/javascript" src="bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
 
-    <script src="backand_directives/js/app.js"></script>
+    <script src="../misc/demo/js/app.js"></script>
 
     <!-- BACKAND STUFF !-->
     <script src="backand/js/backand.js"></script>
@@ -123,19 +121,18 @@
     <script src="backand/js/directives/image/js/image.js"></script>
     <script src="backand/js/directives/email/js/email.js"></script>
 
-
-    <script src="backand_directives/js/controllers/demo.js"></script>
-    <script src="backand_directives/js/controllers/grid.js"></script>
-    <script src="backand_directives/js/controllers/form.js"></script>
+    <script src="../misc/demo/js/controllers/demo.js"></script>
+    <script src="../misc/demo/js/controllers/form.js"></script>
+    <script src="../misc/demo/js/controllers/grid.js"></script>
 
     <div class="container" ng-app="backAnd" data-ng-controller="demoController" ng-init="authentication()">
         <div class="row">
             <div class="col-md-12">
-                <section id="ngbackGrid">
+                <section id="ngbackNgGrid">
                     <div class="page-header">
                         <h1>
-                            ngback-grid<small>
-                                (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/grids">ngback.directives.ngback-grid</a>)
+                            ngback-ng-grid<small>
+                                (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/grids">ngback.directives.ngback-ng-grid</a>)
                             </small>
                         </h1>
                     </div>
@@ -143,11 +140,11 @@
                         <div class="col-md-8 show-grid">
                             <div>
                                 Static Grid Example
-                                <ngback-grid view-name="'Employees'" input-style="{'height': 300}"></ngback-grid>
+                                <ngback-ng-grid view-name="'Employees'" input-style="{'height': 300}"></ngback-ng-grid>
                             </div>
                             <div data-ng-controller="dynamicGridController">
                                 Dynamic Grid Example
-                                <ngback-grid view-name="viewName" input-style="inputStyle"></ngback-grid>
+                                <ngback-ng-grid view-name="viewName" input-style="inputStyle"></ngback-ng-grid>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -157,8 +154,8 @@
                             <p>
                                 This directive provide you a quick development...
                             </p>
-                            <h3>ngback-grid Settings</h3>
-                            <p>All settings can be provided as attributes in the <code>ngback-grid</code> or through the query string parameters.</p>
+                            <h3>ngback-ng-grid Settings</h3>
+                            <p>All settings can be provided as attributes in the <code>ngback-ng-grid</code> or through the query string parameters.</p>
                             <ul>
                                 <li>
                                     <p>
@@ -182,7 +179,7 @@
                                     </p>
                                 </li>
                             </ul>
-                            <h3>ngback-grid Events</h3>
+                            <h3>ngback-ng-grid Events</h3>
                             <ul>
                                 <li>
                                     <p>
@@ -221,26 +218,17 @@
                                     <div>
                                         <pre id="htmlOutput" class="html prettyprint"><span class="tag">&lt;div&gt;</span><span class="pln">
    Static Grid Example
-   </span><span class="tag">&lt;ngback-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"{'height': 300}"</span><span class="tag">&gt;&lt;/ngback-grid&gt;</span><span class="pln">
+   </span><span class="tag">&lt;ngback-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"{'height': 300}"</span><span class="tag">&gt;&lt;/ngback-ng-grid&gt;</span><span class="pln">
 </span><span class="tag">&lt;/div&gt;</span><span class="pln">
 </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-ng-controller</span><span class="pun">=</span><span class="atv">"dynamicGridController"</span><span class="tag">&gt;</span><span class="pln">
    Dynamic Grid Example
-   </span><span class="tag">&lt;ngback-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"inputStyle"</span><span class="tag">&gt;&lt;/ngback-grid&gt;</span><span class="pln">
+   </span><span class="tag">&lt;ngback-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"inputStyle"</span><span class="tag">&gt;&lt;/ngback-ng-grid&gt;</span><span class="pln">
 </span><span class="tag">&lt;/div&gt;</span></pre>
                                     </div>
 
                                 </div>
                                 <div class="tab-pane fade in" id="ngbackGridJavaScript">
-                                    <pre class="prettyprint linenums lang-html">
-'use strict';
-var backAndControllers = angular.module('backAnd.controllers');
-backAndControllers.controller('dynamicGridController', ['$scope', 
-    function ($scope) {
-        $scope.viewName = 'Customers';
-        $scope.inputStyle = { 'height': 300 };
-    }
-])
-                                    </pre>
+                                    <div class="dJsColor" style="font-size: 12px; overflow: auto;"><span class="fj_string">'use&nbsp;strict'</span>;<br><span class="fj_keyword">var</span>&nbsp;backAndControllers&nbsp;&nbsp;=&nbsp;angular.module(<span class="fj_string">'backAnd.controllers'</span>);<br>backAndControllers.controller(<span class="fj_string">'dynamicGridController'</span>,&nbsp;[<span class="fj_string">'$scope'</span>,&nbsp;<span class="fj_keyword">function</span>&nbsp;($scope)&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;$scope.viewName&nbsp;&nbsp;=&nbsp;<span class="fj_string">'Customers'</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;$scope.inputStyle&nbsp;&nbsp;=&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fj_string">'height'</span>:&nbsp;300<br>&nbsp;&nbsp;&nbsp;&nbsp;};<br>}<br>])</div>
                                 <div>
                             </div>
                         </div>
@@ -266,11 +254,11 @@ backAndControllers.controller('dynamicGridController', ['$scope',
                         <div class="col-md-8 show-grid">
                             <div>
                                 Static Form Example
-                                <div ngback-form view-name="'Employees'" id="1"></div>
+                                <div ngback-form view-name="'Employees'" row-id="1"></div>
                             </div>
                             <div data-ng-controller="dynamicFormController">
                                 Dynamic Form Example
-                                <div ngback-form view-name="viewName" id="id"></div>
+                                <div ngback-form view-name="viewName" row-id="id"></div>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -281,7 +269,7 @@ backAndControllers.controller('dynamicGridController', ['$scope',
                                 This directive provide you a quick development...
                             </p>
                             <h3>ngback-form Settings</h3>
-                            <p>All settings can be provided as attributes in the <code>ngback-grid</code> or through the query string parameters.</p>
+                            <p>All settings can be provided as attributes in the <code>ngback-ng-grid</code> or through the query string parameters.</p>
                             <ul>
                                 <li>
                                     <p>
@@ -292,7 +280,7 @@ backAndControllers.controller('dynamicGridController', ['$scope',
                                 </li>
                                 <li>
                                     <p>
-                                        <code>id</code>
+                                        <code>row-id</code>
                                         <em>(Defaults: null)</em> :
                                         The row primary key, if provided then the form is in EDIT mode otherwise it is in a CREATE mode.
                                         if the primary key of the row has multiple column values then they should be comma delimited in the primary key columns' order 
@@ -300,7 +288,7 @@ backAndControllers.controller('dynamicGridController', ['$scope',
                                 </li>
                                 <li>
                                     <p>
-                                        <code>default-options</code>
+                                        <code>default-fields-values</code>
                                         <em>(Defaults: null)</em> :
                                         Default value for each field: {fieldName, value}
                                     </p>
@@ -323,28 +311,19 @@ backAndControllers.controller('dynamicGridController', ['$scope',
                                 <div class="tab-pane fade in active" id="ngbackFormMarkup">
                                     <div>
                                         <pre id="htmlOutput" class="html prettyprint"><span class="tag">&lt;div&gt;</span><span class="pln">
-   Static Grid Example
-   </span><span class="tag">&lt;ngback-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"{'height': 300}"</span><span class="tag">&gt;&lt;/ngback-grid&gt;</span><span class="pln">
+   Static Form Example
+   </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">ngback-form</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">row-id</span><span class="pun">=</span><span class="atv">"1"</span><span class="tag">&gt;&lt;/div&gt;</span><span class="pln">
 </span><span class="tag">&lt;/div&gt;</span><span class="pln">
-</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-ng-controller</span><span class="pun">=</span><span class="atv">"dynamicGridController"</span><span class="tag">&gt;</span><span class="pln">
-   Dynamic Grid Example
-   </span><span class="tag">&lt;ngback-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"inputStyle"</span><span class="tag">&gt;&lt;/ngback-grid&gt;</span><span class="pln">
-</span><span class="tag">&lt;/div&gt;</span>
-                                        </pre>
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-ng-controller</span><span class="pun">=</span><span class="atv">"dynamicFormController"</span><span class="tag">&gt;</span><span class="pln">
+   Dynamic Form Example
+   </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">ngback-form</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">row-id</span><span class="pun">=</span><span class="atv">"id"</span><span class="tag">&gt;&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span></pre>
                                     </div>
 
                                 </div>
                                 <div class="tab-pane fade in" id="ngbackFormJavaScript">
-                                    <pre class="prettyprint linenums lang-html">
-'use strict';
-var backAndControllers = angular.module('backAnd.controllers');
-backAndControllers.controller('dynamicGridController', ['$scope', 
-    function ($scope) {
-        $scope.viewName = 'Customers';
-        $scope.inputStyle = { 'height': 300 };
-    }
-])
-                                    </pre>
+                                    <div class="dJsColor" style="font-size: 12px; overflow: auto;"><span class="fj_string">'use&nbsp;strict'</span>;<br><span class="fj_keyword">var</span>&nbsp;backAndControllers&nbsp;&nbsp;=&nbsp;angular.module(<span class="fj_string">'backAnd.controllers'</span>);<br>backAndControllers.controller(<span class="fj_string">'dynamicFormController'</span>,&nbsp;[<span class="fj_string">'$scope'</span>,&nbsp;<span class="fj_keyword">function</span>&nbsp;($scope)&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;$scope.viewName&nbsp;&nbsp;=&nbsp;<span class="fj_string">'Customers'</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;$scope.id&nbsp;&nbsp;=&nbsp;1;<br>}<br>])</div>
+
                                     <div>
                                     </div>
                                 </div>
@@ -382,7 +361,7 @@ backAndControllers.controller('dynamicGridController', ['$scope',
                                 This directive provide you a quick development...
                             </p>
                             <h3>ngback-form Settings</h3>
-                            <p>All settings can be provided as attributes in the <code>ngback-grid</code> or through the query string parameters.</p>
+                            <p>All settings can be provided as attributes in the <code>ngback-ng-grid</code> or through the query string parameters.</p>
                             <ul>
                                 <li>
                                     <p>
@@ -409,35 +388,14 @@ backAndControllers.controller('dynamicGridController', ['$scope',
                                 <div class="tab-pane fade in active" id="ngbackDashboardMarkup">
                                     <div>
                                         <pre id="htmlOutput" class="html prettyprint"><span class="tag">&lt;div&gt;</span><span class="pln">
-   Static Grid Example
-   </span><span class="tag">&lt;ngback-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"{'height': 300}"</span><span class="tag">&gt;&lt;/ngback-grid&gt;</span><span class="pln">
-</span><span class="tag">&lt;/div&gt;</span><span class="pln">
-</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-ng-controller</span><span class="pun">=</span><span class="atv">"dynamicGridController"</span><span class="tag">&gt;</span><span class="pln">
-   Dynamic Grid Example
-   </span><span class="tag">&lt;ngback-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"inputStyle"</span><span class="tag">&gt;&lt;/ngback-grid&gt;</span><span class="pln">
-</span><span class="tag">&lt;/div&gt;</span>
-                                        </pre>
+   Dashboard Example
+   </span><span class="tag">&lt;ngback-dashboard</span><span class="pln"> </span><span class="atn">dashboard-id</span><span class="pun">=</span><span class="atv">"1"</span><span class="tag">&gt;&lt;/ngback-dashboard&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span></pre>
                                     </div>
 
                                 </div>
-                                <div class="tab-pane fade in" id="ngbackDashboardJavaScript">
-                                    <pre class="prettyprint linenums lang-html">
+                                    <div class="tab-pane fade in" id="ngbackDashboardJavaScript">
 
-
-                                        <div class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate crayon-popup"><div class="crayon-main" style="position: relative; z-index: 1; overflow: auto; opacity: 1;">
-                                        <table class="crayon-table">
-                                        <tbody><tr class="crayon-row">
-                                        <td class="crayon-nums " data-settings="show">
-                                        <div class="crayon-nums-content" style="font-size: 12px !important; line-"><div class="crayon-num" data-line="crayon-5416bb943400b877605203-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-2">2</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-4">4</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-6">6</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-8">8</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-10">10</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-12">12</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-14">14</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-15">15</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-16">16</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-17">17</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-18">18</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-19">19</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-20">20</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-21">21</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-22">22</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-23">23</div><div class="crayon-num crayon-striped-num" data-line="crayon-5416bb943400b877605203-24">24</div><div class="crayon-num" data-line="crayon-5416bb943400b877605203-25">25</div></div>
-				</td>
-                                        <td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-"><div class="crayon-line" id="crayon-5416bb943400b877605203-1"><span class="crayon-v">angular</span><span class="crayon-sy">.</span><span class="crayon-e">module</span><span class="crayon-sy">(</span><span class="crayon-s">'angularGruntSeed'</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-2"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-sy">.</span><span class="crayon-e">factory</span><span class="crayon-sy">(</span><span class="crayon-s">'GridService'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-sy">[</span><span class="crayon-s">'$http'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">'$q'</span><span class="crayon-sy">,</span></div><div class="crayon-line" id="crayon-5416bb943400b877605203-3"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-t">function</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">http</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">q</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-4"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-t">var</span><span class="crayon-h"> </span><span class="crayon-v">contributorsFile</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">'json/contributors.json'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-5416bb943400b877605203-5"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-t">var</span><span class="crayon-h"> </span><span class="crayon-v">contributors</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-6">&nbsp;</div><div class="crayon-line" id="crayon-5416bb943400b877605203-7"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-t">function</span><span class="crayon-h"> </span><span class="crayon-e">getContributors</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-8"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-t">var</span><span class="crayon-h"> </span><span class="crayon-v">deferred</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">q</span><span class="crayon-sy">.</span><span class="crayon-e">defer</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-5416bb943400b877605203-9">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-10"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-sy">$</span><span class="crayon-v">http</span><span class="crayon-sy">.</span><span class="crayon-e">get</span><span class="crayon-sy">(</span><span class="crayon-v">contributorsFile</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-5416bb943400b877605203-11"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">.</span><span class="crayon-st">then</span><span class="crayon-sy">(</span><span class="crayon-t">function</span><span class="crayon-sy">(</span><span class="crayon-v">result</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-12"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-v">contributors</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">result</span><span class="crayon-sy">.</span><span class="crayon-v">data</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-5416bb943400b877605203-13"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-v">deferred</span><span class="crayon-sy">.</span><span class="crayon-e">resolve</span><span class="crayon-sy">(</span><span class="crayon-v">contributors</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-14"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-t">function</span><span class="crayon-sy">(</span><span class="crayon-v">error</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-5416bb943400b877605203-15"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-v">deferred</span><span class="crayon-sy">.</span><span class="crayon-e">reject</span><span class="crayon-sy">(</span><span class="crayon-v">error</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-16"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-5416bb943400b877605203-17">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-18"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-v">deferred</span><span class="crayon-sy">.</span><span class="crayon-v">promise</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-5416bb943400b877605203-19"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-20">&nbsp;</div><div class="crayon-line" id="crayon-5416bb943400b877605203-21"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-22"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">getContributors</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">getContributors</span></div><div class="crayon-line" id="crayon-5416bb943400b877605203-23"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-sy">}</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-5416bb943400b877605203-24"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-5416bb943400b877605203-25"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div></div></td>
-					</tr>
-				</tbody></table>
-			</div></div>
-
-
-
-                                    </pre>
                                     <div>
                                     </div>
                                 </div>
