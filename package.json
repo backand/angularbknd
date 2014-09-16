@@ -1,9 +1,9 @@
 {
-  "name": "angular-seed",
+  "name": "ngBack",
   "private": true,
-  "version": "0.0.0",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "version": "0.2.1",
+  "description": "A starter project for Backand",
+  "repository": "https://github.com/backand/ngback",
   "license": "MIT",
   "devDependencies": {
     "grunt": "~0.4.2",
