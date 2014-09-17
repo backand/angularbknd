@@ -5,8 +5,8 @@
 * @name controller.menuController
 */
 angular.module('backAnd.controllers')
-.controller('menuController', ['$scope', 'Global', '$compile', 'gridConfigService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
-    function($scope, Global, $compile, gridConfigService, menuService, $timeout, $rootScope, $http, $location, $route) {
+.controller('menuController', ['$scope', 'Global', '$compile', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
+    function($scope, Global, $compile, menuService, $timeout, $rootScope, $http, $location, $route) {
 
         $scope.global = Global;
 

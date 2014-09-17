@@ -20,7 +20,7 @@ backAndDirectives.run(function ($templateCache) {
  	    '</div>\n' +
      '</div>')
 })
-.directive('ngbackDashboard', function ($templateCache) {
+.directive('ngbackDashboard', function (Global, $http, configService, $location, $templateCache) {
     /**
    * @ngdoc directive
    * @name directive.ngbackDashboard
@@ -32,9 +32,54 @@ backAndDirectives.run(function ($templateCache) {
 		restrict: 'E',
 		templateUrl:  'backand/js/directives/dashboard/partials/dashboard.html',
 		replace: false,
-		controller: 'dashboardController',
 		scope: {
 			dashboardId : '='
-		},                 
+		},
+	    /**
+        * @name link
+        * @methodOf directive.ngbackDashboard
+        * @description manage the scope of the ngbackDashboard directive
+        * @param {object} scope, required, the scope of the directive
+        * @param {object} el, required, the element of the directive
+        * @param {object} attrs, required, the attributes of the directive
+        */
+		link: function (scope, el, attrs) {
+
+		    /**
+            * @ngdoc function
+            * @name dashboardId
+            * @methodOf backand.js.directive.ngbackDashboard
+            * @description Get the new Backand's dashboard id and re-load the data
+            */
+		    scope.$watch('dashboardId', function () {
+		        if (scope.dashboardId) {
+		            scope.setData(scope.dashboardId);
+		        }
+		        else if ($location.search().dashboardId) {
+		            scope.setData($location.search().dashboardId);
+		        }
+		    });
+
+		    /**
+            * @ngdoc function
+            * @name setData
+            * @methodOf backand.js.directive.ngbackDashboard
+            * @param {string} id reference to dashboard
+            * @description set the data
+            */
+		    scope.setData = function (id) {
+		        configService.read({
+                    dataType: "dashboard",
+		            id: id
+		        }, function (data) {
+		            scope.numCol = 12 / data.columns;
+		            scope.chartData = [];
+		            angular.forEach(data.widgets, function (value, key) {
+		                this.push({ type: value.type, id: value.__metadata.id });
+		            }, scope.chartData)
+		        });
+
+		    }
+		}
 	}
 });

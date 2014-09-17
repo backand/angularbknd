@@ -76,7 +76,7 @@ backAndDirectives.run(function ($templateCache) {
     '</div>\n' +
     '</script>')
 })
-.directive('ngbackForm', function ($sce, $q, $location, $route, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global, $templateCache) {
+.directive('ngbackForm', function ($sce, $q, $location, $route, configService, dataItemService, dataListService, $log, Global, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.ngbackForm
@@ -145,20 +145,26 @@ backAndDirectives.run(function ($templateCache) {
                 var dataItem = $q.defer();
                 var selectOptions = $q.defer();
 
-                gridConfigService.queryjsonp({
-                    viewName: params.viewName
+                configService.read({
+                    dataType: "view",
+                    id: params.viewName
                 }, function (data) {
                     dataForm.resolve(data);
                 });
 
                 if (!scope.isNew) {
-                    gridViewDataItemService.queryjsonp({ viewName: params.viewName, id: params.rowId }, function (data) {
+                    dataItemService.read({
+                        dataType: "view",
+                        viewName: params.viewName,
+                        id: params.rowId
+                    }, function (data) {
                         dataItem.resolve(data);
                     });
                 }
 
                 var loadSelectOptions = function () {
-                    gridService.queryjsonp({
+                    dataListService.read({
+                        dataType: "view",
                         viewName: params.viewName,
                         withSelectOptions: true,
                         filter: null,
@@ -251,9 +257,8 @@ backAndDirectives.run(function ($templateCache) {
                 * @description submit the form data to the database
                 */
                 scope.submit = function () {
-                    var service = scope.isNew ? gridCreateItemService : gridUpdateItemService;
                     var messages = scope.isNew ? createMessages : updateMessages;
-                    scope.submitAction(service, messages);
+                    scope.submitAction(messages);
                 }
 
                 /**
@@ -290,7 +295,7 @@ backAndDirectives.run(function ($templateCache) {
                 * @param {object} service, required, if the mode is CREATE then the create service otherwise the edit service
                 * @param {object} messages, required, success and failure messages
                 */
-                scope.submitAction = function (service, messages) {
+                scope.submitAction = function (messages) {
                     angular.forEach(scope.configInfo.fields, function (field) {
                         scope.setFieldValue(field);
                     });
@@ -310,15 +315,34 @@ backAndDirectives.run(function ($templateCache) {
 
                     var submitParams = null;
                     if (scope.isNew) {
-                        submitParams = { viewName: params.viewName };
+                        submitParams = {
+                            dataType: "view",
+                            viewName: params.viewName
+                        };
                     }
                     else {
-                        submitParams = { viewName: params.viewName, id: params.rowId };
+                        submitParams = {
+                            dataType: "view",
+                            viewName: params.viewName,
+                            id: params.rowId
+                        };
                     }
 
-                    service.queryjsonp(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
+                    var errorCallback = function (error) {
                         scope.waiting = false;
-                        if (scope.isNew) {
+                        if (error.status == 500) {
+                            console.error(error.data, error);
+                            scope.alerts = [{ type: 'danger', msg: messages.failure }];
+                        }
+                        else {
+                            console.warn(error.data, error);
+                            scope.alerts = [{ type: 'danger', msg: error.data }];
+                        }
+                    };
+
+                    if (scope.isNew) {
+                        dataItemService.create(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
+                            scope.waiting = false;
                             if (scope.continue) {
                                 $route.reload();
                             }
@@ -329,28 +353,23 @@ backAndDirectives.run(function ($templateCache) {
                                 });
                                 $location.path('/forms');
                             }
-
-                        }
-                        else {
+                        },
+                        errorCallback);
+                    }
+                    else {
+                        dataItemService.update(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
+                            scope.waiting = false;
+                            
                             scope.alerts = [{ type: 'success', msg: messages.success }];
                             window.setTimeout(function () {
                                 $(".alert").fadeTo(500, 0).slideUp(500, function () {
                                     $(this).remove();
                                 });
                             }, 5000);
-                        }
-                    },
-                    function (error) {
-                        scope.waiting = false;
-                        if (error.status == 500) {
-                            console.error(error.data, error);
-                            scope.alerts = [{ type: 'danger', msg: messages.failure }];
-                        }
-                        else {
-                            console.warn(error.data, error);
-                            scope.alerts = [{ type: 'danger', msg: error.data }];
-                        }
-                    });
+                            
+                        },
+                        errorCallback);
+                    }
 
                 };
 

@@ -1,0 +1,281 @@
+﻿
+<div class="row">
+    <div class="col-md-12">
+        <section id="ngbackNgGrid">
+            <div class="page-header">
+                <h1>
+                    ngback-ng-grid<small>
+                        (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/grids">ngback.directives.ngback-ng-grid</a>)
+                    </small>
+                </h1>
+            </div>
+            <div class="row">
+                <div class="col-md-8 show-grid">
+                    <div>
+                        Static Grid Example
+                        <ngback-ng-grid view-name="'Employees'" input-style="{'height': 300}"></ngback-ng-grid>
+                    </div>
+                    <div data-ng-controller="dynamicGridController">
+                        Dynamic Grid Example
+                        <ngback-ng-grid view-name="viewName" input-style="inputStyle"></ngback-ng-grid>
+                    </div>
+                    <a href="#/grid">more examples...</a>
+                </div>
+                <div class="col-md-4">
+                    <p>
+                        Binded ng-grid to BackAnd REST API
+                    </p>
+                    <p>
+                        This directive provide you a quick development...
+                    </p>
+                    <h3>ngback-ng-grid Settings</h3>
+                    <p>All settings can be provided as attributes in the <code>ngback-ng-grid</code> or through the query string parameters.</p>
+                    <ul>
+                        <li>
+                            <p>
+                                <code>view-name</code>
+                                <em>(Defaults: null)</em> :
+                                A name of a table or view from the database
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <code>filter-options</code>
+                                <em>(Defaults: null)</em> :
+                                uses BackAnd REST API filter options: {fieldName, operator, value}
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <code>input-style</code>
+                                <em>(Defaults: null)</em> :
+                                css style
+                            </p>
+                        </li>
+                    </ul>
+                    <h3>ngback-ng-grid Events</h3>
+                    <ul>
+                        <li>
+                            <p>
+                                <code>gridConfigCompleted</code>
+                                Emit when the configuration of the grid finish loading from the BackAnd REST API and before the configuration of the ng-grid
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <code>gridDataCompleted</code>
+                                Emit when the data of the grid finish loading from the BackAnd REST API and before the loading of the rows into ng-grid
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <code>setCellTemplate</code>
+                                Emit when setting the cellTemplate option of ng-grid
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <hr />
+                <div class="tabbable form-group">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active">
+                            <a href="#ngbackGridMarkup" role="tab" data-toggle="tab">Markup</a>
+                        </li>
+                        <li>
+                            <a href="#ngbackGridJavaScript" role="tab" data-toggle="tab">JavaScript</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content panel-body">
+                        <div class="tab-pane fade in active" id="ngbackGridMarkup">
+                            <div>
+                                <pre id="htmlOutput" class="html prettyprint"><span class="tag">&lt;div&gt;</span><span class="pln">
+Static Grid Example
+</span><span class="tag">&lt;ngback-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"{'height': 300}"</span><span class="tag">&gt;&lt;/ngback-ng-grid&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-ng-controller</span><span class="pun">=</span><span class="atv">"dynamicGridController"</span><span class="tag">&gt;</span><span class="pln">
+Dynamic Grid Example
+</span><span class="tag">&lt;ngback-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"inputStyle"</span><span class="tag">&gt;&lt;/ngback-ng-grid&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span></pre>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade in" id="ngbackGridJavaScript">
+                            <div class="dJsColor" style="font-size: 12px; overflow: auto;"><span class="fj_string">'use&nbsp;strict'</span>;<br><span class="fj_keyword">var</span>&nbsp;backAndControllers&nbsp;&nbsp;=&nbsp;angular.module(<span class="fj_string">'backAnd.controllers'</span>);<br>backAndControllers.controller(<span class="fj_string">'dynamicGridController'</span>,&nbsp;[<span class="fj_string">'$scope'</span>,&nbsp;<span class="fj_keyword">function</span>&nbsp;($scope)&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;$scope.viewName&nbsp;&nbsp;=&nbsp;<span class="fj_string">'Customers'</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;$scope.inputStyle&nbsp;&nbsp;=&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fj_string">'height'</span>:&nbsp;300<br>&nbsp;&nbsp;&nbsp;&nbsp;};<br>}<br>])</div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+
+
+        </section>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <section id="ngbackForm">
+            <div class="page-header">
+                <h1>
+                    ngback-form,<small>
+                        (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/forms">ngback.directives.ngback-form</a>)
+                    </small>
+                </h1>
+            </div>
+            <div class="row">
+                <div class="col-md-8 show-grid">
+                    <div>
+                        Static Form Example
+                        <div ngback-form view-name="'Employees'" row-id="1"></div>
+                    </div>
+                    <div data-ng-controller="dynamicFormController">
+                        Dynamic Form Example
+                        <div ngback-form view-name="viewName" row-id="id"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <p>
+                        Binded form to BackAnd REST API
+                    </p>
+                    <p>
+                        This directive provide you a quick development...
+                    </p>
+                    <h3>ngback-form Settings</h3>
+                    <p>All settings can be provided as attributes in the <code>ngback-ng-grid</code> or through the query string parameters.</p>
+                    <ul>
+                        <li>
+                            <p>
+                                <code>view-name</code>
+                                <em>(Defaults: null)</em> :
+                                A name of a table or view from the database
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <code>row-id</code>
+                                <em>(Defaults: null)</em> :
+                                The row primary key, if provided then the form is in EDIT mode otherwise it is in a CREATE mode.
+                                if the primary key of the row has multiple column values then they should be comma delimited in the primary key columns' order
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <code>default-fields-values</code>
+                                <em>(Defaults: null)</em> :
+                                Default value for each field: {fieldName, value}
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <hr />
+                <div class="tabbable form-group">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active">
+                            <a href="#ngbackFormMarkup" role="tab" data-toggle="tab">Markup</a>
+                        </li>
+                        <li>
+                            <a href="#ngbackFormJavaScript" role="tab" data-toggle="tab">JavaScript</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content panel-body">
+                        <div class="tab-pane fade in active" id="ngbackFormMarkup">
+                            <div>
+                                <pre id="htmlOutput" class="html prettyprint"><span class="tag">&lt;div&gt;</span><span class="pln">
+Static Form Example
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">ngback-form</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">row-id</span><span class="pun">=</span><span class="atv">"1"</span><span class="tag">&gt;&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-ng-controller</span><span class="pun">=</span><span class="atv">"dynamicFormController"</span><span class="tag">&gt;</span><span class="pln">
+Dynamic Form Example
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">ngback-form</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">row-id</span><span class="pun">=</span><span class="atv">"id"</span><span class="tag">&gt;&lt;/div&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span></pre>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade in" id="ngbackFormJavaScript">
+                            <div class="dJsColor" style="font-size: 12px; overflow: auto;"><span class="fj_string">'use&nbsp;strict'</span>;<br><span class="fj_keyword">var</span>&nbsp;backAndControllers&nbsp;&nbsp;=&nbsp;angular.module(<span class="fj_string">'backAnd.controllers'</span>);<br>backAndControllers.controller(<span class="fj_string">'dynamicFormController'</span>,&nbsp;[<span class="fj_string">'$scope'</span>,&nbsp;<span class="fj_keyword">function</span>&nbsp;($scope)&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;$scope.viewName&nbsp;&nbsp;=&nbsp;<span class="fj_string">'Customers'</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;$scope.id&nbsp;&nbsp;=&nbsp;1;<br>}<br>])</div>
+
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+
+
+        </section>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <section id="ngbackDashboard">
+            <div class="page-header">
+                <h1>
+                    ngback-dashboard,<small>
+                        (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/dashboard">ngback.directives.ngback-dashboard</a>)
+                    </small>
+                </h1>
+            </div>
+            <div class="row">
+                <div class="col-md-8 show-grid">
+                    <div>
+                        Dashboard Example
+                        <ngback-dashboard dashboard-id="1"></ngback-dashboard>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <p>
+                        Binded dashboard to BackAnd REST API
+                    </p>
+                    <p>
+                        This directive provide you a quick development...
+                    </p>
+                    <h3>ngback-form Settings</h3>
+                    <p>All settings can be provided as attributes in the <code>ngback-ng-grid</code> or through the query string parameters.</p>
+                    <ul>
+                        <li>
+                            <p>
+                                <code>dashboard-id</code>
+                                <em>(Defaults: null)</em> :
+                                An id of a dashboard from BackAnd REST API configuration
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <hr />
+                <div class="tabbable form-group">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active">
+                            <a href="#ngbackDashboardMarkup" role="tab" data-toggle="tab">Markup</a>
+                        </li>
+                        <li>
+                            <a href="#ngbackDashboardJavaScript" role="tab" data-toggle="tab">JavaScript</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content panel-body">
+                        <div class="tab-pane fade in active" id="ngbackDashboardMarkup">
+                            <div>
+                                <pre id="htmlOutput" class="html prettyprint"><span class="tag">&lt;div&gt;</span><span class="pln">
+Dashboard Example
+</span><span class="tag">&lt;ngback-dashboard</span><span class="pln"> </span><span class="atn">dashboard-id</span><span class="pun">=</span><span class="atv">"1"</span><span class="tag">&gt;&lt;/ngback-dashboard&gt;</span><span class="pln">
+</span><span class="tag">&lt;/div&gt;</span></pre>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade in" id="ngbackDashboardJavaScript">
+
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+
+
+        </section>
+    </div>
+</div>

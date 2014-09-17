@@ -29,7 +29,7 @@ backAndDirectives.run(function ($templateCache) {
 * @ngdoc overview
 * @name directive.columnchart
 */
-.directive('columnchart', function (chartService, $templateCache) {
+.directive('columnchart', function (dataItemService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.columnchart
@@ -47,9 +47,10 @@ backAndDirectives.run(function ($templateCache) {
       chartId : '='
     },
     link: function($scope, element, attrs) {
-      chartService.queryjsonp({
+      dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
-                    chart: $scope.chartId
+                      dataType: "chart",
+                      id: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -88,7 +89,7 @@ backAndDirectives.run(function ($templateCache) {
 * @ngdoc overview
 * @name directive.linechart
 */
-.directive('linechart', function (chartService, $templateCache) {
+.directive('linechart', function (dataItemService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.linechart
@@ -106,9 +107,10 @@ backAndDirectives.run(function ($templateCache) {
       chartId : '='
     },
     link: function($scope, element, attrs) {
-      chartService.queryjsonp({
+      dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
-                    chart: $scope.chartId
+                      dataType: "chart",
+                      id: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -148,7 +150,7 @@ backAndDirectives.run(function ($templateCache) {
 * @ngdoc overview
 * @name directive.donutchart
 */
-.directive('donutchart', function (chartService, $templateCache) {
+.directive('donutchart', function (dataItemService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.donutchart
@@ -166,9 +168,10 @@ backAndDirectives.run(function ($templateCache) {
       chartId : '='
     },
     link: function($scope, element, attrs) {
-      chartService.queryjsonp({
+        dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
-                    chart: $scope.chartId
+                    dataType: "chart",
+                    id: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -199,7 +202,7 @@ backAndDirectives.run(function ($templateCache) {
 * @ngdoc overview
 * @name directive.barchart
 */
-.directive('barchart', function (chartService, $templateCache) {
+.directive('barchart', function (dataItemService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.barchart
@@ -217,9 +220,10 @@ backAndDirectives.run(function ($templateCache) {
       chartId : '='
     },
     link: function($scope, element, attrs) {
-      chartService.queryjsonp({
+      dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
-                    chart: $scope.chartId
+                      dataType: "chart",
+                      id: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -260,7 +264,7 @@ backAndDirectives.run(function ($templateCache) {
 * @ngdoc overview
 * @name directive.splinechart
 */
-.directive('splinechart', function (chartService, $templateCache) {
+.directive('splinechart', function (dataItemService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.splinechart
@@ -278,9 +282,10 @@ backAndDirectives.run(function ($templateCache) {
       chartId : '='
     },
     link: function($scope, element, attrs) {
-      chartService.queryjsonp({
+      dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
-                    chart: $scope.chartId
+                      dataType: "chart",
+                      id: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -320,7 +325,7 @@ backAndDirectives.run(function ($templateCache) {
 * @ngdoc overview
 * @name directive.areachart
 */
-.directive('areachart', function (chartService, $templateCache) {
+.directive('areachart', function (dataItemService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.areachart
@@ -338,9 +343,10 @@ backAndDirectives.run(function ($templateCache) {
       chartId : '='
     },
     link: function($scope, element, attrs) {
-      chartService.queryjsonp({
+      dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
-                    chart: $scope.chartId
+                      dataType: "chart",
+                      id: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -380,7 +386,7 @@ backAndDirectives.run(function ($templateCache) {
 * @ngdoc overview
 * @name directive.bubblechart
 */
-.directive('bubblechart', function (chartService, $templateCache) {
+.directive('bubblechart', function (dataItemService, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.bubblechart
@@ -398,9 +404,10 @@ backAndDirectives.run(function ($templateCache) {
       chartId : '='
     },
     link: function($scope, element, attrs) {
-      chartService.queryjsonp({
+      dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
-                    chart: $scope.chartId
+                      dataType: "chart",
+                      id: $scope.chartId
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;

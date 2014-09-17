@@ -13,7 +13,13 @@ angular.module('backAnd', [
     function ($routeProvider) {
         backand.options.url = backandGlobal.url;
         $routeProvider.when('/', {
-            templateUrl: 'demo.html'
+            templateUrl: 'partials/overview.html'
+        });
+        $routeProvider.when('/overview', {
+            templateUrl: 'partials/overview.html'
+        });
+        $routeProvider.when('/grid', {
+            templateUrl: 'partials/grid.html'
         });
         $routeProvider.otherwise({
             redirectTo: ''

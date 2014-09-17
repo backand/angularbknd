@@ -4,9 +4,9 @@
 */
 var backAndDirectives = angular.module('backAnd.directives');
 backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/content/partials/iframecontent.html", '<div><iframe></iframe></div>')
+    $templateCache.put("backand/js/directives/content/partials/iframecontent.html", '<div><iframe id="id{{contentId}}"></iframe></div>')
 })
-.directive('iframecontent', function ($templateCache) {
+.directive('iframecontent', function (configService, $templateCache) {
     /**
       * @ngdoc directive
       * @name directive.iframecontent
@@ -18,13 +18,26 @@ backAndDirectives.run(function ($templateCache) {
 		restrict: 'E',
 		templateUrl: 'backand/js/directives/content/partials/iframecontent.html',
 		replace: false,
-		controller: 'contentController',
 		scope: {
 		    contentId: '='
 		},
-		link: function ($scope, element, attr) {
-		    $scope.contentService.queryjsonp({
-		        content: $scope.contentId
+		link: function (scope, element, attr) {
+		    /**
+            * @ngdoc function
+            * @name getDefaultIFrameHeight
+            * @methodOf backand.js.directive.ngbackContent
+            * @description get the default iframe height
+            * @returns {int} height in pixels
+            */
+		    scope.getDefaultIFrameHeight = function () {
+		        var top = $('#id' + scope.contentId).position().top;
+		        var height = ($(window).height() - top - 50);
+		        return height;
+		    };
+
+		    configService.read({
+		        dataType: "content",
+		        id: scope.contentId
 		    }, function (data) {
 		        var iframe = element.find('iframe');
 		        iframe.attr('src', data.iFrameURL);
@@ -38,7 +51,7 @@ backAndDirectives.run(function ($templateCache) {
 		            iframe.attr('height', data.height);
 		        }
 		        else {
-		            iframe.attr('height', $scope.getDefaultIFrameHeight());
+		            iframe.attr('height', scope.getDefaultIFrameHeight());
 		        }
 		        if (data.scroll) {
 		            iframe.attr('scrolling', "no");

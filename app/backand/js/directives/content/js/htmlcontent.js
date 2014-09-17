@@ -6,7 +6,7 @@ var backAndDirectives = angular.module('backAnd.directives');
 backAndDirectives.run(function ($templateCache) {
     $templateCache.put("backand/js/directives/content/partials/htmlcontent.html", '<div><div></div></div>')
 })
-.directive('htmlcontent', function ($templateCache) {
+.directive('htmlcontent', function (configService, $templateCache) {
     /**
    * @ngdoc directive
    * @name directive.htmlcontent
@@ -18,13 +18,13 @@ backAndDirectives.run(function ($templateCache) {
 		restrict: 'E',
 		templateUrl: 'backand/js/directives/content/partials/htmlcontent.html',
 		replace: false,
-		controller: 'contentController',
 		scope: {
 		    contentId: '='
 		},
-		link: function ($scope, element, attr) {
-		    $scope.contentService.queryjsonp({
-		        content: $scope.contentId
+		link: function (scope, element, attr) {
+		    configService.read({
+		        dataType: "content",
+		        id: scope.contentId
 		    }, function (data) {
 		        var el = angular.element(data.content);
 		        element.append(el);
