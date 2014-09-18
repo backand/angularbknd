@@ -49,6 +49,13 @@ angular.module('backAnd.controllers')
                         $timeout(function () {
                             $(window).trigger("appConfigCompleted", data);
                         });
+
+                        if ($scope.currentWorkspace.homePage) {
+                            var homePage = $scope.getHomePage($scope.currentWorkspace, $scope.currentWorkspace.homePage);
+
+                            if (homePage)
+                                $scope.setCurrentMenuSelection(homePage);
+                        }
                     },
                     function err(error) {
                         if (error.status == 401) {
@@ -58,7 +65,18 @@ angular.module('backAnd.controllers')
                     });
         }
 
-        
+        $scope.getHomePage = function (parent, id) {
+            for (var i = 0; i < parent.pages.length; i++) {
+                var page = parent.pages[i];
+                if (page.id == id)
+                    return page;
+                else if (page.pages)
+                    return $scope.getHomePage(page, id);
+                else
+                    return null;
+            }
+        }
+
         /**
         * @ngdoc function
         * @name setCurrentMenuSelection
