@@ -10,69 +10,37 @@
                 </h1>
             </div>
             <div class="row">
-                <div class="col-md-8 show-grid">
+                <div class="col-md-12 show-grid">
                     <div>
                         Static Filter Example
-                        <ngback-ng-grid view-name="'Employees'" input-style="{'height': 300}" filter-options="[{'fieldName':'First_Name','operator':'contains','value':'j'}]"></ngback-ng-grid>
+                        <ngback-ng-grid view-name="'Customers'" input-style="{'height': 300}" ></ngback-ng-grid>
                     </div>
+                    <hr />
                     <div data-ng-controller="filterController">
                         Dynamic Filter Example
-                        <ngback-ng-grid view-name="viewName" input-style="inputStyle"></ngback-ng-grid>
+                        <div class='form-horizontal well'>
+                            <fieldset>
+                                <legend>
+                                    Find Employees By:
+                                </legend>
+                                <div ng-repeat="filterOption in filterOptions">
+                                    <label ng-if="filterOption.fieldName=='First_Name'">
+                                        First Name:
+                                        <input ng-model="filterOption.value" />
+                                    </label>
+                                    <label ng-if="filterOption.fieldName=='Job_Title'">
+                                        Job Title:
+                                        <select ng-model="filterOption.value">
+                                            <option ng-repeat="Job_TitleOption in Job_TitleOptions" value="{{Job_TitleOption.Id}}">
+                                                {{Job_TitleOption.Name}}
+                                            </option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <ngback-ng-grid view-name="viewName" input-style="inputStyle" filter-options="filterOptions"></ngback-ng-grid>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <p>
-                        Binded ng-grid to BackAnd REST API
-                    </p>
-                    <p>
-                        This directive provide you a quick development...
-                    </p>
-                    <h3>ngback-ng-grid Settings</h3>
-                    <p>All settings can be provided as attributes in the <code>ngback-ng-grid</code> or through the query string parameters.</p>
-                    <ul>
-                        <li>
-                            <p>
-                                <code>view-name</code>
-                                <em>(Defaults: null)</em> :
-                                A name of a table or view from the database
-                            </p>
-                        </li>
-                        <li>
-                            <p>
-                                <code>filter-options</code>
-                                <em>(Defaults: null)</em> :
-                                uses BackAnd REST API filter options: {fieldName, operator, value}
-                            </p>
-                        </li>
-                        <li>
-                            <p>
-                                <code>input-style</code>
-                                <em>(Defaults: null)</em> :
-                                css style
-                            </p>
-                        </li>
-                    </ul>
-                    <h3>ngback-ng-grid Events</h3>
-                    <ul>
-                        <li>
-                            <p>
-                                <code>gridConfigCompleted</code>
-                                Emit when the configuration of the grid finish loading from the BackAnd REST API and before the configuration of the ng-grid
-                            </p>
-                        </li>
-                        <li>
-                            <p>
-                                <code>gridDataCompleted</code>
-                                Emit when the data of the grid finish loading from the BackAnd REST API and before the loading of the rows into ng-grid
-                            </p>
-                        </li>
-                        <li>
-                            <p>
-                                <code>setCellTemplate</code>
-                                Emit when setting the cellTemplate option of ng-grid
-                            </p>
-                        </li>
-                    </ul>
                 </div>
             </div>
             <div class="row">
@@ -107,7 +75,8 @@ Dynamic Grid Example
                         </div>
                     </div>
 
-
+                </div>
+            </div>
         </section>
     </div>
 </div>

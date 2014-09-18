@@ -252,6 +252,10 @@ backAndDirectives.run(function ($templateCache) {
                     filterString = $location.search().filterOptions;
                 else
                     filterString = null;
+
+                if (!(typeof filterString == 'string' || filterString instanceof String)) {// is not string
+                    filterString = JSON.stringify(filterString);
+                }
                 //Read from the service configuration
                 dataListService.read({
                     dataType: "view",
@@ -496,6 +500,12 @@ backAndDirectives.run(function ($templateCache) {
             }
 
             scope.$watch('pagingOptions', function (newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    scope.getData();
+                }
+            }, true);
+
+            scope.$watch('filterOptions', function (newVal, oldVal) {
                 if (newVal !== oldVal) {
                     scope.getData();
                 }
