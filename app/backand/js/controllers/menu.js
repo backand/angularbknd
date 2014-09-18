@@ -72,9 +72,8 @@ angular.module('backAnd.controllers')
                     return page;
                 else if (page.pages)
                     return $scope.getHomePage(page, id);
-                else
-                    return null;
             }
+            return null;
         }
 
         /**
