@@ -40,6 +40,10 @@
 
 </head>
 <body>
+    <div class="container" ng-app="backAnd" data-ng-controller="demoController" ng-init="authentication()">
+        <div ng-view></div>
+    </div>
+
     <!-- jQuery 2.0.2 -->
     <script src="../../app/bower_components/jquery/dist/jquery.min.js"></script>
 
@@ -111,8 +115,6 @@
     <script src="js/controllers/form.js"></script>
     <script src="js/controllers/grid.js"></script>
     
-    <div class="container" ng-app="backAnd" data-ng-controller="demoController" ng-init="authentication()">
-        <div ng-view></div>
-    </div>
+    
 </body>
 </html>
