@@ -13,7 +13,7 @@
                     <div class="tabbable form-group">
                         <ul class="nav nav-tabs" role="tablist">
                             <li ng-repeat="category in configInfo.categories" ng-class="{active : $first}" ng-click="tabClick(category)">
-                                <a href="#{{category.catName | removeSpaces}}" ng-click="toggleActive($event)" role="tab" data-toggle="tab">{{category.catName}}</a>
+                                <a href="#{{category.catName | removeSpaces}}" showtab role="tab" data-toggle="tab">{{category.catName}}</a>
                             </li>
                         </ul>
                         <div class="tab-content panel-body">

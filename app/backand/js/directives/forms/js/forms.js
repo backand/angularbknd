@@ -21,7 +21,7 @@ backAndDirectives.run(function ($templateCache) {
     '<div class="tabbable form-group">\n' +
     '    <ul class="nav nav-tabs" role="tablist">\n' +
     '        <li ng-repeat="category in configInfo.categories" ng-class="{active : $first}" ng-click="tabClick(category)">\n' +
-    '            <a href="#{{category.catName | removeSpaces}}" ng-click="toggleActive($event)" role="tab" data-toggle="tab">{{category.catName}}</a>\n' +
+    '            <a href="#{{category.catName | removeSpaces}}" showtab role="tab" data-toggle="tab">{{category.catName}}</a>\n' +
     '        </li>\n' +
     '    </ul>\n' +
     '    <div class="tab-content panel-body">\n' +
@@ -642,17 +642,7 @@ backAndDirectives.run(function ($templateCache) {
             scope.renderHtml = function (html_code) {
                 return $sce.trustAsHtml(html_code);
             };
-            /**
-            * @name toggleActive
-            * @methodOf directive.ngbackForm 
-            * @description activate the selected tab
-            * @param {object} $event, required, the click event
-            */
-            scope.toggleActive = function ($event) {
-                $event.preventDefault();
-                $($event.currentTarget).tab('show');
-            };
-
+            
             /**
             * @name tabClick
             * @methodOf directive.ngbackForm 
@@ -678,4 +668,15 @@ backAndDirectives.run(function ($templateCache) {
             return '';
         return label;
     }
-});
+})
+.directive('showtab',
+    function () {
+        return {
+            link: function (scope, element, attrs) {
+                element.click(function (e) {
+                    e.preventDefault();
+                    $(element).tab('show');
+                });
+            }
+        };
+    });
