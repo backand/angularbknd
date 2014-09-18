@@ -26,7 +26,13 @@ angular.module('backAnd.controllers')
                 }
                 $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
                 backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
-                $scope.loadMenu();
+
+                var workspaceId = null;
+                var search = $location.search();
+                if (search && search.workspaceId)
+                    workspaceId = search.workspaceId;
+
+                $scope.loadMenu(workspaceId);
             }
         }
 
@@ -44,6 +50,10 @@ angular.module('backAnd.controllers')
                         $scope.currentWorkspace = data.workspace;
                         $scope.additionalWorkspaces = data.additionalWorkspaces;
                         
+                        $location.search(
+                            'workspaceId', data.workspace.id
+                        );
+
                         $scope.$broadcast('appConfigCompleted', data);
 
                         $timeout(function () {
@@ -87,7 +97,8 @@ angular.module('backAnd.controllers')
         $scope.setCurrentMenuSelection = function (current, parent) {
             if (current.partType == "table") {
                 $location.search({
-                    viewName: current.partId
+                    viewName: current.partId,
+                    workspaceId: $scope.currentWorkspace.id
                 });
                 $location.path("/grids");
             }

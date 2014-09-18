@@ -606,6 +606,8 @@ $(window).load(function() {
             //Slide open or close the menu on link click
             btn.click(function(e) {
                 e.preventDefault();
+                if (e.target.tagName == "I")
+                    e.stopPropagation();
                 if (isActive) {
                     //Slide up to close menu
                     menu.slideUp();
