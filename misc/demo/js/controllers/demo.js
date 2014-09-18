@@ -57,12 +57,9 @@ backAndControllers.controller('demoController', ['$scope', '$http', '$location',
             $scope.waiting = true;
             var data = toQueryString({
                 grant_type: "password",
-                //username: 'guest@backand.com',
-                //password: 'guest1234',
-                //appname: 'restdemo',
-                username: 'admin03@devitout.com',
-                password: '123456',
-                appname: 'qa55',
+                username: 'guest@backand.com',
+                password: 'guest1234',
+                appname: 'restdemo',
             });
             var request = $http({
                 method: 'POST',
