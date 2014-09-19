@@ -59,7 +59,7 @@ backAndControllers.controller('demoController', ['$scope', '$http', '$location',
                 grant_type: "password",
                 username: 'guest@backand.com',
                 password: 'guest1234',
-                appname: 'restdemo',
+                appname: 'demoapp1',
             });
             var request = $http({
                 method: 'POST',

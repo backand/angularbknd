@@ -182,14 +182,14 @@ backAndDirectives.run(function ($templateCache) {
                         '<div class="col-xs-3 text-left" style="margin-top: 12px;">' +
                             '<span>Showing {{pagingOptions.pageSize * (pagingOptions.currentPage-1) +1}} to {{footerPageMax(pagingOptions.pageSize,pagingOptions.currentPage,maxRows())}} of {{maxRows()}} rows</span>' +
                         '</div>' +
-                        '<div class="col-xs-3 text-right" style="margin-top: 6px;">' +
+                        '<div class="col-xs-3 text-right" style="margin-top: 12px;">' +
                             '<span>{{i18n.ngPageSizeLabel}}&nbsp;</span>' +
                             '<select class="ngBackGridSelect" ng-model="pagingOptions.pageSize" >' +
                                 '<option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>' +
                             '</select>' +
                         '</div>' +
                         '<div class="col-xs-6 text-right">' +
-                            '<pagination style="margin-top:6px;" total-items="maxRows()" ng-model="pagingOptions.currentPage" max-size="5" class="pagination" boundary-links="true" rotate="false" items-per-page="pagingOptions.pageSize"></pagination>' +
+                            '<pagination style="margin-top:6px;" total-items="maxRows()" ng-model="pagingOptions.currentPage" max-size="5" class="pagination-md" boundary-links="true" rotate="false" items-per-page="pagingOptions.pageSize"></pagination>' +
                         '</div>' +
                     '</div>';
                 else
