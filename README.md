@@ -65,7 +65,7 @@ npm start
 
 Now browse to the app at `http://localhost:8000/app/index.html`.
 
-### Run the Themes
+### Select the Theme
 
 The default theme is LTE at `http://localhost:8000/app/index-lte.html`.
 You can select other theme like Devopps by browse to `http://localhost:8000/app/index-devoops.html`.
