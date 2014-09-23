@@ -53,7 +53,14 @@ Behind the scenes this will also call `bower install`.  You should find that you
 
 *-In Windows you need to manually create `C:\Users\<user name>\AppData\Roaming\npm` folder.*
 
-*-Note that the `bower_components` folder would normally be installed in the root folder but ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.*
+*-Note that the `bower_components` folder would normally be installed in the root folder but ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.
+
+*-On a Mac or Linux, you may have to use `sudu` as:
+```
+sudo npm install
+```
+
+*
 
 ### Run the Application
 
@@ -64,6 +71,12 @@ npm start
 ```
 
 Now browse to the app at `http://localhost:8000/app/index.html`.
+
+*-Note: on Mac or Linux, you may have to use `sudo`, as:
+
+```
+sudo npm start
+```
 
 ### Select the Theme
 
@@ -118,7 +131,7 @@ This will find the latest versions that match the version ranges specified in th
 
 Backand Service provide hosting not just the backend but also to the AngularJS code.
 - Login to Backand Console to update the Github reposiroty
-- The produciton URL will be at: yourapp.backand.net
+- The production URL will be at: yourapp.backand.net
 
 
 
