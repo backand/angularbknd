@@ -49,6 +49,6 @@
   },
   "resolutions": {
     "jquery": "^1.10",
-    "bootstrap": "^2"
+    "bootstrap": "^3.2"
   }
 }
