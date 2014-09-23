@@ -60,7 +60,7 @@ angular.module('backAnd.controllers')
                             $(window).trigger("appConfigCompleted", data);
                         });
 
-                        if ($scope.currentWorkspace.homePage) {
+                        if (!$location.search().viewName && !$location.search().dashboardId && !$location.search().contentId && $scope.currentWorkspace.homePage) {
                             var homePage = $scope.getHomePage($scope.currentWorkspace, $scope.currentWorkspace.homePage);
 
                             if (homePage)

@@ -1,6 +1,8 @@
 'use strict';
 
-
+/***********************************************/
+/** To customize the grid use this controller **/
+/***********************************************/
 var backAndControllers = angular.module('backAnd.controllers');
 backAndControllers.controller('myGridController', ['$scope', 'Global', 'dataListService', 'dataItemService', 'configService', '$filter', '$location', '$route', '$sce', '$compile', '$window',
     function ($scope, Global, dataListService, dataItemService, configService, $filter, $location, $route, $sce, $compile, $window) {

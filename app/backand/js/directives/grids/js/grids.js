@@ -4,26 +4,25 @@
 */
 var backAndDirectives = angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker']);
 backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/grids/partials/grid.html", '<div class="ng-back-grid box" id="ngback-grid_{{viewNameId}}">\n' +
-    '    <div class="box-body table-responsive">\n' +
-    '        <div class="btn-toolbar ng-back-grid-toolbar" role="toolbar">\n' +
-    '            <div class="btn-group" ng-show="showToolbar">\n' +
-    '                <button type="button" ng-click="addRow()" ng-show="showAdd" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"><span class="ng-back-grid-toolbar-text"> {{newButton}}</span></span></button>\n' +
-    '                <button type="button" ng-click="editSelected()" ng-show="showEdit" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-pencil"><span class="ng-back-grid-toolbar-text"> {{editButton}}</span></span></button>\n' +
-    '                <button type="button" ng-click="deleteSelected()" ng-show="showDelete" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-trash"><span class="ng-back-grid-toolbar-text"> {{deleteButton}}</span></span></button>\n' +
-    '            </div>\n' +
-    '            <div class="btn-group">\n' +
-    '                <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-refresh"></span></button>\n' +
-    '                <img ng-show="isLoad" src="backand/img/ajax-loader.gif" />\n' +
-    '            </div>\n' +
-    '            <div class="btn-group pull-right ng-back-grid-toolbar-Search" ng-show="showSearch && showToolbar">\n' +
-    '                <input type="text" class="btn btn-default navbar-btn" ng-model="searchText" placeholder="Search" ng-keypress="filterKeyPress($event)" />\n' +
-    '                <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-search"></span></button>\n' +
-    '                <button type="button" ng-click="deactivateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-remove"></span></button>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>')
+    $templateCache.put("backand/js/directives/grids/partials/grid.html", 
+        '<div class="ng-back-grid box" id="ngback-grid_{{viewNameId}}">\n' +
+        '    <div class="box-body table-responsive">\n' +
+        '        <div class="btn-toolbar ng-back-grid-toolbar" role="toolbar">\n' +
+        '            <div ng-repeat="buttonGroup in btnGroups" class="btn-group" ng-class="buttonGroup.class">\n' +
+        '                <button ng-repeat="button in buttonGroup.buttons" type="button" ng-click="button.callback()" ng-class="button.class" class="btn btn-default navbar-btn"><span class="glyphicon" ng-class="button.iconClass"><span class="ng-back-grid-toolbar-text">{{button.text}}</span></span></button>\n' +
+        '            </div>\n' +
+        '            <div class="btn-group">\n' +
+        '                <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-refresh"></span></button>\n' +
+        '                <img ng-show="isLoad" src="backand/img/ajax-loader.gif" />\n' +
+        '            </div>\n' +
+        '            <div class="btn-group pull-right ng-back-grid-toolbar-Search" ng-show="showSearch && showToolbar">\n' +
+        '                <input type="text" class="btn btn-default navbar-btn" ng-model="searchText" placeholder="Search" ng-keypress="filterKeyPress($event)" />\n' +
+        '                <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-search"></span></button>\n' +
+        '                <button type="button" ng-click="deactivateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-remove"></span></button>\n' +
+        '            </div>\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '</div>')
 })
 .run(function ($templateCache) {
     $templateCache.put("backand/js/directives/grids/partials/grid-mobile.html", '<div class="ng-back-grid box" id="ngback-grid_{{viewNameId}}">\n' +
@@ -56,6 +55,7 @@ backAndDirectives.run(function ($templateCache) {
             options: '=',
             filterOptions: '=',
             inputStyle: '=',
+            buttonGroups: '=',
         },
         replace: false,
         templateUrl: ($(window).width() > 768) ? 'backand/js/directives/grids/partials/grid.html' : 'backand/js/directives/grids/partials/grid-mobile.html',
@@ -212,6 +212,7 @@ backAndDirectives.run(function ($templateCache) {
                 scope.newButton = scope.configTable.description.newButtonName;
                 scope.editButton = scope.configTable.description.editButtonName;
                 scope.deleteButton = scope.configTable.description.deleteButtonName;
+                scope.setToolbar();
 
                 // We are adding columns and its custom filter to the table based on type
                 // this will also need to be changed to handle multiple tables on the same page
@@ -229,6 +230,15 @@ backAndDirectives.run(function ($templateCache) {
                         });
                     }
                 });
+
+            };
+
+            scope.setToolbar = function () {
+                if (scope.buttonGroups)
+                    scope.btnGroups = scope.buttonGroups;
+                else
+                    scope.btnGroups = [{ buttons: [{ text: scope.newButton, iconClass: "glyphicon-plus", callback: scope.addRow }, { text: scope.editButton, iconClass: "glyphicon-pencil", callback: scope.editSelected }, { text: scope.deleteButton, iconClass: "glyphicon-trash", callback: scope.deleteSelected }] }];
+                scope.$broadcast('setToolbarCompleted', scope.btnGroups);
 
             };
 
@@ -522,6 +532,27 @@ backAndDirectives.run(function ($templateCache) {
                     'height': height
                 };
             };
+
+            //scope.fixHorizontalScroll = false;
+            //scope.$on('ngGridEventData', function (newColumns) {
+            //    if (!scope.fixHorizontalScroll) {
+            //        setTimeout(function () {
+            //            if (!scope.fixHorizontalScroll) {
+            //                var colCount = newColumns.targetScope.columns.length;
+            //                var lastCells = $('.' + newColumns.targetScope.gridId + ' .colt' + (colCount - 1));
+            //                if (lastCells.length > 1) {
+            //                    scope.fixHorizontalScroll = true;
+            //                    lastCells.each(function () {
+            //                        var lastCell = $(this);
+            //                        lastCell.width(lastCell.width() - 18);
+            //                    })
+            //                }
+            //            }
+            //        }, 1);
+                    
+            //    }
+                
+            //});
 
         }
     };

@@ -1,0 +1,16 @@
+<div ng-model="buttonGroups" class="box-body table-responsive">
+    <div class="btn-toolbar ng-back-grid-toolbar" role="toolbar">
+        <div ng-repeat="buttonGroup in buttonGroups" class="btn-group" ng-class="buttonGroup.class">
+            <div button-group buttons="buttonGroup.buttons" selected-rows="selectedRows" new-row-defaults="newRowDefaults" grid-scope="gridScope"></div>
+        </div>
+        <div class="btn-group">
+            <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-refresh"></span></button>
+            <img ng-show="isLoad" src="backand/img/ajax-loader.gif" />
+        </div>
+        <div class="btn-group pull-right ng-back-grid-toolbar-Search" ng-show="showSearch && showToolbar">
+            <input type="text" class="btn btn-default navbar-btn" ng-model="searchText" placeholder="Search" ng-keypress="filterKeyPress($event)" />
+            <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-search"></span></button>
+            <button type="button" ng-click="deactivateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
+    </div>
+</div>'

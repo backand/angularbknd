@@ -6,6 +6,11 @@ backAndControllers.controller('dynamicGridController', ['$scope',
 
         $scope.viewName = 'Stores';
         $scope.inputStyle = { 'height': 550 };
+        $scope.buttonGroups = [{ buttons: [{ text: "New", iconClass: "glyphicon-plus", callback: buttonClick }, { text: "Edit", iconClass: "glyphicon-pencil", callback: buttonClick }, { text: "Delete", iconClass: "glyphicon-trash", callback: buttonClick }] }];
+
+        $scope.buttonClick = function () {
+            alert(1);
+        }
     }
 ])
 
@@ -14,6 +19,7 @@ backAndControllers.controller('filterController', ['$scope', 'dataListService',
 
         $scope.viewName = 'Employees';
         $scope.inputStyle = { 'height': 300 };
+        $scope.buttonGroups = [{ buttons: [{ text: "New", iconClass: "glyphicon-plus", callback: function () { alert("New") } }, { text: "Edit", iconClass: "glyphicon-pencil", callback: function () { alert("Edit") } }, { text: "Delete", iconClass: "glyphicon-trash", callback: function () { alert("Delete") } }] }];
 
         $scope.filterOptions = [{ fieldName: 'First_Name', operator: 'contains', value: '' }, { fieldName: 'Job_Title', operator: 'in', value: '' }];
 

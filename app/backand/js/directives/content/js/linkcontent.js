@@ -22,20 +22,8 @@ angular.module('backAnd.directives')
 		        dataType: "content",
 		        id: scope.contentId
 		    }, function (data) {
-		        if (data.openinaNewTab) {
-		            var evLink = document.createElement('a');
-		            evLink.href = data.externalLink;
-		            evLink.target = data.target;
-		            document.body.appendChild(evLink);
-		            evLink.click();
-		            // Now delete it
-		            evLink.parentNode.removeChild(evLink);
-		        }
-		        else
-		            location.href = data.externalLink;
+		        window.open(data.externalLink, '_blank');
 		    });
-
-		    
 		}
 	}
 });

@@ -1,5 +1,8 @@
 'use strict';
 
+/***********************************************/
+/** To customize the menu use this controller **/
+/***********************************************/
 
 angular.module('backAnd.controllers')
 .controller('myMenuController', ['$scope', 'Global', '$compile', 'configService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
