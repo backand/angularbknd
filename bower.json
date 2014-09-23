@@ -1,8 +1,8 @@
 {
-  "name": "angular-seed",
-  "description": "A starter project for AngularJS",
+  "name": "ngback",
+  "description": "An AngularJS starter project for Back&",
   "version": "0.0.0",
-  "homepage": "https://github.com/angular/angular-seed",
+  "homepage": "https://github.com/backand/ngback",
   "license": "MIT",
   "private": true,
   "dependencies": {
@@ -48,7 +48,7 @@
     "angular-bootstrap-datetimepicker": "latest"
   },
   "resolutions": {
-    "jquery": "2.1.1",
-    "bootstrap": "3.2.0"
+    "jquery": "^1.10",
+    "bootstrap": "^2"
   }
 }
