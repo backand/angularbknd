@@ -4,7 +4,22 @@
 * @name directive.date
 */
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('date', function ($log) {
+backAndDirectives.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/date/partials/date.html", '<div>\n' + 
+  '<ng-form name="innerForm">\n' +
+  '      <div class="input-group" ng-class="inputClass">\n' +
+  '        <input type="text" name="field" class="form-control" datepicker-popup="{{field.format}}" ng-model="mydate" is-open="opened" date-disabled="field.disabled" ng-disabled="field.disabled" ng-required="field.required" close-text="Close" />\n' +
+  '        <span class="input-group-btn">\n' +
+  '          <button type="button" class="btn btn-default" ng-click="open($event)" ng-disabled="field.disabled"><i class="glyphicon glyphicon-calendar"></i></button>\n' +
+  '        </span>\n' +
+  '      </div>\n' +
+  '      <div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>\n' +
+  '      <div ng-if="field.minimumValue" class="alert alert-danger" role="alert" ng-show="tooEarly()">{{errors.minimumValue}}</div>\n' +
+  '      <div ng-if="field.maximumValue" class="alert alert-danger" role="alert" ng-show="tooLate()">{{errors.maximumValue}}</div>\n' +
+  '    </ng-form>\n' +
+  '  </div>')
+})
+.directive('date', function ($log, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.date

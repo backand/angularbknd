@@ -5,7 +5,14 @@
 */
 
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('editor', function ($log, $timeout) {
+backAndDirectives.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/editor/partials/editor.html", '<ng-form name="innerForm">\n' +
+	'    <text-angular ng-if="!field.disabled" ng-required="field.required" ng-model="innerVal.val" ng-show="field.show" ng-class="inputClass" ng-focus="inFocus()" ng-blur="outFocus()"></text-angular>\n' +
+	'    <div ta-bind ng-if="field.disabled"  ng-model="innerVal.val" ng-show="field.show" ng-class="inputClass"></div>\n' +
+	'    <div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="isEmpty">{{errors.required}}</div>\n' +
+    '</ng-form>')
+})
+.directive('editor', function ($log, $timeout, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.editor

@@ -4,7 +4,13 @@
 * @name directive.textarea
 */
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('textarea', function($log) {
+backAndDirectives.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/textarea/partials/textarea.html", '<ng-form name="innerForm">\n' +
+	'    <textarea name="field" class="form-control" ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled" ng-class="inputClass"></textarea>\n' +
+	'    <div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>\n' +
+    '</ng-form>')
+})
+.directive('textarea', function ($log, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.textarea

@@ -5,8 +5,8 @@
 * @name controller.menuController
 */
 angular.module('backAnd.controllers')
-.controller('menuController', ['$scope', 'Global', '$compile', 'gridConfigService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
-    function($scope, Global, $compile, gridConfigService, menuService, $timeout, $rootScope, $http, $location, $route) {
+.controller('menuController', ['$scope', 'Global', '$compile', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
+    function($scope, Global, $compile, menuService, $timeout, $rootScope, $http, $location, $route) {
 
         $scope.global = Global;
 
@@ -26,7 +26,13 @@ angular.module('backAnd.controllers')
                 }
                 $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
                 backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
-                $scope.loadMenu();
+
+                var workspaceId = null;
+                var search = $location.search();
+                if (search && search.workspaceId)
+                    workspaceId = search.workspaceId;
+
+                $scope.loadMenu(workspaceId);
             }
         }
 
@@ -44,11 +50,22 @@ angular.module('backAnd.controllers')
                         $scope.currentWorkspace = data.workspace;
                         $scope.additionalWorkspaces = data.additionalWorkspaces;
                         
+                        $location.search(
+                            'workspaceId', data.workspace.id
+                        );
+
                         $scope.$broadcast('appConfigCompleted', data);
 
                         $timeout(function () {
                             $(window).trigger("appConfigCompleted", data);
                         });
+
+                        if (!$location.search().viewName && !$location.search().dashboardId && !$location.search().contentId && $scope.currentWorkspace.homePage) {
+                            var homePage = $scope.getHomePage($scope.currentWorkspace, $scope.currentWorkspace.homePage);
+
+                            if (homePage)
+                                $scope.setCurrentMenuSelection(homePage);
+                        }
                     },
                     function err(error) {
                         if (error.status == 401) {
@@ -58,7 +75,17 @@ angular.module('backAnd.controllers')
                     });
         }
 
-        
+        $scope.getHomePage = function (parent, id) {
+            for (var i = 0; i < parent.pages.length; i++) {
+                var page = parent.pages[i];
+                if (page.id == id)
+                    return page;
+                else if (page.pages)
+                    return $scope.getHomePage(page, id);
+            }
+            return null;
+        }
+
         /**
         * @ngdoc function
         * @name setCurrentMenuSelection
@@ -70,7 +97,8 @@ angular.module('backAnd.controllers')
         $scope.setCurrentMenuSelection = function (current, parent) {
             if (current.partType == "table") {
                 $location.search({
-                    viewName: current.partId
+                    viewName: current.partId,
+                    workspaceId: $scope.currentWorkspace.id
                 });
                 $location.path("/grids");
             }

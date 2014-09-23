@@ -1,9 +1,12 @@
 'use strict';
 
+/***********************************************/
+/** To customize the menu use this controller **/
+/***********************************************/
 
 angular.module('backAnd.controllers')
-.controller('myMenuController', ['$scope', 'Global', '$compile', 'gridConfigService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
-    function ($scope, Global, $compile, gridConfigService, menuService, $timeout, $rootScope, $http, $location, $route) {
+.controller('myMenuController', ['$scope', 'Global', '$compile', 'configService', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
+    function ($scope, Global, $compile, configService, menuService, $timeout, $rootScope, $http, $location, $route) {
 
 
         //$scope.$on('appConfigCompleted', function (event, data) {

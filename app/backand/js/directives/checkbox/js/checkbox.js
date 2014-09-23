@@ -5,7 +5,11 @@
 */
 
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('checkbox', function ($log) {
+backAndDirectives.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/checkbox/partials/checkbox.html", '<input type="checkbox" name="field" class="" ng-model="value.val" ng-checked="value.val" ng-show="field.show" ng-disabled="field.disabled"  ng-class="inputClass" />')
+})
+
+.directive('checkbox', function ($log, $templateCache) {
     /**
    * @ngdoc directive
    * @name directive.checkbox

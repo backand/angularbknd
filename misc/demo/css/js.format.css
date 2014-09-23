@@ -1,0 +1,32 @@
+﻿.fj_watermark {
+    color: #CCCCCC;
+    font-style: italic;
+}
+
+.fj_keyword {
+    color: Blue;
+}
+
+.fj_string {
+    color: Maroon;
+}
+
+.fj_comment {
+    color: Green;
+}
+
+.fj_keywordOther {
+    color: Navy;
+}
+
+.dJsColor{
+    padding: 2px;
+border: 1px solid #888;
+margin: 0 0 10px;
+font-size: 13px;
+line-height: 1.42857143;
+word-break: break-all;
+word-wrap: break-word;
+background-color: #f5f5f5;
+border-radius: 4px;
+}

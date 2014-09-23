@@ -1,0 +1,36 @@
+<ng-form name="innerForm">
+	<div class="input-group" ng-class="inputClass">
+      <a href="{{value.url}}" target="{{value.target}}" class="btn" role="button">{{value.linkText}}</a>
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="{{ '#myModal-' + field.name }}">Edit</button>
+      </span>
+    </div>
+    <div class="modal fade" id="{{ 'myModal-' + field.name }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	      </div>
+	      <div class="modal-body">
+	        <div class="form-group">
+		    	<label for="linkText">Label</label>
+		    	<input type="text" ng-model="value.linkText" class="form-control" id="linkText" placeholder="Link Text">
+		  	</div>
+		  	<div class="form-group">
+			    <label for="linkUrl">Url</label>
+			    <input type="url" ng-model="value.url" name="editUrl" class="form-control" id="linkUrl" placeholder="http://">
+		  	</div>
+		  	<div class="form-group">
+			    <label for="checkboxOpen">Open in same tab</label>
+			    <input type="checkbox" id="checkboxOpen" class="form-control" ng-model="value.target" ng-true-value="null" ng-false-value="_blank">
+		  	</div>
+			<div class="alert alert-danger" role="alert" ng-show="innerForm.editUrl.$error.url">{{errors.url}}</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+</ng-form>

@@ -1,10 +1,9 @@
 <div class="ng-back-grid box" id="ngback-grid_{{viewNameId}}">
+    <!--<div ngback-toolbar button-groups="buttonGroups" button-group-template="buttonGroupTemplate" selected-rows="selectedRows" new-row-defaults="newRowDefaults" grid-scope="gridScope"></div>-->
     <div class="box-body table-responsive">
         <div class="btn-toolbar ng-back-grid-toolbar" role="toolbar">
-            <div class="btn-group" ng-show="showToolbar">
-                <button type="button" ng-click="addRow()" ng-show="showAdd" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"><span class="ng-back-grid-toolbar-text"> {{newButton}}</span></span></button>
-                <button type="button" ng-click="editSelected()" ng-show="showEdit" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-pencil"><span class="ng-back-grid-toolbar-text"> {{editButton}}</span></span></button>
-                <button type="button" ng-click="deleteSelected()" ng-show="showDelete" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-trash"><span class="ng-back-grid-toolbar-text"> {{deleteButton}}</span></span></button>
+            <div ng-repeat="buttonGroup in btnGroups" class="btn-group" ng-class="buttonGroup.class">
+                <button ng-repeat="button in buttonGroup.buttons" type="button" ng-click="button.callback()" ng-class="button.class" class="btn btn-default navbar-btn"><span class="glyphicon" ng-class="button.iconClass"><span class="ng-back-grid-toolbar-text">{{button.text}}</span></span></button>
             </div>
             <div class="btn-group">
                 <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-refresh"></span></button>
@@ -16,6 +15,5 @@
                 <button type="button" ng-click="deactivateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-remove"></span></button>
             </div>
         </div>
-        <!--<div ng-if="dataTable" ng-style="getTableStyle()" ng-grid="dataTable"></div>-->
     </div>
 </div>

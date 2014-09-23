@@ -3,7 +3,7 @@
 * @name directive.linkcontent
 */
 angular.module('backAnd.directives')
-.directive('linkcontent', function () {
+.directive('linkcontent', function (configService) {
     /**
       * @ngdoc directive
       * @name directive.linkcontent
@@ -14,28 +14,16 @@ angular.module('backAnd.directives')
     return {
 		restrict: 'E',
 		replace: false,
-		controller: 'contentController',
 		scope: {
 		    contentId: '='
 		},
-		link: function ($scope, element, attr) {
-		    $scope.contentService.queryjsonp({
-		        content: $scope.contentId
+		link: function (scope, element, attr) {
+		    configService.read({
+		        dataType: "content",
+		        id: scope.contentId
 		    }, function (data) {
-		        if (data.openinaNewTab) {
-		            var evLink = document.createElement('a');
-		            evLink.href = data.externalLink;
-		            evLink.target = data.target;
-		            document.body.appendChild(evLink);
-		            evLink.click();
-		            // Now delete it
-		            evLink.parentNode.removeChild(evLink);
-		        }
-		        else
-		            location.href = data.externalLink;
+		        window.open(data.externalLink, '_blank');
 		    });
-
-		    
 		}
 	}
 });

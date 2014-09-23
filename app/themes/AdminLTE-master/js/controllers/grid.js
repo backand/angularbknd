@@ -1,9 +1,11 @@
 'use strict';
 
-
+/***********************************************/
+/** To customize the grid use this controller **/
+/***********************************************/
 var backAndControllers = angular.module('backAnd.controllers');
-backAndControllers.controller('myGridController', ['$scope', 'Global', 'gridService', 'gridDeleteItemService', 'gridConfigService', '$filter', '$location', '$route', '$sce', '$compile', '$window',
-    function ($scope, Global, gridService, gridDeleteItemService, gridConfigService, $filter, $location, $route, $sce, $compile, $window) {
+backAndControllers.controller('myGridController', ['$scope', 'Global', 'dataListService', 'dataItemService', 'configService', '$filter', '$location', '$route', '$sce', '$compile', '$window',
+    function ($scope, Global, dataListService, dataItemService, configService, $filter, $location, $route, $sce, $compile, $window) {
 
 
         //$scope.$on('gridConfigCompleted', function (event, config) {

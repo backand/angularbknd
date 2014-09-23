@@ -1,13 +1,11 @@
 <ng-form name="innerForm">
-
-	<div class="input-group" ng-class="inputClass">
+    <div class="input-group" ng-class="inputClass">
         <a ng-show="value.url" href="{{value.url}}" target="{{value.target}}" class="form-control">{{value.linkText}}</a>
         <span ng-hide="value.url" class="form-control"></span>
-      <span class="input-group-btn">
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="{{ '#myModal-' + field.name }}"><i class="fa fa-link" ></i></button>
-      </span>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="{{ '#myModal-' + field.name }}"><i class="fa fa-link"></i></button>
+        </span>
     </div>
-
     <div class="modal fade" data-backdrop="static" id="{{ 'myModal-' + field.name }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -34,10 +32,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <!--  <button type="button" class="btn btn-primary">Save changes</button> -->
                 </div>
             </div>
         </div>
     </div>
-
 </ng-form>

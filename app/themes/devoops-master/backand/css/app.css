@@ -3,30 +3,30 @@
     color: #666;
 }
 
-ngback-grid input[type="text"].navbar-btn{width:initial;}
+ngback-ng-grid input[type="text"].navbar-btn{width:initial;}
 
-ngback-grid .btn-toolbar {
+ngback-ng-grid .btn-toolbar {
     margin: 20px;
     height: 32px;
     border-radius:0;
 }
 
-ngback-grid .btn-toolbar button,  ngback-grid .btn-toolbar input[type="text"] {
+ngback-ng-grid .btn-toolbar button,  ngback-ng-grid .btn-toolbar input[type="text"] {
     height: 32px;
     border-radius:0;
 }
 
-ngback-grid .btn-toolbar button{
+ngback-ng-grid .btn-toolbar button{
     background-color:#eaeaea;
 }
 
-ngback-grid .btn-default:hover, ngback-grid .btn-default:focus, ngback-grid .btn-default:active, ngback-grid .btn-default.active, ngback-grid .open .dropdown-toggle.btn-default {
+ngback-ng-grid .btn-default:hover, ngback-ng-grid .btn-default:focus, ngback-ng-grid .btn-default:active, ngback-ng-grid .btn-default.active, ngback-ng-grid .open .dropdown-toggle.btn-default {
   color: #505050;
   background-color: #eaeaea;
   border-color: #d4d4d4;
 }
 
-ngback-grid .glyphicon{
+ngback-ng-grid .glyphicon{
     color: #505050;
   font-size:13px;
   height:13px;

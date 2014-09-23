@@ -13,7 +13,7 @@
                     <div class="tabbable form-group">
                         <ul class="nav nav-tabs" role="tablist">
                             <li ng-repeat="category in configInfo.categories" ng-class="{active : $first}" ng-click="tabClick(category)">
-                                <a href="#{{category.catName | removeSpaces}}" ng-click="toggleActive($event)" role="tab" data-toggle="tab">{{category.catName}}</a>
+                                <a href="#{{category.catName | removeSpaces}}" showtab role="tab" data-toggle="tab">{{category.catName}}</a>
                             </li>
                         </ul>
                         <div class="tab-content panel-body">
@@ -41,4 +41,30 @@
             </div>
         </form>
 </div>
-
+<script type="text/ng-template" id="backand/js/directives/forms/partials/field.html">
+    <label ng-hide="field.type == 'checkbox'">{{field.displayName | parseLabel:field}}</label>
+    <div ng-switch on="field.type">
+        <ngback-ng-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()" input-style="{'height': 500}"></ngback-ng-grid>
+        <div ng-switch-when="disabledSubgrid" ngback-disabled-grid message="'Save first to add rows'"></div>
+        <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="textarea" textarea field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <label ng-switch-when="checkbox" class="checkbox-inline">
+            <div checkbox field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+            {{field.displayName | parseLabel:field}}
+        </label>
+        <div ng-switch-when="date" date field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="image" image field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="number" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="currency" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="percentage" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="numberWithSeparator" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="numeric" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="email" email field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        <div ng-switch-when="hyperlink">
+            <div link field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+        </div>
+        <div ng-switch-default input field="field" value="field.value" form="" input-class="" errors="field.errors"></div>
+    </div>
+</script>

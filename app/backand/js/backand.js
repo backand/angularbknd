@@ -255,7 +255,7 @@ var backand = {
         order: { asc: "asc", desc: "desc" }
 
     },
-    defaultOption: function (fieldName, value) {
+    defaultFieldValue: function (fieldName, value) {
         this.fieldName = fieldName;
         this.value = value;
     },
@@ -288,13 +288,13 @@ backand.sort.item.prototype.order = function () {
     return this.order;
 };
 
-backand.defaultOption.prototype.constructor = backand.defaultOption;
+backand.defaultFieldValue.prototype.constructor = backand.defaultFieldValue;
 
-backand.defaultOption.prototype.fieldName = function () {
+backand.defaultFieldValue.prototype.fieldName = function () {
     return this.fieldName;
 };
 
-backand.defaultOption.prototype.value = function () {
+backand.defaultFieldValue.prototype.value = function () {
     return this.value;
 };
 

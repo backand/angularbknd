@@ -4,16 +4,87 @@
 * @ngdoc overview
 * @name directive.ngbackForm
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route, gridConfigService, gridViewDataItemService, gridCreateItemService, gridUpdateItemService, gridService, $log, Global) {
+var backAndDirectives = angular.module('backAnd.directives'); var backAndDirectives = angular.module('backAnd.directives');
+backAndDirectives.run(function ($templateCache) {
+    $templateCache.put("backand/js/directives/forms/partials/form.html", '<div class="show" tabindex="-1" role="dialog" aria-hidden="true">\n' +
+    '        <form role="form" name="form" novalidate ng-submit="submit()">\n' +
+    '            <div class="panel panel-default">\n' +
+    '                <div class="panel-heading"><h6 class="panel-title">{{configInfo.title}}</h6></div>\n' +
+    '                <div class="panel-body">\n' +
+    '                    <div class="row">\n' +
+    '                        <div ng-include="\'backand/js/directives/forms/partials/field.html\'"\n' +
+    '                             class="col-md-{{12 / configInfo.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in configInfo.fields"\n' +
+    '                             ng-if="field.show">\n' +
+    '   <!-- field -->\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '<div class="tabbable form-group">\n' +
+    '    <ul class="nav nav-tabs" role="tablist">\n' +
+    '        <li ng-repeat="category in configInfo.categories" ng-class="{active : $first}" ng-click="tabClick(category)">\n' +
+    '            <a href="#{{category.catName | removeSpaces}}" showtab role="tab" data-toggle="tab">{{category.catName}}</a>\n' +
+    '        </li>\n' +
+    '    </ul>\n' +
+    '    <div class="tab-content panel-body">\n' +
+    '        <div class="tab-pane fade in" ng-class="{active : $first}" ng-repeat="category in configInfo.categories" id="{{category.catName | removeSpaces}}" ng-form="subForm">\n' +
+    '            <div ng-include="\'backand/js/directives/forms/partials/field.html\'"\n' +
+    '                                        class="col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group" ng-repeat="field in category.fields"\n' +
+    '                                        ng-if="field.show">\n' +
+    '<!-- field -->\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '<div class="form-actions panel-footer">\n' +
+    '    <div class="=col-md-10 text-left">\n' +
+    '        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><span ng-bind-html="alert.msg"></span></alert>\n' +
+    '    </div>\n' +
+    '    <div class="=col-md-2 text-right">\n' +
+    '        <button type="submit" class="btn btn-primary" ng-show="configInfo.editable && isNew"  ng-hide="waiting || !isNew" ng-disabled="form.$invalid" ng-click="continue = true">{{submitAndContinueCaption}}</button>\n' +
+    '        <button type="submit" class="btn btn-primary" ng-show="configInfo.editable" ng-hide="waiting" ng-disabled="form.$invalid" ng-click="continue = false">{{submitCaption}}</button>\n' +
+    '        <img class="img-responsive" ng-show="waiting" src="backand/img/ajax-loader.gif" ng-style="{\'display\':\'inline-block\'}" />\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '</form>\n' +
+    '</div>\n' +
+    '<script type="text/ng-template" id="backand/js/directives/forms/partials/field.html">\n' +
+    '    <label ng-hide="field.type == \'checkbox\'">{{field.displayName | parseLabel:field}}</label>\n' +
+    '    <div ng-switch on="field.type">\n' +
+    '        <ngback-ng-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()" input-style="{\'height\': 500}"></ngback-ng-grid>\n' +
+    '        <div ng-switch-when="disabledSubgrid" ngback-disabled-grid message="\'Save first to add rows\'"></div>\n' +
+    '        <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '        <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '        <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '        <div ng-switch-when="textarea" textarea field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '        <label ng-switch-when="checkbox" class="checkbox-inline">\n' +
+    '            <div checkbox field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '            {{field.displayName | parseLabel:field}}\n' +
+    '</label>\n' +
+    '<div ng-switch-when="date" date field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="image" image field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="number" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="currency" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="percentage" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="numberWithSeparator" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="numeric" numeric field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="email" email field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '<div ng-switch-when="hyperlink">\n' +
+    '    <div link field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '</div>\n' +
+    '<div ng-switch-default input field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
+    '</div>\n' +
+    '</script>')
+})
+.directive('ngbackForm', function ($sce, $q, $location, $route, configService, dataItemService, dataListService, $log, Global, $templateCache) {
     /**
     * @ngdoc directive
     * @name directive.ngbackForm
     * @description binding a form to a database table or view
     * @param {string} viewName, required, reference to table or view name
-    * @param {string} id, optional, the row primary key, if provided then the form is in EDIT mode otherwise it is in a CREATE mode
+    * @param {string} rowId, optional, the row primary key, if provided then the form is in EDIT mode otherwise it is in a CREATE mode
     *       if the primary key of the row has multiple column values then they should be comma delimited in the primary key columns' order
-    * @param {string} defaultOptions, optional, this is a JSON string of an array of backand.defaultOption with two properties: fieldName, value
+    * @param {string} defaultFieldsValues, optional, this is a JSON string of an array of backand.defaultOption with two properties: fieldName, value
     *       if provided it precedes the default value of a field from configuration. it is only relevant in CREATE mode
     * @returns {object} directive
     */
@@ -23,8 +94,8 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
         templateUrl: 'backand/js/directives/forms/partials/form.html',
         scope: {
             viewName: '=',
-            id: '=',
-            defaultOptions: '=',
+            rowId: '=',
+            defaultFieldsValues: '=',
         },
          /**
          * @name link
@@ -61,7 +132,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 * @propertyOf directive.ngbackForm {boolean} 
                 * @description if isNew then CREATE mode, otherwise EDIT mode
                 */
-                scope.isNew = !params.id;
+                scope.isNew = !params.rowId;
                 /**
                 * @name continue
                 * @propertyOf directive.ngbackForm {boolean} 
@@ -74,20 +145,26 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 var dataItem = $q.defer();
                 var selectOptions = $q.defer();
 
-                gridConfigService.queryjsonp({
-                    viewName: params.viewName
+                configService.read({
+                    dataType: "view",
+                    id: params.viewName
                 }, function (data) {
                     dataForm.resolve(data);
                 });
 
                 if (!scope.isNew) {
-                    gridViewDataItemService.queryjsonp({ viewName: params.viewName, id: params.id }, function (data) {
+                    dataItemService.read({
+                        dataType: "view",
+                        viewName: params.viewName,
+                        id: params.rowId
+                    }, function (data) {
                         dataItem.resolve(data);
                     });
                 }
 
                 var loadSelectOptions = function () {
-                    gridService.queryjsonp({
+                    dataListService.read({
+                        dataType: "view",
                         viewName: params.viewName,
                         withSelectOptions: true,
                         filter: null,
@@ -125,9 +202,9 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 }
                 else {
                     var dataToSubmit = {};
-                    if (params.defaultOptions) {
-                        var defaultOptions = JSON.parse(params.defaultOptions);
-                        angular.forEach(defaultOptions, function (defaultOption) {
+                    if (params.defaultFieldsValues) {
+                        var defaultFieldsValues = JSON.parse(params.defaultFieldsValues);
+                        angular.forEach(defaultFieldsValues, function (defaultOption) {
                             dataToSubmit[defaultOption.fieldName] = defaultOption.value;
                         });
                     }
@@ -180,9 +257,8 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 * @description submit the form data to the database
                 */
                 scope.submit = function () {
-                    var service = scope.isNew ? gridCreateItemService : gridUpdateItemService;
                     var messages = scope.isNew ? createMessages : updateMessages;
-                    scope.submitAction(service, messages);
+                    scope.submitAction(messages);
                 }
 
                 /**
@@ -219,7 +295,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 * @param {object} service, required, if the mode is CREATE then the create service otherwise the edit service
                 * @param {object} messages, required, success and failure messages
                 */
-                scope.submitAction = function (service, messages) {
+                scope.submitAction = function (messages) {
                     angular.forEach(scope.configInfo.fields, function (field) {
                         scope.setFieldValue(field);
                     });
@@ -236,31 +312,23 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                     scope.closeAlert = function (index) {
                         scope.alerts.splice(index, 1);
                     };
-                    service.queryjsonp(params, JSON.stringify(scope.dataToSubmit), function (data) {
-                        scope.waiting = false;
-                        if (scope.isNew) {
-                            if (scope.continue) {
-                                $route.reload();
-                            }
-                            else {
-                                $location.search({
-                                    viewName: params.viewName,
-                                    id: data.__metadata.id
-                                });
-                                $location.path('/forms');
-                            }
 
-                        }
-                        else {
-                            scope.alerts = [{ type: 'success', msg: messages.success }];
-                            window.setTimeout(function () {
-                                $(".alert").fadeTo(500, 0).slideUp(500, function () {
-                                    $(this).remove();
-                                });
-                            }, 5000);
-                        }
-                    },
-                    function (error) {
+                    var submitParams = null;
+                    if (scope.isNew) {
+                        submitParams = {
+                            dataType: "view",
+                            viewName: params.viewName
+                        };
+                    }
+                    else {
+                        submitParams = {
+                            dataType: "view",
+                            viewName: params.viewName,
+                            id: params.rowId
+                        };
+                    }
+
+                    var errorCallback = function (error) {
                         scope.waiting = false;
                         if (error.status == 500) {
                             console.error(error.data, error);
@@ -270,7 +338,38 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                             console.warn(error.data, error);
                             scope.alerts = [{ type: 'danger', msg: error.data }];
                         }
-                    });
+                    };
+
+                    if (scope.isNew) {
+                        dataItemService.create(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
+                            scope.waiting = false;
+                            if (scope.continue) {
+                                $route.reload();
+                            }
+                            else {
+                                $location.search({
+                                    viewName: params.viewName,
+                                    rowId: data.__metadata.id
+                                });
+                                $location.path('/forms');
+                            }
+                        },
+                        errorCallback);
+                    }
+                    else {
+                        dataItemService.update(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
+                            scope.waiting = false;
+                            
+                            scope.alerts = [{ type: 'success', msg: messages.success }];
+                            window.setTimeout(function () {
+                                $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                                    $(this).remove();
+                                });
+                            }, 5000);
+                            
+                        },
+                        errorCallback);
+                    }
 
                 };
 
@@ -285,8 +384,8 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
             */
             scope.$watch('viewName', function () {
                 if (scope.viewName) {
-                    if (scope.id) {
-                        scope.init({ viewName: scope.viewName, id: scope.id });
+                    if (scope.rowId) {
+                        scope.init({ viewName: scope.viewName, rowId: scope.rowId });
                     }
                     else {
                         scope.init({ viewName: scope.viewName });
@@ -510,13 +609,19 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
                 })
 
                 scope.configInfo.categories = [];
+                var firstCategory = true;
                 angular.forEach(viewConfig.categories, function (cat) {
                     if (scope.configInfo.categoriesDictionary[cat.name]) {
                         scope.configInfo.categoriesDictionary[cat.name].columnsInDialog = cat.columnsInDialog;
                         if (scope.configInfo.categoriesDictionary[cat.name].fields.length == 1 && scope.configInfo.categoriesDictionary[cat.name].fields[0].type == 'subgrid') {
                             scope.configInfo.categoriesDictionary[cat.name].fields[0].hideLabel = true;
                             scope.configInfo.categoriesDictionary[cat.name].fields[0].tempRelatedViewName = scope.configInfo.categoriesDictionary[cat.name].fields[0].relatedViewName;
-                            scope.configInfo.categoriesDictionary[cat.name].fields[0].relatedViewName = '';
+                            if (!firstCategory) {
+                                scope.configInfo.categoriesDictionary[cat.name].fields[0].relatedViewName = '';
+                            }
+                            else {
+                                firstCategory = false;
+                            }
                         }
                         scope.configInfo.categories.push(scope.configInfo.categoriesDictionary[cat.name]);
                     }
@@ -537,17 +642,7 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
             scope.renderHtml = function (html_code) {
                 return $sce.trustAsHtml(html_code);
             };
-            /**
-            * @name toggleActive
-            * @methodOf directive.ngbackForm 
-            * @description activate the selected tab
-            * @param {object} $event, required, the click event
-            */
-            scope.toggleActive = function ($event) {
-                $event.preventDefault();
-                $($event.currentTarget).tab('show');
-            };
-
+            
             /**
             * @name tabClick
             * @methodOf directive.ngbackForm 
@@ -573,4 +668,15 @@ backAndDirectives.directive('ngbackForm', function ($sce, $q, $location, $route,
             return '';
         return label;
     }
-});
+})
+.directive('showtab',
+    function () {
+        return {
+            link: function (scope, element, attrs) {
+                element.click(function (e) {
+                    e.preventDefault();
+                    $(element).tab('show');
+                });
+            }
+        };
+    });
