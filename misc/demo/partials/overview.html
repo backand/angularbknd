@@ -11,9 +11,9 @@
             </div>
             <div class="row">
                 <div class="col-md-8 show-grid">
-                    <div>
+                    <div data-ng-controller="dynamicGridController">
                         <u>Grid Example</u>
-                        <ngback-ng-grid view-name="'Employees'" input-style="{'height': 400}"></ngback-ng-grid>
+                        <ngback-ng-grid view-name="viewName" input-style="{'height': 400}" button-groups="buttonGroups"></ngback-ng-grid>
                     </div>
                     <!--<div data-ng-controller="dynamicGridController">
                         Dynamic Grid Example

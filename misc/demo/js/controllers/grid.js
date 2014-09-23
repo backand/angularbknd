@@ -4,9 +4,9 @@ var backAndControllers = angular.module('backAnd.controllers');
 backAndControllers.controller('dynamicGridController', ['$scope', 
     function ($scope) {
 
-        $scope.viewName = 'Stores';
-        $scope.inputStyle = { 'height': 550 };
-        $scope.buttonGroups = [{ buttons: [{ text: "New", iconClass: "glyphicon-plus", callback: buttonClick }, { text: "Edit", iconClass: "glyphicon-pencil", callback: buttonClick }, { text: "Delete", iconClass: "glyphicon-trash", callback: buttonClick }] }];
+        $scope.viewName = 'Employees';
+        //$scope.inputStyle = { 'height': 550 };
+        $scope.buttonGroups = [{ buttons: [{ text: "New", iconClass: "glyphicon-plus", callback: $scope.buttonClick }, { text: "Edit", iconClass: "glyphicon-pencil", callback: $scope.buttonClick }, { text: "Delete", iconClass: "glyphicon-trash", callback: $scope.buttonClick }] }];
 
         $scope.buttonClick = function () {
             alert(1);
