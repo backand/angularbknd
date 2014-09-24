@@ -60,7 +60,6 @@ Behind the scenes this will also call `bower install`.  You should find that you
 sudo npm install
 ```
 
-*
 
 ### Run the Application
 
@@ -78,37 +77,17 @@ Now browse to the app at `http://localhost:8000/app/index.html`.
 sudo npm start
 ```
 
-### Select the Theme
+### Select the Bootstrap Template
 
-The default theme is LTE at `http://localhost:8000/app/index-lte.html`.
-You can select other theme like Devopps by browse to `http://localhost:8000/app/index-devoops.html`.
-
-## Directory Layout
-
-    app/                --> all of the files to be used in production
-    bacjand/            --> the ngback src
-      css/              --> css files
-        app.css         --> default stylesheet
-      img/              --> image files
-      index.html        --> app layout file (the main html template file of the app)
-      index-async.html  --> just like index.html, but loads js files asynchronously
-      js/               --> javascript files
-        app.js          --> application
-        controllers.js  --> application controllers
-        directives.js   --> application directives
-        filters.js      --> custom angular filters
-        services.js     --> custom angular services
-      partials/             --> angular view partials (partial html templates)
-        partial1.html
-        partial2.html
-      themes/             --> themes based on Bootstrap
+The default template is LTE at `http://localhost:8000/app/index-lte.html`.
+You can select other template like Devopps by browse to `http://localhost:8000/app/index-devoops.html`.
 
 
 ## Updating Angular
 
 To update Backand code we recommend that you merge in changes to your own fork of the project.
 ```
-git pull ** not complete
+git pull https://github.com/backand/ngback
 ```
 You can update the tool dependencies by running:
 
