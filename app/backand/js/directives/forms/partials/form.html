@@ -1,3 +1,4 @@
+
 <div class="show" tabindex="-1" role="dialog" aria-hidden="true">
         <form role="form" name="form" novalidate ng-submit="submit()">
             <div class="panel panel-default">
@@ -34,8 +35,10 @@
                     </div>
                     <div class="=col-md-2 text-right">
                         <button type="submit" class="btn btn-primary" ng-show="configInfo.editable && isNew"  ng-hide="waiting || !isNew" ng-disabled="form.$invalid" ng-click="continue = true">{{submitAndContinueCaption}}</button>
+						<div cg-busy="{promise:myPromise,message:'Loading Your Data'}">
+						
                         <button type="submit" class="btn btn-primary" ng-show="configInfo.editable" ng-hide="waiting" ng-disabled="form.$invalid" ng-click="continue = false">{{submitCaption}}</button>
-                        <img class="img-responsive" ng-show="waiting" src="backand/img/ajax-loader.gif" ng-style="{'display':'inline-block'}" />
+						</div>
                     </div>
                 </div>
             </div>

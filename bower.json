@@ -43,7 +43,8 @@
     "jquery.inputmask": "latest",
     "textAngular": "latest",
     "ng-file-upload": "latest",
-    "angular-bootstrap-datetimepicker": "latest"
+    "angular-bootstrap-datetimepicker": "latest",
+	"angular-busy" : "latest"
   },
   "resolutions": {
     "jquery": "^1.10",

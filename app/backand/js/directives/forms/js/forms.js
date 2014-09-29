@@ -42,7 +42,7 @@ backAndDirectives.run(function ($templateCache) {
     '    <div class="=col-md-2 text-right">\n' +
     '        <button type="submit" class="btn btn-primary" ng-show="configInfo.editable && isNew"  ng-hide="waiting || !isNew" ng-disabled="form.$invalid" ng-click="continue = true">{{submitAndContinueCaption}}</button>\n' +
     '        <button type="submit" class="btn btn-primary" ng-show="configInfo.editable" ng-hide="waiting" ng-disabled="form.$invalid" ng-click="continue = false">{{submitCaption}}</button>\n' +
-    '        <img class="img-responsive" ng-show="waiting" src="backand/img/ajax-loader.gif" ng-style="{\'display\':\'inline-block\'}" />\n' +
+    '<div cg-busy="myPromise"></div>' +
     '    </div>\n' +
     '</div>\n' +
     '</div>\n' +
@@ -153,7 +153,7 @@ backAndDirectives.run(function ($templateCache) {
                 });
 
                 if (!scope.isNew) {
-                    dataItemService.read({
+                    scope.myPromise = dataItemService.read({
                         dataType: "view",
                         viewName: params.viewName,
                         id: params.rowId
@@ -341,7 +341,7 @@ backAndDirectives.run(function ($templateCache) {
                     };
 
                     if (scope.isNew) {
-                        dataItemService.create(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
+                        scope.myPromise =  dataItemService.create(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
                             scope.waiting = false;
                             if (scope.continue) {
                                 $route.reload();
@@ -357,7 +357,7 @@ backAndDirectives.run(function ($templateCache) {
                         errorCallback);
                     }
                     else {
-                        dataItemService.update(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
+                        scope.myPromise = dataItemService.update(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
                             scope.waiting = false;
                             
                             scope.alerts = [{ type: 'success', msg: messages.success }];

@@ -4,6 +4,7 @@ angular.module('backAnd', [
     'ngRoute',
     'ngResource',
     'ngGrid',
+    'cgBusy',
     'ui.bootstrap',
     'backAnd.filters',
     'backAnd.services',
