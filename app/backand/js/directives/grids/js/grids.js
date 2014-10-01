@@ -56,6 +56,7 @@ backAndDirectives.run(function ($templateCache) {
             filterOptions: '=',
             inputStyle: '=',
             buttonGroups: '=',
+            disableEditOnDblClick: '=',
         },
         replace: false,
         templateUrl: ($(window).width() > 768) ? 'backand/js/directives/grids/partials/grid.html' : 'backand/js/directives/grids/partials/grid-mobile.html',
@@ -159,7 +160,7 @@ backAndDirectives.run(function ($templateCache) {
                     footerRowHeight: 47,
                     multiSelect: false,
                     enableColumnResize: true,
-                    rowTemplate: '<div ng-dblclick="editSelected(row)" ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div><div ng-cell></div></div>',
+                    rowTemplate: '<div ' + (scope.disableEditOnDblClick ? '' : 'ng-dblclick="editSelected(row)" ') + 'ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div><div ng-cell></div></div>',
                     // grid edititing
                     //enableCellEditOnFocus: true,
                 };
