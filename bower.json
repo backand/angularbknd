@@ -9,6 +9,7 @@
     "angular": "1.2.x",
     "angular-route": "latest",
     "angular-loader": "1.2.x",
+	"angular-cookies": "latest",
     "angular-mocks": "~1.2.x",
     "html5-boilerplate": "~4.3.0",
     "angular-resource": "latest",

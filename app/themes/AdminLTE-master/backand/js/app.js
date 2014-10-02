@@ -2,6 +2,7 @@
 
 angular.module('backAnd', [
     'ngRoute',
+    'ngCookies',
     'ngResource',
     'ngGrid',
     'ui.bootstrap',
