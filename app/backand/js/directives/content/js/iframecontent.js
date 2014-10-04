@@ -25,7 +25,7 @@ backAndDirectives.run(function ($templateCache) {
 		    /**
             * @ngdoc function
             * @name getDefaultIFrameHeight
-            * @methodOf backand.js.directive.ngbackContent
+            * @methodOf backand.js.directive.bkndContent
             * @description get the default iframe height
             * @returns {int} height in pixels
             */

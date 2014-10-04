@@ -8,7 +8,7 @@ backAndControllers.controller('dynamicGridController', ['$scope',
         //$scope.inputStyle = { 'height': 550 };
 
         $scope.buttonClick = function () {
-            alert(1);
+            alert('In order to see it in action go to our live demo');
         }
 
         $scope.buttonGroups = [{ buttons: [{ text: "New", iconClass: "glyphicon-plus", callback: $scope.buttonClick }, { text: "Edit", iconClass: "glyphicon-pencil", callback: $scope.buttonClick }, { text: "Delete", iconClass: "glyphicon-trash", callback: $scope.buttonClick }] }];

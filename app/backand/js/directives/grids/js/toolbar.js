@@ -1,13 +1,13 @@
 'use strict';
 /**
 * @ngdoc overview
-* @name directive.ngbackToolbar
+* @name directive.bkndToolbar
 */
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('ngbackToolbar', function () {//$templateCache) {
+backAndDirectives.directive('bkndToolbar', function () {//$templateCache) {
     /**
     * @ngdoc directive
-    * @name directive.ngbackToolbar
+    * @name directive.bkndToolbar
     * @description grid toolbar
     * @param {object} toolbar, button groups array that each contains a button array, each button can be a different element 
     * @returns {object} directive
@@ -15,7 +15,7 @@ backAndDirectives.directive('ngbackToolbar', function () {//$templateCache) {
     return {
         restrict: 'A',
         replace: true,
-        require: "^ngbackNgGrid",
+        require: "^bkndNgGrid",
         scope: {
             buttonGroups: "=",
             selectedRows: "=",
@@ -23,7 +23,7 @@ backAndDirectives.directive('ngbackToolbar', function () {//$templateCache) {
             gridScope: "="
         },
         templateUrl: 'backand/js/directives/grids/partials/toolbar.html',
-        link: function (scope, el, attrs, ngbackNgGridCtrl) {
+        link: function (scope, el, attrs, bkndNgGridCtrl) {
             scope.$on('setToolbarCompleted', function (event, buttonGroups) {
                 scope.buttonGroups = buttonGroups;
             });
