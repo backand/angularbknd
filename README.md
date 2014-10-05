@@ -53,7 +53,7 @@ Behind the scenes this will also call `bower install`.  You should find that you
 
 *-In Windows you need to manually create `C:\Users\<user name>\AppData\Roaming\npm` folder.*
 
-*-Note that the `bower_components` folder would normally be installed in the root folder but ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.
+*-Note that the `bower_components` folder would normally be installed in the root folder but angularbknd changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.
 
 *-On a Mac or Linux, you may have to use `sudu` as:
 ```
@@ -86,7 +86,7 @@ You can select other template like Devopps by browse to `http://localhost:8000/a
 
 To update Backand code we recommend that you merge in changes to your own fork of the project.
 ```
-git pull https://github.com/backand/ngback
+git pull https://github.com/backand/angularbknd
 ```
 You can update the tool dependencies by running:
 
