@@ -1,5 +1,7 @@
 var backandGlobal = {
-    url: "https://api.backand.com:8080",// 
+    url: "http://backand-dev3.cloudapp.net:4109",// 
+//url: "https://api.backand.com:8080",
+//url: "http://api.backand.info:8099",
     defaultApp: null,
 };
 
