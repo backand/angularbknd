@@ -1,4 +1,4 @@
-# ngback — The seed for Backand AngularJS apps
+# angularbknd — The seed for Backand AngularJS apps
 
 This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Backand back office.
 You can use it to quickly Bootstrap your Backand Angular webapp projects and dev environment for these
@@ -15,22 +15,22 @@ All the themes are fully responsive Admin template. Based on the **Bootstrap 3**
 
 ## Getting Started
 
-To get started you can simply clone the ngback repository and install the dependencies:
+To get started you can simply clone the angularbknd repository and install the dependencies:
 
 ### Prerequisites
 
-You need git to clone the ngback repository. You can get Git from
+You need git to clone the angularbknd repository. You can get Git from
 [http://git-scm.com/](http://git-scm.com/).
 
-We also use a number of node.js tools to initialize and test ngback. You must have node.js and its package manager (npm) installed.  You can donwload node.js from [http://nodejs.org/download//](http://nodejs.org/download/).
+We also use a number of node.js tools to initialize and test angularbknd. You must have node.js and its package manager (npm) installed.  You can donwload node.js from [http://nodejs.org/download//](http://nodejs.org/download/).
 
-### Clone ngback
+### Clone angularbknd
 
-Clone the ngback repository using [git][git]:
+Clone the angularbknd repository using [git][git]:
 
 ```
-git clone https://github.com/backand/ngback
-cd ngback
+git clone https://github.com/backand/angularbknd
+cd angularbknd
 ```
 
 ### Install Dependencies
@@ -53,7 +53,7 @@ Behind the scenes this will also call `bower install`.  You should find that you
 
 *-In Windows you need to manually create `C:\Users\<user name>\AppData\Roaming\npm` folder.*
 
-*-Note that the `bower_components` folder would normally be installed in the root folder but ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.*
+*-Note that the `bower_components` folder would normally be installed in the root folder but angularbknd changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.*
 
 ### Run the Application
 
@@ -73,7 +73,7 @@ You can select other theme like Devopps by browse to `http://localhost:8000/app/
 ## Directory Layout
 
     app/                --> all of the files to be used in production
-    bacjand/            --> the ngback src
+    bacjand/            --> the angularbknd src
       css/              --> css files
         app.css         --> default stylesheet
       img/              --> image files

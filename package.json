@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.2.1",
   "description": "A starter project for Backand",
-  "repository": "https://github.com/backand/ngback",
+  "repository": "https://github.com/backand/angularbknd",
   "license": "MIT",
   "devDependencies": {
     "grunt": "~0.4.2",
