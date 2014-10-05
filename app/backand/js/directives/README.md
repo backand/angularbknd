@@ -1,4 +1,4 @@
-All ngback directives are defined as attributes:
+All Backand's directives are defined as attributes:
 
     <ANY directive
         field="..."

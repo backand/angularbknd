@@ -1,6 +1,6 @@
 /**
 * @ngdoc overview
-* @name directive.ngbackDashboard
+* @name directive.bkndDashboard
 */
 var backAndDirectives = angular.module('backAnd.directives');
 backAndDirectives.run(function ($templateCache) {
@@ -20,10 +20,10 @@ backAndDirectives.run(function ($templateCache) {
  	    '</div>\n' +
      '</div>')
 })
-.directive('ngbackDashboard', function (Global, $http, configService, $location, $templateCache) {
+.directive('bkndDashboard', function (Global, $http, configService, $location, $templateCache) {
     /**
    * @ngdoc directive
-   * @name directive.ngbackDashboard
+   * @name directive.bkndDashboard
    * @description dashboard of charts and grids
    * @param {string} dashboardId, required, id of the dashboard
    * @returns {object} directive
@@ -37,8 +37,8 @@ backAndDirectives.run(function ($templateCache) {
 		},
 	    /**
         * @name link
-        * @methodOf directive.ngbackDashboard
-        * @description manage the scope of the ngbackDashboard directive
+        * @methodOf directive.bkndDashboard
+        * @description manage the scope of the bkndDashboard directive
         * @param {object} scope, required, the scope of the directive
         * @param {object} el, required, the element of the directive
         * @param {object} attrs, required, the attributes of the directive
@@ -48,7 +48,7 @@ backAndDirectives.run(function ($templateCache) {
 		    /**
             * @ngdoc function
             * @name dashboardId
-            * @methodOf backand.js.directive.ngbackDashboard
+            * @methodOf backand.js.directive.bkndDashboard
             * @description Get the new Backand's dashboard id and re-load the data
             */
 		    scope.$watch('dashboardId', function () {
@@ -63,7 +63,7 @@ backAndDirectives.run(function ($templateCache) {
 		    /**
             * @ngdoc function
             * @name setData
-            * @methodOf backand.js.directive.ngbackDashboard
+            * @methodOf backand.js.directive.bkndDashboard
             * @param {string} id reference to dashboard
             * @description set the data
             */

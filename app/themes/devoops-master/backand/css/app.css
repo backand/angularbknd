@@ -3,30 +3,30 @@
     color: #666;
 }
 
-ngback-ng-grid input[type="text"].navbar-btn{width:initial;}
+bknd-ng-grid input[type="text"].navbar-btn{width:initial;}
 
-ngback-ng-grid .btn-toolbar {
+bknd-ng-grid .btn-toolbar {
     margin: 20px;
     height: 32px;
     border-radius:0;
 }
 
-ngback-ng-grid .btn-toolbar button,  ngback-ng-grid .btn-toolbar input[type="text"] {
+bknd-ng-grid .btn-toolbar button,  bknd-ng-grid .btn-toolbar input[type="text"] {
     height: 32px;
     border-radius:0;
 }
 
-ngback-ng-grid .btn-toolbar button{
+bknd-ng-grid .btn-toolbar button{
     background-color:#eaeaea;
 }
 
-ngback-ng-grid .btn-default:hover, ngback-ng-grid .btn-default:focus, ngback-ng-grid .btn-default:active, ngback-ng-grid .btn-default.active, ngback-ng-grid .open .dropdown-toggle.btn-default {
+bknd-ng-grid .btn-default:hover, bknd-ng-grid .btn-default:focus, bknd-ng-grid .btn-default:active, bknd-ng-grid .btn-default.active, bknd-ng-grid .open .dropdown-toggle.btn-default {
   color: #505050;
   background-color: #eaeaea;
   border-color: #d4d4d4;
 }
 
-ngback-ng-grid .glyphicon{
+bknd-ng-grid .glyphicon{
     color: #505050;
   font-size:13px;
   height:13px;

@@ -1,11 +1,11 @@
 ﻿
 <div class="row">
     <div class="col-md-12">
-        <section id="ngbackNgGrid">
+        <section id="bkndNgGrid">
             <div class="page-header">
                 <h1>
-                    ngback-ng-grid<small>
-                        (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/grids">ngback.directives.ngback-ng-grid</a>)
+                    bknd-ng-grid<small>
+                        (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/grids">backand.directives.bknd-ng-grid</a>)
                     </small>
                 </h1>
             </div>
@@ -13,11 +13,11 @@
                 <div class="col-md-8 show-grid">
                     <div data-ng-controller="dynamicGridController">
                         <u>Grid Example</u>
-                        <ngback-ng-grid view-name="viewName" input-style="{'height': 400}" button-groups="buttonGroups" disable-edit-on-dbl-click="disableEditOnDblClick"></ngback-ng-grid>
+                        <bknd-ng-grid view-name="viewName" input-style="{'height': 400}" button-groups="buttonGroups" disable-edit-on-dbl-click="disableEditOnDblClick"></bknd-ng-grid>
                     </div>
                     <!--<div data-ng-controller="dynamicGridController">
                         Dynamic Grid Example
-                        <ngback-ng-grid view-name="viewName" input-style="inputStyle"></ngback-ng-grid>
+                        <bknd-ng-grid view-name="viewName" input-style="inputStyle"></bknd-ng-grid>
                     </div>-->
                     <a href="#/grid">more examples...</a><br/>
                 </div>
@@ -28,8 +28,8 @@
                     <p>
                         This directive provides out-of-the-box CRUD functioality, advanced sorting and filtering
                     </p>
-                    <h3>ngback-ng-grid Settings</h3>
-                    <p>All settings can be provided as attributes in the <code>ngback-ng-grid</code> or through the query string parameters.</p>
+                    <h3>bknd-ng-grid Settings</h3>
+                    <p>All settings can be provided as attributes in the <code>bknd-ng-grid</code> or through the query string parameters.</p>
                     <ul>
                         <li>
                             <p>
@@ -53,7 +53,7 @@
                             </p>
                         </li>
                     </ul>
-                    <h3>ngback-ng-grid Events</h3>
+                    <h3>bknd-ng-grid Events</h3>
                     <ul>
                         <li>
                             <p>
@@ -81,25 +81,25 @@
                 <div class="tabbable form-group">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
-                            <a href="#ngbackGridMarkup" showtab role="tab" data-toggle="tab">Markup</a>
+                            <a href="#bkndGridMarkup" showtab role="tab" data-toggle="tab">Markup</a>
                         </li>
                         <li>
-                            <a href="#ngbackGridJavaScript" showtab role="tab" data-toggle="tab">JavaScript</a>
+                            <a href="#bkndGridJavaScript" showtab role="tab" data-toggle="tab">JavaScript</a>
                         </li>
                     </ul>
                     <div class="tab-content panel-body">
-                        <div class="tab-pane fade in active" id="ngbackGridMarkup">
+                        <div class="tab-pane fade in active" id="bkndGridMarkup">
 <pre id="htmlOutput" class="html prettyprint">
 <span class="tag">&lt;div&gt;</span>
 <span class="pln">&nbsp;&nbsp;&nbsp;&nbsp;Static Grid Example</span>
-<span class="tag">&nbsp;&nbsp;&nbsp;&nbsp;&lt;ngback-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"{'height': 400}"</span><span class="tag">&gt;&lt;/ngback-ng-grid&gt;</span><span class="pln">
+<span class="tag">&nbsp;&nbsp;&nbsp;&nbsp;&lt;bknd-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"{'height': 400}"</span><span class="tag">&gt;&lt;/bknd-ng-grid&gt;</span><span class="pln">
 </span><span class="tag">&lt;/div&gt;</span><span class="pln">
 </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-ng-controller</span><span class="pun">=</span><span class="atv">"dynamicGridController"</span><span class="tag">&gt;</span><span class="pln">
 &nbsp;&nbsp;&nbsp;&nbsp;Dynamic Grid Example
-</span><span class="tag">&nbsp;&nbsp;&nbsp;&nbsp;&lt;ngback-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"inputStyle"</span><span class="tag">&gt;&lt;/ngback-ng-grid&gt;</span><span class="pln">
+</span><span class="tag">&nbsp;&nbsp;&nbsp;&nbsp;&lt;bknd-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"inputStyle"</span><span class="tag">&gt;&lt;/bknd-ng-grid&gt;</span><span class="pln">
 </span><span class="tag">&lt;/div&gt;</span></pre>
                         </div>
-                        <div class="tab-pane fade in" id="ngbackGridJavaScript">
+                        <div class="tab-pane fade in" id="bkndGridJavaScript">
                             <div class="dJsColor" style="font-size: 12px; overflow: auto;"><span class="fj_string">'use&nbsp;strict'</span>;<br><span class="fj_keyword">var</span>&nbsp;backAndControllers&nbsp;&nbsp;=&nbsp;angular.module(<span class="fj_string">'backAnd.controllers'</span>);<br>backAndControllers.controller(<span class="fj_string">'dynamicGridController'</span>,&nbsp;[<span class="fj_string">'$scope'</span>,<br/>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fj_keyword">function</span>&nbsp;($scope)&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$scope.viewName&nbsp;&nbsp;=&nbsp;<span class="fj_string">'Stores'</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$scope.inputStyle&nbsp;=&nbsp;{&nbsp;<span class="fj_string">'height'</span>:&nbsp;550&nbsp;};<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>])</div>
                             <div>
                             </div>
@@ -114,11 +114,11 @@
 
 <div class="row">
     <div class="col-md-12">
-        <section id="ngbackForm">
+        <section id="bkndForm">
             <div class="page-header">
                 <h1>
-                    ngback-form,<small>
-                        (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/forms">ngback.directives.ngback-form</a>)
+                    bknd-form,<small>
+                        (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/forms">backand.directives.bknd-form</a>)
                     </small>
                 </h1>
             </div>
@@ -126,11 +126,11 @@
                 <div class="col-md-8 show-grid">
                     <div>
                         <u>Form Example</u>
-                        <div ngback-form view-name="'Employees'" row-id="1"></div>
+                        <div bknd-form view-name="'Employees'" row-id="1"></div>
                     </div>
                     <!--<div data-ng-controller="dynamicFormController">
                         Dynamic Form Example
-                        <div ngback-form view-name="viewName" row-id="id"></div>
+                        <div bknd-form view-name="viewName" row-id="id"></div>
                     </div>-->
                 </div>
                 <div class="col-md-4">
@@ -140,8 +140,8 @@
                     <p>
                         This directive provide you a quick Form connected to your database
                     </p>
-                    <h3>ngback-form Settings</h3>
-                    <p>All settings can be provided as attributes in the <code>ngback-ng-grid</code> or through the query string parameters.</p>
+                    <h3>bknd-form Settings</h3>
+                    <p>All settings can be provided as attributes in the <code>bknd-ng-grid</code> or through the query string parameters.</p>
                     <ul>
                         <li>
                             <p>
@@ -173,24 +173,24 @@
                 <div class="tabbable form-group">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
-                            <a href="#ngbackFormMarkup" showtab role="tab" data-toggle="tab">Markup</a>
+                            <a href="#bkndFormMarkup" showtab role="tab" data-toggle="tab">Markup</a>
                         </li>
                         <li>
-                            <a href="#ngbackFormJavaScript" showtab role="tab" data-toggle="tab">JavaScript</a>
+                            <a href="#bkndFormJavaScript" showtab role="tab" data-toggle="tab">JavaScript</a>
                         </li>
                     </ul>
                     <div class="tab-content panel-body">
-                        <div class="tab-pane fade in active" id="ngbackFormMarkup">
+                        <div class="tab-pane fade in active" id="bkndFormMarkup">
 <pre id="htmlOutput" class="html prettyprint"><span class="tag">&lt;div&gt;</span><span class="pln">
 &nbsp;&nbsp;&nbsp;&nbsp;Static Form Example
-</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">ngback-form</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">row-id</span><span class="pun">=</span><span class="atv">"1"</span><span class="tag">&gt;&lt;/div&gt;</span><span class="pln">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">bknd-form</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">row-id</span><span class="pun">=</span><span class="atv">"1"</span><span class="tag">&gt;&lt;/div&gt;</span><span class="pln">
 </span><span class="tag">&lt;/div&gt;</span><span class="pln">
 </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-ng-controller</span><span class="pun">=</span><span class="atv">"dynamicFormController"</span><span class="tag">&gt;</span><span class="pln">
 &nbsp;&nbsp;&nbsp;&nbsp;Dynamic Form Example
-</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">ngback-form</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">row-id</span><span class="pun">=</span><span class="atv">"id"</span><span class="tag">&gt;&lt;/div&gt;</span><span class="pln">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">bknd-form</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">row-id</span><span class="pun">=</span><span class="atv">"id"</span><span class="tag">&gt;&lt;/div&gt;</span><span class="pln">
 </span><span class="tag">&lt;/div&gt;</span></pre>
                         </div>
-                        <div class="tab-pane fade in" id="ngbackFormJavaScript">
+                        <div class="tab-pane fade in" id="bkndFormJavaScript">
                             <div class="dJsColor" style="font-size: 12px; overflow: auto;"><span class="fj_string">'use&nbsp;strict'</span>;<br><span class="fj_keyword">var</span>&nbsp;backAndControllers&nbsp;&nbsp;=&nbsp;angular.module(<span class="fj_string">'backAnd.controllers'</span>);<br>backAndControllers.controller(<span class="fj_string">'dynamicFormController'</span>,&nbsp;[<span class="fj_string">'$scope'</span>,&nbsp;<span class="fj_keyword"><br />&nbsp;&nbsp;&nbsp;&nbsp;function</span>&nbsp;($scope)&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$scope.viewName&nbsp;&nbsp;=&nbsp;<span class="fj_string">'Customers'</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$scope.id&nbsp;&nbsp;=&nbsp;1;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>])</div>
 
                             <div>
@@ -207,11 +207,11 @@
 
 <div class="row">
     <div class="col-md-12">
-        <section id="ngbackDashboard">
+        <section id="bkndDashboard">
             <div class="page-header">
                 <h1>
-                    ngback-dashboard,<small>
-                        (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/dashboard">ngback.directives.ngback-dashboard</a>)
+                    bknd-dashboard,<small>
+                        (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/dashboard">backand.directives.bknd-dashboard</a>)
                     </small>
                 </h1>
             </div>
@@ -219,7 +219,7 @@
                 <div class="col-md-8 show-grid">
                     <div>
                         <u>Dashboard Example</u>
-                        <ngback-dashboard dashboard-id="1"></ngback-dashboard>
+                        <bknd-dashboard dashboard-id="1"></bknd-dashboard>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -229,8 +229,8 @@
                     <p>
                         This directive provide you a quick dashboard display based on your settings in the console
                     </p>
-                    <h3>ngback-form Settings</h3>
-                    <p>All settings can be provided as attributes in the <code>ngback-ng-grid</code> or through the query string parameters.</p>
+                    <h3>bknd-form Settings</h3>
+                    <p>All settings can be provided as attributes in the <code>bknd-ng-grid</code> or through the query string parameters.</p>
                     <ul>
                         <li>
                             <p>
@@ -247,20 +247,20 @@
                 <div class="tabbable form-group">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
-                            <a href="#ngbackDashboardMarkup" showtab role="tab" data-toggle="tab">Markup</a>
+                            <a href="#bkndDashboardMarkup" showtab role="tab" data-toggle="tab">Markup</a>
                         </li>
                         <li>
-                            <a href="#ngbackDashboardJavaScript" showtab role="tab" data-toggle="tab">JavaScript</a>
+                            <a href="#bkndDashboardJavaScript" showtab role="tab" data-toggle="tab">JavaScript</a>
                         </li>
                     </ul>
                     <div class="tab-content panel-body">
-                        <div class="tab-pane fade in active" id="ngbackDashboardMarkup">
+                        <div class="tab-pane fade in active" id="bkndDashboardMarkup">
 <pre id="htmlOutput" class="html prettyprint"><span class="tag">&lt;div&gt;</span><span class="pln">
 &nbsp;&nbsp;&nbsp;&nbsp;Dashboard Example
-</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;ngback-dashboard</span><span class="pln"> </span><span class="atn">dashboard-id</span><span class="pun">=</span><span class="atv">"1"</span><span class="tag">&gt;&lt;/ngback-dashboard&gt;</span><span class="pln">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;bknd-dashboard</span><span class="pln"> </span><span class="atn">dashboard-id</span><span class="pun">=</span><span class="atv">"1"</span><span class="tag">&gt;&lt;/bknd-dashboard&gt;</span><span class="pln">
 </span><span class="tag">&lt;/div&gt;</span></pre>
                         </div>
-                        <div class="tab-pane fade in" id="ngbackDashboardJavaScript">
+                        <div class="tab-pane fade in" id="bkndDashboardJavaScript">
                             <pre></pre>
                             <div>
                             </div>
