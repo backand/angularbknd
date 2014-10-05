@@ -1,0 +1,14 @@
+<section class="content-header">
+    <h1>
+        {{global.currentName}}
+    </h1>
+    <ol class="breadcrumb">
+        <li data-ng-repeat="breadcrumb in breadcrumbs"><a href="#" ng-style="{'cursor':'default'}"><i class="fa custom-icon" icon-type="breadcrumb.partType"></i>{{breadcrumb.name}}</a></li>
+    </ol>
+</section>
+<section class="content" data-ng-controller="myNewPageController">
+    <!-- uncomment the data-ng-controller attribute and use the myGridController to customise the grid -->
+    <ngback-ng-grid view-name="'Employees'"></ngback-ng-grid>
+    <ngback-dashboard dashboard-id="1"></ngback-dashboard>
+    <ngback-content content-id="2"></ngback-content>
+</section>

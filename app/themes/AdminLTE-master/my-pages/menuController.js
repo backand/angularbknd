@@ -13,15 +13,14 @@ angular.module('backAnd.controllers')
             
         //    /*  an example of how to add your own menu item  */
         //    if (data && data.workspace && data.workspace.pages && data.workspace.pages.length > 3){
-        //        data.workspace.pages.splice(3, 0, {name: "my menu item", partType: "content"})
+        //        data.workspace.pages.splice(3, 0, {name: "page1", partType: "content"})
         //    }
 
         //})
 
         //$scope.$on('menuItemSelected', function (event, data) {
         //    /*  an example of how to navigate when menu item is selected  */
-        //    alert(data.name);
-        //    $location.path("/");
+        //    $location.path("/page1");
         //})
     }
 ])

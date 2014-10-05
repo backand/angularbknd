@@ -1,16 +1,16 @@
 'use strict';
 /**
 * @ngdoc overview
-* @name directive.ngbackDisabledGrid
+* @name directive.bkndDisabledGrid
 */
 var backAndDirectives = angular.module('backAnd.directives');
 backAndDirectives.run(function ($templateCache) {
     $templateCache.put("backand/js/directives/grids/partials/disabledGrid.html", '<div>{{message}}</div>')
 })
-.directive('ngbackDisabledGrid', function ($templateCache) {
+.directive('bkndDisabledGrid', function ($templateCache) {
     /**
     * @ngdoc directive
-    * @name directive.ngbackDisabledGrid
+    * @name directive.bkndDisabledGrid
     * @description disabled grid element, mostly used for subgrid in create mode
     * @param {string} message, usually "Save first to add rows"
     * @returns {object} directive

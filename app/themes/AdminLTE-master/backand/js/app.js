@@ -40,6 +40,14 @@ angular.module('backAnd', [
             templateUrl: 'themes/AdminLTE-master/backand/partials/custom/example.html'
         });
 
+        /********************************************************/
+        /* uncomment this route for the custom new page example */
+        /********************************************************/
+        //$routeProvider.when('/page1', {
+        //    templateUrl: 'themes/AdminLTE-master/my-pages/page1/page1.html'
+        //});
+
+
         $routeProvider.otherwise({
             redirectTo: ''
         });

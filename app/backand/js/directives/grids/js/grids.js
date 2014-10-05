@@ -1,11 +1,11 @@
 /**
 * @ngdoc overview
-* @name directive.ngbackNgGrid
+* @name directive.bkndNgGrid
 */
 var backAndDirectives = angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker']);
 backAndDirectives.run(function ($templateCache) {
     $templateCache.put("backand/js/directives/grids/partials/grid.html", 
-        '<div class="ng-back-grid box" id="ngback-grid_{{viewNameId}}">\n' +
+        '<div class="ng-back-grid box" id="bknd-grid_{{viewNameId}}">\n' +
         '    <div class="box-body table-responsive">\n' +
         '        <div class="btn-toolbar ng-back-grid-toolbar" role="toolbar">\n' +
         '            <div ng-repeat="buttonGroup in btnGroups" class="btn-group" ng-class="buttonGroup.class">\n' +
@@ -25,7 +25,7 @@ backAndDirectives.run(function ($templateCache) {
         '</div>')
 })
 .run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/grids/partials/grid-mobile.html", '<div class="ng-back-grid box" id="ngback-grid_{{viewNameId}}">\n' +
+    $templateCache.put("backand/js/directives/grids/partials/grid-mobile.html", '<div class="ng-back-grid box" id="bknd-grid_{{viewNameId}}">\n' +
     '    <div class="btn-group btn-group-sm" ng-show="showToolbar">\n' +
     '        <button type="button" ng-click="addRow()" ng-show="showAdd" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"></span></button>\n' +
     '        <button type="button" ng-click="editSelected()" ng-show="showEdit" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-pencil"></span></button>\n' +
@@ -37,10 +37,10 @@ backAndDirectives.run(function ($templateCache) {
     '    </div>\n' +
     '</div>')
 })
-.directive('ngbackNgGrid', function (Global, dataListService, dataItemService, configService, $filter, $location, $route, $sce, $compile, $window, $templateCache) {
+.directive('bkndNgGrid', function (Global, dataListService, dataItemService, configService, $filter, $location, $route, $sce, $compile, $window, $templateCache) {
     /**
     * @ngdoc directive
-    * @name directive.ngbackNgGrid
+    * @name directive.bkndNgGrid
     * @description grid element, ng-grid wrapper that binds to backand rest api
     * @param {string} viewName, view or table from the database
     * @param {object} options, ng-grid options
@@ -56,13 +56,14 @@ backAndDirectives.run(function ($templateCache) {
             filterOptions: '=',
             inputStyle: '=',
             buttonGroups: '=',
+            disableEditOnDblClick: '=',
         },
         replace: false,
         templateUrl: ($(window).width() > 768) ? 'backand/js/directives/grids/partials/grid.html' : 'backand/js/directives/grids/partials/grid-mobile.html',
         /**
             * @name link
-            * @methodOf directive.ngbackNgGrid
-            * @description manage the scope of the ngbackNgGrid directive
+            * @methodOf directive.bkndNgGrid
+            * @description manage the scope of the bkndNgGrid directive
             * @param {object} scope, required, the scope of the directive
             * @param {object} el, required, the element of the directive
             * @param {object} attrs, required, the attributes of the directive
@@ -73,7 +74,7 @@ backAndDirectives.run(function ($templateCache) {
             /**
                 * @ngdoc function
                 * @name viewName
-                * @methodOf backand.js.directive.ngbackNgGrid
+                * @methodOf backand.js.directive.bkndNgGrid
                 * @description Get the new Backand's view name and re-load the configraion
                 *              and data
                 */
@@ -94,7 +95,7 @@ backAndDirectives.run(function ($templateCache) {
             /**
                 * @ngdoc function
                 * @name buildNewGrid
-                * @methodOf backand.js.directive.ngbackNgGrid
+                * @methodOf backand.js.directive.bkndNgGrid
                 * @description Due to limitations in ng-grid, in order to reload the settings,
                 *              we must remove it and rebuild it.
                 *              Configuration loaded async
@@ -111,9 +112,9 @@ backAndDirectives.run(function ($templateCache) {
                     scope.$emit('gridConfigCompleted', data);
 
                     scope.configTable = data;
-                    var tableElementScope = $("#ngback-grid_" + scope.viewNameId + " .ngGrid").scope();
+                    var tableElementScope = $("#bknd-grid_" + scope.viewNameId + " .ngGrid").scope();
                     if (tableElementScope) {
-                        $("#ngback-grid_" + scope.viewNameId + " .ngGrid").remove();
+                        $("#bknd-grid_" + scope.viewNameId + " .ngGrid").remove();
                     }
                     var inputStyle = (scope.inputStyle) ? angular.toJson(scope.inputStyle).replace(/\"/gi, "'") : 'getTableStyle()';
                     var html = '<div ng-if="dataTable" ng-style="' + inputStyle + '" ng-grid="dataTable"></div>';
@@ -124,7 +125,7 @@ backAndDirectives.run(function ($templateCache) {
                     //Step 3: link the compiled template with the scope.
                     var element = linkFn(scope);
                     // Step 4: Append to DOM 
-                    $("#ngback-grid_" + scope.viewNameId).append(element);
+                    $("#bknd-grid_" + scope.viewNameId).append(element);
 
                     scope.setNGGridConfiguration();
                 });
@@ -159,7 +160,7 @@ backAndDirectives.run(function ($templateCache) {
                     footerRowHeight: 47,
                     multiSelect: false,
                     enableColumnResize: true,
-                    rowTemplate: '<div ng-dblclick="editSelected(row)" ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div><div ng-cell></div></div>',
+                    rowTemplate: '<div ' + (scope.disableEditOnDblClick ? '' : 'ng-dblclick="editSelected(row)" ') + 'ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div><div ng-cell></div></div>',
                     // grid edititing
                     //enableCellEditOnFocus: true,
                 };
@@ -184,7 +185,7 @@ backAndDirectives.run(function ($templateCache) {
                         '</div>' +
                         '<div class="col-xs-3 text-right" style="margin-top: 12px;">' +
                             '<span>{{i18n.ngPageSizeLabel}}&nbsp;</span>' +
-                            '<select class="ngBackGridSelect" ng-model="pagingOptions.pageSize" >' +
+                            '<select class="bkndGridSelect" ng-model="pagingOptions.pageSize" >' +
                                 '<option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>' +
                             '</select>' +
                         '</div>' +
@@ -245,7 +246,7 @@ backAndDirectives.run(function ($templateCache) {
             /**
                 * @ngdoc function
                 * @name getData
-                * @methodOf backand.js.directive.ngbackNgGrid
+                * @methodOf backand.js.directive.bkndNgGrid
                 * @description Reads the data from the API and populate the grid
                 * @param {string} searchText The value of the filter search text box
                 */

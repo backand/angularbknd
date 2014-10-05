@@ -1,4 +1,4 @@
-# angularbknd — The seed for Backand AngularJS apps
+﻿# angularbknd — The seed for Backand AngularJS apps
 
 This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Backand Services.
 
@@ -51,7 +51,6 @@ Behind the scenes this will also call `bower install`.  You should find that you
 ```
 sudo npm install
 ```
-
 
 ### Run the Application
 

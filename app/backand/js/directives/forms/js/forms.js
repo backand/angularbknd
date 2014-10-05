@@ -2,7 +2,7 @@
 
 /**
 * @ngdoc overview
-* @name directive.ngbackForm
+* @name directive.bkndForm
 */
 var backAndDirectives = angular.module('backAnd.directives'); var backAndDirectives = angular.module('backAnd.directives');
 backAndDirectives.run(function ($templateCache) {
@@ -51,8 +51,8 @@ backAndDirectives.run(function ($templateCache) {
     '<script type="text/ng-template" id="backand/js/directives/forms/partials/field.html">\n' +
     '    <label ng-hide="field.type == \'checkbox\'">{{field.displayName | parseLabel:field}}</label>\n' +
     '    <div ng-switch on="field.type">\n' +
-    '        <ngback-ng-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()" input-style="{\'height\': 500}"></ngback-ng-grid>\n' +
-    '        <div ng-switch-when="disabledSubgrid" ngback-disabled-grid message="\'Save first to add rows\'"></div>\n' +
+    '        <bknd-ng-grid ng-switch-when="subgrid" view-name="field.relatedViewName" filter-options="field.filterSubgrid()" input-style="{\'height\': 500}"></bknd-ng-grid>\n' +
+    '        <div ng-switch-when="disabledSubgrid" bknd-disabled-grid message="\'Save first to add rows\'"></div>\n' +
     '        <div ng-switch-when="singleSelect" single-select field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
     '        <div ng-switch-when="autocomplete" autocomplete field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
     '        <div ng-switch-when="editor" editor field="field" value="field.value" form="" input-class="" errors="field.errors"></div>\n' +
@@ -76,10 +76,10 @@ backAndDirectives.run(function ($templateCache) {
     '</div>\n' +
     '</script>')
 })
-.directive('ngbackForm', function ($sce, $q, $location, $route, configService, dataItemService, dataListService, $log, Global, $templateCache) {
+.directive('bkndForm', function ($sce, $q, $location, $route, configService, dataItemService, dataListService, $log, Global, $templateCache) {
     /**
     * @ngdoc directive
-    * @name directive.ngbackForm
+    * @name directive.bkndForm
     * @description binding a form to a database table or view
     * @param {string} viewName, required, reference to table or view name
     * @param {string} rowId, optional, the row primary key, if provided then the form is in EDIT mode otherwise it is in a CREATE mode
@@ -99,8 +99,8 @@ backAndDirectives.run(function ($templateCache) {
         },
          /**
          * @name link
-         * @methodOf directive.ngbackForm
-         * @description manage the scope of the ngbackForm directive
+         * @methodOf directive.bkndForm
+         * @description manage the scope of the bkndForm directive
          * @param {object} scope, required, the scope of the directive
          * @param {object} el, required, the element of the directive
          * @param {object} attrs, required, the attributes of the directive
@@ -108,7 +108,7 @@ backAndDirectives.run(function ($templateCache) {
         link: function (scope, el, attrs) {
             /**
             * @name configInfo
-            * @propertyOf directive.ngbackForm {object} 
+            * @propertyOf directive.bkndForm {object} 
             * @description configuration information of the form and its fields
             */
             scope.configInfo = {
@@ -121,7 +121,7 @@ backAndDirectives.run(function ($templateCache) {
 
             /**
              * @name init
-             * @methodOf directive.ngbackForm
+             * @methodOf directive.bkndForm
              * @description initiate the configuration of the form
              * @param {object} params, required, either the search parameters or directive attributes containing the scope parameters
              */
@@ -129,13 +129,13 @@ backAndDirectives.run(function ($templateCache) {
 
                 /**
                 * @name isNew
-                * @propertyOf directive.ngbackForm {boolean} 
+                * @propertyOf directive.bkndForm {boolean} 
                 * @description if isNew then CREATE mode, otherwise EDIT mode
                 */
                 scope.isNew = !params.rowId;
                 /**
                 * @name continue
-                * @propertyOf directive.ngbackForm {boolean} 
+                * @propertyOf directive.bkndForm {boolean} 
                 * @description relevant only in CREATE mode, if true then after submit show the in CREATE mode for new row, otherwise shows the new created row in an EDIT mode
                 */
                 scope.continue = false;
@@ -224,7 +224,7 @@ backAndDirectives.run(function ($templateCache) {
 
                 /**
                 * @name dataToSubmit
-                * @propertyOf directive.ngbackForm {object} 
+                * @propertyOf directive.bkndForm {object} 
                 * @description the data to submit to the database
                 */
                 scope.dataToSubmit = null;
@@ -239,13 +239,13 @@ backAndDirectives.run(function ($templateCache) {
 
                 /**
                 * @name submitCaption
-                * @propertyOf directive.ngbackForm {string} 
+                * @propertyOf directive.bkndForm {string} 
                 * @description the submit button caption
                 */
                 scope.submitCaption = scope.isNew ? 'Create' : 'Update';
                 /**
                 * @name submitAndContinueCaption
-                * @propertyOf directive.ngbackForm {string} 
+                * @propertyOf directive.bkndForm {string} 
                 * @description the submit and continue button caption, relevant only in CREATE mode
                 */
                 scope.submitAndContinueCaption = scope.isNew ? 'Create and Continue' : '';
@@ -253,7 +253,7 @@ backAndDirectives.run(function ($templateCache) {
 
                 /**
                 * @name submit
-                * @methodOf directive.ngbackForm 
+                * @methodOf directive.bkndForm 
                 * @description submit the form data to the database
                 */
                 scope.submit = function () {
@@ -263,7 +263,7 @@ backAndDirectives.run(function ($templateCache) {
 
                 /**
                 * @name setFieldValue
-                * @methodOf directive.ngbackForm 
+                * @methodOf directive.bkndForm 
                 * @description handles each field value
                 * @param {object} field, required, the field/column of the database table or view
                 */
@@ -290,7 +290,7 @@ backAndDirectives.run(function ($templateCache) {
 
                 /**
                 * @name submitAction
-                * @methodOf directive.ngbackForm 
+                * @methodOf directive.bkndForm 
                 * @description submit the form data to the database
                 * @param {object} service, required, if the mode is CREATE then the create service otherwise the edit service
                 * @param {object} messages, required, success and failure messages
@@ -378,7 +378,7 @@ backAndDirectives.run(function ($templateCache) {
             /**
             * @ngdoc function
             * @name viewName
-            * @methodOf directive.ngbackForm 
+            * @methodOf directive.bkndForm 
             * @description Get the new Backand's view name and re-load the configraion
             *              and data
             */
@@ -401,7 +401,7 @@ backAndDirectives.run(function ($templateCache) {
 
             /**
             * @name processForm
-            * @methodOf directive.ngbackForm 
+            * @methodOf directive.bkndForm 
             * @description initiate each field configuration
             * @param {object} viewConfig, required, configuration of the view or table from the database and all its columns
             * @param {object} dataItem, required, the row from the database, if CREATE mode the an empty object
@@ -634,7 +634,7 @@ backAndDirectives.run(function ($templateCache) {
 
             /**
             * @name renderHtml
-            * @methodOf directive.ngbackForm 
+            * @methodOf directive.bkndForm 
             * @description render text to html
             * @param {string} html_code, required, text to render to html
             * @returns {string} the rendred html
@@ -645,7 +645,7 @@ backAndDirectives.run(function ($templateCache) {
             
             /**
             * @name tabClick
-            * @methodOf directive.ngbackForm 
+            * @methodOf directive.bkndForm 
             * @description handles subgrids, only activates them when the user select their tabs, to increase performance
             * @param {object} category, required, the category of the tab
             */

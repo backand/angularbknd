@@ -1,6 +1,6 @@
 /**
 * @ngdoc overview
-* @name directive.ngbackContent
+* @name directive.bkndContent
 */
 var backAndDirectives = angular.module('backAnd.directives');
 backAndDirectives.run(function ($templateCache) {
@@ -12,10 +12,10 @@ backAndDirectives.run(function ($templateCache) {
         '</div>\n' +
     '</div>')
 })
-.directive('ngbackContent', function (Global, $http, configService, $sce, $location, $templateCache) {
+.directive('bkndContent', function (Global, $http, configService, $sce, $location, $templateCache) {
     /**
    * @ngdoc directive
-   * @name directive.ngbackContent
+   * @name directive.bkndContent
    * @description base content 
    * @param {string} contentId, required, id of the content
    * @returns {object} directive
@@ -29,8 +29,8 @@ backAndDirectives.run(function ($templateCache) {
 		},
         /**
          * @name link
-         * @methodOf directive.ngbackContent
-         * @description manage the scope of the ngbackContent directive
+         * @methodOf directive.bkndContent
+         * @description manage the scope of the bkndContent directive
          * @param {object} scope, required, the scope of the directive
          * @param {object} el, required, the element of the directive
          * @param {object} attrs, required, the attributes of the directive
@@ -39,7 +39,7 @@ backAndDirectives.run(function ($templateCache) {
 		    /**
         * @ngdoc function
         * @name contentId
-        * @methodOf backand.js.directive.ngbackContent
+        * @methodOf backand.js.directive.bkndContent
         * @description Get the new Backand's content id and re-load the data
         */
 		    scope.$watch('contentId', function () {
@@ -53,7 +53,7 @@ backAndDirectives.run(function ($templateCache) {
 		    /**
             * @ngdoc function
             * @name setData
-            * @methodOf backand.js.directive.ngbackContent
+            * @methodOf backand.js.directive.bkndContent
             * @param {string} id reference to content
             * @description set the data
             */

@@ -1,13 +1,13 @@
 'use strict';
 /**
 * @ngdoc overview
-* @name directive.ngbackButtonGroup
+* @name directive.bkndButtonGroup
 */
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('ngbackButtonGroup', function () {//$templateCache) {
+backAndDirectives.directive('bkndButtonGroup', function () {//$templateCache) {
     /**
     * @ngdoc directive
-    * @name directive.ngbackButtonGroup
+    * @name directive.bkndButtonGroup
     * @description grid buttons button array
     * @param {object} toolbar, button groups array that each contains a button array, each button can be a different element 
     * @returns {object} directive
@@ -15,7 +15,7 @@ backAndDirectives.directive('ngbackButtonGroup', function () {//$templateCache) 
     return {
         restrict: 'A',
         replace: true,
-        require: ["ngbackNgGrid", "ngbackToolbar"],
+        require: ["bkndNgGrid", "bkndToolbar"],
         scope: {
             buttons: "=",
             selectedRows: "=",

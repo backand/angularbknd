@@ -5,17 +5,17 @@
             <div class="page-header">
                 <h1>
                     filter<small>
-                        (<a target="_blank" href="https://github.com/backand/ngback/tree/master/app/backand/js/directives/grids">ngback.directives.ngback-ng-grid</a>)
+                        (<a target="_blank" href="https://github.com/backand/angularbknd/tree/master/app/backand/js/directives/grids">backand.directives.bknd-ng-grid</a>)
                     </small>
                 </h1>
             </div>
             <div class="row">
                 <div class="col-md-12 show-grid">
-                    <div>
+                    <!--<div>
                         Static Filter Example
-                        <ngback-ng-grid view-name="'Customers'" input-style="{'height': 300}" ></ngback-ng-grid>
+                        <bknd-ng-grid view-name="'Customers'" input-style="{'height': 300}" ></bknd-ng-grid>
                     </div>
-                    <hr />
+                    <hr />-->
                     <div data-ng-controller="filterController">
                         Dynamic Filter Example
                         <div class='form-horizontal well'>
@@ -26,7 +26,7 @@
                                 <div ng-repeat="filterOption in filterOptions">
                                     <label ng-if="filterOption.fieldName=='First_Name'" class="col-md-6">
                                         First Name:
-                                        <input ng-model=" filteroption.value" />
+                                        <input ng-model="filterOption.value" />
                                     </label>
                                     <label ng-if="filterOption.fieldName=='Job_Title'" class="col-md-6">
                                         Job Title:
@@ -39,7 +39,7 @@
                                 </div>
                             </fieldset>
                         </div>
-                        <ngback-ng-grid view-name="viewName" input-style="inputStyle" filter-options="filterOptions"></ngback-ng-grid>
+                        <bknd-ng-grid view-name="viewName" input-style="inputStyle" filter-options="filterOptions"></bknd-ng-grid>
                     </div>
                 </div>
             </div>
@@ -48,27 +48,27 @@
                 <div class="tabbable form-group">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
-                            <a href="#ngbackGridMarkup" showtab role="tab" data-toggle="tab">Markup</a>
+                            <a href="#bkndGridMarkup" showtab role="tab" data-toggle="tab">Markup</a>
                         </li>
                         <li>
-                            <a href="#ngbackGridJavaScript" showtab role="tab" data-toggle="tab">JavaScript</a>
+                            <a href="#bkndGridJavaScript" showtab role="tab" data-toggle="tab">JavaScript</a>
                         </li>
                     </ul>
                     <div class="tab-content panel-body">
-                        <div class="tab-pane fade in active" id="ngbackGridMarkup">
+                        <div class="tab-pane fade in active" id="bkndGridMarkup">
                             <div>
                                 <pre id="htmlOutput" class="html prettyprint"><span class="tag">&lt;div&gt;</span><span class="pln">
 Static Grid Example
-</span><span class="tag">&lt;ngback-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"{'height': 300}"</span><span class="tag">&gt;&lt;/ngback-ng-grid&gt;</span><span class="pln">
+</span><span class="tag">&lt;bknd-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"'Employees'"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"{'height': 300}"</span><span class="tag">&gt;&lt;/bknd-ng-grid&gt;</span><span class="pln">
 </span><span class="tag">&lt;/div&gt;</span><span class="pln">
 </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-ng-controller</span><span class="pun">=</span><span class="atv">"dynamicGridController"</span><span class="tag">&gt;</span><span class="pln">
 Dynamic Grid Example
-</span><span class="tag">&lt;ngback-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"inputStyle"</span><span class="tag">&gt;&lt;/ngback-ng-grid&gt;</span><span class="pln">
+</span><span class="tag">&lt;bknd-ng-grid</span><span class="pln"> </span><span class="atn">view-name</span><span class="pun">=</span><span class="atv">"viewName"</span><span class="pln"> </span><span class="atn">input-style</span><span class="pun">=</span><span class="atv">"inputStyle"</span><span class="tag">&gt;&lt;/bknd-ng-grid&gt;</span><span class="pln">
 </span><span class="tag">&lt;/div&gt;</span></pre>
                             </div>
 
                         </div>
-                        <div class="tab-pane fade in" id="ngbackGridJavaScript">
+                        <div class="tab-pane fade in" id="bkndGridJavaScript">
                             <div class="dJsColor" style="font-size: 12px; overflow: auto;"><span class="fj_string">'use&nbsp;strict'</span>;<br><span class="fj_keyword">var</span>&nbsp;backAndControllers&nbsp;&nbsp;=&nbsp;angular.module(<span class="fj_string">'backAnd.controllers'</span>);<br>backAndControllers.controller(<span class="fj_string">'dynamicGridController'</span>,&nbsp;[<span class="fj_string">'$scope'</span>,&nbsp;<span class="fj_keyword">function</span>&nbsp;($scope)&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;$scope.viewName&nbsp;&nbsp;=&nbsp;<span class="fj_string">'Customers'</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;$scope.inputStyle&nbsp;&nbsp;=&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fj_string">'height'</span>:&nbsp;300<br>&nbsp;&nbsp;&nbsp;&nbsp;};<br>}<br>])</div>
                             <div>
                             </div>
