@@ -1,4 +1,4 @@
-# angularbknd — The seed for Backand AngularJS apps
+﻿# angularbknd — The seed for Backand AngularJS apps
 
 This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Backand back office.
 You can use it to quickly Bootstrap your Backand Angular webapp projects and dev environment for these
@@ -53,7 +53,12 @@ Behind the scenes this will also call `bower install`.  You should find that you
 
 *-In Windows you need to manually create `C:\Users\<user name>\AppData\Roaming\npm` folder.*
 
-*-Note that the `bower_components` folder would normally be installed in the root folder but angularbknd changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.*
+*-Note that the `bower_components` folder would normally be installed in the root folder but ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.
+
+*-On a Mac or Linux, you may have to use `sudu` as:
+```
+sudo npm install
+```
 
 ### Run the Application
 
@@ -65,37 +70,23 @@ npm start
 
 Now browse to the app at `http://localhost:8000/app/index.html`.
 
-### Run the Themes
+*-Note: on Mac or Linux, you may have to use `sudo`, as:
 
-The default theme is LTE at `http://localhost:8000/app/index-lte.html`.
-You can select other theme like Devopps by browse to `http://localhost:8000/app/index-devoops.html`.
+```
+sudo npm start
+```
 
-## Directory Layout
+### Select the Bootstrap Template
 
-    app/                --> all of the files to be used in production
-    bacjand/            --> the angularbknd src
-      css/              --> css files
-        app.css         --> default stylesheet
-      img/              --> image files
-      index.html        --> app layout file (the main html template file of the app)
-      index-async.html  --> just like index.html, but loads js files asynchronously
-      js/               --> javascript files
-        app.js          --> application
-        controllers.js  --> application controllers
-        directives.js   --> application directives
-        filters.js      --> custom angular filters
-        services.js     --> custom angular services
-      partials/             --> angular view partials (partial html templates)
-        partial1.html
-        partial2.html
-      themes/             --> themes based on Bootstrap
+The default template is LTE at `http://localhost:8000/app/index-lte.html`.
+You can select other template like Devopps by browse to `http://localhost:8000/app/index-devoops.html`.
 
 
 ## Updating Angular
 
 To update Backand code we recommend that you merge in changes to your own fork of the project.
 ```
-git pull ** not complete
+git pull https://github.com/backand/ngback
 ```
 You can update the tool dependencies by running:
 
@@ -118,7 +109,7 @@ This will find the latest versions that match the version ranges specified in th
 
 Backand Service provide hosting not just the backend but also to the AngularJS code.
 - Login to Backand Console to update the Github reposiroty
-- The produciton URL will be at: yourapp.backand.net
+- The production URL will be at: yourapp.backand.net
 
 
 
