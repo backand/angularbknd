@@ -1,36 +1,28 @@
-# ngback — The seed for Backand AngularJS apps
+# angularbknd — The seed for Backand AngularJS apps
 
-This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Backand back office.
+This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Backand Services.
 You can use it to quickly Bootstrap your Backand Angular webapp projects and dev environment for these
 projects.
-
-It is based on the [angular-seed](https://github.com/angular/angular-seed) application.
-
-## Themes
-
-We have a collection of [Bootstrap](https://www.backand.com/bootstrap-theme) themes that offer a pre-built set of views.
-
-All the themes are fully responsive Admin template. Based on the **Bootstrap 3** framework. Highly customizable and easy to use, it fits many screen resolutions from small mobile devices to large desktops.
 
 
 ## Getting Started
 
-To get started you can simply clone the ngback repository and install the dependencies:
+To get started you can simply clone the angularbknd repository and install the dependencies:
 
 ### Prerequisites
 
-You need git to clone the ngback repository. You can get Git from
+You need git to clone the angularbknd repository. You can get Git from
 [http://git-scm.com/](http://git-scm.com/).
 
-We also use a number of node.js tools to initialize and test ngback. You must have node.js and its package manager (npm) installed.  You can donwload node.js from [http://nodejs.org/download//](http://nodejs.org/download/).
+We also use a number of node.js tools to initialize and test angularbknd. You must have node.js and its package manager (npm) installed.  You can donwload node.js from [http://nodejs.org/download//](http://nodejs.org/download/).
 
-### Clone ngback
+### Clone angularbknd
 
-Clone the ngback repository using [git][git]:
+Clone the angularbknd repository using [git][git]:
 
 ```
-git clone https://github.com/backand/ngback
-cd ngback
+git clone https://github.com/backand/angularbknd
+cd angularbknd
 ```
 
 ### Install Dependencies
@@ -53,7 +45,7 @@ Behind the scenes this will also call `bower install`.  You should find that you
 
 *-In Windows you need to manually create `C:\Users\<user name>\AppData\Roaming\npm` folder.*
 
-*-Note that the `bower_components` folder would normally be installed in the root folder but ngback changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.
+*-Note that the `bower_components` folder would normally be installed in the root folder but angularbknd changes this location through the `.bowerrc` file.  Putting it in the app folder makes it easier to serve the files by a webserver.
 
 *-On a Mac or Linux, you may have to use `sudu` as:
 ```
@@ -76,8 +68,11 @@ Now browse to the app at `http://localhost:8000/app/index.html`.
 ```
 sudo npm start
 ```
+## Themes
 
-### Select the Bootstrap Template
+We have a collection of [Bootstrap](https://www.backand.com/bootstrap-theme) themes that offer a pre-built set of views.
+
+All the themes are fully responsive Admin template. Based on the **Bootstrap 3** framework. Highly customizable and easy to use, it fits many screen resolutions from small mobile devices to large desktops.
 
 The default template is LTE at `http://localhost:8000/app/index-lte.html`.
 You can select other template like Devopps by browse to `http://localhost:8000/app/index-devoops.html`.
@@ -87,7 +82,7 @@ You can select other template like Devopps by browse to `http://localhost:8000/a
 
 To update Backand code we recommend that you merge in changes to your own fork of the project.
 ```
-git pull https://github.com/backand/ngback
+git pull https://github.com/backand/angularbknd
 ```
 You can update the tool dependencies by running:
 
