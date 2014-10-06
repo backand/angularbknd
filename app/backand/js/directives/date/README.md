@@ -4,4 +4,4 @@ To use the directive, install [Angular Bootstrap](http://angular-ui.github.io/bo
 
 Include in the `head` of your file, a minimal css file, 
 
-    date.css
+    .datepicker-wrapper in app.css
