@@ -15,6 +15,7 @@ var adminLteInit = (function() {
        "use strict";
 
     //Enable sidebar toggle
+    $("[data-toggle='offcanvas']").unbind('click');
     $("[data-toggle='offcanvas']").click(function(e) {
         e.preventDefault();
 

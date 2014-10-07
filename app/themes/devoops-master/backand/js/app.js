@@ -30,6 +30,14 @@ angular.module('backAnd', [
         $routeProvider.when('/', {
             templateUrl: 'themes/devoops-master/backand/partials/default/default.html'
         });
+
+        /********************************************************/
+        /* uncomment this route for the custom new page example */
+        /********************************************************/
+        //$routeProvider.when('/page1', {
+        //    templateUrl: 'themes/devoops-master/my-pages/page1/page1.html'
+        //});
+
         $routeProvider.otherwise({
             redirectTo: ''
         });

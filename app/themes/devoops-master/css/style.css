@@ -2341,6 +2341,7 @@ td.beauty-hover {
   }
 }
 @media (max-width: 400px) {
+   
   .panel-menu a.account {
     padding: 5px 0px 5px 0;
   }
