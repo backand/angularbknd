@@ -3,10 +3,7 @@
 * @name directive.htmlcontent
 */
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/content/partials/htmlcontent.html", '<div><div></div></div>')
-})
-.directive('htmlcontent', function (configService, $templateCache) {
+backAndDirectives.directive('htmlcontent', function (configService) {
     /**
    * @ngdoc directive
    * @name directive.htmlcontent

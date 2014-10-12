@@ -12,6 +12,7 @@ angular.module('backAnd', [
 ]).config(['$routeProvider',
     function($routeProvider) {
         backand.options.url = backandGlobal.url;
+
         $routeProvider.when('/login', {
             templateUrl: 'themes/DashGum/backand/partials/login/login.html'
         });
@@ -30,6 +31,7 @@ angular.module('backAnd', [
         $routeProvider.when('/', {
             templateUrl: 'themes/DashGum/backand/partials/default/default.html'
         });
+
         /********************************************************/
         /* uncomment this route for the custom new page example */
         /********************************************************/

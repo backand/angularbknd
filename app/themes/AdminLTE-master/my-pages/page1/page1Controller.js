@@ -3,10 +3,8 @@
 /***********************************************/
 /** To customize the grid use this controller **/
 /***********************************************/
-var backAndControllers = angular.module('backAnd.controllers');
-backAndControllers.controller('page1Controller', ['$scope',
-    function ($scope) {
-
+angular.module('backAnd.controllers')
+    .controller('page1Controller', ['$scope',function ($scope) {
 
         /*  an example of how to add your own column  */
         $scope.$on('gridConfigCompleted', function (event, config) {

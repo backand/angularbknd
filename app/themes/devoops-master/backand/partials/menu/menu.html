@@ -12,7 +12,7 @@
 </div>
 
 <ul class="nav main-menu">
-    <li class="dropdown" ng-repeat="p in pages" data-ng-if="p.partType == 'table' || p.partType == 'dashboard'|| p.partType == 'content'" ng-click="setCurrentMenuSelection({partId:p.partId, name:p.name ,index :$index ,partType:p.partType}, null)">
+    <li class="dropdown" ng-repeat="p in currentWorkspace.pages" data-ng-if="p.partType == 'table' || p.partType == 'dashboard'|| p.partType == 'content'" ng-click="setCurrentMenuSelection({partId:p.partId, name:p.name ,index :$index ,partType:p.partType}, null)">
         <a href="" class="dropdown-toggle">
             <i class="fa custom-icon" icon-type="p.partType"></i>
             <span>{{p.name}}</span>

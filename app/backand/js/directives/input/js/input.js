@@ -4,17 +4,7 @@
 * @name directive.input
 */
 var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/input/partials/input.html", '<ng-form name="innerForm">\n' +
-	    '<input ng-if="field.format" type="{{field.type}}" name="field" class="form-control"  ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"  ng-class="inputClass" ng-pattern="field.format" />\n' +
-	    '<input ng-if="!field.format" type="{{field.type}}" name="field" class="form-control"  ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled"  ng-class="inputClass" />\n' +
-	    '<div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>\n' +
-	    '<div ng-if="field.format" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.pattern">{{errors.format}}</div>\n' +
-        '<div ng-if="field.type == \'email\'" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.email">{{errors.email}}</div>\n' +
-    '</ng-form>')
-})
-
-.directive('input', function ($log, $templateCache) {
+backAndDirectives.directive('input', function ($log) {
     /**
     * @ngdoc directive
     * @name directive.input

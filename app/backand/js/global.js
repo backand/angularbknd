@@ -1,6 +1,6 @@
 var backandGlobal = {
-    url: "https://api.backand.com:8080",// 
-    defaultApp: null,
+    url: "http://localhost:4109/backapi",//"https://api.backand.com:8080",// 
+    defaultApp: null
 };
 
 //load the backand banner
