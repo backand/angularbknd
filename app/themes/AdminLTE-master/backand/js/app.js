@@ -1,5 +1,7 @@
 'use strict';
 
+angular.module('backAnd.directives', []);
+angular.module('backAnd.filters', []);
 angular.module('backAnd.controllers', []);
 angular.module('backAnd.services', []);
 
