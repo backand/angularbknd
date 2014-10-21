@@ -1,0 +1,62 @@
+/*! ngback 2014-10-20 */
+.ngFooterPanel{
+
+    color: #666;
+}
+
+
+#backand-banner .navbar-header{
+    height:30px;
+}
+
+#backand-banner .dropdown-menu{
+    z-index: 9999;
+}
+
+.yellow {
+	color: yellow;
+}
+
+.orange {
+	color: orange;
+}
+
+.green {
+	color: #87c540;
+}
+
+@media screen and (max-width: 767px) {
+    
+    #backand-banner{
+        display:none;
+    }
+
+}
+
+/*editor directive*/
+.ta-editor {
+    min-height: 300px;
+    /*height: auto;*/
+    overflow: auto;
+    font-family: inherit;
+    font-size: 100%;
+    margin:20px 0;
+}
+
+/*date directive*/
+.datepicker-wrapper {
+	height: auto; 
+	width: auto;
+}
+.datepicker-wrapper {
+	height: auto; 
+	width: auto;
+}
+.ta-editor {
+    min-height: 300px;
+    /*height: auto;*/
+    overflow: auto;
+    font-family: inherit;
+    font-size: 100%;
+    margin:20px 0;
+}
