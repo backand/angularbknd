@@ -6,7 +6,7 @@
 */
 angular.module('backAnd.controllers')
 .controller('menuController', ['$scope', 'Global', '$compile', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
-    function($scope, Global, $compile, menuService, $timeout, $rootScope, $http, $location, $route) {
+    function ($scope, Global, $compile, menuService, $timeout, $rootScope, $http, $location, $route) {
 
         $scope.global = Global;
 
@@ -17,6 +17,14 @@ angular.module('backAnd.controllers')
         * @description initiate the configuration of the menu
         */
         $scope.init = function () {
+            // check external login result
+            if ($location.absUrl().indexOf("token=") > -1) {
+                var token = $location.absUrl().split("token=")[1];
+                // todo token check validity?
+                $location.path('/login');
+                localStorage.setItem('External', token);
+
+            }
 
             if (!localStorage.getItem('Authorization')) {
                 $location.path('/login');
@@ -49,7 +57,7 @@ angular.module('backAnd.controllers')
                         $scope.pages = data.workspace.pages;
                         $scope.currentWorkspace = data.workspace;
                         $scope.additionalWorkspaces = data.additionalWorkspaces;
-                        
+
                         $location.search(
                             'workspaceId', data.workspace.id
                         );
@@ -121,7 +129,7 @@ angular.module('backAnd.controllers')
             $scope.$broadcast('menuItemSelected', current);
 
         }
-        
+
         /**
         * @ngdoc function
         * @name setBreadcrumbs
@@ -131,13 +139,13 @@ angular.module('backAnd.controllers')
         * @param {object} parent, optional, parent selected menu 
         */
         $scope.setBreadcrumbs = function (current, parent) {
-            $scope.breadcrumbs = [{ name: $scope.currentWorkspace.name }];
+            $scope.breadcrumbs = [{ name: $scope.currentWorkspace.name}];
             if (parent)
                 $scope.breadcrumbs.push(parent);
             $scope.breadcrumbs.push(current);
         }
 
-        
+
 
     }
 ])

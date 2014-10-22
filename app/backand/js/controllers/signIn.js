@@ -104,11 +104,12 @@ angular.module('backAnd.controllers')
 
             $scope.externalAuthorizationList;
 
-			$scope.checkExternalLogin = function () {
-			    if (!($cookies.Bearer === undefined)) { // bearer is not null 
-			        successLogin("Bearer", $cookies.Bearer);
+		    $scope.checkExternalLogin = function () {
+			    if (localStorage.getItem('External')) { // bearer is not null 
+			        successLogin("Bearer", localStorage.getItem('External'));
 			    }
 			}
+
 
 			$scope.externalSignin = function (url) {
 			    if ($scope.appName == '' || typeof $scope.appName == 'undefined') {
@@ -116,7 +117,9 @@ angular.module('backAnd.controllers')
 			        return;
 			    }
 
-			    window.location = backandGlobal.url + '/api/' + url + "&appname=" + $scope.appName + "&returnAddress=" + $location.absUrl();
+			    var addr = backandGlobal.url + '/api/' + url + "&appname=" + $scope.appName + "&returnAddress=" + encodeURIComponent($location.absUrl());
+			    window.location = addr;
+
 			};
 
             $scope.loadExternalAuthentification = function () {
