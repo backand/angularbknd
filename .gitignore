@@ -7,3 +7,4 @@ app/backand/js/global.js
 tmp
 .DS_Store
 .idea
+dist
