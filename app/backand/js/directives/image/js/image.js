@@ -3,8 +3,9 @@
 * @ngdoc overview
 * @name directive.image
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('image', function ($log) {
+angular.module('backAnd.directives')
+    .directive('image', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.image
@@ -33,4 +34,4 @@ backAndDirectives.directive('image', function ($log) {
 	        };
     	}
     }
-});
+}]);

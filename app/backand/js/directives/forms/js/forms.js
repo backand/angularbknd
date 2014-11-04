@@ -4,8 +4,9 @@
 * @ngdoc overview
 * @name directive.bkndForm
 */
-var backAndDirectives = angular.module('backAnd.directives'); var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('bkndForm', function ($sce, $q, $location, $route, configService, dataItemService, dataListService, $log, Global) {
+angular.module('backAnd.directives')
+    .directive('bkndForm', ['$sce','$q','$location','$route','configService','dataItemService','dataListService','$log','Global',
+        function ($sce, $q, $location, $route, configService, dataItemService, dataListService, $log, Global) {
     /**
     * @ngdoc directive
     * @name directive.bkndForm
@@ -18,7 +19,7 @@ backAndDirectives.directive('bkndForm', function ($sce, $q, $location, $route, c
     * @returns {object} directive
     */
     return {
-        restrict: 'A',
+        restrict: 'AE',
         transclude: true,
         templateUrl: 'backand/js/directives/forms/partials/form.html',
         scope: {
@@ -34,7 +35,7 @@ backAndDirectives.directive('bkndForm', function ($sce, $q, $location, $route, c
          * @param {object} el, required, the element of the directive
          * @param {object} attrs, required, the attributes of the directive
          */
-        link: function (scope, el, attrs) {
+        link: function (scope) {
             /**
             * @name configInfo
             * @propertyOf directive.bkndForm {object} 
@@ -69,7 +70,7 @@ backAndDirectives.directive('bkndForm', function ($sce, $q, $location, $route, c
                 */
                 scope.continue = false;
 
-                $log.debug("params", params);
+                //$log.debug("params", params);
                 var dataForm = $q.defer();
                 var dataItem = $q.defer();
                 var selectOptions = $q.defer();
@@ -585,7 +586,7 @@ backAndDirectives.directive('bkndForm', function ($sce, $q, $location, $route, c
             }
         }
     };
-})
+}])
 /**
 * @ngdoc filter
 * @name filter.parseLabel
@@ -601,7 +602,7 @@ backAndDirectives.directive('bkndForm', function ($sce, $q, $location, $route, c
 .directive('showtab',
     function () {
         return {
-            link: function (scope, element, attrs) {
+            link: function (scope, element) {
                 element.click(function (e) {
                     e.preventDefault();
                     $(element).tab('show');

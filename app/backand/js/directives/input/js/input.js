@@ -3,8 +3,9 @@
 * @ngdoc overview
 * @name directive.input
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('input', function ($log) {
+angular.module('backAnd.directives')
+    .directive('input', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.input
@@ -27,10 +28,10 @@ backAndDirectives.directive('input', function ($log) {
             errors: "="
     	},
     	templateUrl: 'backand/js/directives/input/partials/input.html',
-        link: function(scope, el, attrs) {
+        link: function(scope) {
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
-	        };
+	        }
     	}
     }
-});
+}]);

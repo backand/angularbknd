@@ -3,8 +3,9 @@
 * @ngdoc overview
 * @name directive.link
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('link', function ($log) {
+angular.module('backAnd.directives')
+    .directive('link', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.link
@@ -27,7 +28,7 @@ backAndDirectives.directive('link', function ($log) {
       errors: '='
     },
     templateUrl: 'backand/js/directives/link/partials/link.html',
-    link: function (scope, el, attrs) {
+    link: function (scope) {
 
         /**
         * @name isTargetBlank
@@ -44,6 +45,6 @@ backAndDirectives.directive('link', function ($log) {
         scope.value.target = scope.isTargetBlank ? "_blank" : null;
       };
 
-    },
+    }
   };
-});
+}]);

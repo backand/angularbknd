@@ -3,7 +3,8 @@
 * @name directive.linkcontent
 */
 angular.module('backAnd.directives')
-.directive('linkcontent', function (configService) {
+    .directive('linkcontent', ['configService',
+        function (configService) {
     /**
       * @ngdoc directive
       * @name directive.linkcontent
@@ -17,7 +18,7 @@ angular.module('backAnd.directives')
 		scope: {
 		    contentId: '='
 		},
-		link: function (scope, element, attr) {
+		link: function (scope) {
 		    configService.read({
 		        dataType: "content",
 		        id: scope.contentId
@@ -26,4 +27,4 @@ angular.module('backAnd.directives')
 		    });
 		}
 	}
-});
+}]);

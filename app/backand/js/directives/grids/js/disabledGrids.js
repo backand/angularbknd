@@ -3,8 +3,9 @@
 * @ngdoc overview
 * @name directive.bkndDisabledGrid
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('bkndDisabledGrid', function () {
+angular.module('backAnd.directives')
+    .directive('bkndDisabledGrid', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.bkndDisabledGrid
@@ -13,11 +14,11 @@ backAndDirectives.directive('bkndDisabledGrid', function () {
     * @returns {object} directive
     */
     return {
-        restrict: 'A',
+        restrict: 'AE',
         replace: true,
         scope: {
             message: "="
         },
         templateUrl: 'backand/js/directives/grids/partials/disabledGrid.html'
     }
-});
+}]);

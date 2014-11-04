@@ -4,8 +4,9 @@
 * @name directive.editor
 */
 
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('editor', function ($log, $timeout) {
+angular.module('backAnd.directives')
+    .directive('editor', ['$log',
+        function ($log) {
     /**
     * @ngdoc directive
     * @name directive.editor
@@ -26,8 +27,8 @@ backAndDirectives.directive('editor', function ($log, $timeout) {
             errors: "="
     	},
     	templateUrl: 'backand/js/directives/editor/partials/editor.html',
-    	link: function(scope, el, attrs) {
-            $log.debug("editor", scope);
+    	link: function(scope) {
+            //$log.debug("editor", scope);
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
     		}
@@ -79,4 +80,4 @@ backAndDirectives.directive('editor', function ($log, $timeout) {
             };
     	}
     }
-});
+}]);

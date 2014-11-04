@@ -2,8 +2,9 @@
 * @ngdoc overview
 * @name directive.bkndContent
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('bkndContent', function (Global, $http, configService, $sce, $location) {
+angular.module('backAnd.directives')
+    .directive('bkndContent', ['Global','$http','configService','$sce','$location',
+        function (Global, $http, configService, $sce, $location) {
     /**
    * @ngdoc directive
    * @name directive.bkndContent
@@ -62,4 +63,4 @@ backAndDirectives.directive('bkndContent', function (Global, $http, configServic
 		    
 		}
 	}
-});
+}]);

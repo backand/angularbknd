@@ -3,8 +3,9 @@
 * @ngdoc overview
 * @name directive.date
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('date', function ($log) {
+angular.module('backAnd.directives')
+    .directive('date', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.date
@@ -27,7 +28,7 @@ backAndDirectives.directive('date', function ($log) {
             errors: "="
     	},
     	templateUrl: 'backand/js/directives/date/partials/date.html',
-        link: function(scope, el, attrs) {
+        link: function(scope) {
             var date = null;
             if (scope.value.val) {
                 if (scope.value.val.toLowerCase() == "now")
@@ -112,4 +113,4 @@ backAndDirectives.directive('date', function ($log) {
 
         }
     }         
-});
+}]);

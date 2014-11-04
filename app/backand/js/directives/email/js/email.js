@@ -3,8 +3,9 @@
 * @ngdoc overview
 * @name directive.email
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('email', function ($log) {
+angular.module('backAnd.directives')
+    .directive('email', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.email
@@ -27,10 +28,10 @@ backAndDirectives.directive('email', function ($log) {
             errors: "="
     	},
     	templateUrl: 'backand/js/directives/email/partials/email.html',
-    	link: function(scope, el, attrs) {
+    	link: function(scope) {
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
 	        };
     	}
     }
-});
+}]);

@@ -3,8 +3,9 @@
 * @ngdoc overview
 * @name directive.bkndToolbar
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('bkndToolbar', function () {//$templateCache) {
+angular.module('backAnd.directives')
+    .directive('bkndToolbar', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.bkndToolbar
@@ -13,7 +14,7 @@ backAndDirectives.directive('bkndToolbar', function () {//$templateCache) {
     * @returns {object} directive
     */
     return {
-        restrict: 'A',
+        restrict: 'AE',
         replace: true,
         require: "^bkndNgGrid",
         scope: {
@@ -30,4 +31,4 @@ backAndDirectives.directive('bkndToolbar', function () {//$templateCache) {
 
         }
     }
-});
+}]);
