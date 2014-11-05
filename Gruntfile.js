@@ -1,6 +1,3 @@
-var Dgeni = require('dgeni');
-
-
 module.exports = function(grunt) {
 
 
@@ -14,8 +11,8 @@ module.exports = function(grunt) {
         banner: '/*\n <%= pkg.name %> v<%= pkg.version %> \n (c) Copyright 2014 Backand All rights reserved. https://backand.com \n License: MIT\n */\n'
       },
       js: {  
-        src: 'dist/<%= pkg.name %>.debug.js',
-        dest: 'dist/<%= pkg.name %>.min.js'
+        src: 'app/backand/dist/<%= pkg.name %>.debug.js',
+        dest: 'app/backand/dist/<%= pkg.name %>.min.js'
       }
 
     },
@@ -26,7 +23,7 @@ module.exports = function(grunt) {
       },
       css: {
         expand: true,
-        src: 'dist/<%= pkg.name %>.debug.css',
+        src: 'app/backand/dist/<%= pkg.name %>.debug.css',
        // dest: target,
         ext: '.min.css'
       }
@@ -38,7 +35,7 @@ module.exports = function(grunt) {
       },
       css: {
         src: [ 'app/backand/cssapp.css', 'app/backand/js/directives/*/css/*.css'],
-        dest:  'dist/<%= pkg.name %>.debug.css'
+        dest:  'app/backand/dist/<%= pkg.name %>.debug.css'
       },
       js: {  
         options: {
@@ -78,7 +75,7 @@ module.exports = function(grunt) {
 		 'app/backand/js/directives/image/js/image.js' ,
 		 'app/backand/js/directives/email/js/email.js' ,
 		],
-        dest:  'dist/<%= pkg.name %>.debug.js'
+        dest:  'app/backand/dist/<%= pkg.name %>.debug.js'
       }
     },
 
@@ -88,7 +85,7 @@ module.exports = function(grunt) {
       },
       "backAnd.directives": {
         src:   'app/backand/js/directives/*/partials/**.html',
-        dest: 'dist/app.templates.js',
+        dest: 'app/backand/dist/app.templates.js',
         htmlmin: {
           collapseBooleanAttributes:      true,
           collapseWhitespace:             true,
@@ -106,7 +103,7 @@ module.exports = function(grunt) {
       options: {
         force: true
       },
-      build: [  "dist/app.templates.js"]
+      build: [  "app/backand/dist/app.templates.js"]
     }
   });
 
@@ -122,18 +119,3 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['ngtemplates', 'concat', 'uglify', 'cssmin', 'clean']);
 
 };
-
-
-// var Dgeni = require('dgeni');
-
-// module.exports = function(grunt) {
-
-//   grunt.registerTask('dgeni', 'Generate docs via dgeni.', function() {
-//     var done = this.async();
-//     var dgeni = new Dgeni([require('./docs/dgeni-example')]);
-//     dgeni.generate().then(done);
-//   });
-
-//   grunt.registerTask('default', ['dgeni']);
-
-// };
