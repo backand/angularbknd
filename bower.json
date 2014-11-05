@@ -14,7 +14,7 @@
     "app/backand/src/css",
     "app/backand/src/js"
   ],
-  "homepage": "https://github.com/backand/angularbknd",
+  "homepage": "https://github.com/backand/blob/demo/angularbknd",
   "license": "MIT",
   "private": true,
   "dependencies": {
@@ -61,6 +61,6 @@
   "resolutions": {
     "jquery": "^1.10",
     "bootstrap": "^3.2",
-    "angular": "1.3.0"
+    "angular": "1.2.x"
   }
 }
