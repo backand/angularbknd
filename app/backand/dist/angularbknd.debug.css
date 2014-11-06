@@ -52,6 +52,61 @@
 	height: auto; 
 	width: auto;
 }
+
+.grid-filter .panel{
+    background-color:rgb(244,244,244);
+}
+
+.grid-filter .dropdown-toggle{
+    background-color:rgb(204,204,204);
+}
+
+.grid-filter .btn-group{
+    margin-left: -3px;
+    margin-top: -3px;
+
+}
+
+.grid-filter .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-color: rgb(204,204,204);
+    width:40px;
+}
+
+.grid-filter .btn.btn-primary:hover {
+    border-color: rgb(204,204,204);
+}
+
+.grid-filter .dropdown-menu li{
+    cursor:pointer;
+}
+
+.grid-filter .dropdown-menu li:hover{
+    background-color:lightblue;
+}
+
+.grid-filter .dropdown-menu li.selected{
+    background-color:lightblue;
+}
+
+.grid-filter .btn.btn-primary.selected{
+    background-color:#367fa9;
+}
+
+.grid-filter ul.dropdown-menu{
+    min-width: 200px;
+}
+
+.grid-filter ul.dropdown-menu li{
+    margin-bottom: 4px;
+}
+
+.grid-filter .filter-operator-symbol{
+    width: 16px;
+    float: left;
+    margin-left: 4px;
+}
 .datepicker-wrapper {
 	height: auto; 
 	width: auto;

@@ -340,7 +340,7 @@ backand.security.authentication.login('nir', 123456789, 'manager', function (dat
         success: function (data, textStatus, xhr) { if (successCallback) successCallback(data, textStatus, xhr); }
     });
 };var backandGlobal = {
-    url: "https://api.backand.com:8080",
+    url: "https://api.backand.com:8080",// 
     defaultApp: null
 };
 
@@ -409,10 +409,11 @@ angular.module('backAnd').factory('dataItemService', ['$resource',
          */
 
 
-        return $resource(backandGlobal.url + '/1/:dataType/data/:viewName/:id', {
+        return $resource(backandGlobal.url + '/1/:dataType/data/:viewName/:id?:qs', {
                 dataType: 'view',
                 viewName: '',
-                id: 'id'
+                id: 'id',
+                qs: ''
             },
             {
                 read: {
@@ -604,6 +605,39 @@ angular.module('backAnd.services')
             return _this._data;
         }
     ]);
+;'use strict';
+/**
+ * @ngdoc overview
+ * @name service.gridService
+ */
+angular.module('backAnd')
+    .factory('filterService', ['$http', '$log', 'Global',
+    function ($http, $log, Global) {
+        return {
+
+            getFilterOptions: function (viewName, callback) {
+               if (!Global.filterOptions) {
+                   Global.filterOptions = [];
+                }
+               if (!Global.filterOptions[viewName]) {
+                    $http.get(backandGlobal.url + '/1/view/data/' + viewName, {
+                        params: { pageSize: 1, pageNumber: 1, withFilterOptions: true }
+                    })
+                    .then(function (response) {
+                        Global.filterOptions[viewName] = response.data.filterOptions;
+                        callback(Global.filterOptions[viewName]);
+                    });
+                }
+                else {
+                    callback(Global.filterOptions[viewName]);
+                }
+
+            }
+        }
+    }]);
+
+
+
 ;'use strict';
 
 /**
@@ -940,8 +974,8 @@ backAndFilters.filter('removeSpaces', function () {
  * @name directive.bkndNgGrid
  */
 angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker'])
-    .directive('bkndNgGrid', ['Global','dataListService','dataItemService','configService','$filter','$location','$route','$sce','$compile','$window',
-        function (Global, dataListService, dataItemService, configService, $filter, $location, $route, $sce, $compile, $window) {
+    .directive('bkndNgGrid', ['Global', 'dataListService', 'dataItemService', 'configService', '$filter', 'filterService', '$location', '$route', '$sce', '$compile', '$window',
+        function (Global, dataListService, dataItemService, configService, $filter, filterService, $location, $route, $sce, $compile, $window) {
         /**
          * @ngdoc directive
          * @name directive.bkndNgGrid
@@ -997,7 +1031,7 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                     }
                 });
 
-                /**
+                 /**
                  * @ngdoc function
                  * @name buildNewGrid
                  * @methodOf backand.js.directive.bkndNgGrid
@@ -1083,6 +1117,27 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                     scope.showAdd = scope.configTable && scope.configTable.dataEditing ? scope.configTable.dataEditing.allowAdd : true;
                     scope.showEdit = scope.configTable && scope.configTable.dataEditing ? scope.configTable.dataEditing.allowEdit : true;
                     scope.showDelete = scope.configTable && scope.configTable.dataEditing ? scope.configTable.dataEditing.allowDelete : true;
+                    scope.showFilter = scope.configTable && !scope.configTable.hideFilter;
+                    scope.collapseFilter = scope.configTable && !scope.configTable.collapseFilter;
+                    
+                    scope.filterToolbarOptionsOutput = null;
+
+                    if (scope.showFilter) {
+                        filterService.getFilterOptions(scope.viewNameId, function (data) {
+                            scope.$emit('filterToolbarOptionsInput', data, scope);
+                            scope.filterToolbarOptions = data;
+                        });
+                    }
+
+                    scope.filterScope = null;
+
+                    scope.$on('onfilter', function (event, filterToolbarOptions, filterScope) {
+                        scope.filterScope = filterScope;
+                        scope.filterToolbarOptionsOutput = filterToolbarOptions;
+                        scope.$emit('filterToolbarOptionsOutput', scope.filterToolbarOptionsOutput, scope, filterScope);
+
+                        scope.getData();
+                    });
 
                     // Grid footer custom style
                     if (!scope.isMobile)
@@ -1152,9 +1207,11 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                                 { text: scope.deleteButton, iconClass: "glyphicon-trash", callback: scope.deleteSelected }
                             ] }
                         ];
-                    scope.$broadcast('setToolbarCompleted', scope.btnGroups);
+                    scope.$emit('setToolbarCompleted', scope.btnGroups, scope);
 
                 };
+
+                scope.showClearFilter = false;
 
                 /**
                  * @ngdoc function
@@ -1175,7 +1232,7 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                     else if ($location.search().filterOptions)
                         filterString = $location.search().filterOptions;
                     else
-                        filterString = null;
+                        filterString = scope.filterToolbarOptionsOutput;
 
                     if (!(typeof filterString == 'string' || filterString instanceof String)) {// is not string
                         filterString = JSON.stringify(filterString);
@@ -1196,6 +1253,9 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                         scope.dataFill = largeLoad.data;
                         scope.totalServerItems = largeLoad.totalRows;
                         scope.isLoad = false;
+
+                        scope.showClearFilter = searchText || (scope.filterToolbarOptionsOutput && scope.filterToolbarOptionsOutput.length);
+                            
                     });
                 };
 
@@ -1210,6 +1270,9 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                 };
                 scope.deactivateFilter = function () {
                     scope.searchText = '';
+                    if (scope.filterScope)
+                        scope.filterScope.reset();
+
                     scope.getData('');
                 };
 
@@ -1446,7 +1509,13 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                     if ($('.ngFooterPanel').height() != undefined) {
                         bottom = $('.ngFooterPanel').height();
                     }
-                    var height = ($(window).height() - top - bottom) + 'px';
+
+                    var height = ($(window).height() - top - bottom);
+                    if (scope.collapseFilter) {
+                        height += -1;
+                    }
+                    height += 'px';
+
                     return {
                         'height': height
                     };
@@ -1484,7 +1553,159 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                 scope.$apply(attrs.ngBlur);
             });
         };
-    });;/**
+    });;'use strict';
+/**
+* @ngdoc overview
+* @name directive.bkndToolbar
+*/
+var backAndDirectives = angular.module('backAnd.directives');
+backAndDirectives.directive('bkndFilter', function ($sanitize, $sce) {//$templateCache) {
+    /**
+    * @ngdoc directive
+    * @name directive.bkndFilter
+    * @description grid filter
+    * @filterOptions {object} filter, filter options array 
+    * @returns {object} directive
+    */
+    return {
+        restrict: 'A',
+        replace: true,
+        scope: {
+            filterOptions: "=",
+            showOperators: "="
+        },
+        templateUrl: 'backand/js/directives/grids/partials/filter.html',
+        link: function (scope, el, attrs, bkndNgGridCtrl) {
+
+            scope.$watch('filterOptions', function (newVal, oldVal) {
+                if (scope.filterOptions) {
+                    scope.filterOptionsOutput = angular.copy(scope.filterOptions);
+                }
+            }, true);
+
+            
+            scope.filterChanged = function () {
+                scope.$emit('onfilter', scope.getFilter(), scope);
+
+            }
+
+            scope.getFilter = function () {
+                var filter = [];
+                angular.forEach(scope.filterOptionsOutput, function (option) {
+                    if (option.value) {
+                        filter.push({ "fieldName": option.fieldName, "operator": option.operator, "value": option.value });
+                    }
+                });
+                return filter;
+            }
+
+            scope.reset = function () {
+                scope.filterOptionsOutput = angular.copy(scope.filterOptions);
+                scope.$emit('onfilter', scope.getFilter(), scope);
+            }
+
+            function htmlDecode(input) {
+                var e = document.createElement('div');
+                e.innerHTML = input;
+                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+            }
+
+            scope.getOperatorSymbol = function (operator) {
+                var symbol = null;
+                switch (operator) {
+                    case 'equals':
+                        symbol = '=';
+                        break;
+                    case 'notEquals':
+                        symbol = $sanitize('&ne;');
+                        break;
+                    case 'greaterThan':
+                        symbol = $sce.trustAsHtml(htmlDecode('&gt;'));
+                        break;
+                    case 'greaterThanOrEqualsTo':
+                        symbol = $sanitize('&ge;');
+                        break;
+                    case 'lessThan':
+                        symbol = $sce.trustAsHtml(htmlDecode('&lt;'));
+                        break;
+                    case 'lessThanOrEqualsTo':
+                        symbol = $sanitize('&le;');
+                        break;
+                    case 'empty':
+                        symbol = $sanitize('&empty;');
+                        break;
+                    case 'notEmpty':
+                        symbol = $sanitize('&exist;');
+                        break;
+                    case 'startsWith':
+                        symbol = $sanitize('&rarr;');
+                        break;
+                    case 'endsWith':
+                        symbol = $sanitize('&larr;');
+                        break;
+                    case 'contains':
+                        symbol = $sanitize('&harr;');
+                        break;
+                    case 'notContains':
+                        symbol = 'glyphicon glyphicon-align-justify';
+                        break;
+
+                    default:
+                        break;
+                }
+
+                return symbol;
+            }
+         
+            scope.getOperatorIcon = function (operator) {
+                var icon = null;
+                switch (operator) {
+                    case 'equals':
+                        icon = 'glyphicon glyphicon-pause';
+                        break;
+                    case 'notEquals':
+                        icon = 'glyphicon glyphicon-stop';
+                        break;
+                    case 'greaterThan':
+                        icon = 'glyphicon glyphicon-chevron-right';
+                        break;
+                    case 'greaterThanOrEqualsTo':
+                        icon = 'glyphicon glyphicon-step-forward';
+                        break;
+                    case 'lessThan':
+                        icon = 'glyphicon glyphicon-chevron-left';
+                        break;
+                    case 'lessThanOrEqualsTo':
+                        icon = 'glyphicon glyphicon-step-backward';
+                        break;
+                    case 'empty':
+                        icon = 'glyphicon glyphicon-remove-circle';
+                        break;
+                    case 'notEmpty':
+                        icon = 'glyphicon glyphicon-ok-circle';
+                        break;
+                    case 'startsWith':
+                        icon = 'glyphicon glyphicon-align-left';
+                        break;
+                    case 'endsWith':
+                        icon = 'glyphicon glyphicon-align-right';
+                        break;
+                    case 'contains':
+                        icon = 'glyphicon glyphicon-align-center';
+                        break;
+                    case 'notContains':
+                        icon = 'glyphicon glyphicon-align-justify';
+                        break;
+
+                    default:
+                        break;
+                }
+
+                return icon;
+            }
+        }
+    }
+});;/**
 * @ngdoc overview
 * @name directive.bkndDashboard
 */
@@ -1503,8 +1724,9 @@ angular.module('backAnd.directives')
 		templateUrl:  'backand/js/directives/dashboard/partials/dashboard.html',
 		replace: false,
 		scope: {
-			dashboardId : '='
-		},
+			dashboardId : '=',
+		    filterOptions : '='
+	    },
 	    /**
         * @name link
         * @methodOf directive.bkndDashboard
@@ -1522,22 +1744,50 @@ angular.module('backAnd.directives')
             * @description Get the new Backand's dashboard id and re-load the data
             */
 		    scope.$watch('dashboardId', function () {
+		        scope.build(scope.getDashboardId());
+		    });
+
+		    scope.$watch('filterOptions', function (newVal, oldVal) {
+		        if (scope.filterOptions) {
+		            scope.build(scope.getDashboardId());
+		        }
+		    }, true);
+
+		    scope.getChartFilterOptions = function () {
+		        if (scope.filterOptions) {
+		            return scope.toQueryString(scope.filterOptions);
+		        }
+		        return window.location.href.slice(window.location.href.indexOf('?') + 1);
+
+		    }
+
+		    scope.getDashboardId = function () {
 		        if (scope.dashboardId) {
-		            scope.setData(scope.dashboardId);
+		            return scope.dashboardId;
 		        }
 		        else if ($location.search().dashboardId) {
-		            scope.setData($location.search().dashboardId);
+		            return $location.search().dashboardId;
 		        }
-		    });
+
+		        return null;
+		    }
+
+		    scope.toQueryString = function (arr) {
+		        var parts = [];
+		        angular.forEach(arr, function (item) {
+		            parts.push(item.name + "=" + item.value);
+		        });
+		        return parts.join("&");
+		    }
 
 		    /**
             * @ngdoc function
-            * @name setData
+            * @name build
             * @methodOf backand.js.directive.bkndDashboard
             * @param {string} id reference to dashboard
             * @description set the data
             */
-		    scope.setData = function (id) {
+		    scope.build = function (id) {
 		        configService.read({
                     dataType: "dashboard",
 		            id: id
@@ -1636,7 +1886,8 @@ angular.module('backAnd.directives')
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -1697,7 +1948,8 @@ angular.module('backAnd.directives')
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -1753,13 +2005,15 @@ angular.module('backAnd.directives')
     },
     replace: true,
     scope: {
-      chartId : '='
+        chartId : '=',
+        filterOptions : '='
     },
     link: function($scope, element) {
         dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                     dataType: "chart",
-                    id: $scope.chartId
+                    id: $scope.chartId,
+                    qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -1812,7 +2066,8 @@ angular.module('backAnd.directives')
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -1875,7 +2130,8 @@ angular.module('backAnd.directives')
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -1937,7 +2193,8 @@ angular.module('backAnd.directives')
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -1999,7 +2256,8 @@ angular.module('backAnd.directives')
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -2035,7 +2293,8 @@ angular.module('backAnd.directives')
 
 }
 }
-}]);'use strict';
+}])
+;'use strict';
 
 /**
 * @ngdoc overview
@@ -3444,416 +3703,888 @@ angular.module('backAnd.directives')
   'use strict';
 
   $templateCache.put('backand/js/directives/autocomplete/partials/autocomplete.html',
-    "<ng-form name=\"innerForm\">\n" +
-    "    <input typeahead-on-select=\"setPcode($item)\" typeahead-editable=\"false\" type=\"text\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"field.selected\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" min-length=\"2\" typeahead=\"option.label for option in options($viewValue)\">\n" +
-    "    <div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">Missing</div>\n" +
-    "    <div class=\"alert alert-danger\" role=\"alert\" ng-show=\"!innerForm.field.$valid\">Not matched</div>\n" +
+    "<ng-form name=\"innerForm\">\r" +
+    "\n" +
+    "    <input typeahead-on-select=\"setPcode($item)\" typeahead-editable=\"false\" type=\"text\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"field.selected\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" min-length=\"2\" typeahead=\"option.label for option in options($viewValue)\">\r" +
+    "\n" +
+    "    <div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">Missing</div>\r" +
+    "\n" +
+    "    <div class=\"alert alert-danger\" role=\"alert\" ng-show=\"!innerForm.field.$valid\">Not matched</div>\r" +
+    "\n" +
     "</ng-form>"
   );
 
 
   $templateCache.put('backand/js/directives/charts/partials/chart.html',
-    "<div class=\"box\">\n" +
-    "   <div class=\"box-header\">\n" +
-    "        <h3 class=\"box-title\">{{title}}</h3>\n" +
-    "        <h4 class=\"sub-title\">{{subTitle}}</h4>\n" +
-    "    </div>\n" +
-    "    <div class=\"box-body chart-responsive\">\n" +
-    "        <div class=\"chart\"></div>\n" +
-    "        <div class=\"xtitle\">{{xTitle}}</div>\n" +
-    "        <div class=\"ytitle\">{{yTitle}}</div>\n" +
-    "    </div>\n" +
+    "<div class=\"box\">\r" +
+    "\n" +
+    "   <div class=\"box-header\">\r" +
+    "\n" +
+    "        <h3 class=\"box-title\">{{title}}</h3>\r" +
+    "\n" +
+    "        <h4 class=\"sub-title\">{{subTitle}}</h4>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"box-body chart-responsive\">\r" +
+    "\n" +
+    "        <div class=\"chart\"></div>\r" +
+    "\n" +
+    "        <div class=\"xtitle\">{{xTitle}}</div>\r" +
+    "\n" +
+    "        <div class=\"ytitle\">{{yTitle}}</div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
     "</div>"
   );
 
 
   $templateCache.put('backand/js/directives/charts/partials/donutchart.html',
-    "<div class=\"box\">\n" +
-    "    <div class=\"box-header\">\n" +
-    "        <h3 class=\"box-title\">{{title}}</h3>\n" +
-    "        <h4 class=\"sub-title\">{{subTitle}}</h4>\n" +
-    "    </div>\n" +
-    "    <div class=\"box-body chart-responsive\">\n" +
-    "        <div class=\"chart\"></div>\n" +
-    "    </div>\n" +
+    "<div class=\"box\">\r" +
+    "\n" +
+    "    <div class=\"box-header\">\r" +
+    "\n" +
+    "        <h3 class=\"box-title\">{{title}}</h3>\r" +
+    "\n" +
+    "        <h4 class=\"sub-title\">{{subTitle}}</h4>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"box-body chart-responsive\">\r" +
+    "\n" +
+    "        <div class=\"chart\"></div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
     "</div>"
   );
 
 
   $templateCache.put('backand/js/directives/checkbox/partials/checkbox.html',
-    "<input type=\"checkbox\" name=\"field\" class=\"\" ng-model=\"value.val\" ng-checked=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\"  ng-class=\"inputClass\" />\n" +
-    "\t\n"
+    "<input type=\"checkbox\" name=\"field\" class=\"\" ng-model=\"value.val\" ng-checked=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\"  ng-class=\"inputClass\" />\r" +
+    "\n" +
+    "\t\r" +
+    "\n"
   );
 
 
   $templateCache.put('backand/js/directives/content/partials/content.html',
-    " <div>\n" +
-    "    <div ng-switch on=\"content.pageType\">\n" +
-    "        <htmlcontent content-id=\"content.__metadata.id\" ng-switch-when=\"Content\">\t</htmlcontent>\n" +
-    "        <iframecontent content-id=\"content.__metadata.id\" ng-switch-when=\"IFrame\">\t</iframecontent>\n" +
-    "        <linkcontent content-id=\"content.__metadata.id\" ng-switch-when=\"External\">\t</linkcontent>\n" +
-    "    </div>\n" +
-    "</div>\n"
+    " <div>\r" +
+    "\n" +
+    "    <div ng-switch on=\"content.pageType\">\r" +
+    "\n" +
+    "        <htmlcontent content-id=\"content.__metadata.id\" ng-switch-when=\"Content\">\t</htmlcontent>\r" +
+    "\n" +
+    "        <iframecontent content-id=\"content.__metadata.id\" ng-switch-when=\"IFrame\">\t</iframecontent>\r" +
+    "\n" +
+    "        <linkcontent content-id=\"content.__metadata.id\" ng-switch-when=\"External\">\t</linkcontent>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 
   $templateCache.put('backand/js/directives/content/partials/htmlcontent.html',
-    " <div>\n" +
-    "     <div ></div>\n" +
-    " </div>\n"
+    " <div>\r" +
+    "\n" +
+    "     <div ></div>\r" +
+    "\n" +
+    " </div>\r" +
+    "\n"
   );
 
 
   $templateCache.put('backand/js/directives/content/partials/iframecontent.html',
-    " <div>\n" +
-    "     <iframe ></iframe>\n" +
-    " </div>\n"
+    " <div>\r" +
+    "\n" +
+    "     <iframe ></iframe>\r" +
+    "\n" +
+    " </div>\r" +
+    "\n"
   );
 
 
   $templateCache.put('backand/js/directives/dashboard/partials/dashboard.html',
-    " <div>\n" +
-    " \t<div class=\"container-fluid\">\t\n" +
-    " \t\t<div data-ng-repeat=\"chart in chartData\">\n" +
-    " \t\t\t<div class=\"col-xs-{{numCol}}\" ng-switch on=\"chart.type\">\n" +
-    "                 <barchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Bar\">\t</barchart>\t\n" +
-    "                 <linechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Line\">  </linechart>\n" +
-    "                 <donutchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Pie\"> </donutchart>\n" +
-    "                 <columnchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Column\"> </columnchart>\n" +
-    "                 <splinechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"spline\">  </splinechart>\n" +
-    "                 <areachart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Area\">  </areachart>\n" +
-    "                 <bubblechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"bubble\">  </bubblechart>\n" +
-    " \t\t\t</div>\n" +
-    " \t\t</div>\n" +
-    " \t</div>\n" +
-    " </div>\n"
+    " <div>\r" +
+    "\n" +
+    " \t<div class=\"container-fluid\">\t\r" +
+    "\n" +
+    " \t\t<div data-ng-repeat=\"chart in chartData\">\r" +
+    "\n" +
+    " \t\t\t<div class=\"col-xs-{{numCol}}\" ng-switch on=\"chart.type\">\r" +
+    "\n" +
+    "                 <barchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Bar\" filter-options=\"getChartFilterOptions()\">\t</barchart>\t\r" +
+    "\n" +
+    "                 <linechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Line\" filter-options=\"getChartFilterOptions()\">  </linechart>\r" +
+    "\n" +
+    "                 <donutchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Pie\" filter-options=\"getChartFilterOptions()\"> </donutchart>\r" +
+    "\n" +
+    "                 <columnchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Column\" filter-options=\"getChartFilterOptions()\"> </columnchart>\r" +
+    "\n" +
+    "                 <splinechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"spline\" filter-options=\"getChartFilterOptions()\">  </splinechart>\r" +
+    "\n" +
+    "                 <areachart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Area\" filter-options=\"getChartFilterOptions()\">  </areachart>\r" +
+    "\n" +
+    "                 <bubblechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"bubble\" filter-options=\"getChartFilterOptions()\">  </bubblechart>\r" +
+    "\n" +
+    " \t\t\t</div>\r" +
+    "\n" +
+    " \t\t</div>\r" +
+    "\n" +
+    " \t</div>\r" +
+    "\n" +
+    " </div>\r" +
+    "\n"
   );
 
 
   $templateCache.put('backand/js/directives/date/partials/date.html',
-    "<div> \n" +
-    "  <ng-form name=\"innerForm\">\n" +
-    "    <div class=\"input-group\" ng-class=\"inputClass\">\n" +
-    "      <input type=\"text\" name=\"field\" class=\"form-control\" datepicker-popup=\"{{field.format}}\" ng-model=\"mydate\" is-open=\"opened\" date-disabled=\"field.disabled\" ng-disabled=\"field.disabled\" ng-required=\"field.required\" close-text=\"Close\" />\n" +
-    "      <span class=\"input-group-btn\">\n" +
-    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\" ng-disabled=\"field.disabled\"><i class=\"glyphicon glyphicon-calendar\"></i></button>\n" +
-    "      </span>\n" +
-    "    </div>\n" +
-    "    <div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\n" +
-    "    <div ng-if=\"field.minimumValue\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"tooEarly()\">{{errors.minimumValue}}</div>\n" +
-    "    <div ng-if=\"field.maximumValue\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"tooLate()\">{{errors.maximumValue}}</div>\n" +
-    "  </ng-form>\n" +
+    "<div> \r" +
+    "\n" +
+    "  <ng-form name=\"innerForm\">\r" +
+    "\n" +
+    "    <div class=\"input-group\" ng-class=\"inputClass\">\r" +
+    "\n" +
+    "      <input type=\"text\" name=\"field\" class=\"form-control\" datepicker-popup=\"{{field.format}}\" ng-model=\"mydate\" is-open=\"opened\" date-disabled=\"field.disabled\" ng-disabled=\"field.disabled\" ng-required=\"field.required\" close-text=\"Close\" />\r" +
+    "\n" +
+    "      <span class=\"input-group-btn\">\r" +
+    "\n" +
+    "        <button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\" ng-disabled=\"field.disabled\"><i class=\"glyphicon glyphicon-calendar\"></i></button>\r" +
+    "\n" +
+    "      </span>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\r" +
+    "\n" +
+    "    <div ng-if=\"field.minimumValue\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"tooEarly()\">{{errors.minimumValue}}</div>\r" +
+    "\n" +
+    "    <div ng-if=\"field.maximumValue\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"tooLate()\">{{errors.maximumValue}}</div>\r" +
+    "\n" +
+    "  </ng-form>\r" +
+    "\n" +
     "</div>"
   );
 
 
   $templateCache.put('backand/js/directives/editor/partials/editor.html',
-    "<ng-form name=\"innerForm\">\n" +
-    "\t<text-angular ng-if=\"!field.disabled\" ng-required=\"field.required\" ng-model=\"innerVal.val\" ng-show=\"field.show\" ng-class=\"inputClass\" ng-focus=\"inFocus()\" ng-blur=\"outFocus()\"></text-angular>\n" +
-    "\t<div ta-bind ng-if=\"field.disabled\"  ng-model=\"innerVal.val\" ng-show=\"field.show\" ng-class=\"inputClass\"></div>\n" +
-    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"isEmpty\">{{errors.required}}</div>\n" +
+    "<ng-form name=\"innerForm\">\r" +
+    "\n" +
+    "\t<text-angular ng-if=\"!field.disabled\" ng-required=\"field.required\" ng-model=\"innerVal.val\" ng-show=\"field.show\" ng-class=\"inputClass\" ng-focus=\"inFocus()\" ng-blur=\"outFocus()\"></text-angular>\r" +
+    "\n" +
+    "\t<div ta-bind ng-if=\"field.disabled\"  ng-model=\"innerVal.val\" ng-show=\"field.show\" ng-class=\"inputClass\"></div>\r" +
+    "\n" +
+    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"isEmpty\">{{errors.required}}</div>\r" +
+    "\n" +
     "</ng-form>"
   );
 
 
   $templateCache.put('backand/js/directives/email/partials/email.html',
-    "<ng-form name=\"innerForm\">\n" +
-    "    <div class=\"input-group\">\n" +
-    "        <input type=\"{{field.type}}\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" />\n" +
-    "        <div class=\"input-group-addon\">\n" +
-    "            <i class=\"fa fa-envelope\"></i>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\n" +
-    "\t<div ng-if=\"field.type == 'email'\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.email\">{{errors.email}}</div>\n" +
+    "<ng-form name=\"innerForm\">\r" +
+    "\n" +
+    "    <div class=\"input-group\">\r" +
+    "\n" +
+    "        <input type=\"{{field.type}}\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" />\r" +
+    "\n" +
+    "        <div class=\"input-group-addon\">\r" +
+    "\n" +
+    "            <i class=\"fa fa-envelope\"></i>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\r" +
+    "\n" +
+    "\t<div ng-if=\"field.type == 'email'\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.email\">{{errors.email}}</div>\r" +
+    "\n" +
     "</ng-form>"
   );
 
 
   $templateCache.put('backand/js/directives/forms/partials/field.html',
+    "\r" +
     "\n" +
-    "<label ng-hide=\"field.type == 'checkbox'\">{{field.displayName | parseLabel:field}}</label>\n" +
-    "<div ng-switch on=\"field.type\">\n" +
-    "    <bknd-ng-grid ng-switch-when=\"subgrid\" view-name=\"field.relatedViewName\" filter-options=\"field.filterSubgrid()\" input-style=\"{'height': 500}\"></bknd-ng-grid>\n" +
-    "    <div ng-switch-when=\"disabledSubgrid\" bknd-disabled-grid message=\"'Save first to add rows'\"></div>\n" +
-    "    <div ng-switch-when=\"singleSelect\" single-select field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"autocomplete\" autocomplete field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"editor\" editor field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"textarea\" textarea field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <label ng-switch-when=\"checkbox\" class=\"checkbox-inline\">\n" +
-    "        <div checkbox field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        {{field.displayName | parseLabel:field}}\n" +
-    "    </label>\n" +
-    "    <div ng-switch-when=\"date\" date field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"image\" image field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"number\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"currency\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"percentage\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"numberWithSeparator\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"numeric\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"email\" email field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    <div ng-switch-when=\"hyperlink\">\n" +
-    "        <div link field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    </div>\n" +
-    "    <div ng-switch-default input field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "</div>\n"
+    "<label ng-hide=\"field.type == 'checkbox'\">{{field.displayName | parseLabel:field}}</label>\r" +
+    "\n" +
+    "<div ng-switch on=\"field.type\">\r" +
+    "\n" +
+    "    <bknd-ng-grid ng-switch-when=\"subgrid\" view-name=\"field.relatedViewName\" filter-options=\"field.filterSubgrid()\" input-style=\"{'height': 500}\"></bknd-ng-grid>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"disabledSubgrid\" bknd-disabled-grid message=\"'Save first to add rows'\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"singleSelect\" single-select field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"autocomplete\" autocomplete field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"editor\" editor field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"textarea\" textarea field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <label ng-switch-when=\"checkbox\" class=\"checkbox-inline\">\r" +
+    "\n" +
+    "        <div checkbox field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        {{field.displayName | parseLabel:field}}\r" +
+    "\n" +
+    "    </label>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"date\" date field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"image\" image field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"number\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"currency\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"percentage\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"numberWithSeparator\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"numeric\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"email\" email field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    <div ng-switch-when=\"hyperlink\">\r" +
+    "\n" +
+    "        <div link field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div ng-switch-default input field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 
   $templateCache.put('backand/js/directives/forms/partials/form.html',
-    "<div class=\"show\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n" +
-    "    <form role=\"form\" name=\"form\" novalidate ng-submit=\"submit()\">\n" +
-    "        <div class=\"panel panel-default\">\n" +
-    "            <div class=\"panel-heading\"><h6 class=\"panel-title\">{{configInfo.title}}</h6></div>\n" +
-    "            <div class=\"panel-body\">\n" +
-    "                <div class=\"row\">\n" +
-    "                    <div ng-include=\"'backand/js/directives/forms/partials/field.html'\" class=\"col-md-{{12 / configInfo.columnsInDialog * field.columns | parseInt}} form-group\" ng-repeat=\"field in configInfo.fields\" ng-if=\"field.show\">\n" +
-    "                        <!-- field -->\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "                <div class=\"tabbable form-group\">\n" +
-    "                    <ul class=\"nav nav-tabs\" role=\"tablist\">\n" +
-    "                        <li ng-repeat=\"category in configInfo.categories\" ng-class=\"{active : $first}\" ng-click=\"tabClick(category)\">\n" +
-    "                            <a href=\"#{{category.catName | removeSpaces}}\" showtab role=\"tab\" data-toggle=\"tab\">{{category.catName}}</a>\n" +
-    "                        </li>\n" +
-    "                    </ul>\n" +
-    "                    <div class=\"tab-content panel-body\">\n" +
-    "                        <div class=\"tab-pane fade in\" ng-class=\"{active : $first}\" ng-repeat=\"category in configInfo.categories\" id=\"{{category.catName | removeSpaces}}\" ng-form=\"subForm\">\n" +
-    "                            <div ng-include=\"'backand/js/directives/forms/partials/field.html'\" class=\"col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group\" ng-repeat=\"field in category.fields\" ng-if=\"field.show\">\n" +
-    "                                <!-- field -->\n" +
-    "                            </div>\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "            <div class=\"form-actions panel-footer\">\n" +
-    "                <div class=\"=col-md-10 text-left\">\n" +
-    "                    <alert ng-repeat=\"alert in alerts\" type=\"{{alert.type}}\" close=\"closeAlert($index)\"><span ng-bind-html=\"alert.msg\"></span></alert>\n" +
-    "                </div>\n" +
-    "                <div class=\"=col-md-2 text-right\">\n" +
-    "                    <button type=\"submit\" class=\"btn btn-primary\" ng-show=\"configInfo.editable && isNew\" ng-hide=\"waiting || !isNew\" ng-disabled=\"form.$invalid\" ng-click=\"continue = true\">{{submitAndContinueCaption}}</button>\n" +
-    "                    <button type=\"submit\" class=\"btn btn-primary\" ng-show=\"configInfo.editable\" ng-hide=\"waiting\" ng-disabled=\"form.$invalid\" ng-click=\"continue = false\">{{submitCaption}}</button>\n" +
-    "                    <img class=\"img-responsive\" ng-show=\"waiting\" src=\"backand/img/ajax-loader.gif\" ng-style=\"{'display':'inline-block'}\" />\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </form>\n" +
-    "</div>\n" +
-    "<script type=\"text/ng-template\" id=\"backand/js/directives/forms/partials/field.html\">\n" +
-    "    <label ng-hide=\"field.type == 'checkbox'\">{{field.displayName | parseLabel:field}}</label>\n" +
-    "    <div ng-switch on=\"field.type\">\n" +
-    "        <bknd-ng-grid ng-switch-when=\"subgrid\" view-name=\"field.relatedViewName\" filter-options=\"field.filterSubgrid()\" input-style=\"{'height': 500}\"></bknd-ng-grid>\n" +
-    "        <div ng-switch-when=\"disabledSubgrid\" bknd-disabled-grid message=\"\\'Save first to add rows\\'\"></div>\n" +
-    "        <div ng-switch-when=\"singleSelect\" single-select field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"autocomplete\" autocomplete field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"editor\" editor field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"textarea\" textarea field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <label ng-switch-when=\"checkbox\" class=\"checkbox-inline\">\n" +
-    "            <div checkbox field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "            {{field.displayName | parseLabel:field}}\n" +
-    "        </label>\n" +
-    "        <div ng-switch-when=\"date\" date field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"image\" image field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"number\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"currency\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"percentage\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"numberWithSeparator\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"numeric\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"email\" email field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        <div ng-switch-when=\"hyperlink\">\n" +
-    "            <div link field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "        </div>\n" +
-    "        <div ng-switch-default input field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\n" +
-    "    </div>\n" +
+    "<div class=\"show\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\r" +
+    "\n" +
+    "    <form role=\"form\" name=\"form\" novalidate ng-submit=\"submit()\">\r" +
+    "\n" +
+    "        <div class=\"panel panel-default\">\r" +
+    "\n" +
+    "            <div class=\"panel-heading\"><h6 class=\"panel-title\">{{configInfo.title}}</h6></div>\r" +
+    "\n" +
+    "            <div class=\"panel-body\">\r" +
+    "\n" +
+    "                <div class=\"row\">\r" +
+    "\n" +
+    "                    <div ng-include=\"'backand/js/directives/forms/partials/field.html'\" class=\"col-md-{{12 / configInfo.columnsInDialog * field.columns | parseInt}} form-group\" ng-repeat=\"field in configInfo.fields\" ng-if=\"field.show\">\r" +
+    "\n" +
+    "                        <!-- field -->\r" +
+    "\n" +
+    "                    </div>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "                <div class=\"tabbable form-group\">\r" +
+    "\n" +
+    "                    <ul class=\"nav nav-tabs\" role=\"tablist\">\r" +
+    "\n" +
+    "                        <li ng-repeat=\"category in configInfo.categories\" ng-class=\"{active : $first}\" ng-click=\"tabClick(category)\">\r" +
+    "\n" +
+    "                            <a href=\"#{{category.catName | removeSpaces}}\" showtab role=\"tab\" data-toggle=\"tab\">{{category.catName}}</a>\r" +
+    "\n" +
+    "                        </li>\r" +
+    "\n" +
+    "                    </ul>\r" +
+    "\n" +
+    "                    <div class=\"tab-content panel-body\">\r" +
+    "\n" +
+    "                        <div class=\"tab-pane fade in\" ng-class=\"{active : $first}\" ng-repeat=\"category in configInfo.categories\" id=\"{{category.catName | removeSpaces}}\" ng-form=\"subForm\">\r" +
+    "\n" +
+    "                            <div ng-include=\"'backand/js/directives/forms/partials/field.html'\" class=\"col-md-{{12 / category.columnsInDialog * field.columns | parseInt}} form-group\" ng-repeat=\"field in category.fields\" ng-if=\"field.show\">\r" +
+    "\n" +
+    "                                <!-- field -->\r" +
+    "\n" +
+    "                            </div>\r" +
+    "\n" +
+    "                        </div>\r" +
+    "\n" +
+    "                    </div>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <div class=\"form-actions panel-footer\">\r" +
+    "\n" +
+    "                <div class=\"=col-md-10 text-left\">\r" +
+    "\n" +
+    "                    <alert ng-repeat=\"alert in alerts\" type=\"{{alert.type}}\" close=\"closeAlert($index)\"><span ng-bind-html=\"alert.msg\"></span></alert>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "                <div class=\"=col-md-2 text-right\">\r" +
+    "\n" +
+    "                    <button type=\"submit\" class=\"btn btn-primary\" ng-show=\"configInfo.editable && isNew\" ng-hide=\"waiting || !isNew\" ng-disabled=\"form.$invalid\" ng-click=\"continue = true\">{{submitAndContinueCaption}}</button>\r" +
+    "\n" +
+    "                    <button type=\"submit\" class=\"btn btn-primary\" ng-show=\"configInfo.editable\" ng-hide=\"waiting\" ng-disabled=\"form.$invalid\" ng-click=\"continue = false\">{{submitCaption}}</button>\r" +
+    "\n" +
+    "                    <img class=\"img-responsive\" ng-show=\"waiting\" src=\"backand/img/ajax-loader.gif\" ng-style=\"{'display':'inline-block'}\" />\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </form>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "<script type=\"text/ng-template\" id=\"backand/js/directives/forms/partials/field.html\">\r" +
+    "\n" +
+    "    <label ng-hide=\"field.type == 'checkbox'\">{{field.displayName | parseLabel:field}}</label>\r" +
+    "\n" +
+    "    <div ng-switch on=\"field.type\">\r" +
+    "\n" +
+    "        <bknd-ng-grid ng-switch-when=\"subgrid\" view-name=\"field.relatedViewName\" filter-options=\"field.filterSubgrid()\" input-style=\"{'height': 500}\"></bknd-ng-grid>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"disabledSubgrid\" bknd-disabled-grid message=\"\\'Save first to add rows\\'\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"singleSelect\" single-select field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"autocomplete\" autocomplete field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"editor\" editor field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"textarea\" textarea field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <label ng-switch-when=\"checkbox\" class=\"checkbox-inline\">\r" +
+    "\n" +
+    "            <div checkbox field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "            {{field.displayName | parseLabel:field}}\r" +
+    "\n" +
+    "        </label>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"date\" date field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"image\" image field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"number\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"currency\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"percentage\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"numberWithSeparator\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"numeric\" numeric field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"email\" email field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        <div ng-switch-when=\"hyperlink\">\r" +
+    "\n" +
+    "            <div link field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div ng-switch-default input field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
     "</script>"
   );
 
 
   $templateCache.put('backand/js/directives/grids/partials/buttonGroup.html',
-    "<div ng-repeat=\"button in buttons\">\n" +
-    "    <button type=\"button\" ng-click=\"button.callback()\" ng-class=\"button.class\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon\" ng-class=\"button.iconClass\"><span class=\"ng-back-grid-toolbar-text\">{{button.text}}</span></span></button>\n" +
+    "<div ng-repeat=\"button in buttons\">\r" +
+    "\n" +
+    "    <button type=\"button\" ng-click=\"button.callback()\" ng-class=\"button.class\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon\" ng-class=\"button.iconClass\"><span class=\"ng-back-grid-toolbar-text\">{{button.text}}</span></span></button>\r" +
+    "\n" +
     "</div>"
   );
 
 
   $templateCache.put('backand/js/directives/grids/partials/disabledGrid.html',
-    "<div>\n" +
-    "    {{message}}\n" +
+    "<div>\r" +
+    "\n" +
+    "    {{message}}\r" +
+    "\n" +
     "</div>"
   );
 
 
+  $templateCache.put('backand/js/directives/grids/partials/filter.html',
+    "<form name=\"filterForm\" novalidate>\r" +
+    "\n" +
+    "    <div class=\"panel panel-default\">\r" +
+    "\n" +
+    "        <div class=\"panel-body\">\r" +
+    "\n" +
+    "            <div class=\"row\">\r" +
+    "\n" +
+    "                <div ng-repeat=\"item in filterOptionsOutput\">\r" +
+    "\n" +
+    "                    <div ng-switch on=\"item.fieldType\" class=\"col-md-2 form-group\">\r" +
+    "\n" +
+    "                        <label>\r" +
+    "\n" +
+    "                            {{item.label}}\r" +
+    "\n" +
+    "                        </label>\r" +
+    "\n" +
+    "                        <div>\r" +
+    "\n" +
+    "                            <div style=\"display: inline-block; width: -moz-calc(100% - 50px); width: -webkit-calc(100% - 50px); width: calc(100% - 50px);\">\r" +
+    "\n" +
+    "                                <input ng-switch-when=\"text\" type=\"text\" name=\"item.fieldName\" value=\"item.value\" ng-model=\"item.value\" ng-change=\"filterChanged()\" class=\"form-control filter-item\" />\r" +
+    "\n" +
+    "                                <input ng-switch-when=\"date\" type=\"date\" name=\"item.fieldName\" value=\"item.value\" ng-model=\"item.value\" ng-change=\"filterChanged()\" class=\"form-control filter-item\" />\r" +
+    "\n" +
+    "                                <input ng-switch-when=\"numeric\" type=\"number\" name=\"item.fieldName\" value=\"item.value\" ng-model=\"item.value\" ng-change=\"filterChanged()\" class=\"form-control filter-item\" />\r" +
+    "\n" +
+    "                                <input ng-switch-when=\"boolean\" type=\"checkbox\" name=\"item.fieldName\" value=\"item.value\" ng-model=\"item.value\" ng-change=\"filterChanged()\" class=\"form-control filter-item\" />\r" +
+    "\n" +
+    "                                <select ng-switch-when=\"relation\" name=\"item.fieldName\" ng-model=\"item.value\" ng-change=\"filterChanged()\" class=\"form-control filter-item\">\r" +
+    "\n" +
+    "                                    <option ng-repeat=\"option in item.selectOptions\" value=\"{{option.value}}\">\r" +
+    "\n" +
+    "                                        {{option.name}}\r" +
+    "\n" +
+    "                                    </option>\r" +
+    "\n" +
+    "                                </select>\r" +
+    "\n" +
+    "                                <input ng-switch-default=\"text\" type=\"text\" name=\"item.fieldName\" value=\"item.value\" ng-model=\"item.value\" ng-change=\"filterChanged()\" class=\"form-control filter-item\" />\r" +
+    "\n" +
+    "                            </div>\r" +
+    "\n" +
+    "                            <div class=\"btn-group\" dropdown ng-show=\"showOperators && item.fieldType != 'relation' && item.fieldType != 'boolean'\">\r" +
+    "\n" +
+    "                                <button type=\"button\" class=\"btn btn-primary dropdown-toggle\" ng-class=\"item.value != undefined && item.value != '' && item.value != null ? 'selected' : ''\" ng-disabled=\"disabled\">\r" +
+    "\n" +
+    "                                    <span>\r" +
+    "\n" +
+    "                                        {{\r" +
+    "\n" +
+    "                                            getOperatorSymbol(item.operator)\r" +
+    "\n" +
+    "                                        }}\r" +
+    "\n" +
+    "                                    </span>\r" +
+    "\n" +
+    "                                </button>\r" +
+    "\n" +
+    "                                <ul class=\"dropdown-menu\" role=\"menu\">\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'numeric'\" ng-click=\"item.operator = 'equals'; filterChanged();\" ng-class=\"item.operator == 'equals' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('equals')}}</span><span>Equals</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'numeric'\" ng-click=\"item.operator = 'notEquals'; filterChanged();\" ng-class=\"item.operator == 'notEquals' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('notEquals')}}</span><span>Not Equals</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'numeric'\" ng-click=\"item.operator = 'greaterThan'; filterChanged();\" ng-class=\"item.operator == 'greaterThan' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('greaterThan')}}</span><span>Greater than</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'numeric'\" ng-click=\"item.operator = 'greaterThanOrEqualsTo'; filterChanged();\" ng-class=\"item.operator == 'greaterThanOrEqualsTo' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('greaterThanOrEqualsTo')}}</span><span>Greater than or Equals to</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'numeric'\" ng-click=\"item.operator = 'lessThan'; filterChanged();\" ng-class=\"item.operator == 'lessThan' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('lessThan')}}</span><span>Less than</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'numeric'\" ng-click=\"item.operator = 'lessThanOrEqualsTo'; filterChanged();\" ng-class=\"item.operator == 'lessThanOrEqualsTo' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol(item.operator)}}</span><span>Less than or Equals to</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'numeric'\" ng-click=\"item.operator = 'empty'; filterChanged();\" ng-class=\"item.operator == 'empty' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('empty')}}</span><span>Empty</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'numeric'\" ng-click=\"item.operator = 'notEmpty'; filterChanged();\" ng-class=\"item.operator == 'notEmpty' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('notEmpty')}}</span><span>Not Empty</span></li>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'date'\" ng-click=\"item.operator = 'equals'; filterChanged();\" ng-class=\"item.operator == 'equals' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('equals')}}</span><span>Equals</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'date'\" ng-click=\"item.operator = 'notEquals'; filterChanged();\" ng-class=\"item.operator == 'notEquals' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('notEquals')}}</span><span>Not Equals</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'date'\" ng-click=\"item.operator = 'greaterThan'; filterChanged();\" ng-class=\"item.operator == 'greaterThan' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('greaterThan')}}</span><span>Greater than</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'date'\" ng-click=\"item.operator = 'greaterThanOrEqualsTo'; filterChanged();\" ng-class=\"item.operator == 'greaterThanOrEqualsTo' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('greaterThanOrEqualsTo')}}</span><span>Greater than or Equals to</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'date'\" ng-click=\"item.operator = 'lessThan'; filterChanged();\" ng-class=\"item.operator == 'lessThan' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('lessThan')}}</span><span>Less than</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'date'\" ng-click=\"item.operator = 'lessThanOrEqualsTo'; filterChanged();\" ng-class=\"item.operator == 'lessThanOrEqualsTo' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol(item.operator)}}</span><span>Less than or Equals to</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'date'\" ng-click=\"item.operator = 'empty'; filterChanged();\" ng-class=\"item.operator == 'empty' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('empty')}}</span><span>Empty</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'date'\" ng-click=\"item.operator = 'notEmpty'; filterChanged();\" ng-class=\"item.operator == 'notEmpty' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('notEmpty')}}</span><span>Not Empty</span></li>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'text'\" ng-click=\"item.operator = 'equals'; filterChanged();\" ng-class=\"item.operator == 'equals' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('equals')}}</span><span>Equals</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'text'\" ng-click=\"item.operator = 'notEquals'; filterChanged();\" ng-class=\"item.operator == 'notEquals' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('notEquals')}}</span><span>Not Equals</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'text'\" ng-click=\"item.operator = 'startsWith'; filterChanged();\" ng-class=\"item.operator == 'startsWith' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('startsWith')}}</span><span>Starts With</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'text'\" ng-click=\"item.operator = 'endsWith'; filterChanged();\" ng-class=\"item.operator == 'endsWith' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('endsWith')}}</span><span>Ends With</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'text'\" ng-click=\"item.operator = 'contains'; filterChanged();\" ng-class=\"item.operator == 'contains' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('contains')}}</span><span>Contains</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'text'\" ng-click=\"item.operator = 'empty'; filterChanged();\" ng-class=\"item.operator == 'empty' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('empty')}}</span><span>Empty</span></li>\r" +
+    "\n" +
+    "                                    <li ng-show=\"item.fieldType == 'text'\" ng-click=\"item.operator = 'notEmpty'; filterChanged();\" ng-class=\"item.operator == 'notEmpty' ? 'selected' : ''\"><span class=\"filter-operator-symbol\">{{getOperatorSymbol('notEmpty')}}</span><span>Not Empty</span></li>\r" +
+    "\n" +
+    "                                   \r" +
+    "\n" +
+    "                                    \r" +
+    "\n" +
+    "                                </ul>\r" +
+    "\n" +
+    "                            </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "                            <div class=\"btn-group\" dropdown ng-show=\"showOperators && (item.fieldType == 'relation' || item.fieldType == 'boolean')\">\r" +
+    "\n" +
+    "                                <button type=\"button\" class=\"btn btn-primary dropdown-toggle\" ng-disabled=\"disabled\">\r" +
+    "\n" +
+    "                                    <span>\r" +
+    "\n" +
+    "                                        {{\r" +
+    "\n" +
+    "                                        getOperatorSymbol('equals')\r" +
+    "\n" +
+    "                                        }}\r" +
+    "\n" +
+    "                                    </span>\r" +
+    "\n" +
+    "                                </button>\r" +
+    "\n" +
+    "                            </div>\r" +
+    "\n" +
+    "                            </div>\r" +
+    "\n" +
+    "                    </div>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</form>\r" +
+    "\n"
+  );
+
+
   $templateCache.put('backand/js/directives/grids/partials/grid-mobile.html',
-    "<div class=\"ng-back-grid box\" id=\"bknd-grid_{{viewNameId}}\">\n" +
-    "    <div class=\"btn-group btn-group-sm\" ng-show=\"showToolbar\">\n" +
-    "        <button type=\"button\" ng-click=\"addRow()\" ng-show=\"showAdd\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-plus\"></span></button>\n" +
-    "        <button type=\"button\" ng-click=\"editSelected()\" ng-show=\"showEdit\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-pencil\"></span></button>\n" +
-    "        <button type=\"button\" ng-click=\"deleteSelected()\" ng-show=\"showDelete\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-trash\"></span></button>\n" +
-    "    </div>\n" +
-    "    <div class=\"btn-group btn-group-sm\">\n" +
-    "        <button type=\"button\" ng-click=\"activateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-refresh\"></span></button>\n" +
-    "        <img ng-show=\"isLoad\" src=\"backand/img/ajax-loader.gif\" style=\"height:30px;margin-top:8px;\" />\n" +
-    "    </div>\n" +
+    "<div class=\"ng-back-grid box\" id=\"bknd-grid_{{viewNameId}}\">\r" +
+    "\n" +
+    "    <div class=\"btn-group btn-group-sm\" ng-show=\"showToolbar\">\r" +
+    "\n" +
+    "        <button type=\"button\" ng-click=\"addRow()\" ng-show=\"showAdd\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-plus\"></span></button>\r" +
+    "\n" +
+    "        <button type=\"button\" ng-click=\"editSelected()\" ng-show=\"showEdit\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-pencil\"></span></button>\r" +
+    "\n" +
+    "        <button type=\"button\" ng-click=\"deleteSelected()\" ng-show=\"showDelete\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-trash\"></span></button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"btn-group btn-group-sm\">\r" +
+    "\n" +
+    "        <button type=\"button\" ng-click=\"activateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-refresh\"></span></button>\r" +
+    "\n" +
+    "        <img ng-show=\"isLoad\" src=\"backand/img/ajax-loader.gif\" style=\"height:30px;margin-top:8px;\" />\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
     "</div>"
   );
 
 
   $templateCache.put('backand/js/directives/grids/partials/grid.html',
-    "<div class=\"ng-back-grid box\" id=\"bknd-grid_{{viewNameId}}\">\n" +
-    "    <div class=\"box-body table-responsive\">\n" +
-    "        <div class=\"btn-toolbar ng-back-grid-toolbar\" role=\"toolbar\">\n" +
-    "            <div ng-repeat=\"buttonGroup in btnGroups\" class=\"btn-group\" ng-class=\"buttonGroup.class\">\n" +
-    "                <button ng-repeat=\"button in buttonGroup.buttons\" type=\"button\" ng-click=\"button.callback()\" ng-class=\"button.class\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon\" ng-class=\"button.iconClass\"><span class=\"ng-back-grid-toolbar-text\">{{button.text}}</span></span></button>\n" +
-    "            </div>\n" +
-    "            <div class=\"btn-group\">\n" +
-    "                <button type=\"button\" ng-click=\"activateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-refresh\"></span></button>\n" +
-    "                <img ng-show=\"isLoad\" src=\"backand/img/ajax-loader.gif\" />\n" +
-    "            </div>\n" +
-    "            <div class=\"btn-group pull-right ng-back-grid-toolbar-Search\" ng-show=\"showSearch && showToolbar\">\n" +
-    "                <input type=\"text\" class=\"btn btn-default navbar-btn\" ng-model=\"searchText\" placeholder=\"Search\" ng-keypress=\"filterKeyPress($event)\" />\n" +
-    "                <button type=\"button\" ng-click=\"activateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-search\"></span></button>\n" +
-    "                <button type=\"button\" ng-click=\"deactivateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-remove\"></span></button>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>\n"
+    "<div class=\"ng-back-grid box\" id=\"bknd-grid_{{viewNameId}}\">\r" +
+    "\n" +
+    "    <div class=\"box-body table-responsive\">\r" +
+    "\n" +
+    "        <div class=\"btn-toolbar ng-back-grid-toolbar\" role=\"toolbar\">\r" +
+    "\n" +
+    "            <div ng-repeat=\"buttonGroup in btnGroups\" class=\"btn-group\" ng-class=\"buttonGroup.class\">\r" +
+    "\n" +
+    "                <button ng-repeat=\"button in buttonGroup.buttons\" type=\"button\" ng-click=\"button.callback()\" ng-class=\"button.class\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon\" ng-class=\"button.iconClass\"><span class=\"grid-toolbar-text\">{{button.text}}</span></span></button>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <div class=\"btn-group\">\r" +
+    "\n" +
+    "                <button type=\"button\" ng-click=\"activateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-refresh\"></span></button>\r" +
+    "\n" +
+    "                <img ng-show=\"isLoad\" src=\"backand/img/ajax-loader.gif\" />\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <div class=\"btn-group pull-right ng-back-grid-toolbar-Search\" ng-show=\"showSearch && showToolbar\">\r" +
+    "\n" +
+    "                <input type=\"text\" class=\"btn btn-default navbar-btn\" ng-model=\"searchText\" placeholder=\"Search\" ng-keypress=\"filterKeyPress($event)\" />\r" +
+    "\n" +
+    "                <button type=\"button\" ng-click=\"activateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-search\"></span></button>\r" +
+    "\n" +
+    "                <button type=\"button\" ng-click=\"deactivateFilter()\" class=\"btn btn-default navbar-btn\" ng-style=\"showClearFilter ? {'visibility':'visible'} :{'visibility':'hidden'}\"><span class=\"glyphicon glyphicon-remove\"></span></button>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <div class=\"btn-group pull-right\">\r" +
+    "\n" +
+    "                <button type=\"button\" ng-click=\"collapseFilter=!collapseFilter\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon \" ng-class=\"collapseFilter ? 'glyphicon-chevron-up' : 'glyphicon-chevron-down'\"><span class=\"grid-toolbar-text\">{{collapseFilter ? \"More\" : \"Less\"}}</span></span></button>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div ng-show=\"showFilter && !collapseFilter\" class=\"grid-filter\">\r" +
+    "\n" +
+    "        <div bknd-filter filter-options=\"filterToolbarOptions\" show-operators=\"true\"></div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 
   $templateCache.put('backand/js/directives/grids/partials/toolbar.html',
-    "<div ng-model=\"buttonGroups\" class=\"box-body table-responsive\">\n" +
-    "    <div class=\"btn-toolbar ng-back-grid-toolbar\" role=\"toolbar\">\n" +
-    "        <div ng-repeat=\"buttonGroup in buttonGroups\" class=\"btn-group\" ng-class=\"buttonGroup.class\">\n" +
-    "            <div button-group buttons=\"buttonGroup.buttons\" selected-rows=\"selectedRows\" new-row-defaults=\"newRowDefaults\" grid-scope=\"gridScope\"></div>\n" +
-    "        </div>\n" +
-    "        <div class=\"btn-group\">\n" +
-    "            <button type=\"button\" ng-click=\"activateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-refresh\"></span></button>\n" +
-    "            <img ng-show=\"isLoad\" src=\"backand/img/ajax-loader.gif\" />\n" +
-    "        </div>\n" +
-    "        <div class=\"btn-group pull-right ng-back-grid-toolbar-Search\" ng-show=\"showSearch && showToolbar\">\n" +
-    "            <input type=\"text\" class=\"btn btn-default navbar-btn\" ng-model=\"searchText\" placeholder=\"Search\" ng-keypress=\"filterKeyPress($event)\" />\n" +
-    "            <button type=\"button\" ng-click=\"activateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-search\"></span></button>\n" +
-    "            <button type=\"button\" ng-click=\"deactivateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-remove\"></span></button>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
+    "<div ng-model=\"buttonGroups\" class=\"box-body table-responsive\">\r" +
+    "\n" +
+    "    <div class=\"btn-toolbar ng-back-grid-toolbar\" role=\"toolbar\">\r" +
+    "\n" +
+    "        <div ng-repeat=\"buttonGroup in buttonGroups\" class=\"btn-group\" ng-class=\"buttonGroup.class\">\r" +
+    "\n" +
+    "            <div button-group buttons=\"buttonGroup.buttons\" selected-rows=\"selectedRows\" new-row-defaults=\"newRowDefaults\" grid-scope=\"gridScope\"></div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"btn-group\">\r" +
+    "\n" +
+    "            <button type=\"button\" ng-click=\"activateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-refresh\"></span></button>\r" +
+    "\n" +
+    "            <img ng-show=\"isLoad\" src=\"backand/img/ajax-loader.gif\" />\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"btn-group pull-right ng-back-grid-toolbar-Search\" ng-show=\"showSearch && showToolbar\">\r" +
+    "\n" +
+    "            <input type=\"text\" class=\"btn btn-default navbar-btn\" ng-model=\"searchText\" placeholder=\"Search\" ng-keypress=\"filterKeyPress($event)\" />\r" +
+    "\n" +
+    "            <button type=\"button\" ng-click=\"activateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-search\"></span></button>\r" +
+    "\n" +
+    "            <button type=\"button\" ng-click=\"deactivateFilter()\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-remove\"></span></button>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
     "</div>'"
   );
 
 
   $templateCache.put('backand/js/directives/html/partials/html.html',
-    "<ng-form name=\"innerForm\">\n" +
-    "\t<textarea name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\"></textarea>\n" +
-    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\n" +
+    "<ng-form name=\"innerForm\">\r" +
+    "\n" +
+    "\t<textarea name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\"></textarea>\r" +
+    "\n" +
+    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\r" +
+    "\n" +
     "</ng-form>"
   );
 
 
   $templateCache.put('backand/js/directives/image/partials/image.html',
-    "<ng-form name=\"innerForm\">\n" +
-    "    <div class=\"input-group\" ng-class=\"inputClass\">\n" +
-    "        <input type=\"text\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\"></input>\n" +
-    "        <span class=\"input-group-btn\" ng-show=\"!field.largeImage\">\n" +
-    "            <img ng-src=\"{{field.urlPrefix}}/{{value.val}}\" class=\"btn btn-default\" style=\"padding: 0; margin-right: 34px; width: 34px;\" />\n" +
-    "        </span>\n" +
-    "    </div>\n" +
-    "    <img ng-src=\"{{field.urlPrefix}}/{{value.val}}\" style=\"width: 300px;\" ng-show=\"field.largeImage\" />\n" +
+    "<ng-form name=\"innerForm\">\r" +
     "\n" +
-    "    <div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\n" +
-    "    <div ng-if=\"field.format\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.pattern\">{{errors.format}}</div>\n" +
+    "    <div class=\"input-group\" ng-class=\"inputClass\">\r" +
+    "\n" +
+    "        <input type=\"text\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\"></input>\r" +
+    "\n" +
+    "        <span class=\"input-group-btn\" ng-show=\"!field.largeImage\">\r" +
+    "\n" +
+    "            <img ng-src=\"{{field.urlPrefix}}/{{value.val}}\" class=\"btn btn-default\" style=\"padding: 0; margin-right: 34px; width: 34px;\" />\r" +
+    "\n" +
+    "        </span>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <img ng-src=\"{{field.urlPrefix}}/{{value.val}}\" style=\"width: 300px;\" ng-show=\"field.largeImage\" />\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "    <div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\r" +
+    "\n" +
+    "    <div ng-if=\"field.format\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.pattern\">{{errors.format}}</div>\r" +
+    "\n" +
     "</ng-form>"
   );
 
 
   $templateCache.put('backand/js/directives/input/partials/input.html',
-    "<ng-form name=\"innerForm\">\n" +
-    "\t<input ng-if=\"field.format\" type=\"{{field.type}}\" name=\"field\" class=\"form-control\"  ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\"  ng-class=\"inputClass\" ng-pattern=\"field.format\" />\n" +
-    "\t<input ng-if=\"!field.format\" type=\"{{field.type}}\" name=\"field\" class=\"form-control\"  ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\"  ng-class=\"inputClass\" />\n" +
-    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\n" +
-    "\t<div ng-if=\"field.format\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.pattern\">{{errors.format}}</div>\n" +
-    "    <div ng-if=\"field.type == 'email'\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.email\">{{errors.email}}</div>\n" +
+    "<ng-form name=\"innerForm\">\r" +
+    "\n" +
+    "\t<input ng-if=\"field.format\" type=\"{{field.type}}\" name=\"field\" class=\"form-control\"  ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\"  ng-class=\"inputClass\" ng-pattern=\"field.format\" />\r" +
+    "\n" +
+    "\t<input ng-if=\"!field.format\" type=\"{{field.type}}\" name=\"field\" class=\"form-control\"  ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\"  ng-class=\"inputClass\" />\r" +
+    "\n" +
+    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\r" +
+    "\n" +
+    "\t<div ng-if=\"field.format\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.pattern\">{{errors.format}}</div>\r" +
+    "\n" +
+    "    <div ng-if=\"field.type == 'email'\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.email\">{{errors.email}}</div>\r" +
+    "\n" +
     "</ng-form>"
   );
 
 
   $templateCache.put('backand/js/directives/link/partials/link.html',
-    "<ng-form name=\"innerForm\">\n" +
-    "    <div class=\"input-group\" ng-class=\"inputClass\">\n" +
-    "        <a ng-show=\"value.url\" href=\"{{value.url}}\" target=\"{{value.target}}\" class=\"form-control\">{{value.linkText}}</a>\n" +
-    "        <span ng-hide=\"value.url\" class=\"form-control\"></span>\n" +
-    "        <span class=\"input-group-btn\">\n" +
-    "            <button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"{{ '#myModal-' + field.name }}\"><i class=\"fa fa-link\"></i></button>\n" +
-    "        </span>\n" +
-    "    </div>\n" +
-    "    <div class=\"modal fade\" data-backdrop=\"static\" id=\"{{ 'myModal-' + field.name }}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n" +
-    "        <div class=\"modal-dialog\">\n" +
-    "            <div class=\"modal-content\">\n" +
-    "                <div class=\"modal-header\">\n" +
-    "                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>\n" +
-    "                </div>\n" +
-    "                <div class=\"modal-body\">\n" +
-    "                    <div class=\"form-group\">\n" +
-    "                        <label for=\"linkText\">Label</label>\n" +
-    "                        <input type=\"text\" ng-model=\"value.linkText\" class=\"form-control\" id=\"linkText\" placeholder=\"Link Text\">\n" +
-    "                    </div>\n" +
-    "                    <div class=\"form-group\">\n" +
-    "                        <label for=\"linkUrl\">Url</label>\n" +
-    "                        <input type=\"url\" ng-model=\"value.url\" name=\"editUrl\" class=\"form-control\" id=\"linkUrl\" placeholder=\"http://\">\n" +
-    "                    </div>\n" +
-    "                    <div class=\"form-group\">\n" +
-    "                        <label for=\"checkboxOpen\">\n" +
-    "                            <input type=\"checkbox\" id=\"checkboxOpen\" class=\"\" ng-model=\"value.target\" ng-true-value=\"null\" ng-false-value=\"_blank\">\n" +
-    "                            Open in same tab\n" +
-    "                        </label>\n" +
-    "                    </div>\n" +
+    "<ng-form name=\"innerForm\">\r" +
     "\n" +
-    "                    <div class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.editUrl.$error.url\">{{errors.url}}</div>\n" +
-    "                </div>\n" +
-    "                <div class=\"modal-footer\">\n" +
-    "                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</ng-form>\n"
+    "    <div class=\"input-group\" ng-class=\"inputClass\">\r" +
+    "\n" +
+    "        <a ng-show=\"value.url\" href=\"{{value.url}}\" target=\"{{value.target}}\" class=\"form-control\">{{value.linkText}}</a>\r" +
+    "\n" +
+    "        <span ng-hide=\"value.url\" class=\"form-control\"></span>\r" +
+    "\n" +
+    "        <span class=\"input-group-btn\">\r" +
+    "\n" +
+    "            <button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"{{ '#myModal-' + field.name }}\"><i class=\"fa fa-link\"></i></button>\r" +
+    "\n" +
+    "        </span>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"modal fade\" data-backdrop=\"static\" id=\"{{ 'myModal-' + field.name }}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\r" +
+    "\n" +
+    "        <div class=\"modal-dialog\">\r" +
+    "\n" +
+    "            <div class=\"modal-content\">\r" +
+    "\n" +
+    "                <div class=\"modal-header\">\r" +
+    "\n" +
+    "                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "                <div class=\"modal-body\">\r" +
+    "\n" +
+    "                    <div class=\"form-group\">\r" +
+    "\n" +
+    "                        <label for=\"linkText\">Label</label>\r" +
+    "\n" +
+    "                        <input type=\"text\" ng-model=\"value.linkText\" class=\"form-control\" id=\"linkText\" placeholder=\"Link Text\">\r" +
+    "\n" +
+    "                    </div>\r" +
+    "\n" +
+    "                    <div class=\"form-group\">\r" +
+    "\n" +
+    "                        <label for=\"linkUrl\">Url</label>\r" +
+    "\n" +
+    "                        <input type=\"url\" ng-model=\"value.url\" name=\"editUrl\" class=\"form-control\" id=\"linkUrl\" placeholder=\"http://\">\r" +
+    "\n" +
+    "                    </div>\r" +
+    "\n" +
+    "                    <div class=\"form-group\">\r" +
+    "\n" +
+    "                        <label for=\"checkboxOpen\">\r" +
+    "\n" +
+    "                            <input type=\"checkbox\" id=\"checkboxOpen\" class=\"\" ng-model=\"value.target\" ng-true-value=\"null\" ng-false-value=\"_blank\">\r" +
+    "\n" +
+    "                            Open in same tab\r" +
+    "\n" +
+    "                        </label>\r" +
+    "\n" +
+    "                    </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "                    <div class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.editUrl.$error.url\">{{errors.url}}</div>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "                <div class=\"modal-footer\">\r" +
+    "\n" +
+    "                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</ng-form>\r" +
+    "\n"
   );
 
 
   $templateCache.put('backand/js/directives/numeric/partials/numeric.html',
-    "<ng-form name=\"innerForm\">\n" +
-    "\t<div class=\"input-group\">\n" +
-    "      <input type=\"number\" name=\"field\" ng-model=\"value.val\" class=\"form-control\" \n" +
-    "\t\tng-disabled=\"field.disabled\" ng-required=\"field.required\" ng-class=\"inputClass\" ng-show=\"field.show\"\n" +
-    "        min=\"{{field.minimumValue}}\" max=\"{{field.maximumValue}}\">\n" +
-    "      <div class=\"input-group-addon\">{{ field.type == 'percentage' ? '%' : field.type == 'currency' ? field.currencySymbol : field.type == 'numberWithSeparator' ? '.00' : '#' }}</div>\n" +
-    "    </div>\n" +
-    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\n" +
-    "\t<div class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.number\">{{errors.number}}</div>\n" +
-    "\t<div class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.min\">{{errors.minimumValue}}</div>\n" +
-    "\t<div class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.max\">{{errors.maximumValue}}</div>\n" +
+    "<ng-form name=\"innerForm\">\r" +
+    "\n" +
+    "\t<div class=\"input-group\">\r" +
+    "\n" +
+    "      <input type=\"number\" name=\"field\" ng-model=\"value.val\" class=\"form-control\" \r" +
+    "\n" +
+    "\t\tng-disabled=\"field.disabled\" ng-required=\"field.required\" ng-class=\"inputClass\" ng-show=\"field.show\"\r" +
+    "\n" +
+    "        min=\"{{field.minimumValue}}\" max=\"{{field.maximumValue}}\">\r" +
+    "\n" +
+    "      <div class=\"input-group-addon\">{{ field.type == 'percentage' ? '%' : field.type == 'currency' ? field.currencySymbol : field.type == 'numberWithSeparator' ? '.00' : '#' }}</div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\r" +
+    "\n" +
+    "\t<div class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.number\">{{errors.number}}</div>\r" +
+    "\n" +
+    "\t<div class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.min\">{{errors.minimumValue}}</div>\r" +
+    "\n" +
+    "\t<div class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.max\">{{errors.maximumValue}}</div>\r" +
+    "\n" +
     "</ng-form>"
   );
 
 
   $templateCache.put('backand/js/directives/singleSelect/partials/singleSelect.html',
-    "<ng-form name=\"innerForm\">\n" +
-    "    <select ng-change=\"changed()\" ng-show=\"!field.inlineEditing && field.show\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" ng-options=\"o.name for o in options\"></select>\n" +
-    "    <div class=\"input-group\" ng-class=\"inputClass\" ng-show=\"field.inlineEditing\">\n" +
-    "        <select ng-change=\"changed()\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" ng-options=\"o.name for o in options\"></select>\n" +
-    "        <span class=\"input-group-btn\">\n" +
-    "            <button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" ng-click=\"inlineEditing()\">\n" +
-    "                <i class=\"fa custom-icon ng-isolate-scope fa-table\" icon-type=\"grid\"></i>\n" +
-    "            </button>\n" +
-    "        </span>\n" +
-    "    </div>\n" +
-    "    <div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\n" +
+    "<ng-form name=\"innerForm\">\r" +
+    "\n" +
+    "    <select ng-change=\"changed()\" ng-show=\"!field.inlineEditing && field.show\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" ng-options=\"o.name for o in options\"></select>\r" +
+    "\n" +
+    "    <div class=\"input-group\" ng-class=\"inputClass\" ng-show=\"field.inlineEditing\">\r" +
+    "\n" +
+    "        <select ng-change=\"changed()\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" ng-options=\"o.name for o in options\"></select>\r" +
+    "\n" +
+    "        <span class=\"input-group-btn\">\r" +
+    "\n" +
+    "            <button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" ng-click=\"inlineEditing()\">\r" +
+    "\n" +
+    "                <i class=\"fa custom-icon ng-isolate-scope fa-table\" icon-type=\"grid\"></i>\r" +
+    "\n" +
+    "            </button>\r" +
+    "\n" +
+    "        </span>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\r" +
+    "\n" +
     "</ng-form>"
   );
 
 
   $templateCache.put('backand/js/directives/textarea/partials/textarea.html',
-    "<ng-form name=\"innerForm\">\n" +
-    "\t<textarea name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\"></textarea>\n" +
-    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\n" +
+    "<ng-form name=\"innerForm\">\r" +
+    "\n" +
+    "\t<textarea name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\"></textarea>\r" +
+    "\n" +
+    "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\r" +
+    "\n" +
     "</ng-form>"
   );
 
