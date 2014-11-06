@@ -1,5 +1,5 @@
 /*
- Backand v0.2.1 
+ angularbknd v0.9.1 
  (c) Copyright 2014 Backand All rights reserved. https://backand.com 
  License: MIT
  */
@@ -3443,7 +3443,7 @@ angular.module('backAnd.directives')
 }]);;angular.module('backAnd.directives').run(['$templateCache', function($templateCache) {
   'use strict';
 
-  $templateCache.put('app/backand/src/js/directives/autocomplete/partials/autocomplete.html',
+  $templateCache.put('backand/js/directives/autocomplete/partials/autocomplete.html',
     "<ng-form name=\"innerForm\">\n" +
     "    <input typeahead-on-select=\"setPcode($item)\" typeahead-editable=\"false\" type=\"text\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"field.selected\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" min-length=\"2\" typeahead=\"option.label for option in options($viewValue)\">\n" +
     "    <div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">Missing</div>\n" +
@@ -3452,7 +3452,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/charts/partials/chart.html',
+  $templateCache.put('backand/js/directives/charts/partials/chart.html',
     "<div class=\"box\">\n" +
     "   <div class=\"box-header\">\n" +
     "        <h3 class=\"box-title\">{{title}}</h3>\n" +
@@ -3467,7 +3467,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/charts/partials/donutchart.html',
+  $templateCache.put('backand/js/directives/charts/partials/donutchart.html',
     "<div class=\"box\">\n" +
     "    <div class=\"box-header\">\n" +
     "        <h3 class=\"box-title\">{{title}}</h3>\n" +
@@ -3480,13 +3480,13 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/checkbox/partials/checkbox.html',
+  $templateCache.put('backand/js/directives/checkbox/partials/checkbox.html',
     "<input type=\"checkbox\" name=\"field\" class=\"\" ng-model=\"value.val\" ng-checked=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\"  ng-class=\"inputClass\" />\n" +
     "\t\n"
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/content/partials/content.html',
+  $templateCache.put('backand/js/directives/content/partials/content.html',
     " <div>\n" +
     "    <div ng-switch on=\"content.pageType\">\n" +
     "        <htmlcontent content-id=\"content.__metadata.id\" ng-switch-when=\"Content\">\t</htmlcontent>\n" +
@@ -3497,21 +3497,21 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/content/partials/htmlcontent.html',
+  $templateCache.put('backand/js/directives/content/partials/htmlcontent.html',
     " <div>\n" +
     "     <div ></div>\n" +
     " </div>\n"
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/content/partials/iframecontent.html',
+  $templateCache.put('backand/js/directives/content/partials/iframecontent.html',
     " <div>\n" +
     "     <iframe ></iframe>\n" +
     " </div>\n"
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/dashboard/partials/dashboard.html',
+  $templateCache.put('backand/js/directives/dashboard/partials/dashboard.html',
     " <div>\n" +
     " \t<div class=\"container-fluid\">\t\n" +
     " \t\t<div data-ng-repeat=\"chart in chartData\">\n" +
@@ -3530,7 +3530,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/date/partials/date.html',
+  $templateCache.put('backand/js/directives/date/partials/date.html',
     "<div> \n" +
     "  <ng-form name=\"innerForm\">\n" +
     "    <div class=\"input-group\" ng-class=\"inputClass\">\n" +
@@ -3547,7 +3547,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/editor/partials/editor.html',
+  $templateCache.put('backand/js/directives/editor/partials/editor.html',
     "<ng-form name=\"innerForm\">\n" +
     "\t<text-angular ng-if=\"!field.disabled\" ng-required=\"field.required\" ng-model=\"innerVal.val\" ng-show=\"field.show\" ng-class=\"inputClass\" ng-focus=\"inFocus()\" ng-blur=\"outFocus()\"></text-angular>\n" +
     "\t<div ta-bind ng-if=\"field.disabled\"  ng-model=\"innerVal.val\" ng-show=\"field.show\" ng-class=\"inputClass\"></div>\n" +
@@ -3556,7 +3556,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/email/partials/email.html',
+  $templateCache.put('backand/js/directives/email/partials/email.html',
     "<ng-form name=\"innerForm\">\n" +
     "    <div class=\"input-group\">\n" +
     "        <input type=\"{{field.type}}\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" />\n" +
@@ -3570,7 +3570,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/forms/partials/field.html',
+  $templateCache.put('backand/js/directives/forms/partials/field.html',
     "\n" +
     "<label ng-hide=\"field.type == 'checkbox'\">{{field.displayName | parseLabel:field}}</label>\n" +
     "<div ng-switch on=\"field.type\">\n" +
@@ -3600,7 +3600,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/forms/partials/form.html',
+  $templateCache.put('backand/js/directives/forms/partials/form.html',
     "<div class=\"show\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n" +
     "    <form role=\"form\" name=\"form\" novalidate ng-submit=\"submit()\">\n" +
     "        <div class=\"panel panel-default\">\n" +
@@ -3669,21 +3669,21 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/grids/partials/buttonGroup.html',
+  $templateCache.put('backand/js/directives/grids/partials/buttonGroup.html',
     "<div ng-repeat=\"button in buttons\">\n" +
     "    <button type=\"button\" ng-click=\"button.callback()\" ng-class=\"button.class\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon\" ng-class=\"button.iconClass\"><span class=\"ng-back-grid-toolbar-text\">{{button.text}}</span></span></button>\n" +
     "</div>"
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/grids/partials/disabledGrid.html',
+  $templateCache.put('backand/js/directives/grids/partials/disabledGrid.html',
     "<div>\n" +
     "    {{message}}\n" +
     "</div>"
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/grids/partials/grid-mobile.html',
+  $templateCache.put('backand/js/directives/grids/partials/grid-mobile.html',
     "<div class=\"ng-back-grid box\" id=\"bknd-grid_{{viewNameId}}\">\n" +
     "    <div class=\"btn-group btn-group-sm\" ng-show=\"showToolbar\">\n" +
     "        <button type=\"button\" ng-click=\"addRow()\" ng-show=\"showAdd\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon glyphicon-plus\"></span></button>\n" +
@@ -3698,7 +3698,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/grids/partials/grid.html',
+  $templateCache.put('backand/js/directives/grids/partials/grid.html',
     "<div class=\"ng-back-grid box\" id=\"bknd-grid_{{viewNameId}}\">\n" +
     "    <div class=\"box-body table-responsive\">\n" +
     "        <div class=\"btn-toolbar ng-back-grid-toolbar\" role=\"toolbar\">\n" +
@@ -3720,7 +3720,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/grids/partials/toolbar.html',
+  $templateCache.put('backand/js/directives/grids/partials/toolbar.html',
     "<div ng-model=\"buttonGroups\" class=\"box-body table-responsive\">\n" +
     "    <div class=\"btn-toolbar ng-back-grid-toolbar\" role=\"toolbar\">\n" +
     "        <div ng-repeat=\"buttonGroup in buttonGroups\" class=\"btn-group\" ng-class=\"buttonGroup.class\">\n" +
@@ -3740,7 +3740,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/html/partials/html.html',
+  $templateCache.put('backand/js/directives/html/partials/html.html',
     "<ng-form name=\"innerForm\">\n" +
     "\t<textarea name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\"></textarea>\n" +
     "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\n" +
@@ -3748,7 +3748,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/image/partials/image.html',
+  $templateCache.put('backand/js/directives/image/partials/image.html',
     "<ng-form name=\"innerForm\">\n" +
     "    <div class=\"input-group\" ng-class=\"inputClass\">\n" +
     "        <input type=\"text\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\"></input>\n" +
@@ -3764,7 +3764,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/input/partials/input.html',
+  $templateCache.put('backand/js/directives/input/partials/input.html',
     "<ng-form name=\"innerForm\">\n" +
     "\t<input ng-if=\"field.format\" type=\"{{field.type}}\" name=\"field\" class=\"form-control\"  ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\"  ng-class=\"inputClass\" ng-pattern=\"field.format\" />\n" +
     "\t<input ng-if=\"!field.format\" type=\"{{field.type}}\" name=\"field\" class=\"form-control\"  ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\"  ng-class=\"inputClass\" />\n" +
@@ -3775,7 +3775,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/link/partials/link.html',
+  $templateCache.put('backand/js/directives/link/partials/link.html',
     "<ng-form name=\"innerForm\">\n" +
     "    <div class=\"input-group\" ng-class=\"inputClass\">\n" +
     "        <a ng-show=\"value.url\" href=\"{{value.url}}\" target=\"{{value.target}}\" class=\"form-control\">{{value.linkText}}</a>\n" +
@@ -3818,7 +3818,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/numeric/partials/numeric.html',
+  $templateCache.put('backand/js/directives/numeric/partials/numeric.html',
     "<ng-form name=\"innerForm\">\n" +
     "\t<div class=\"input-group\">\n" +
     "      <input type=\"number\" name=\"field\" ng-model=\"value.val\" class=\"form-control\" \n" +
@@ -3834,7 +3834,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/singleSelect/partials/singleSelect.html',
+  $templateCache.put('backand/js/directives/singleSelect/partials/singleSelect.html',
     "<ng-form name=\"innerForm\">\n" +
     "    <select ng-change=\"changed()\" ng-show=\"!field.inlineEditing && field.show\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" ng-options=\"o.name for o in options\"></select>\n" +
     "    <div class=\"input-group\" ng-class=\"inputClass\" ng-show=\"field.inlineEditing\">\n" +
@@ -3850,7 +3850,7 @@ angular.module('backAnd.directives')
   );
 
 
-  $templateCache.put('app/backand/src/js/directives/textarea/partials/textarea.html',
+  $templateCache.put('backand/js/directives/textarea/partials/textarea.html',
     "<ng-form name=\"innerForm\">\n" +
     "\t<textarea name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"value.val\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\"></textarea>\n" +
     "\t<div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">{{errors.required}}</div>\n" +
