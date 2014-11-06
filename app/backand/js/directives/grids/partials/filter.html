@@ -59,8 +59,8 @@
                                 </ul>
                             </div>
 
-                            <div class="btn-group" dropdown ng-show="showOperators && (item.fieldType == 'relation' || item.fieldType == 'boolean')">
-                                <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+                            <div class="btn-group" dropdown ng-show="showOperators && (item.fieldType == 'relation' || item.fieldType == 'boolean')" >
+                                <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled" ng-class="item.value != undefined && item.value != '' && item.value != null ? 'selected' : ''">
                                     <span>
                                         {{
                                         getOperatorSymbol('equals')
