@@ -3,8 +3,9 @@
 * @ngdoc overview
 * @name directive.numeric
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('numeric', function ($log) {
+angular.module('backAnd.directives')
+    .directive('numeric', ['$log',
+        function ($log) {
     /**
     * @ngdoc directive
     * @name directive.numeric
@@ -27,11 +28,11 @@ backAndDirectives.directive('numeric', function ($log) {
             errors: "="
     	},
     	templateUrl: 'backand/js/directives/numeric/partials/numeric.html',
-    	link: function(scope, el, attrs) {
+    	link: function(scope) {
             $log.debug("numeric scope", scope);
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
 	        };
     	}
     }
-});
+}]);

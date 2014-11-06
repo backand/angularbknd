@@ -3,7 +3,8 @@
  * @name directive.bkndNgGrid
  */
 angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker'])
-    .directive('bkndNgGrid', function (Global, dataListService, dataItemService, configService, $filter, filterService, $location, $route, $sce, $compile, $window) {
+    .directive('bkndNgGrid', ['Global', 'dataListService', 'dataItemService', 'configService', '$filter', 'filterService', '$location', '$route', '$sce', '$compile', '$window',
+        function (Global, dataListService, dataItemService, configService, $filter, filterService, $location, $route, $sce, $compile, $window) {
         /**
          * @ngdoc directive
          * @name directive.bkndNgGrid
@@ -573,7 +574,7 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
             }
         }
             ;
-    })
+    }])
     .
     directive('ngBlur', function () {
         return function (scope, elem, attrs) {

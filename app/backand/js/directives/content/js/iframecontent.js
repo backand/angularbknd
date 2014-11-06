@@ -2,8 +2,9 @@
 * @ngdoc overview
 * @name directive.iframecontent
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('iframecontent', function (configService) {
+angular.module('backAnd.directives')
+    .directive('iframecontent', ['configService',
+        function (configService) {
     /**
       * @ngdoc directive
       * @name directive.iframecontent
@@ -18,7 +19,7 @@ backAndDirectives.directive('iframecontent', function (configService) {
 		scope: {
 		    contentId: '='
 		},
-		link: function (scope, element, attr) {
+		link: function (scope, element) {
 		    /**
             * @ngdoc function
             * @name getDefaultIFrameHeight
@@ -57,4 +58,4 @@ backAndDirectives.directive('iframecontent', function (configService) {
 		    
 		}
 	}
-});
+}]);

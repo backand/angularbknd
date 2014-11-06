@@ -1,10 +1,11 @@
 
-var backAndDirectives = angular.module('backAnd.directives');
+angular.module('backAnd.directives')
 /**
 * @ngdoc overview
 * @name directive.columnchart
 */
-backAndDirectives.directive('columnchart', function (dataItemService) {
+.directive('columnchart',[ 'dataItemService',
+        function (dataItemService) {
     /**
     * @ngdoc directive
     * @name directive.columnchart
@@ -21,7 +22,7 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
     scope: {
       chartId : '='
     },
-    link: function($scope, element, attrs) {
+    link: function($scope, element) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
@@ -59,13 +60,14 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
 
 }
 }
-})
+}])
 
 /**
 * @ngdoc overview
 * @name directive.linechart
 */
-.directive('linechart', function (dataItemService) {
+.directive('linechart', ['dataItemService',
+        function (dataItemService) {
     /**
     * @ngdoc directive
     * @name directive.linechart
@@ -82,7 +84,7 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
     scope: {
       chartId : '='
     },
-    link: function($scope, element, attrs) {
+    link: function($scope, element) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
@@ -121,13 +123,14 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
 
 }
 }
-})
+}])
 
 /**
 * @ngdoc overview
 * @name directive.donutchart
 */
-.directive('donutchart', function (dataItemService) {
+.directive('donutchart', ['dataItemService',
+        function (dataItemService) {
     /**
     * @ngdoc directive
     * @name directive.donutchart
@@ -145,7 +148,7 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
         chartId : '=',
         filterOptions : '='
     },
-    link: function($scope, element, attrs) {
+    link: function($scope, element) {
         dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                     dataType: "chart",
@@ -175,13 +178,14 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
 
     }
   }
-})
+}])
 
 /**
 * @ngdoc overview
 * @name directive.barchart
 */
-.directive('barchart', function (dataItemService) {
+.directive('barchart', ['dataItemService',
+        function (dataItemService) {
     /**
     * @ngdoc directive
     * @name directive.barchart
@@ -198,7 +202,7 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
     scope: {
       chartId : '='
     },
-    link: function($scope, element, attrs) {
+    link: function($scope, element) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
@@ -238,13 +242,14 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
 
 }
 }
-})
+}])
 
 /**
 * @ngdoc overview
 * @name directive.splinechart
 */
-.directive('splinechart', function (dataItemService) {
+.directive('splinechart', ['dataItemService',
+        function (dataItemService) {
     /**
     * @ngdoc directive
     * @name directive.splinechart
@@ -261,7 +266,7 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
     scope: {
       chartId : '='
     },
-    link: function($scope, element, attrs) {
+    link: function($scope, element) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
@@ -300,13 +305,14 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
 
 }
 }
-})
+}])
 
 /**
 * @ngdoc overview
 * @name directive.areachart
 */
-.directive('areachart', function (dataItemService) {
+.directive('areachart', ['dataItemService',
+        function (dataItemService) {
     /**
     * @ngdoc directive
     * @name directive.areachart
@@ -323,7 +329,7 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
     scope: {
       chartId : '='
     },
-    link: function($scope, element, attrs) {
+    link: function($scope, element) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
@@ -362,13 +368,14 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
 
 }
 }
-})
+}])
 
 /**
 * @ngdoc overview
 * @name directive.bubblechart
 */
-.directive('bubblechart', function (dataItemService) {
+.directive('bubblechart', ['dataItemService',
+        function (dataItemService) {
     /**
     * @ngdoc directive
     * @name directive.bubblechart
@@ -385,7 +392,7 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
     scope: {
       chartId : '='
     },
-    link: function($scope, element, attrs) {
+    link: function($scope, element) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
@@ -426,4 +433,4 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
 
 }
 }
-})
+}])

@@ -3,9 +3,9 @@
 * @ngdoc overview
 * @name directive.singleSelect
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('singleSelect', function ($location) {
-    console.log("singleSelect called");
+angular.module('backAnd.directives')
+    .directive('singleSelect', ['$location',
+        function ($location) {
     /**
     * @ngdoc directive
     * @name directive.singleSelect
@@ -28,8 +28,8 @@ backAndDirectives.directive('singleSelect', function ($location) {
     	    errors: "="
         },
     	templateUrl: 'backand/js/directives/singleSelect/partials/singleSelect.html',
-    	link: function(scope, el, attrs) {
-    	    console.log("singleSelect.js", scope);
+    	link: function(scope) {
+    	    //console.log("singleSelect.js", scope);
 
     	    /**
             * @name options
@@ -69,4 +69,4 @@ backAndDirectives.directive('singleSelect', function ($location) {
     	    }
     	}
     }
-});
+}]);

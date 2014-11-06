@@ -4,8 +4,9 @@
 * @name directive.html
 */
 
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('html', function ($log) {
+angular.module('backAnd.directives')
+    .directive('html', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.html
@@ -26,10 +27,10 @@ backAndDirectives.directive('html', function ($log) {
             errors: "="
     	},
     	templateUrl: 'backand/js/directives/html/partials/html.html',
-    	link: function(scope, el, attrs) {
+    	link: function(scope) {
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
 	        }
     	}
     }
-});
+}]);

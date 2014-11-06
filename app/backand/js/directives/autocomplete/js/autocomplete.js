@@ -3,9 +3,9 @@
 * @ngdoc overview
 * @name directive.autocomplete
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('autocomplete', function () {
-    console.log("autocomplete called");
+angular.module('backAnd.directives')
+    .directive('autocomplete', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.autocomplete
@@ -42,9 +42,9 @@ backAndDirectives.directive('autocomplete', function () {
     	        $scope.field.value.val = item.value;
     	    };
     	}],
-    	link: function(scope, el, attrs) {
+    	link: function(scope) {
     	    console.log("autocomplete.js", scope);
 
     	}
     }
-});
+}]);

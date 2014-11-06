@@ -3,8 +3,9 @@
 * @ngdoc overview
 * @name directive.textarea
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('textarea', function ($log) {
+angular.module('backAnd.directives')
+    .directive('textarea', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.textarea
@@ -25,10 +26,10 @@ backAndDirectives.directive('textarea', function ($log) {
             errors: "="
     	},
     	templateUrl: 'backand/js/directives/textarea/partials/textarea.html',
-    	link: function(scope, el, attrs) {
+    	link: function(scope) {
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
 	        }
     	}
     }
-});
+}]);

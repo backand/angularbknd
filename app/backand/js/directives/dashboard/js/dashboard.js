@@ -2,8 +2,9 @@
 * @ngdoc overview
 * @name directive.bkndDashboard
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('bkndDashboard', function (Global, $http, configService, $location) {
+angular.module('backAnd.directives')
+    .directive('bkndDashboard',['Global','$http','configService','$location',
+        function (Global, $http, configService, $location) {
     /**
    * @ngdoc directive
    * @name directive.bkndDashboard
@@ -27,7 +28,7 @@ backAndDirectives.directive('bkndDashboard', function (Global, $http, configServ
         * @param {object} el, required, the element of the directive
         * @param {object} attrs, required, the attributes of the directive
         */
-		link: function (scope, el, attrs) {
+		link: function (scope) {
 
 		    /**
             * @ngdoc function
@@ -94,4 +95,4 @@ backAndDirectives.directive('bkndDashboard', function (Global, $http, configServ
 		    }
 		}
 	}
-});
+}]);

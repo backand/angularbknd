@@ -4,8 +4,9 @@
 * @name directive.checkbox
 */
 
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('checkbox', function ($log) {
+angular.module('backAnd.directives')
+    .directive('checkbox', [
+        function () {
     /**
    * @ngdoc directive
    * @name directive.checkbox
@@ -27,10 +28,10 @@ backAndDirectives.directive('checkbox', function ($log) {
             errors: "="
     	},
     	templateUrl: 'backand/js/directives/checkbox/partials/checkbox.html',
-    	link: function(scope, el, attrs) {
+    	link: function(scope) {
     		if (scope.value.val === undefined){
 	          scope.value.val = scope.field.defaultValue;
 	        };
     	}
     }
-});
+}]);

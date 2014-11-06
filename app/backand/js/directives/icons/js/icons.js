@@ -6,7 +6,7 @@
 * @name directive.appVersion
 */
 angular.module('backAnd.directives').
-directive('appVersion', ['version',
+    directive('appVersion', ['version',
     /**
     * @ngdoc directive
     * @name directive.appVersion
@@ -15,7 +15,7 @@ directive('appVersion', ['version',
     * @returns {object} directive
     */
     function (version) {
-        return function(scope, elm, attrs) {
+        return function(scope, elm) {
             elm.text(version);
         };
     }
@@ -28,7 +28,8 @@ directive('appVersion', ['version',
 * @name directive.customIcon
 */
 angular.module('backAnd.directives')
-    .directive("customIcon", function() {
+    .directive("customIcon", [
+        function() {
         /**
         * @ngdoc directive
         * @name directive.customIcon
@@ -52,4 +53,4 @@ angular.module('backAnd.directives')
                     element.addClass("fa fa-th");
             }
         }
-    });
+    }]);

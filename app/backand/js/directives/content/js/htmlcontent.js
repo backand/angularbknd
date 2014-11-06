@@ -2,8 +2,9 @@
 * @ngdoc overview
 * @name directive.htmlcontent
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('htmlcontent', function (configService) {
+angular.module('backAnd.directives')
+    .directive('htmlcontent', ['configService',
+        function (configService) {
     /**
    * @ngdoc directive
    * @name directive.htmlcontent
@@ -18,7 +19,7 @@ backAndDirectives.directive('htmlcontent', function (configService) {
 		scope: {
 		    contentId: '='
 		},
-		link: function (scope, element, attr) {
+		link: function (scope, element) {
 		    configService.read({
 		        dataType: "content",
 		        id: scope.contentId
@@ -29,4 +30,4 @@ backAndDirectives.directive('htmlcontent', function (configService) {
             
 		}
 	}
-});
+}]);

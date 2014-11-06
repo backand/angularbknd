@@ -3,11 +3,7 @@ logs/*
 node_modules/
 bower_components/
 app/bower_components
+app/backand/js/global.js
 tmp
 .DS_Store
 .idea
-website.publishproj
-app/App_Data/PublishProfiles/ngback.pubxml
-App_Data/PublishProfiles/ngback.pubxml
-app/backand/js/global.js
-app/backand/js/global.js

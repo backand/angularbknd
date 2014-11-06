@@ -19,7 +19,7 @@ angular.module('backAnd.controllers')
 
         /*  Uncomment to see an example of how to navigate when menu item is selected  */
         //$scope.$on('menuItemSelected', function (event, data) {
-        //    /*  this example navigates to page1 see the routings at \themes\AdminLTE-master\backand\js\app.js */
+        //    /*  this example navigates to page1 see the routines at \themes\AdminLTE-master\backand\js\app.js */
         //    if (data.name == 'page1')
         //        $location.path("/page1");
         //})

@@ -3,8 +3,9 @@
 * @ngdoc overview
 * @name directive.bkndButtonGroup
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('bkndButtonGroup', function () {//$templateCache) {
+angular.module('backAnd.directives')
+    .directive('bkndButtonGroup', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.bkndButtonGroup
@@ -13,7 +14,7 @@ backAndDirectives.directive('bkndButtonGroup', function () {//$templateCache) {
     * @returns {object} directive
     */
     return {
-        restrict: 'A',
+        restrict: 'AE',
         replace: true,
         require: ["bkndNgGrid", "bkndToolbar"],
         scope: {
@@ -27,4 +28,4 @@ backAndDirectives.directive('bkndButtonGroup', function () {//$templateCache) {
 
         }
     }
-});
+}]);
