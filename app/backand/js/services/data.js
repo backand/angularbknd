@@ -53,10 +53,11 @@ angular.module('backAnd').factory('dataItemService', ['$resource',
          */
 
 
-        return $resource(backandGlobal.url + '/1/:dataType/data/:viewName/:id', {
+        return $resource(backandGlobal.url + '/1/:dataType/data/:viewName/:id?:qs', {
                 dataType: 'view',
                 viewName: '',
-                id: 'id'
+                id: 'id',
+                qs: ''
             },
             {
                 read: {

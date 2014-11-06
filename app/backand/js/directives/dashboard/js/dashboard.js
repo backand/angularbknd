@@ -16,8 +16,9 @@ backAndDirectives.directive('bkndDashboard', function (Global, $http, configServ
 		templateUrl:  'backand/js/directives/dashboard/partials/dashboard.html',
 		replace: false,
 		scope: {
-			dashboardId : '='
-		},
+			dashboardId : '=',
+		    filterOptions : '='
+	    },
 	    /**
         * @name link
         * @methodOf directive.bkndDashboard
@@ -35,22 +36,50 @@ backAndDirectives.directive('bkndDashboard', function (Global, $http, configServ
             * @description Get the new Backand's dashboard id and re-load the data
             */
 		    scope.$watch('dashboardId', function () {
+		        scope.build(scope.getDashboardId());
+		    });
+
+		    scope.$watch('filterOptions', function (newVal, oldVal) {
+		        if (scope.filterOptions) {
+		            scope.build(scope.getDashboardId());
+		        }
+		    }, true);
+
+		    scope.getChartFilterOptions = function () {
+		        if (scope.filterOptions) {
+		            return scope.toQueryString(scope.filterOptions);
+		        }
+		        return window.location.href.slice(window.location.href.indexOf('?') + 1);
+
+		    }
+
+		    scope.getDashboardId = function () {
 		        if (scope.dashboardId) {
-		            scope.setData(scope.dashboardId);
+		            return scope.dashboardId;
 		        }
 		        else if ($location.search().dashboardId) {
-		            scope.setData($location.search().dashboardId);
+		            return $location.search().dashboardId;
 		        }
-		    });
+
+		        return null;
+		    }
+
+		    scope.toQueryString = function (arr) {
+		        var parts = [];
+		        angular.forEach(arr, function (item) {
+		            parts.push(item.name + "=" + item.value);
+		        });
+		        return parts.join("&");
+		    }
 
 		    /**
             * @ngdoc function
-            * @name setData
+            * @name build
             * @methodOf backand.js.directive.bkndDashboard
             * @param {string} id reference to dashboard
             * @description set the data
             */
-		    scope.setData = function (id) {
+		    scope.build = function (id) {
 		        configService.read({
                     dataType: "dashboard",
 		            id: id

@@ -3,7 +3,7 @@
  * @name directive.bkndNgGrid
  */
 angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker'])
-    .directive('bkndNgGrid', function (Global, dataListService, dataItemService, configService, $filter, $location, $route, $sce, $compile, $window) {
+    .directive('bkndNgGrid', function (Global, dataListService, dataItemService, configService, $filter, filterService, $location, $route, $sce, $compile, $window) {
         /**
          * @ngdoc directive
          * @name directive.bkndNgGrid
@@ -59,7 +59,7 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                     }
                 });
 
-                /**
+                 /**
                  * @ngdoc function
                  * @name buildNewGrid
                  * @methodOf backand.js.directive.bkndNgGrid
@@ -145,6 +145,27 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                     scope.showAdd = scope.configTable && scope.configTable.dataEditing ? scope.configTable.dataEditing.allowAdd : true;
                     scope.showEdit = scope.configTable && scope.configTable.dataEditing ? scope.configTable.dataEditing.allowEdit : true;
                     scope.showDelete = scope.configTable && scope.configTable.dataEditing ? scope.configTable.dataEditing.allowDelete : true;
+                    scope.showFilter = scope.configTable && !scope.configTable.hideFilter;
+                    scope.collapseFilter = scope.configTable && !scope.configTable.collapseFilter;
+                    
+                    scope.filterToolbarOptionsOutput = null;
+
+                    if (scope.showFilter) {
+                        filterService.getFilterOptions(scope.viewNameId, function (data) {
+                            scope.$emit('filterToolbarOptionsInput', data, scope);
+                            scope.filterToolbarOptions = data;
+                        });
+                    }
+
+                    scope.filterScope = null;
+
+                    scope.$on('onfilter', function (event, filterToolbarOptions, filterScope) {
+                        scope.filterScope = filterScope;
+                        scope.filterToolbarOptionsOutput = filterToolbarOptions;
+                        scope.$emit('filterToolbarOptionsOutput', scope.filterToolbarOptionsOutput, scope, filterScope);
+
+                        scope.getData();
+                    });
 
                     // Grid footer custom style
                     if (!scope.isMobile)
@@ -214,9 +235,11 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                                 { text: scope.deleteButton, iconClass: "glyphicon-trash", callback: scope.deleteSelected }
                             ] }
                         ];
-                    scope.$broadcast('setToolbarCompleted', scope.btnGroups);
+                    scope.$emit('setToolbarCompleted', scope.btnGroups, scope);
 
                 };
+
+                scope.showClearFilter = false;
 
                 /**
                  * @ngdoc function
@@ -237,7 +260,7 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                     else if ($location.search().filterOptions)
                         filterString = $location.search().filterOptions;
                     else
-                        filterString = null;
+                        filterString = scope.filterToolbarOptionsOutput;
 
                     if (!(typeof filterString == 'string' || filterString instanceof String)) {// is not string
                         filterString = JSON.stringify(filterString);
@@ -258,6 +281,9 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                         scope.dataFill = largeLoad.data;
                         scope.totalServerItems = largeLoad.totalRows;
                         scope.isLoad = false;
+
+                        scope.showClearFilter = searchText || (scope.filterToolbarOptionsOutput && scope.filterToolbarOptionsOutput.length);
+                            
                     });
                 };
 
@@ -272,6 +298,9 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                 };
                 scope.deactivateFilter = function () {
                     scope.searchText = '';
+                    if (scope.filterScope)
+                        scope.filterScope.reset();
+
                     scope.getData('');
                 };
 
@@ -508,7 +537,13 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                     if ($('.ngFooterPanel').height() != undefined) {
                         bottom = $('.ngFooterPanel').height();
                     }
-                    var height = ($(window).height() - top - bottom) + 'px';
+
+                    var height = ($(window).height() - top - bottom);
+                    if (scope.collapseFilter) {
+                        height += -1;
+                    }
+                    height += 'px';
+
                     return {
                         'height': height
                     };

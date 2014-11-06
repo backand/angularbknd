@@ -25,7 +25,8 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -85,7 +86,8 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -140,13 +142,15 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
     },
     replace: true,
     scope: {
-      chartId : '='
+        chartId : '=',
+        filterOptions : '='
     },
     link: function($scope, element, attrs) {
         dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                     dataType: "chart",
-                    id: $scope.chartId
+                    id: $scope.chartId,
+                    qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -198,7 +202,8 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -260,7 +265,8 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -321,7 +327,8 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;
@@ -382,7 +389,8 @@ backAndDirectives.directive('columnchart', function (dataItemService) {
       dataItemService.read({
                     // Need to change this to handle multiple tables on the same page
                       dataType: "chart",
-                      id: $scope.chartId
+                      id: $scope.chartId,
+                      qs: $scope.filterOptions
                   }, function(data) {
                     $scope.title = data.Title;
                     $scope.subTitle = data.SubTitle;

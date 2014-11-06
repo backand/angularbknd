@@ -1,0 +1,77 @@
+<form name="filterForm" novalidate>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div ng-repeat="item in filterOptionsOutput">
+                    <div ng-switch on="item.fieldType" class="col-md-2 form-group">
+                        <label>
+                            {{item.label}}
+                        </label>
+                        <div>
+                            <div style="display: inline-block; width: -moz-calc(100% - 50px); width: -webkit-calc(100% - 50px); width: calc(100% - 50px);">
+                                <input ng-switch-when="text" type="text" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
+                                <input ng-switch-when="date" type="date" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
+                                <input ng-switch-when="numeric" type="number" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
+                                <input ng-switch-when="boolean" type="checkbox" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
+                                <select ng-switch-when="relation" name="item.fieldName" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item">
+                                    <option ng-repeat="option in item.selectOptions" value="{{option.value}}">
+                                        {{option.name}}
+                                    </option>
+                                </select>
+                                <input ng-switch-default="text" type="text" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
+                            </div>
+                            <div class="btn-group" dropdown ng-show="showOperators && item.fieldType != 'relation' && item.fieldType != 'boolean'">
+                                <button type="button" class="btn btn-primary dropdown-toggle" ng-class="item.value != undefined && item.value != '' && item.value != null ? 'selected' : ''" ng-disabled="disabled">
+                                    <span>
+                                        {{
+                                            getOperatorSymbol(item.operator)
+                                        }}
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-show="item.fieldType == 'numeric'" ng-click="item.operator = 'equals'; filterChanged();" ng-class="item.operator == 'equals' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('equals')}}</span><span>Equals</span></li>
+                                    <li ng-show="item.fieldType == 'numeric'" ng-click="item.operator = 'notEquals'; filterChanged();" ng-class="item.operator == 'notEquals' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('notEquals')}}</span><span>Not Equals</span></li>
+                                    <li ng-show="item.fieldType == 'numeric'" ng-click="item.operator = 'greaterThan'; filterChanged();" ng-class="item.operator == 'greaterThan' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('greaterThan')}}</span><span>Greater than</span></li>
+                                    <li ng-show="item.fieldType == 'numeric'" ng-click="item.operator = 'greaterThanOrEqualsTo'; filterChanged();" ng-class="item.operator == 'greaterThanOrEqualsTo' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('greaterThanOrEqualsTo')}}</span><span>Greater than or Equals to</span></li>
+                                    <li ng-show="item.fieldType == 'numeric'" ng-click="item.operator = 'lessThan'; filterChanged();" ng-class="item.operator == 'lessThan' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('lessThan')}}</span><span>Less than</span></li>
+                                    <li ng-show="item.fieldType == 'numeric'" ng-click="item.operator = 'lessThanOrEqualsTo'; filterChanged();" ng-class="item.operator == 'lessThanOrEqualsTo' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol(item.operator)}}</span><span>Less than or Equals to</span></li>
+                                    <li ng-show="item.fieldType == 'numeric'" ng-click="item.operator = 'empty'; filterChanged();" ng-class="item.operator == 'empty' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('empty')}}</span><span>Empty</span></li>
+                                    <li ng-show="item.fieldType == 'numeric'" ng-click="item.operator = 'notEmpty'; filterChanged();" ng-class="item.operator == 'notEmpty' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('notEmpty')}}</span><span>Not Empty</span></li>
+
+                                    <li ng-show="item.fieldType == 'date'" ng-click="item.operator = 'equals'; filterChanged();" ng-class="item.operator == 'equals' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('equals')}}</span><span>Equals</span></li>
+                                    <li ng-show="item.fieldType == 'date'" ng-click="item.operator = 'notEquals'; filterChanged();" ng-class="item.operator == 'notEquals' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('notEquals')}}</span><span>Not Equals</span></li>
+                                    <li ng-show="item.fieldType == 'date'" ng-click="item.operator = 'greaterThan'; filterChanged();" ng-class="item.operator == 'greaterThan' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('greaterThan')}}</span><span>Greater than</span></li>
+                                    <li ng-show="item.fieldType == 'date'" ng-click="item.operator = 'greaterThanOrEqualsTo'; filterChanged();" ng-class="item.operator == 'greaterThanOrEqualsTo' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('greaterThanOrEqualsTo')}}</span><span>Greater than or Equals to</span></li>
+                                    <li ng-show="item.fieldType == 'date'" ng-click="item.operator = 'lessThan'; filterChanged();" ng-class="item.operator == 'lessThan' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('lessThan')}}</span><span>Less than</span></li>
+                                    <li ng-show="item.fieldType == 'date'" ng-click="item.operator = 'lessThanOrEqualsTo'; filterChanged();" ng-class="item.operator == 'lessThanOrEqualsTo' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol(item.operator)}}</span><span>Less than or Equals to</span></li>
+                                    <li ng-show="item.fieldType == 'date'" ng-click="item.operator = 'empty'; filterChanged();" ng-class="item.operator == 'empty' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('empty')}}</span><span>Empty</span></li>
+                                    <li ng-show="item.fieldType == 'date'" ng-click="item.operator = 'notEmpty'; filterChanged();" ng-class="item.operator == 'notEmpty' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('notEmpty')}}</span><span>Not Empty</span></li>
+
+                                    <li ng-show="item.fieldType == 'text'" ng-click="item.operator = 'equals'; filterChanged();" ng-class="item.operator == 'equals' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('equals')}}</span><span>Equals</span></li>
+                                    <li ng-show="item.fieldType == 'text'" ng-click="item.operator = 'notEquals'; filterChanged();" ng-class="item.operator == 'notEquals' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('notEquals')}}</span><span>Not Equals</span></li>
+                                    <li ng-show="item.fieldType == 'text'" ng-click="item.operator = 'startsWith'; filterChanged();" ng-class="item.operator == 'startsWith' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('startsWith')}}</span><span>Starts With</span></li>
+                                    <li ng-show="item.fieldType == 'text'" ng-click="item.operator = 'endsWith'; filterChanged();" ng-class="item.operator == 'endsWith' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('endsWith')}}</span><span>Ends With</span></li>
+                                    <li ng-show="item.fieldType == 'text'" ng-click="item.operator = 'contains'; filterChanged();" ng-class="item.operator == 'contains' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('contains')}}</span><span>Contains</span></li>
+                                    <li ng-show="item.fieldType == 'text'" ng-click="item.operator = 'empty'; filterChanged();" ng-class="item.operator == 'empty' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('empty')}}</span><span>Empty</span></li>
+                                    <li ng-show="item.fieldType == 'text'" ng-click="item.operator = 'notEmpty'; filterChanged();" ng-class="item.operator == 'notEmpty' ? 'selected' : ''"><span class="filter-operator-symbol">{{getOperatorSymbol('notEmpty')}}</span><span>Not Empty</span></li>
+                                   
+                                    
+                                </ul>
+                            </div>
+
+                            <div class="btn-group" dropdown ng-show="showOperators && (item.fieldType == 'relation' || item.fieldType == 'boolean')">
+                                <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+                                    <span>
+                                        {{
+                                        getOperatorSymbol('equals')
+                                        }}
+                                    </span>
+                                </button>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

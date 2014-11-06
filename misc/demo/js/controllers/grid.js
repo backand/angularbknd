@@ -17,14 +17,14 @@ backAndControllers.controller('dynamicGridController', ['$scope',
     }
 ])
 
-backAndControllers.controller('filterController', ['$scope', 'dataListService',
+backAndControllers.controller('filterGridController', ['$scope', 'dataListService',
     function ($scope, dataListService) {
 
         $scope.viewName = 'Employees';
         $scope.inputStyle = { 'height': 300 };
         $scope.buttonGroups = [{ buttons: [{ text: "New", iconClass: "glyphicon-plus", callback: function () { alert("New") } }, { text: "Edit", iconClass: "glyphicon-pencil", callback: function () { alert("Edit") } }, { text: "Delete", iconClass: "glyphicon-trash", callback: function () { alert("Delete") } }] }];
 
-        $scope.filterOptions = [{ fieldName: 'First_Name', operator: 'contains', value: '' }, { fieldName: 'Job_Title', operator: 'in', value: '' }];
+        $scope.filterOptions = [{ fieldName: 'First_Name', operator: backand.filter.operator.text.contains, value: '' }, { fieldName: 'Job_Title', operator: backand.filter.operator.relation.in, value: '' }];
 
         $scope.loadSelectOptions = function () {
             dataListService.read({
