@@ -2,18 +2,6 @@
   "name": "angularbknd",
   "description": "An AngularJS starter project for Back&",
   "version": "0.1.3",
-  "main": [
-    "app/backand/dist/Backand.debug.css",
-    "appbackand/dist/Backand.debug.js",
-    "app/backand/dist/Backand.min.css",
-    "app/backand/dist/Backand.min.js",
-    "app/backand/src/img",
-    "app/backand/src/js/directives/*/partials/*"
-  ],
-  "ignore": [
-    "app/backand/src/css",
-    "app/backand/src/js"
-  ],
   "homepage": "https://github.com/backand/angularbknd",
   "license": "MIT",
   "private": true,
