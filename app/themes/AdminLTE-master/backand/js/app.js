@@ -5,6 +5,7 @@ angular.module('backAnd.filters', []);
 angular.module('backAnd.controllers', []);
 angular.module('backAnd.services', []);
 
+
 angular.module('backAnd', [
     'ngRoute',
     'ngResource',
@@ -13,7 +14,8 @@ angular.module('backAnd', [
     'backAnd.filters',
     'backAnd.services',
     'backAnd.directives',
-    'backAnd.controllers'
+    'backAnd.controllers',
+    'ngAnimate'
 ]).config(['$routeProvider',
 
     function ($routeProvider) {
