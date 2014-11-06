@@ -14,8 +14,7 @@ angular.module('backAnd', [
     'backAnd.filters',
     'backAnd.services',
     'backAnd.directives',
-    'backAnd.controllers',
-    'ngAnimate'
+    'backAnd.controllers'
 ]).config(['$routeProvider',
 
     function ($routeProvider) {

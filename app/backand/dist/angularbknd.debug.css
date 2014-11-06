@@ -53,6 +53,8 @@
 	width: auto;
 }
 
+
+
 .grid-filter .panel{
     background-color:rgb(244,244,244);
 }
@@ -107,6 +109,11 @@
     float: left;
     margin-left: 4px;
 }
+
+
+
+
+
 .datepicker-wrapper {
 	height: auto; 
 	width: auto;

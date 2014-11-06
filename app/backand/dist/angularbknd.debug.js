@@ -340,7 +340,7 @@ backand.security.authentication.login('nir', 123456789, 'manager', function (dat
         success: function (data, textStatus, xhr) { if (successCallback) successCallback(data, textStatus, xhr); }
     });
 };var backandGlobal = {
-    url: "https://api.backand.com:8080",// 
+    url: "http://api.backand.info:8099",//
     defaultApp: null
 };
 
@@ -973,7 +973,7 @@ backAndFilters.filter('removeSpaces', function () {
  * @ngdoc overview
  * @name directive.bkndNgGrid
  */
-angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker'])
+angular.module('backAnd.directives')
     .directive('bkndNgGrid', ['Global', 'dataListService', 'dataItemService', 'configService', '$filter', 'filterService', '$location', '$route', '$sce', '$compile', '$window',
         function (Global, dataListService, dataItemService, configService, $filter, filterService, $location, $route, $sce, $compile, $window) {
         /**
@@ -1556,10 +1556,11 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
     });;'use strict';
 /**
 * @ngdoc overview
-* @name directive.bkndToolbar
+* @name directive.bkndFilter
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.directive('bkndFilter', function ($sanitize, $sce) {//$templateCache) {
+angular.module('backAnd.directives')
+    .directive('bkndFilter', ['$sce',
+        function ($sce) {
     /**
     * @ngdoc directive
     * @name directive.bkndFilter
@@ -1575,9 +1576,9 @@ backAndDirectives.directive('bkndFilter', function ($sanitize, $sce) {//$templat
             showOperators: "="
         },
         templateUrl: 'backand/js/directives/grids/partials/filter.html',
-        link: function (scope, el, attrs, bkndNgGridCtrl) {
+        link: function (scope) {
 
-            scope.$watch('filterOptions', function (newVal, oldVal) {
+            scope.$watch('filterOptions', function () {
                 if (scope.filterOptions) {
                     scope.filterOptionsOutput = angular.copy(scope.filterOptions);
                 }
@@ -1617,34 +1618,34 @@ backAndDirectives.directive('bkndFilter', function ($sanitize, $sce) {//$templat
                         symbol = '=';
                         break;
                     case 'notEquals':
-                        symbol = $sanitize('&ne;');
+                        symbol =$sce.trustAsHtml(htmlDecode('&ne;'));
                         break;
                     case 'greaterThan':
                         symbol = $sce.trustAsHtml(htmlDecode('&gt;'));
                         break;
                     case 'greaterThanOrEqualsTo':
-                        symbol = $sanitize('&ge;');
+                        symbol = $sce.trustAsHtml(htmlDecode('&ge;'));
                         break;
                     case 'lessThan':
                         symbol = $sce.trustAsHtml(htmlDecode('&lt;'));
                         break;
                     case 'lessThanOrEqualsTo':
-                        symbol = $sanitize('&le;');
+                        symbol = $sce.trustAsHtml(htmlDecode('&le;'));
                         break;
                     case 'empty':
-                        symbol = $sanitize('&empty;');
+                        symbol = $sce.trustAsHtml(htmlDecode('&empty;'));
                         break;
                     case 'notEmpty':
-                        symbol = $sanitize('&exist;');
+                        symbol = $sce.trustAsHtml(htmlDecode('&exist;'));
                         break;
                     case 'startsWith':
-                        symbol = $sanitize('&rarr;');
+                        symbol = $sce.trustAsHtml(htmlDecode('&rarr;'));
                         break;
                     case 'endsWith':
-                        symbol = $sanitize('&larr;');
+                        symbol = $sce.trustAsHtml(htmlDecode('&larr;'));
                         break;
                     case 'contains':
-                        symbol = $sanitize('&harr;');
+                        symbol = $sce.trustAsHtml(htmlDecode('&harr;'));
                         break;
                     case 'notContains':
                         symbol = 'glyphicon glyphicon-align-justify';
@@ -1705,7 +1706,7 @@ backAndDirectives.directive('bkndFilter', function ($sanitize, $sce) {//$templat
             }
         }
     }
-});;/**
+}]);;/**
 * @ngdoc overview
 * @name directive.bkndDashboard
 */
@@ -4236,9 +4237,9 @@ angular.module('backAnd.directives')
     "\n" +
     "\r" +
     "\n" +
-    "                            <div class=\"btn-group\" dropdown ng-show=\"showOperators && (item.fieldType == 'relation' || item.fieldType == 'boolean')\">\r" +
+    "                            <div class=\"btn-group\" dropdown ng-show=\"showOperators && (item.fieldType == 'relation' || item.fieldType == 'boolean')\" >\r" +
     "\n" +
-    "                                <button type=\"button\" class=\"btn btn-primary dropdown-toggle\" ng-disabled=\"disabled\">\r" +
+    "                                <button type=\"button\" class=\"btn btn-primary dropdown-toggle\" ng-disabled=\"disabled\" ng-class=\"item.value != undefined && item.value != '' && item.value != null ? 'selected' : ''\">\r" +
     "\n" +
     "                                    <span>\r" +
     "\n" +
@@ -4329,7 +4330,7 @@ angular.module('backAnd.directives')
     "\n" +
     "            <div class=\"btn-group pull-right\">\r" +
     "\n" +
-    "                <button type=\"button\" ng-click=\"collapseFilter=!collapseFilter\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon \" ng-class=\"collapseFilter ? 'glyphicon-chevron-up' : 'glyphicon-chevron-down'\"><span class=\"grid-toolbar-text\">{{collapseFilter ? \"More\" : \"Less\"}}</span></span></button>\r" +
+    "                <button type=\"button\" ng-click=\"collapseFilter=!collapseFilter\" class=\"btn btn-default navbar-btn\"><span class=\"glyphicon \" ng-class=\"collapseFilter ? 'glyphicon-chevron-down' : 'glyphicon-chevron-up'\"><span class=\"grid-toolbar-text\">{{collapseFilter ? \"Filter\" : \"Filter\"}}</span></span></button>\r" +
     "\n" +
     "            </div>\r" +
     "\n" +

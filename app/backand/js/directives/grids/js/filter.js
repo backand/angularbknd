@@ -63,7 +63,7 @@ angular.module('backAnd.directives')
                         symbol = '=';
                         break;
                     case 'notEquals':
-                        symbol = $sce.trustAsHtml(htmlDecode('&ne;'));
+                        symbol =$sce.trustAsHtml(htmlDecode('&ne;'));
                         break;
                     case 'greaterThan':
                         symbol = $sce.trustAsHtml(htmlDecode('&gt;'));
