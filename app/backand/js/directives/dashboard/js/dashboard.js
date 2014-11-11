@@ -68,7 +68,7 @@ angular.module('backAnd.directives')
 		    scope.toQueryString = function (arr) {
 		        var parts = [];
 		        angular.forEach(arr, function (item) {
-		            parts.push(item.name + "=" + item.value);
+		            parts.push(item.fieldName + "=" + item.value);
 		        });
 		        return parts.join("&");
 		    }

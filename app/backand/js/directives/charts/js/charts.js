@@ -20,7 +20,8 @@ angular.module('backAnd.directives')
     },
     replace: true,
     scope: {
-      chartId : '='
+        chartId: '=',
+        filterOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -82,7 +83,8 @@ angular.module('backAnd.directives')
     },
     replace: true,
     scope: {
-      chartId : '='
+        chartId: '=',
+        filterOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -200,7 +202,8 @@ angular.module('backAnd.directives')
     },
     replace: true,
     scope: {
-      chartId : '='
+        chartId: '=',
+        filterOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -264,7 +267,8 @@ angular.module('backAnd.directives')
     },
     replace: true,
     scope: {
-      chartId : '='
+        chartId: '=',
+        filterOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -327,7 +331,8 @@ angular.module('backAnd.directives')
     },
     replace: true,
     scope: {
-      chartId : '='
+        chartId: '=',
+        filterOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -390,7 +395,8 @@ angular.module('backAnd.directives')
     },
     replace: true,
     scope: {
-      chartId : '='
+        chartId: '=',
+        filterOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({

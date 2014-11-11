@@ -38,7 +38,7 @@ angular.module('backAnd.directives')
             scope.getFilter = function () {
                 var filter = [];
                 angular.forEach(scope.filterOptionsOutput, function (option) {
-                    if (option.value) {
+                    if (option.value || option.operator == 'empty' || option.operator == 'notEmpty') {
                         filter.push({ "fieldName": option.fieldName, "operator": option.operator, "value": option.value });
                     }
                 });

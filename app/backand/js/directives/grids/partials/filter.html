@@ -12,7 +12,11 @@
                                 <input ng-switch-when="text" type="text" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
                                 <input ng-switch-when="date" type="date" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
                                 <input ng-switch-when="numeric" type="number" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
-                                <input ng-switch-when="boolean" type="checkbox" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
+                                <select ng-switch-when="boolean" name="item.fieldName" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item">
+                                    <option value="">All</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
                                 <select ng-switch-when="relation" name="item.fieldName" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item">
                                     <option ng-repeat="option in item.selectOptions" value="{{option.value}}">
                                         {{option.name}}
@@ -21,10 +25,10 @@
                                 <input ng-switch-default="text" type="text" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
                             </div>
                             <div class="btn-group" dropdown ng-show="showOperators && item.fieldType != 'relation' && item.fieldType != 'boolean'">
-                                <button type="button" class="btn btn-primary dropdown-toggle" ng-class="item.value != undefined && item.value != '' && item.value != null ? 'selected' : ''" ng-disabled="disabled">
+                                <button type="button" class="btn btn-primary dropdown-toggle" ng-class="(item.value != undefined && item.value != '' && item.value != null) || item.operator == 'empty' || item.operator == 'notEmpty' ? 'selected' : ''" ng-disabled="disabled">
                                     <span>
                                         {{
-                                            getOperatorSymbol(item.operator)
+                                        getOperatorSymbol(item.operator)
                                         }}
                                     </span>
                                 </button>

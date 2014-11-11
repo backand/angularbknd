@@ -141,7 +141,9 @@ angular.module('backAnd.controllers')
                 }
             }
 
-
+            $scope.isGrid = function () {
+                return $location.path().indexOf('grid') != -1;
+            }
         }
 
 

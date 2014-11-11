@@ -25,7 +25,7 @@
             </div>
             <div class="form-actions panel-footer">
                 <div class="=col-md-10 text-left">
-                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><span ng-bind-html="alert.msg"></span></alert>
+                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><span>{{alert.msg}}</span></alert>
                 </div>
                 <div class="=col-md-2 text-right">
                     <button type="submit" class="btn btn-primary" ng-show="configInfo.editable && isNew" ng-hide="waiting || !isNew" ng-disabled="form.$invalid" ng-click="continue = true">{{submitAndContinueCaption}}</button>

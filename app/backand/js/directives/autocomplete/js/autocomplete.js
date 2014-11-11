@@ -43,7 +43,6 @@ angular.module('backAnd.directives')
     	    };
     	}],
     	link: function(scope) {
-    	    console.log("autocomplete.js", scope);
 
     	}
     }

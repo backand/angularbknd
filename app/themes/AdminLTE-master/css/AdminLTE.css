@@ -3538,3 +3538,5 @@ fieldset[disabled] .btn-vk.active {
     margin-left:6px;
     font-family: sans-serif;
 }
+
+.no-v-scroll{overflow-y:hidden;}

@@ -90,7 +90,7 @@ angular.module('backAnd.controllers')
                         console.error(error_description, { data: data, status: status, headers: headers, config: config })
                     }
                     $scope.loginError = error_description;
-                    console.log(status)
+                    //console.log(status)
                     $scope.waiting = false;
                 });
 
