@@ -69,9 +69,9 @@ angular.module('backAnd', [
             /********************************************************/
             /* uncomment this route for the custom new page example */
             /********************************************************/
-            //$routeProvider.when('/page1', {
+            //.when('/page1', {
             //    templateUrl: 'themes/AdminLTE-master/my-pages/page1/page1.html'
-            //});
+            //})
 
 
             .otherwise({

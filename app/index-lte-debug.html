@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿<!--
+This file is for debug only of the Backand source code.
+Make sure you update the myURL with the correct REST API server url
+-->
+
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
@@ -44,8 +49,8 @@
     <link href="themes/AdminLTE-master/css/AdminLTE.css" rel="stylesheet" type="text/css" />
 
     <!-- Backand general style -->
-    <link href="backand/dist/angularbknd.min.css" rel="stylesheet" type="text/css" />
-    <!--<link href="backand/dist/angularbknd.debug.css.css" rel="stylesheet" type="text/css" />-->
+    <!--<link href="backand/dist/angularbknd.min.css" rel="stylesheet" type="text/css" />-->
+    <link href="backand/css/app.css" rel="stylesheet" type="text/css" />
 
     <!-- Backand theme style -->
     <link href="themes/AdminLTE-master/backand/css/app.css" rel="stylesheet" type="text/css" />
@@ -101,7 +106,43 @@
     <script>var myUrl = "http://api.backand.info:8099";</script>
     <script src="https://api.backand.com:8080/api/banner"></script>
     <!--<script src="backand/dist/angularbknd.debug.js"></script>-->
-    <script src="backand/dist/angularbknd.debug.js"></script>
+    <!--<script src="backand/dist/angularbknd.debug.js"></script>-->
+
+    <!-- BACKAND Debug !-->
+    <script src="backand/js/backand.js"></script>
+    <script src="backand/js/jquery.backand.js"></script>
+    <script src="backand/js/global.js"></script>
+    <script src="backand/js/services/data.js"></script>
+    <script src="backand/js/services/filter.js"></script>
+    <script src="backand/js/services/config.js"></script>
+    <script src="backand/js/services/constants.js"></script>
+    <script src="backand/js/services/global.js"></script>
+    <script src="backand/js/controllers/menu.js"></script>
+    <script src="backand/js/controllers/profile.js"></script>
+    <script src="backand/js/controllers/signIn.js"></script>
+    <script src="backand/js/filters/filters.js"></script>
+    <script src="backand/js/directives/grids/js/grids.js"></script>
+    <script src="backand/js/directives/grids/js/filter.js"></script>
+    <script src="backand/js/directives/dashboard/js/dashboard.js"></script>
+    <script src="backand/js/directives/icons/js/icons.js"></script>
+    <script src="backand/js/directives/charts/js/charts.js"></script>
+    <script src="backand/js/directives/forms/js/forms.js"></script>
+    <script src="backand/js/directives/content/js/content.js"></script>
+    <script src="backand/js/directives/content/js/htmlcontent.js"></script>
+    <script src="backand/js/directives/content/js/iframecontent.js"></script>
+    <script src="backand/js/directives/content/js/linkcontent.js"></script>
+    <script src="backand/js/directives/textarea/js/textarea.js"></script>
+    <script src="backand/js/directives/input/js/input.js"></script>
+    <script src="backand/js/directives/singleSelect/js/singleSelect.js"></script>
+    <script src="backand/js/directives/autocomplete/js/autocomplete.js"></script>
+    <script src="backand/js/directives/editor/js/editor.js"></script>
+    <script src="backand/js/directives/checkbox/js/checkbox.js"></script>
+    <script src="backand/js/directives/link/js/link.js"></script>
+    <script src="backand/js/directives/date/js/date.js"></script>
+    <script src="backand/js/directives/numeric/js/numeric.js"></script>
+    <script src="backand/js/directives/grids/js/disabledGrids.js"></script>
+    <script src="backand/js/directives/image/js/image.js"></script>
+    <script src="backand/js/directives/email/js/email.js"></script>
 
     <!-- Use this controller to customise the menu -->
     <script src="themes/AdminLTE-master/my-pages/menuController.js"></script>

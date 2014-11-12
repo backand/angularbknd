@@ -29,7 +29,7 @@ angular.module('backAnd.directives')
     	},
     	templateUrl: 'backand/js/directives/numeric/partials/numeric.html',
     	link: function(scope) {
-            $log.debug("numeric scope", scope);
+            //$log.debug("numeric scope", scope);
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
 	        };

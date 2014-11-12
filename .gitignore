@@ -3,7 +3,6 @@ logs/*
 node_modules/
 bower_components/
 app/bower_components
-app/backand/js/global.js
 tmp
 .DS_Store
 .idea
