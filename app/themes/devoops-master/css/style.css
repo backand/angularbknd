@@ -2361,3 +2361,11 @@ td.beauty-hover {
     display: none;
   }
 }
+
+select.form-control.filter-item, input[type=text].form-control.filter-item, input[type=date].form-control.filter-item, input[type=number].form-control.filter-item   {
+width: 174px;
+margin-top: -8px;
+border-top-right-radius: 0;
+border-bottom-right-radius: 0;
+display:inline-block;
+}
