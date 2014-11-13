@@ -1,4 +1,4 @@
-/*!
+7/*!
  * Author: Abdullah A Almsaeed
  * Date: 4 Jan 2014
  * Description:
@@ -15,6 +15,7 @@ var adminLteInit = (function() {
        "use strict";
 
     //Enable sidebar toggle
+    $("[data-toggle='offcanvas']").unbind('click');
     $("[data-toggle='offcanvas']").click(function(e) {
         e.preventDefault();
 

@@ -3,23 +3,9 @@
 * @ngdoc overview
 * @name directive.singleSelect
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/singleSelect/partials/singleSelect.html", '<ng-form name="innerForm">\n' +
-    '    <select ng-change="changed()" ng-show="!field.inlineEditing && field.show" name="field" class="form-control" ng-required="field.required" ng-model="value.val" ng-disabled="field.disabled" ng-class="inputClass" ng-options="o.name for o in options"></select>\n' +
-    '    <div class="input-group" ng-class="inputClass" ng-show="field.inlineEditing">\n' +
-    '        <select ng-change="changed()" name="field" class="form-control" ng-required="field.required" ng-model="value.val" ng-show="field.show" ng-disabled="field.disabled" ng-class="inputClass" ng-options="o.name for o in options"></select>\n' +
-    '        <span class="input-group-btn">\n' +
-    '            <button type="button" class="btn btn-default" data-toggle="modal" ng-click="inlineEditing()">\n' +
-    '                <i class="fa custom-icon ng-isolate-scope fa-table" icon-type="grid"></i>\n' +
-    '            </button>\n' +
-    '        </span>\n' +
-    '    </div>\n' +
-    '    <div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>\n' +
-    '</ng-form>')
-})
-.directive('singleSelect', function ($location, $templateCache) {
-    console.log("singleSelect called");
+angular.module('backAnd.directives')
+    .directive('singleSelect', ['$location',
+        function ($location) {
     /**
     * @ngdoc directive
     * @name directive.singleSelect
@@ -42,8 +28,8 @@ backAndDirectives.run(function ($templateCache) {
     	    errors: "="
         },
     	templateUrl: 'backand/js/directives/singleSelect/partials/singleSelect.html',
-    	link: function(scope, el, attrs) {
-    	    console.log("singleSelect.js", scope);
+    	link: function(scope) {
+    	    //console.log("singleSelect.js", scope);
 
     	    /**
             * @name options
@@ -83,4 +69,4 @@ backAndDirectives.run(function ($templateCache) {
     	    }
     	}
     }
-});
+}]);

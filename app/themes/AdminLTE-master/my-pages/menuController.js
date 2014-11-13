@@ -1,7 +1,7 @@
 'use strict';
 
 /***********************************************/
-/** To customize the menu use this controller **/
+/** Use this controller to customize the menu **/
 /***********************************************/
 
 angular.module('backAnd.controllers')
@@ -9,18 +9,19 @@ angular.module('backAnd.controllers')
     function ($scope, Global, $compile, configService, menuService, $timeout, $rootScope, $http, $location, $route) {
 
 
+        /* Uncomment to see an example of how to add your own menu item  */
         //$scope.$on('appConfigCompleted', function (event, data) {
-            
-        //    /*  an example of how to add your own menu item  */
-        //    if (data && data.workspace && data.workspace.pages && data.workspace.pages.length > 3){
+        //    /*  this example adds a menu item to page1 */
+        //    if (data && data.workspace && data.workspace.pages && data.workspace.pages.length > 3) {
         //        data.workspace.pages.splice(3, 0, {name: "page1", partType: "content"})
         //    }
-
         //})
 
+        /*  Uncomment to see an example of how to navigate when menu item is selected  */
         //$scope.$on('menuItemSelected', function (event, data) {
-        //    /*  an example of how to navigate when menu item is selected  */
-        //    $location.path("/page1");
+        //    /*  this example navigates to page1 see the routines at \themes\AdminLTE-master\backand\js\app.js */
+        //    if (data.name == 'page1')
+        //        $location.path("/page1");
         //})
     }
 ])

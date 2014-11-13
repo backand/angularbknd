@@ -2,11 +2,9 @@
 * @ngdoc overview
 * @name directive.htmlcontent
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/content/partials/htmlcontent.html", '<div><div></div></div>')
-})
-.directive('htmlcontent', function (configService, $templateCache) {
+angular.module('backAnd.directives')
+    .directive('htmlcontent', ['configService',
+        function (configService) {
     /**
    * @ngdoc directive
    * @name directive.htmlcontent
@@ -21,7 +19,7 @@ backAndDirectives.run(function ($templateCache) {
 		scope: {
 		    contentId: '='
 		},
-		link: function (scope, element, attr) {
+		link: function (scope, element) {
 		    configService.read({
 		        dataType: "content",
 		        id: scope.contentId
@@ -32,4 +30,4 @@ backAndDirectives.run(function ($templateCache) {
             
 		}
 	}
-});
+}]);

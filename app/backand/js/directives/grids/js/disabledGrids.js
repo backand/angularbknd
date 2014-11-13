@@ -3,11 +3,9 @@
 * @ngdoc overview
 * @name directive.bkndDisabledGrid
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/grids/partials/disabledGrid.html", '<div>{{message}}</div>')
-})
-.directive('bkndDisabledGrid', function ($templateCache) {
+angular.module('backAnd.directives')
+    .directive('bkndDisabledGrid', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.bkndDisabledGrid
@@ -16,11 +14,11 @@ backAndDirectives.run(function ($templateCache) {
     * @returns {object} directive
     */
     return {
-        restrict: 'A',
+        restrict: 'AE',
         replace: true,
         scope: {
             message: "="
         },
         templateUrl: 'backand/js/directives/grids/partials/disabledGrid.html'
     }
-});
+}]);

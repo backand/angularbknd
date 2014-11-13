@@ -4,12 +4,9 @@
 * @name directive.checkbox
 */
 
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/checkbox/partials/checkbox.html", '<input type="checkbox" name="field" class="" ng-model="value.val" ng-checked="value.val" ng-show="field.show" ng-disabled="field.disabled"  ng-class="inputClass" />')
-})
-
-.directive('checkbox', function ($log, $templateCache) {
+angular.module('backAnd.directives')
+    .directive('checkbox', [
+        function () {
     /**
    * @ngdoc directive
    * @name directive.checkbox
@@ -31,10 +28,10 @@ backAndDirectives.run(function ($templateCache) {
             errors: "="
     	},
     	templateUrl: 'backand/js/directives/checkbox/partials/checkbox.html',
-    	link: function(scope, el, attrs) {
+    	link: function(scope) {
     		if (scope.value.val === undefined){
 	          scope.value.val = scope.field.defaultValue;
 	        };
     	}
     }
-});
+}]);

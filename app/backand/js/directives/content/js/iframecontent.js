@@ -2,11 +2,9 @@
 * @ngdoc overview
 * @name directive.iframecontent
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/content/partials/iframecontent.html", '<div><iframe id="id{{contentId}}"></iframe></div>')
-})
-.directive('iframecontent', function (configService, $templateCache) {
+angular.module('backAnd.directives')
+    .directive('iframecontent', ['configService',
+        function (configService) {
     /**
       * @ngdoc directive
       * @name directive.iframecontent
@@ -21,7 +19,7 @@ backAndDirectives.run(function ($templateCache) {
 		scope: {
 		    contentId: '='
 		},
-		link: function (scope, element, attr) {
+		link: function (scope, element) {
 		    /**
             * @ngdoc function
             * @name getDefaultIFrameHeight
@@ -60,4 +58,4 @@ backAndDirectives.run(function ($templateCache) {
 		    
 		}
 	}
-});
+}]);

@@ -3534,3 +3534,9 @@ fieldset[disabled] .btn-vk.active {
   color: #587ea3;
   background-color: #ffffff;
 }
+.grid-toolbar-text{
+    margin-left:6px;
+    font-family: sans-serif;
+}
+
+.no-v-scroll{overflow-y:hidden;}

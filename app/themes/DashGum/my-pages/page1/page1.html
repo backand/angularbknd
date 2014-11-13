@@ -1,0 +1,20 @@
+<section class="content-header">
+    <h1>
+        Page1
+    </h1>
+    <ol class="breadcrumb">
+        <li data-ng-repeat="breadcrumb in breadcrumbs"><a href="#" ng-style="{'cursor':'default'}"><i class="fa custom-icon" icon-type="breadcrumb.partType"></i>{{breadcrumb.name}}</a></li>
+    </ol>
+</section>
+<section class="content" data-ng-controller="page1Controller">
+
+    <!-- uncomment the directive and use the page1Controller to customise the grid -->
+    <!--<ngback-ng-grid view-name="[enter a name of a table or view from your database]"></ngback-ng-grid>
+    <ngback-dashboard dashboard-id="[enter an id of dashboard]"></ngback-dashboard>
+
+
+
+    <!-- if you are working with our demo database, uncomment the directive to see them working -->
+    <!--<bknd-ng-grid view-name="'Employees'"></bknd-ng-grid>
+    <bknd-dashboard dashboard-id="1"></bknd-dashboard>-->
+</section>

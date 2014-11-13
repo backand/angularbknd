@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" data-ng-controller="myMenuController">
     <div class="input-group">
         <div class="btn-group" dropdown is-open="status.isopen">
             <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled" ng-style="{'width':'297px', 'text-align':'left', 'margin':'10px'}">
@@ -12,7 +12,7 @@
 </div>
 
 <ul class="nav main-menu">
-    <li class="dropdown" ng-repeat="p in pages" data-ng-if="p.partType == 'table' || p.partType == 'dashboard'|| p.partType == 'content'" ng-click="setCurrentMenuSelection({partId:p.partId, name:p.name ,index :$index ,partType:p.partType}, null)">
+    <li class="dropdown" ng-repeat="p in currentWorkspace.pages" data-ng-if="p.partType == 'table' || p.partType == 'dashboard'|| p.partType == 'content'" ng-click="setCurrentMenuSelection({partId:p.partId, name:p.name ,index :$index ,partType:p.partType}, null)">
         <a href="" class="dropdown-toggle">
             <i class="fa custom-icon" icon-type="p.partType"></i>
             <span>{{p.name}}</span>

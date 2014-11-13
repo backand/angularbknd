@@ -2,17 +2,9 @@
 * @ngdoc overview
 * @name directive.bkndContent
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/content/partials/content.html", '<div>\n' +
-        '<div ng-switch on="content.pageType">\n' +
-            '<htmlcontent content-id="content.__metadata.id" ng-switch-when="Content">	</htmlcontent>\n' +
-            '<iframecontent content-id="content.__metadata.id" ng-switch-when="IFrame">	</iframecontent>\n' +
-            '<linkcontent content-id="content.__metadata.id" ng-switch-when="External">	</linkcontent>\n' +
-        '</div>\n' +
-    '</div>')
-})
-.directive('bkndContent', function (Global, $http, configService, $sce, $location, $templateCache) {
+angular.module('backAnd.directives')
+    .directive('bkndContent', ['Global','$http','configService','$sce','$location',
+        function (Global, $http, configService, $sce, $location) {
     /**
    * @ngdoc directive
    * @name directive.bkndContent
@@ -71,4 +63,4 @@ backAndDirectives.run(function ($templateCache) {
 		    
 		}
 	}
-});
+}]);

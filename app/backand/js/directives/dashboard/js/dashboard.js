@@ -2,25 +2,9 @@
 * @ngdoc overview
 * @name directive.bkndDashboard
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/dashboard/partials/dashboard.html", ' <div>\n' +
- 	    '<div class="container-fluid">\n' +	
- 	    '	<div data-ng-repeat="chart in chartData">\n' +
- 	    '		<div class="col-xs-{{numCol}}" ng-switch on="chart.type">\n' +
-        '             <barchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Bar">	</barchart>\n' +	
-        '             <linechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Line">  </linechart>\n' +
-        '             <donutchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Pie"> </donutchart>\n' +
-        '             <columnchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Column"> </columnchart>\n' +
-        '             <splinechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="spline">  </splinechart>\n' +
-        '             <areachart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Area">  </areachart>\n' +
-        '             <bubblechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="bubble">  </bubblechart>\n' +
- 	    '		</div>\n' +
- 	    '	</div>\n' +
- 	    '</div>\n' +
-     '</div>')
-})
-.directive('bkndDashboard', function (Global, $http, configService, $location, $templateCache) {
+angular.module('backAnd.directives')
+    .directive('bkndDashboard',['Global','$http','configService','$location',
+        function (Global, $http, configService, $location) {
     /**
    * @ngdoc directive
    * @name directive.bkndDashboard
@@ -33,8 +17,9 @@ backAndDirectives.run(function ($templateCache) {
 		templateUrl:  'backand/js/directives/dashboard/partials/dashboard.html',
 		replace: false,
 		scope: {
-			dashboardId : '='
-		},
+			dashboardId : '=',
+		    filterOptions : '='
+	    },
 	    /**
         * @name link
         * @methodOf directive.bkndDashboard
@@ -43,7 +28,7 @@ backAndDirectives.run(function ($templateCache) {
         * @param {object} el, required, the element of the directive
         * @param {object} attrs, required, the attributes of the directive
         */
-		link: function (scope, el, attrs) {
+		link: function (scope) {
 
 		    /**
             * @ngdoc function
@@ -52,22 +37,50 @@ backAndDirectives.run(function ($templateCache) {
             * @description Get the new Backand's dashboard id and re-load the data
             */
 		    scope.$watch('dashboardId', function () {
+		        scope.build(scope.getDashboardId());
+		    });
+
+		    scope.$watch('filterOptions', function (newVal, oldVal) {
+		        if (scope.filterOptions) {
+		            scope.build(scope.getDashboardId());
+		        }
+		    }, true);
+
+		    scope.getChartFilterOptions = function () {
+		        if (scope.filterOptions) {
+		            return scope.toQueryString(scope.filterOptions);
+		        }
+		        return window.location.href.slice(window.location.href.indexOf('?') + 1);
+
+		    }
+
+		    scope.getDashboardId = function () {
 		        if (scope.dashboardId) {
-		            scope.setData(scope.dashboardId);
+		            return scope.dashboardId;
 		        }
 		        else if ($location.search().dashboardId) {
-		            scope.setData($location.search().dashboardId);
+		            return $location.search().dashboardId;
 		        }
-		    });
+
+		        return null;
+		    }
+
+		    scope.toQueryString = function (arr) {
+		        var parts = [];
+		        angular.forEach(arr, function (item) {
+		            parts.push(item.fieldName + "=" + item.value);
+		        });
+		        return parts.join("&");
+		    }
 
 		    /**
             * @ngdoc function
-            * @name setData
+            * @name build
             * @methodOf backand.js.directive.bkndDashboard
             * @param {string} id reference to dashboard
             * @description set the data
             */
-		    scope.setData = function (id) {
+		    scope.build = function (id) {
 		        configService.read({
                     dataType: "dashboard",
 		            id: id
@@ -82,4 +95,4 @@ backAndDirectives.run(function ($templateCache) {
 		    }
 		}
 	}
-});
+}]);

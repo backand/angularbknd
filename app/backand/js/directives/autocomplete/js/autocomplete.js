@@ -3,16 +3,9 @@
 * @ngdoc overview
 * @name directive.autocomplete
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/autocomplete/partials/autocomplete.html", '<ng-form name="innerForm">\n' +
-        '<input typeahead-on-select="setPcode($item)" typeahead-editable="false" type="text" name="field" class="form-control" ng-required="field.required" ng-model="field.selected" ng-show="field.show" ng-disabled="field.disabled" ng-class="inputClass" min-length="2" typeahead="option.label for option in options($viewValue)">\n' +
-        '<div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">Missing</div>\n' +
-        '<div class="alert alert-danger" role="alert" ng-show="!innerForm.field.$valid">Not matched</div>\n' +
-    '</ng-form>')
-})
-backAndDirectives.directive('autocomplete', function ($templateCache) {
-    console.log("autocomplete called");
+angular.module('backAnd.directives')
+    .directive('autocomplete', [
+        function () {
     /**
     * @ngdoc directive
     * @name directive.autocomplete
@@ -49,9 +42,8 @@ backAndDirectives.directive('autocomplete', function ($templateCache) {
     	        $scope.field.value.val = item.value;
     	    };
     	}],
-    	link: function(scope, el, attrs) {
-    	    console.log("autocomplete.js", scope);
+    	link: function(scope) {
 
     	}
     }
-});
+}]);

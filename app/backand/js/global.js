@@ -1,6 +1,8 @@
+var url ="https://api.backand.com:8080";
+try{url = myUrl} catch(err){}
 var backandGlobal = {
-    url: "https://api.backand.com:8080",// 
-    defaultApp: null,
+    url: url,//
+    defaultApp: null
 };
 
 //load the backand banner

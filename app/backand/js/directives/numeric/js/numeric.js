@@ -3,22 +3,9 @@
 * @ngdoc overview
 * @name directive.numeric
 */
-var backAndDirectives = angular.module('backAnd.directives');
-backAndDirectives.run(function ($templateCache) {
-    $templateCache.put("backand/js/directives/numeric/partials/numeric.html", '<ng-form name="innerForm">\n' +
-	'    <div class="input-group">\n' +
-    '      <input type="number" name="field" ng-model="value.val" class="form-control"\n' + 
-    '      ng-disabled="field.disabled" ng-required="field.required" ng-class="inputClass" ng-show="field.show"\n' +
-    '      min="{{field.minimumValue}}" max="{{field.maximumValue}}">\n' +
-    '  <div class="input-group-addon">{{ field.type == \"percentage\" ? \"%\" : field.type == \"currency\" ? field.currencySymbol : field.type == \"numberWithSeparator\" ? \".00\" : \"#\" }}</div>\n' +
-    '    </div>\n' +
-	'    <div ng-if="field.required" class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.required">{{errors.required}}</div>\n' +
-	'    <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.number">{{errors.number}}</div>\n' +
-	'    <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.min">{{errors.minimumValue}}</div>\n' +
-	'    <div class="alert alert-danger" role="alert" ng-show="innerForm.field.$error.max">{{errors.maximumValue}}</div>\n' +
-    '</ng-form>')
-})
-.directive('numeric', function ($log, $templateCache) {
+angular.module('backAnd.directives')
+    .directive('numeric', ['$log',
+        function ($log) {
     /**
     * @ngdoc directive
     * @name directive.numeric
@@ -41,11 +28,11 @@ backAndDirectives.run(function ($templateCache) {
             errors: "="
     	},
     	templateUrl: 'backand/js/directives/numeric/partials/numeric.html',
-    	link: function(scope, el, attrs) {
-            $log.debug("numeric scope", scope);
+    	link: function(scope) {
+            //$log.debug("numeric scope", scope);
     		if (!scope.value.val){
 	          scope.value.val = scope.field.defaultValue;
 	        };
     	}
     }
-});
+}]);

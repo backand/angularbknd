@@ -2341,6 +2341,7 @@ td.beauty-hover {
   }
 }
 @media (max-width: 400px) {
+   
   .panel-menu a.account {
     padding: 5px 0px 5px 0;
   }
@@ -2359,4 +2360,12 @@ td.beauty-hover {
   #dashboard_links .nav-pills > li.active > a:before {
     display: none;
   }
+}
+
+select.form-control.filter-item, input[type=text].form-control.filter-item, input[type=date].form-control.filter-item, input[type=number].form-control.filter-item   {
+width: 174px;
+margin-top: -8px;
+border-top-right-radius: 0;
+border-bottom-right-radius: 0;
+display:inline-block;
 }

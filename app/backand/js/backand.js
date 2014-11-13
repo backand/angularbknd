@@ -4,6 +4,7 @@
 * License: MIT (http://www.opensource.org/licenses/mit-license.php)
 * Compiled At: 06/24/2014 
 ***********************************************/
+
 var backand = {
     /* initiate app and user security tokens */
     options: {
@@ -72,6 +73,7 @@ var backand = {
                     backand.security.authentication.onlogin = new CustomEvent("onlogin", { "appname": appname });
                 }
             },
+
             login: function (username, password, appname, successCallback, errorCallback) {
                 backand.security.authentication.addLoginEvent();
                 backand.options.ajax(backand.options.url + backand.security.authentication.url, { grant_type: "password", username: username, password: password, appname: appname }, backand.options.verbs.post, function (data) {
@@ -79,6 +81,7 @@ var backand = {
                     document.dispatchEvent(backand.security.authentication.onlogin);
                     if (successCallback) successCallback(data);
                 },
+
                 function (xhr, textStatus, err) {
                     if (errorCallback && xhr) errorCallback(xhr, textStatus, err)
                 },
@@ -297,5 +300,22 @@ backand.defaultFieldValue.prototype.fieldName = function () {
 backand.defaultFieldValue.prototype.value = function () {
     return this.value;
 };
+
+
+
+
+backand.security.authentication.login('nir', 123456789, 'manager', function (data) {
+
+
+    backand.api.view.data.getList('list')
+
+
+
+
+} ,null);
+
+
+
+
 
 
