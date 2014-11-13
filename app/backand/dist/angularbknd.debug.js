@@ -1281,7 +1281,6 @@ angular.module('backAnd.directives')
                 };
 
                 scope.editSelected = function () {
-
                     if (!scope.isSingleRowSelected()) {
                         $window.alert(messages.pleaseSelectRow);
                         return;
@@ -1557,7 +1556,8 @@ angular.module('backAnd.directives')
                 scope.$apply(attrs.ngBlur);
             });
         };
-    });;'use strict';
+    });
+;'use strict';
 /**
 * @ngdoc overview
 * @name directive.bkndFilter
@@ -2314,6 +2314,7 @@ angular.module('backAnd.directives')
 angular.module('backAnd.directives')
     .directive('bkndForm', ['$sce','$q','$location','$route','configService','dataItemService','dataListService','$log','Global',
         function ($sce, $q, $location, $route, configService, dataItemService, dataListService, $log, Global) {
+
     /**
     * @ngdoc directive
     * @name directive.bkndForm
@@ -3637,7 +3638,8 @@ angular.module('backAnd.directives')
         },
         templateUrl: 'backand/js/directives/grids/partials/disabledGrid.html'
     }
-}]);;'use strict';
+}]);
+;'use strict';
 /**
 * @ngdoc overview
 * @name directive.image
@@ -4101,7 +4103,8 @@ angular.module('backAnd.directives')
     "\n" +
     "    </div>\r" +
     "\n" +
-    "</script>"
+    "</script>\r" +
+    "\n"
   );
 
 
@@ -4326,7 +4329,8 @@ angular.module('backAnd.directives')
     "\n" +
     "    </div>\r" +
     "\n" +
-    "</div>"
+    "</div>\r" +
+    "\n"
   );
 
 
