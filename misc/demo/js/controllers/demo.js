@@ -29,7 +29,7 @@ backAndControllers.controller('demoController', ['$scope', '$http', '$location',
                 });
                 request.error(function (data, status, headers, config) {
                     if (status == 401) {
-                        localStorage.removeItem('Authorization');
+                        localStorage.removeItem('AuthorizationDemo');
                         $location.path('/');
                         window.location.reload()
                     }
@@ -46,7 +46,7 @@ backAndControllers.controller('demoController', ['$scope', '$http', '$location',
 
             }
 
-            var token = localStorage['Authorization'];
+            var token = localStorage['AuthorizationDemo'];
             if (token) {
                 $http.defaults.headers.common['Authorization'] = token;
                 checkAuthenticationToken();
@@ -71,7 +71,7 @@ backAndControllers.controller('demoController', ['$scope', '$http', '$location',
                 }
             });
             request.success(function (data, status, headers, config) {
-                localStorage.setItem('Authorization', data.token_type + ' ' + data.access_token);
+                localStorage.setItem('AuthorizationDemo', data.token_type + ' ' + data.access_token);
                 $location.path('/');
                 window.location.reload()
             });

@@ -306,7 +306,6 @@ angular.module('backAnd.directives')
                 };
 
                 scope.editSelected = function () {
-
                     if (!scope.isSingleRowSelected()) {
                         $window.alert(messages.pleaseSelectRow);
                         return;

@@ -20,7 +20,6 @@ angular.module('backAnd', [
     function ($routeProvider) {
 
         backand.options.url = backandGlobal.url;
-
         //todo: switch to ui router, work with resolve
         $routeProvider
             .when('/', {

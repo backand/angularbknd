@@ -7,6 +7,7 @@
 angular.module('backAnd.directives')
     .directive('bkndForm', ['$sce','$q','$location','$route','configService','dataItemService','dataListService','$log','Global',
         function ($sce, $q, $location, $route, configService, dataItemService, dataListService, $log, Global) {
+
     /**
     * @ngdoc directive
     * @name directive.bkndForm

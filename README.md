@@ -1,16 +1,8 @@
 ﻿# angularbknd — The seed for Backand AngularJS apps
 
-This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Backand back office.
-You can use it to quickly Bootstrap your Backand Angular webapp projects and dev environment for these
-projects.
+This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Backand Services.
 
-It is based on the [angular-seed](https://github.com/angular/angular-seed) application.
-
-## Themes
-
-We have a collection of [Bootstrap](https://www.backand.com/bootstrap-theme) themes that offer a pre-built set of views.
-
-All the themes are fully responsive Admin template. Based on the **Bootstrap 3** framework. Highly customizable and easy to use, it fits many screen resolutions from small mobile devices to large desktops.
+With Backand, you simply connect your cloud database via the Backand REST API, select Bootstrap template and you have a working skeleton app ready in no time.
 
 
 ## Getting Started
@@ -75,8 +67,11 @@ Now browse to the app at `http://localhost:8000/app/index.html`.
 ```
 sudo npm start
 ```
+## Themes
 
-### Select the Bootstrap Template
+We have a collection of [Bootstrap](https://www.backand.com/bootstrap-theme) themes that offer a pre-built set of views.
+
+All the themes are fully responsive Admin template. Based on the **Bootstrap 3** framework. Highly customizable and easy to use, it fits many screen resolutions from small mobile devices to large desktops.
 
 The default template is LTE at `http://localhost:8000/app/index-lte.html`.
 You can select other template like Devopps by browse to `http://localhost:8000/app/index-devoops.html`.
