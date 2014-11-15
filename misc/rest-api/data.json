@@ -1,0 +1,544 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Backand REST API",
+        "description": "Backand is the backend API for AngularJS",
+        "version": "1.2.0"
+    },
+    "host": "api.backand.com:8080",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/1",
+    "produces": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "Database Tables Data"
+        },
+        {
+            "name": "Database Tables Configuration"
+        },
+        {
+            "name": "App Configuration"
+        },
+        {
+            "name": "Dashboard Configuration"
+        }
+    ],
+    "paths": {
+        "/app/config": {
+            "get": {
+                "summary": "App main UI configuration and metadata",
+                "description": "The app config information includes menu as pages...\n",
+                "tags": [
+                    "App Configuration"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of products",
+                        "schema": {
+                            "$ref": "Config"
+                        }
+                    }
+                }
+            }
+        },
+        "/view/config/{name}": {
+            "get": {
+                "summary": "View Configuration",
+                "description": "Return the view configuration based on the settings in the console",
+                "tags": [
+                    "Database Tables Configuration"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The table or view name.",
+                        "default": "Customers",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of products",
+                        "schema": {
+                            "$ref": "View"
+                        }
+                    }
+                }
+            }
+        },
+        "/view/data/{name}": {
+            "get": {
+                "summary": "Get list of records",
+                "description": "Return list of records from a table or view based on paging, filter or sort parameters.",
+                "tags": [
+                    "Database Tables Data"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The table or view name",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "How many records per page",
+                        "required": false,
+                        "type": "number",
+                        "default": 20
+                    },
+                    {
+                        "name": "pageNumber",
+                        "in": "query",
+                        "description": "Which page to display",
+                        "required": false,
+                        "type": "number",
+                        "default": 1
+                    },
+                    {
+                        "name": "post",
+                        "in": "body",
+                        "description": "Post parameters",
+                        "required": false,
+                        "schema": {
+                            "$ref": "ViewInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of recoeds"
+                    }
+                }
+            }
+        },
+        "/view/data/{name}/{id}": {
+            "get": {
+                "summary": "Get single record",
+                "description": "Return single record data includes information on dropdowns.",
+                "tags": [
+                    "Database Tables Data"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The table or view name",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The record id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return __metadata with the record primary key and all the fileds data that the user can view",
+                        "schema": {
+                            "$ref": "ViewPost"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "update a record",
+                "description": "Update a single record. In order to update JUST copy the Json of the GET as is and update the fields values OR includes the fields that need to be updated.",
+                "tags": [
+                    "Database Tables Data"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The table or view name",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The record id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "post",
+                        "in": "body",
+                        "description": "Post parameters",
+                        "required": false,
+                        "schema": {
+                            "$ref": "Fields"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns no data"
+                    }
+                }
+            },
+            "post": {
+                "summary": "create new record",
+                "description": "Create a new record. In order to create new record you must include the required fields and any other field to be included in the new record. You can JUST copy the Json of the GET and update the values.",
+                "tags": [
+                    "Database Tables Data"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The table or view name",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    },
+                    {
+                        "name": "post",
+                        "in": "body",
+                        "description": "Post parameters",
+                        "required": false,
+                        "schema": {
+                            "$ref": "Fields"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns the new record primary key (id)",
+                        "schema": {
+                            "$ref": "_metadata"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete a record",
+                "description": "delete a record. Must provide the PK of the record",
+                "tags": [
+                    "Database Tables Data"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The table or view name",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The record pk",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "no data returns"
+                    }
+                }
+            }
+        },
+        "/dashboard/data/{id}": {
+            "get": {
+                "summary": "Dashboard Data",
+                "description": "Return the dashboard data based on the settings in the console.",
+                "tags": [
+                    "Dashboard Data"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The dashboard id.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of products",
+                        "schema": {
+                            "$ref": "Dashboard"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/config/{id}": {
+            "get": {
+                "summary": "Dashboard Configuration",
+                "description": "Return the dashboard configuration based on the settings in the console.",
+                "tags": [
+                    "Dashboard Configuration"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The dashboard id.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of products",
+                        "schema": {
+                            "$ref": "Dashboard"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Page": {
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Page caption"
+                },
+                "partType": {
+                    "type": "string",
+                    "description": "Page object type: view or dashboard"
+                },
+                "partId": {
+                    "type": "number",
+                    "description": "Object identification"
+                }
+            }
+        },
+        "Workspace": {
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Caption"
+                },
+                "homepage": {
+                    "type": "number",
+                    "description": "The page id of the first page to display"
+                },
+                "pages": {
+                    "type": "array",
+                    "$ref": "Page"
+                }
+            }
+        },
+        "User": {
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "number"
+                },
+                "role": {
+                    "type": "number",
+                    "description": "Backand Role"
+                }
+            }
+        },
+        "Config": {
+            "properties": {
+                "userPreviewUrl": {
+                    "type": "string",
+                    "description": "The hosting URL"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "the app's title"
+                },
+                "workspace": {
+                    "type": "array",
+                    "$ref": "Workspace"
+                },
+                "user": {
+                    "$ref": "User"
+                }
+            }
+        },
+        "View": {
+            "properties": {
+                "totalRows": {
+                    "type": "number"
+                }
+            }
+        },
+        "Dashboard": {
+            "properties": {
+                "totalRows": {
+                    "type": "number"
+                }
+            }
+        },
+        "Sort": {
+            "properties": {
+                "fieldName": {
+                    "type": "string",
+                    "optional": false
+                },
+                "order": {
+                    "optional": false,
+                    "type": "string",
+                    "description": "asc or desc",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ]
+                }
+            }
+        },
+        "Filter": {
+            "properties": {
+                "fieldName": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string",
+                    "description": "equals or notEquals",
+                    "enum": [
+                        "equals",
+                        "notEquals"
+                    ]
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "ViewAutocomplete": {
+            "properties": {
+                "viewName": {
+                    "type": "object"
+                }
+            }
+        },
+        "ViewDates": {
+            "properties": {
+                "fieldName": {
+                    "type": "string",
+                    "descripttion": "date in javascript syntax"
+                }
+            }
+        },
+        "__metadata": {
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "desription": "The primary key fo the record"
+                },
+                "autocomplete": {
+                    "type": "array",
+                    "$ref": "ViewAutocomplete"
+                },
+                "dates": {
+                    "type": "array",
+                    "$ref": "ViewDates"
+                }
+            }
+        },
+        "_metadata": {
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "desription": "The primary key fo the record"
+                }
+            }
+        },
+        "Fields": {
+            "empty": null
+        },
+        "ViewInput": {
+            "properties": {
+                "sort": {
+                    "$ref": "Sort"
+                },
+                "filter": {
+                    "type": "array",
+                    "$ref": "Filter"
+                },
+                "withSelectOptions": {
+                    "type": "boolean",
+                    "description": "Load the drop-down values"
+                },
+                "searchText": {
+                    "type": "string",
+                    "description": "Search filter string on scalar fields"
+                }
+            }
+        },
+        "ViewPost": {
+            "properties": {
+                "__metadata": {
+                    "$ref": "__metadata"
+                },
+                "fields": {
+                    "type": "object"
+                }
+            }
+        },
+        "Error": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
