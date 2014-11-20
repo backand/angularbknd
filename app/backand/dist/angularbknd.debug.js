@@ -829,8 +829,8 @@ angular.module('backAnd.controllers')
 */
 
 angular.module('backAnd.controllers')
-    .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope','$route',
-        function($scope, Global, $http, $location, $rootScope, $route) {
+    .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope','$route', 'AuthService',
+        function ($scope, Global, $http, $location, $rootScope, $route, AuthService) {
             $scope.global = Global;
 
             function toQueryString(obj) {
@@ -879,33 +879,58 @@ angular.module('backAnd.controllers')
             * @methodOf backand.js.controllers:signInController
             * @description authenticate the user
             */
-            $scope.authentication = function() {
+            //$scope.authentication = function() {
+            //    $scope.loginError = '';
+            //    $scope.waiting = true;
+            //    localStorage.removeItem("Authorization");
+            //    var data = toQueryString({
+            //        grant_type: "password",
+            //        username: $scope.user,
+            //        password: $scope.password,
+            //        appname: $scope.appName,
+            //    });
+            //    var request = $http({
+            //        method: 'POST',
+            //        url: backandGlobal.url + "/token",
+            //        data: data,
+            //        headers: {
+            //            'Accept': '*/*',
+            //            'Content-Type': 'application/x-www-form-urlencoded'
+            //        }
+            //    });
+            //    request.success(function(data, status, headers, config) {
+            //        $http.defaults.headers.common['Authorization'] = data.token_type + ' ' + data.access_token;
+            //        localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
+            //        backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
+            //        $location.path('/');
+            //        window.location.reload()
+            //    });
+            //    request.error(function (data, status, headers, config) {
+            //        var error_description = "The server is busy. Please contact your administrator or try again later.";
+            //        if (data && data.error_description)
+            //            error_description = data.error_description;
+            //        else {
+            //            console.error(error_description, { data: data, status: status, headers: headers, config: config })
+            //        }
+            //        $scope.loginError = error_description;
+            //        //console.log(status)
+            //        $scope.waiting = false;
+            //    });
+
+            //}
+
+            $scope.authentication = function () {
                 $scope.loginError = '';
                 $scope.waiting = true;
-                localStorage.removeItem("Authorization");
-                var data = toQueryString({
-                    grant_type: "password",
-                    username: $scope.user,
-                    password: $scope.password,
-                    appname: $scope.appName,
-                });
-                var request = $http({
-                    method: 'POST',
-                    url: backandGlobal.url + "/token",
-                    data: data,
-                    headers: {
-                        'Accept': '*/*',
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                });
-                request.success(function(data, status, headers, config) {
-                    $http.defaults.headers.common['Authorization'] = data.token_type + ' ' + data.access_token;
+
+                AuthService.signIn($scope.user, $scope.password, $scope.appName,
+                function (data, status, headers, config) {
                     localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
                     backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
                     $location.path('/');
                     window.location.reload()
-                });
-                request.error(function (data, status, headers, config) {
+                },
+                function (data, status, headers, config) {
                     var error_description = "The server is busy. Please contact your administrator or try again later.";
                     if (data && data.error_description)
                         error_description = data.error_description;
@@ -915,8 +940,7 @@ angular.module('backAnd.controllers')
                     $scope.loginError = error_description;
                     //console.log(status)
                     $scope.waiting = false;
-                });
-
+                })
             }
 
 
@@ -1585,6 +1609,9 @@ angular.module('backAnd.directives')
             scope.$watch('filterOptions', function () {
                 if (scope.filterOptions) {
                     scope.filterOptionsOutput = angular.copy(scope.filterOptions);
+                    // if there are default values then emit the filter in the first time
+                    if (scope.getFilter().length > 0)
+                        scope.$emit('onfilter', scope.getFilter(), scope);
                 }
             }, true);
 
@@ -1730,7 +1757,8 @@ angular.module('backAnd.directives')
 		replace: false,
 		scope: {
 			dashboardId : '=',
-		    filterOptions : '='
+			filterOptions: '=',
+            colorsOptions: '='
 	    },
 	    /**
         * @name link
@@ -1804,6 +1832,40 @@ angular.module('backAnd.directives')
 		            }, scope.chartData)
 		        });
 
+		    }
+
+            scope.getColorOptions = function (chartType) {
+		        var colorsOptions = null;
+		        if (scope.colorsOptions) {
+		            switch (chartType) {
+		                case 'Line':
+		                    colorsOptions = scope.colorsOptions.line;
+		                    break;
+		                case 'Bar':
+		                    colorsOptions = scope.colorsOptions.bar;
+		                    break;
+		                case 'Column':
+		                    colorsOptions = scope.colorsOptions.column;
+		                    break;
+		                case 'Area':
+		                    colorsOptions = scope.colorsOptions.area;
+		                    break;
+		                case 'spline':
+		                    colorsOptions = scope.colorsOptions.spline;
+		                    break;
+		                case 'bubble':
+		                    colorsOptions = scope.colorsOptions.bubble;
+		                    break;
+		                case 'Pie':
+		                    colorsOptions = scope.colorsOptions.donut;
+		                    break;
+
+		                default:
+		                    break;
+		            }
+		        }
+
+		        return colorsOptions;
 		    }
 		}
 	}
@@ -1886,7 +1948,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -1911,7 +1974,7 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      barColors: ['#00a65a', '#f56954'],
+                      barColors: $scope.colorsOptions ? $scope.colorsOptions : ['#00a65a', '#f56954'],
                       xkey: 'a',
                       ykeys: axises.substr(0, data.Data.length).split(''),
                       labels: data.Data.map(function(el){
@@ -1949,7 +2012,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -1975,7 +2039,7 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      lineColors: ['#3c8dbc'],
+                      lineColors: $scope.colorsOptions ? $scope.colorsOptions : ['#3c8dbc'],
                       parseTime: false,
                       xkey: 'a',
                       ykeys: axises.substr(0, data.Data.length).split(''),
@@ -2013,7 +2077,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId : '=',
-        filterOptions : '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
         dataItemService.read({
@@ -2036,8 +2101,8 @@ angular.module('backAnd.directives')
                           value : parseFloat((el[1] / total * 100).toFixed(2))
                         }
                       }),
-                      colors : ["#3c8dbc", "#f56954", "#00a65a"],
-                      hideHover : 'auto'
+                      colors: $scope.colorsOptions ? $scope.colorsOptions : ["#3c8dbc", "#f56954", "#00a65a"],
+                      hideHover: 'auto'
                     };
 
                     Morris.Donut(opt);
@@ -2068,7 +2133,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -2093,7 +2159,7 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      barColors: ['#00a65a', '#f56954'],
+                      barColors: $scope.colorsOptions ? $scope.colorsOptions : ['#00a65a', '#f56954'],
                       xkey: 'a',
                       ykeys: axises.substr(0, data.Data.length).split(''),
                       labels: data.Data.map(function(el){
@@ -2133,7 +2199,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -2159,7 +2226,7 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      lineColors: ['#0b62a4', '#7A92A3'],
+                      lineColors: $scope.colorsOptions ? $scope.colorsOptions : ['#0b62a4', '#7A92A3'],
                       parseTime: false,
                       xkey: 'a',
                       ykeys: axises.substr(0, data.Data.length).split(''),
@@ -2197,7 +2264,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -2223,7 +2291,7 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      lineColors: ['#0b62a4', '#7A92A3'],
+                      lineColors: $scope.colorsOptions ? $scope.colorsOptions : ['#0b62a4', '#7A92A3'],
                       parseTime: false,
                       xkey: 'a',
                       ykeys: axises.substr(0, data.Data.length).split(''),
@@ -2261,7 +2329,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -2287,8 +2356,8 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      lineColors: ['#0b62a4', '#7A92A3'],
-                      pointSize : 15,
+                      lineColors: $scope.colorsOptions ? $scope.colorsOptions : ['#0b62a4', '#7A92A3'],
+                      pointSize: 15,
                       lineWidth: 0,
                       parseTime: false,
                       xkey: 'a',
@@ -3828,19 +3897,19 @@ angular.module('backAnd.directives')
     "\n" +
     " \t\t\t<div class=\"col-xs-{{numCol}}\" ng-switch on=\"chart.type\">\r" +
     "\n" +
-    "                 <barchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Bar\" filter-options=\"getChartFilterOptions()\">\t</barchart>\t\r" +
+    "                 <barchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Bar\" filter-options=\"getChartFilterOptions()\" colors-options=\"getColorOptions(chart.type)\">\t</barchart>\t\r" +
     "\n" +
-    "                 <linechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Line\" filter-options=\"getChartFilterOptions()\">  </linechart>\r" +
+    "                 <linechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Line\" filter-options=\"getChartFilterOptions()\" colors-options=\"getColorOptions(chart.type)\">  </linechart>\r" +
     "\n" +
-    "                 <donutchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Pie\" filter-options=\"getChartFilterOptions()\"> </donutchart>\r" +
+    "                 <donutchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Pie\" filter-options=\"getChartFilterOptions()\" colors-options=\"getColorOptions(chart.type)\"> </donutchart>\r" +
     "\n" +
-    "                 <columnchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Column\" filter-options=\"getChartFilterOptions()\"> </columnchart>\r" +
+    "                 <columnchart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Column\" filter-options=\"getChartFilterOptions()\" colors-options=\"getColorOptions(chart.type)\"> </columnchart>\r" +
     "\n" +
-    "                 <splinechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"spline\" filter-options=\"getChartFilterOptions()\">  </splinechart>\r" +
+    "                 <splinechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"spline\" filter-options=\"getChartFilterOptions()\" colors-options=\"getColorOptions(chart.type)\">  </splinechart>\r" +
     "\n" +
-    "                 <areachart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Area\" filter-options=\"getChartFilterOptions()\">  </areachart>\r" +
+    "                 <areachart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"Area\" filter-options=\"getChartFilterOptions()\" colors-options=\"getColorOptions(chart.type)\">  </areachart>\r" +
     "\n" +
-    "                 <bubblechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"bubble\" filter-options=\"getChartFilterOptions()\">  </bubblechart>\r" +
+    "                 <bubblechart chart-id=\"chart.id\" chart-type=\"{{chart.type}}\" ng-switch-when=\"bubble\" filter-options=\"getChartFilterOptions()\" colors-options=\"getColorOptions(chart.type)\">  </bubblechart>\r" +
     "\n" +
     " \t\t\t</div>\r" +
     "\n" +

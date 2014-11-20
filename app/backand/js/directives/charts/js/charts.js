@@ -21,7 +21,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -46,7 +47,7 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      barColors: ['#00a65a', '#f56954'],
+                      barColors: $scope.colorsOptions ? $scope.colorsOptions : ['#00a65a', '#f56954'],
                       xkey: 'a',
                       ykeys: axises.substr(0, data.Data.length).split(''),
                       labels: data.Data.map(function(el){
@@ -84,7 +85,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -110,7 +112,7 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      lineColors: ['#3c8dbc'],
+                      lineColors: $scope.colorsOptions ? $scope.colorsOptions : ['#3c8dbc'],
                       parseTime: false,
                       xkey: 'a',
                       ykeys: axises.substr(0, data.Data.length).split(''),
@@ -148,7 +150,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId : '=',
-        filterOptions : '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
         dataItemService.read({
@@ -171,8 +174,8 @@ angular.module('backAnd.directives')
                           value : parseFloat((el[1] / total * 100).toFixed(2))
                         }
                       }),
-                      colors : ["#3c8dbc", "#f56954", "#00a65a"],
-                      hideHover : 'auto'
+                      colors: $scope.colorsOptions ? $scope.colorsOptions : ["#3c8dbc", "#f56954", "#00a65a"],
+                      hideHover: 'auto'
                     };
 
                     Morris.Donut(opt);
@@ -203,7 +206,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -228,7 +232,7 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      barColors: ['#00a65a', '#f56954'],
+                      barColors: $scope.colorsOptions ? $scope.colorsOptions : ['#00a65a', '#f56954'],
                       xkey: 'a',
                       ykeys: axises.substr(0, data.Data.length).split(''),
                       labels: data.Data.map(function(el){
@@ -268,7 +272,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -294,7 +299,7 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      lineColors: ['#0b62a4', '#7A92A3'],
+                      lineColors: $scope.colorsOptions ? $scope.colorsOptions : ['#0b62a4', '#7A92A3'],
                       parseTime: false,
                       xkey: 'a',
                       ykeys: axises.substr(0, data.Data.length).split(''),
@@ -332,7 +337,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -358,7 +364,7 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      lineColors: ['#0b62a4', '#7A92A3'],
+                      lineColors: $scope.colorsOptions ? $scope.colorsOptions : ['#0b62a4', '#7A92A3'],
                       parseTime: false,
                       xkey: 'a',
                       ykeys: axises.substr(0, data.Data.length).split(''),
@@ -396,7 +402,8 @@ angular.module('backAnd.directives')
     replace: true,
     scope: {
         chartId: '=',
-        filterOptions: '='
+        filterOptions: '=',
+        colorsOptions: '='
     },
     link: function($scope, element) {
       dataItemService.read({
@@ -422,8 +429,8 @@ angular.module('backAnd.directives')
                         acc.push(row);
                         return acc;
                       }, []),
-                      lineColors: ['#0b62a4', '#7A92A3'],
-                      pointSize : 15,
+                      lineColors: $scope.colorsOptions ? $scope.colorsOptions : ['#0b62a4', '#7A92A3'],
+                      pointSize: 15,
                       lineWidth: 0,
                       parseTime: false,
                       xkey: 'a',

@@ -29,11 +29,7 @@
     #backand-banner{
         display:none;
     }
-    .grid-filter .panel{
-        background-color:rgb(244,244,244);
-        max-height: 180px;
-        overflow: auto;
-    }
+    
 
 }
 
@@ -55,6 +51,8 @@
 
 .grid-filter .panel{
     background-color:rgb(244,244,244);
+    max-height: 180px;
+    overflow: auto;
 }
 
 .grid-filter .dropdown-toggle{
