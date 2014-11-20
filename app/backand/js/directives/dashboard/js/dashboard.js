@@ -18,7 +18,8 @@ angular.module('backAnd.directives')
 		replace: false,
 		scope: {
 			dashboardId : '=',
-		    filterOptions : '='
+			filterOptions: '=',
+            colorsOptions: '='
 	    },
 	    /**
         * @name link
@@ -92,6 +93,40 @@ angular.module('backAnd.directives')
 		            }, scope.chartData)
 		        });
 
+		    }
+
+            scope.getColorOptions = function (chartType) {
+		        var colorsOptions = null;
+		        if (scope.colorsOptions) {
+		            switch (chartType) {
+		                case 'Line':
+		                    colorsOptions = scope.colorsOptions.line;
+		                    break;
+		                case 'Bar':
+		                    colorsOptions = scope.colorsOptions.bar;
+		                    break;
+		                case 'Column':
+		                    colorsOptions = scope.colorsOptions.column;
+		                    break;
+		                case 'Area':
+		                    colorsOptions = scope.colorsOptions.area;
+		                    break;
+		                case 'spline':
+		                    colorsOptions = scope.colorsOptions.spline;
+		                    break;
+		                case 'bubble':
+		                    colorsOptions = scope.colorsOptions.bubble;
+		                    break;
+		                case 'Pie':
+		                    colorsOptions = scope.colorsOptions.donut;
+		                    break;
+
+		                default:
+		                    break;
+		            }
+		        }
+
+		        return colorsOptions;
 		    }
 		}
 	}
