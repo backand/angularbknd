@@ -1,8 +1,8 @@
-﻿# angularbknd — The seed for Backand AngularJS apps
+﻿# angularbknd — The seed for Backand's back-office in AngularJS
 
-This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Backand Services.
+This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app for the Backand's back-office.
 
-With Backand, you simply connect your cloud database via the Backand REST API, select Bootstrap template and you have a working skeleton app ready in no time.
+With Backand, you simply connect your cloud database via the Backand REST API, select Bootstrap template and you have a working skeleton back-office ready in no time.
 
 
 ## Getting Started
