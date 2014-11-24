@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+﻿<!DOCTYPE html> 
 <!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html lang="en" ng-app="backAnd" class="no-js" data-ng-controller="menuController" ng-init="init()" ng-class="isGrid() ? 'no-v-scroll' : ''">
 <!--<![endif]-->
-<head>
+<head> 
     <meta charset="UTF-8">
     <title>Backand</title>
     <!-- backand ver 0.0.2.35 -->
@@ -91,10 +91,16 @@
     <script type="text/javascript" src="http://cdn.backand.net/bower_components/moment/moment.js"></script>
     <script type="text/javascript" src="http://cdn.backand.net/bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
 
+	  <!-- spinner loader -->
+    <link href="bower_components/angular-busy/dist/angular-busy.css" rel="stylesheet" type="text/css" />
+    <script src="bower_components/angular-busy/dist/angular-busy.js"></script>
+	
     <!-- THEME Route !-->
     <script src="themes/AdminLTE-master/backand/js/app.js"></script>
     <!-- theme js -->
     <script src="themes/AdminLTE-master/js/AdminLTE/AdminLTE.js" type="text/javascript"></script>
+
+  
 
     <!-- BACKAND Main code !-->
     <script src="https://api.backand.com:8080/api/banner"></script>

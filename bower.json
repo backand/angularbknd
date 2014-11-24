@@ -1,7 +1,7 @@
-{
+{    
   "name": "angularbknd",
-  "description": "An AngularJS starter project for Back&",
-  "version": "0.1.3",
+  "description": "An AngularJS starter project for Backand",
+  "version": "0.1.5",
   "homepage": "https://github.com/backand/angularbknd",
   "license": "MIT",
   "private": true,
@@ -44,7 +44,8 @@
     "textAngular": "latest",
     "ng-file-upload": "latest",
     "angular-bootstrap-datetimepicker": "latest",
-    "angular-ui-router": "~0.2.11"
+    "angular-ui-router": "~0.2.11",
+	"angular-busy" : "latest"
   },
   "resolutions": {
     "jquery": "^1.10",

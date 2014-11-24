@@ -1,4 +1,5 @@
-<div class="ng-back-grid box" id="bknd-grid_{{viewNameId}}">
+<div cg-busy="{promise:myPromise,message:'Loading Your Data'}"></div> 
+<div class="ng-back-grid box" id="bknd-grid_{{viewNameId}}">  
     <div class="box-body table-responsive">
         <div class="btn-toolbar ng-back-grid-toolbar" role="toolbar">
             <div ng-repeat="buttonGroup in btnGroups" class="btn-group" ng-class="buttonGroup.class">
@@ -6,7 +7,6 @@
             </div>
             <div class="btn-group">
                 <button type="button" ng-click="activateFilter()" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-refresh"></span></button>
-                <img ng-show="isLoad" src="backand/img/ajax-loader.gif" />
             </div>
             <div class="btn-group pull-right ng-back-grid-toolbar-Search" ng-show="showSearch && showToolbar">
                 <input type="text" class="btn btn-default navbar-btn" ng-model="searchText" placeholder="Search" ng-keypress="filterKeyPress($event)" />
@@ -16,7 +16,7 @@
             <div class="btn-group pull-right">
                 <button type="button" ng-click="collapseFilter=!collapseFilter" class="btn btn-default navbar-btn"><span class="glyphicon " ng-class="collapseFilter ? 'glyphicon-chevron-down' : 'glyphicon-chevron-up'"><span class="grid-toolbar-text">{{collapseFilter ? "Filter" : "Filter"}}</span></span></button>
             </div>
-
+ 
         </div>
     </div>
     <div ng-show="showFilter && !collapseFilter" class="grid-filter">
