@@ -1,5 +1,5 @@
 ﻿'use strict';
-   
+    
 angular.module('backAnd', [
     'ngRoute',
     'ngResource',
