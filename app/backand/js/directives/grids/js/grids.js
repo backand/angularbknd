@@ -1,5 +1,5 @@
 /**
- * @ngdoc overview
+ * @ngdoc overview 
  * @name directive.bkndNgGrid
  */
 angular.module('backAnd.directives')
@@ -70,10 +70,9 @@ angular.module('backAnd.directives')
                  * @param {string} viewName reference to view name
                  */
                 scope.buildNewGrid = function (viewName) {
-                    scope.isLoad = true;
                     var configTable = {};
                     //Read the View's configuration
-                    configService.read({
+                     scope.myPromise = configService.read({
                         dataType: "view",
                         id: viewName
                     }, function (data) {
@@ -250,7 +249,6 @@ angular.module('backAnd.directives')
                  * @param {string} searchText The value of the filter search text box
                  */
                 scope.getData = function (searchText) {
-                    scope.isLoad = true;
                     if (searchText == 'undefined') searchText == null;
                     // We are requesting data for the specific page of the table.
                     var sortString = '[' + JSON.stringify(scope.sortOptions) + ']';
@@ -267,7 +265,7 @@ angular.module('backAnd.directives')
                         filterString = JSON.stringify(filterString);
                     }
                     //Read from the service configuration
-                    dataListService.read({
+                    scope.myPromise = dataListService.read({
                         dataType: "view",
                         viewName: scope.viewNameId,
                         pageSize: scope.pagingOptions.pageSize,
@@ -281,8 +279,6 @@ angular.module('backAnd.directives')
 
                         scope.dataFill = largeLoad.data;
                         scope.totalServerItems = largeLoad.totalRows;
-                        scope.isLoad = false;
-
                         scope.showClearFilter = searchText || (scope.filterToolbarOptionsOutput && scope.filterToolbarOptionsOutput.length);
                             
                     });
@@ -384,7 +380,7 @@ angular.module('backAnd.directives')
                     };
 
                     try {
-                        dataItemService.delete(params, function (data) {
+                        scope.myPromise = dataItemService.delete(params, function (data) {
                                 scope.getData();
                             },
                             function (error) {

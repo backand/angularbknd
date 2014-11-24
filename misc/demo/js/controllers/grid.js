@@ -1,9 +1,9 @@
 ﻿'use strict';
 
-var backAndControllers = angular.module('backAnd.controllers');
+var backAndControllers = angular.module('backAnd.controllers'); 
 backAndControllers.controller('dynamicGridController', ['$scope', 
     function ($scope) {
-
+ 
         $scope.viewName = 'Employees';
         //$scope.inputStyle = { 'height': 550 };
 
@@ -16,7 +16,7 @@ backAndControllers.controller('dynamicGridController', ['$scope',
         $scope.disableEditOnDblClick = true;
     }
 ])
-
+ 
 backAndControllers.controller('filterGridController', ['$scope', 'dataListService',
     function ($scope, dataListService) {
 

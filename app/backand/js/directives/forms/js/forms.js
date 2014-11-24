@@ -1,9 +1,9 @@
 'use strict';
-
-/**
+ 
+/** 
 * @ngdoc overview
 * @name directive.bkndForm
-*/
+*/ 
 angular.module('backAnd.directives')
     .directive('bkndForm', ['$sce','$q','$location','$route','configService','dataItemService','dataListService','$log','Global',
         function ($sce, $q, $location, $route, configService, dataItemService, dataListService, $log, Global) {
@@ -84,7 +84,7 @@ angular.module('backAnd.directives')
                 });
 
                 if (!scope.isNew) {
-                    dataItemService.read({
+                 scope.myPromise = dataItemService.read({
                         dataType: "view",
                         viewName: params.viewName,
                         id: params.rowId
@@ -94,7 +94,7 @@ angular.module('backAnd.directives')
                 }
 
                 var loadSelectOptions = function () {
-                    dataListService.read({
+                   dataListService.read({
                         dataType: "view",
                         viewName: params.viewName,
                         withSelectOptions: true,
@@ -260,7 +260,7 @@ angular.module('backAnd.directives')
                     }
 
                     var errorCallback = function (error) {
-                        scope.waiting = false;
+                      //  scope.waiting = false;
                         if (error.status == 500) {
                             console.error(error.data, error);
                             scope.alerts = [{ type: 'danger', msg: messages.failure }];
@@ -272,8 +272,8 @@ angular.module('backAnd.directives')
                     };
 
                     if (scope.isNew) {
-                        dataItemService.create(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
-                            scope.waiting = false;
+                        scope.myPromise =  dataItemService.create(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
+                          //  scope.waiting = false;
                             if (scope.continue) {
                                 $route.reload();
                             }
@@ -288,8 +288,8 @@ angular.module('backAnd.directives')
                         errorCallback);
                     }
                     else {
-                        dataItemService.update(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
-                            scope.waiting = false;
+                        scope.myPromise = dataItemService.update(submitParams, JSON.stringify(scope.dataToSubmit), function (data) {
+                              scope.waiting = false;
                             
                             scope.alerts = [{ type: 'success', msg: messages.success }];
                             window.setTimeout(function () {

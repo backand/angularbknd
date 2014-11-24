@@ -1,7 +1,7 @@
 ﻿<!--
 This file is for debug only of the Backand source code.
 Make sure you update the myURL with the correct REST API server url
--->
+--> 
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -11,7 +11,7 @@ Make sure you update the myURL with the correct REST API server url
 <html lang="en" ng-app="backAnd" class="no-js" data-ng-controller="menuController" ng-init="init()" ng-class="isGrid() ? 'no-v-scroll' : ''">
 <!--<![endif]-->
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> 
     <title>Backand</title>
     <!-- backand ver 0.0.2.35 -->
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
@@ -98,6 +98,10 @@ Make sure you update the myURL with the correct REST API server url
     <!-- datetime stuff editor -->
     <script type="text/javascript" src="bower_components/moment/moment.js"></script>
     <script type="text/javascript" src="bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+
+	<!-- spinner loader -->
+    <link href="bower_components/angular-busy/dist/angular-busy.css" rel="stylesheet" type="text/css" />
+    <script src="bower_components/angular-busy/dist/angular-busy.js"></script>
 
     <!-- BACKAND THEME STUFF !-->
     <script src="themes/AdminLTE-master/backand/js/app.js"></script>
