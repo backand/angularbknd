@@ -1,5 +1,5 @@
 'use strict';
-
+  
 angular.module('backAnd.directives', []);
 angular.module('backAnd.filters', []);
 angular.module('backAnd.controllers', []);
@@ -10,6 +10,7 @@ angular.module('backAnd', [
     'ngRoute',
     'ngResource',
     'ngGrid',
+	'cgBusy',
     'ui.bootstrap',
     'backAnd.filters',
     'backAnd.services',
