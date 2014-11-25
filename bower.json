@@ -45,7 +45,7 @@
     "ng-file-upload": "latest",
     "angular-bootstrap-datetimepicker": "latest",
     "angular-ui-router": "~0.2.11",
-	"angular-busy" : "latest"
+	"angular-busy" : "ygalbel/angular-busy#master"
   },
   "resolutions": {
     "jquery": "^1.10",
