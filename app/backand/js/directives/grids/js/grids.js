@@ -2,7 +2,7 @@
  * @ngdoc overview 
  * @name directive.bkndNgGrid
  */
-angular.module('backAnd.directives')
+angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstrap.datetimepicker'])
     .directive('bkndNgGrid', ['Global', 'dataListService', 'dataItemService', 'configService', '$filter', 'filterService', '$location', '$route', '$sce', '$compile', '$window',
         function (Global, dataListService, dataItemService, configService, $filter, filterService, $location, $route, $sce, $compile, $window) {
         /**
