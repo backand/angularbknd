@@ -1551,7 +1551,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       } else if (this.model.url.match(/https?:\/\/localhost/) && this.model.swaggerVersion === 2) {
         return this.model.validatorUrl = this.model.url;
       } else {
-        return this.model.validatorUrl = "http://online.swagger.io/validator";
+        return this.model.validatorUrl = "//online.swagger.io/validator";
       }
     };
 
