@@ -28,54 +28,6 @@
         }
     ],
     "paths": {
-        "/app/config": {
-            "get": {
-                "summary": "App main UI configuration and metadata",
-                "description": "The app config information includes menu as pages...\n",
-                "tags": [
-                    "App Configuration"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of products",
-                        "schema": {
-                            "$ref": "Config"
-                        }
-                    }
-                }
-            }
-        },
-        "/view/config/{name}": {
-            "get": {
-                "summary": "View Configuration",
-                "description": "Return the view configuration based on the settings in the console",
-                "tags": [
-                    "Database Tables Configuration"
-                ],
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "path",
-                        "description": "The table or view name.",
-                        "default": "Customers",
-                        "required": true,
-                        "type": "array",
-                        "format": "string",
-                        "enum": [
-                            "blank"
-                        ]
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of products",
-                        "schema": {
-                            "$ref": "View"
-                        }
-                    }
-                }
-            }
-        },
         "/view/data/{name}": {
             "get": {
                 "summary": "Get list of records",
@@ -271,6 +223,54 @@
                 "responses": {
                     "200": {
                         "description": "no data returns"
+                    }
+                }
+            }
+        },
+        "/view/config/{name}": {
+            "get": {
+                "summary": "View Configuration",
+                "description": "Return the view configuration based on the settings in the console",
+                "tags": [
+                    "Database Tables Configuration"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The table or view name.",
+                        "default": "Customers",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of products",
+                        "schema": {
+                            "$ref": "View"
+                        }
+                    }
+                }
+            }
+        },
+        "/app/config": {
+            "get": {
+                "summary": "App main UI configuration and metadata",
+                "description": "The app config information includes menu as pages...\n",
+                "tags": [
+                    "App Configuration"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of products",
+                        "schema": {
+                            "$ref": "Config"
+                        }
                     }
                 }
             }
