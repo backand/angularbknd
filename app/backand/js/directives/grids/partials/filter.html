@@ -18,7 +18,7 @@
                                     <option value="false">No</option>
                                 </select>
                                 <select ng-switch-when="relation" name="item.fieldName" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item">
-                                    <option ng-repeat="option in item.selectOptions" value="{{option.value}}">
+                                    <option ng-repeat="option in item.selectOptions" value="{{option.value}}" ng-selected="item.value == option.value">
                                         {{option.name}}
                                     </option>
                                 </select>
