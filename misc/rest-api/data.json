@@ -5,9 +5,9 @@
         "description": "Backand is the backend API for AngularJS",
         "version": "1.2.0"
     },
-    "host": "localhost:4109/backapi",
+    "host": "api.backand.com:8080",
     "schemes": [
-        "http"
+        "https"
     ],
     "basePath": "/1",
     "produces": [
@@ -15,10 +15,10 @@
     ],
     "tags": [
         {
-            "name": "Database Tables Data"
+            "name": "Database Table Data"
         },
         {
-            "name": "Database Tables Configuration"
+            "name": "Database Table Configuration"
         },
         {
             "name": "App Configuration"
@@ -33,7 +33,7 @@
                 "summary": "Get list of records",
                 "description": "Return list of records from a table or view based on paging, filter or sort parameters.",
                 "tags": [
-                    "Database Tables Data"
+                    "Database Table Data"
                 ],
                 "parameters": [
                     {
@@ -282,10 +282,10 @@
         },
         "/view/config/{name}": {
             "get": {
-                "summary": "View Configuration",
+                "summary": "Table Configuration",
                 "description": "Return the view configuration based on the settings in the console",
                 "tags": [
-                    "Database Tables Configuration"
+                    "Database Table Configuration"
                 ],
                 "parameters": [
                     {

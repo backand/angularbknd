@@ -87,7 +87,7 @@
         supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
         onComplete: function(swaggerApi, swaggerUi){
             //log("Loaded SwaggerUI");
-            backand.options.url = "http://localhost:4109/backapi"; //swaggerApi.scheme + "://" + swaggerApi.host; //'http://api.backand.info:8099';
+            backand.options.url = swaggerApi.scheme + "://" + swaggerApi.host; //'http://api.backand.info:8099';
             if (useToken == 'true')
                 initExternalToken();
             else
@@ -173,12 +173,12 @@
 
       function initBackandAPI() { 
             
-            //var username = $('#username').val()!='' ? $('#username').val() : 'guest@backand.com';
-            //var password = $('#password').val()!='' ? $('#password').val() : 'guest1234';
-          //var appname = $('#app').val()!='' ? $('#app').val() : 'restdemo';
-          var username = $('#username').val() != '' ? $('#username').val() : 'admin03@devitout.com';
-          var password = $('#password').val() != '' ? $('#password').val() : '123456';
-          var appname = $('#app').val() != '' ? $('#app').val() : 'qa55';
+          var username = $('#username').val()!='' ? $('#username').val() : 'guest@backand.com';
+          var password = $('#password').val()!='' ? $('#password').val() : 'guest1234';
+          var appname = $('#app').val()!='' ? $('#app').val() : 'restdemo';
+//          var username = $('#username').val() != '' ? $('#username').val() : 'admin03@devitout.com';
+//          var password = $('#password').val() != '' ? $('#password').val() : '123456';
+//          var appname = $('#app').val() != '' ? $('#app').val() : 'qa55';
 
             $('.active-app').text(appname);
             $('.active-app').attr('href', 'http://' + appname + '.backand.net');
@@ -461,10 +461,11 @@
 </div>
 <br/>
 <div id="bknd_message" class="swagger-ui-wrap" style="border: solid 1px gray; padding: 5px; display: none;">
-    <p>Backand generate REST API to your database's app, that help jump start your app's backend without writing any code.</p>
-    <p>Backand provides a simple data access layer that just works, no matter what database you're using</p>
-    <p>To connect your database just <a href="https://www.backand.com/connect">sign-up</a></p>
-    <p><a onclick="doLogoff(); return false;" href="void:javascript(0);"><img src="images/connect-all.png" style="height: 27px;width: auto;"></a></p>
+    <p>Backand generates a REST API to your database&apos;s app.  By providing a simple data access layer you can jump start your app&apos;s backend without writing any code. It just works - no matter which database you are using.</p>
+    <p>You can easily get started by connecting your database <a href="https://www.backand.com/sign-up">here</a>.</p>
+    <p>Check out the Backand playground to get a hands-on experience with the REST API and the automatic back office. Any changes you make in the back office will be immediately reflected in the REST API.</p>
+    <p>Try it now!</p>
+    <p><b>Playground: </b><a href="http://restdemo.backand.net" target="_blank">restdemo.backand.net</a> , <b>Username:</b> guest@backand.com , <b>Password:</b> guest1234</p>
 </div>
 <div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
 <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
