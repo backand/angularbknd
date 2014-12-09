@@ -7,26 +7,6 @@
   <link href='css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
   <link href='css/reset.css' media='print' rel='stylesheet' type='text/css'/>
   <link href='css/screen.css' media='print' rel='stylesheet' type='text/css'/>
-    <style>
-        .operators-link {
-            cursor:pointer;
-        }
-        .operators{
-            display:none;
-        } 
-        .operators ul {
-            font-weight: bold;
-        }
-        .operators ul li {
-            font-weight: normal;
-            margin-left: 10px;
-        }
-        code.json{max-width:300px;}
-        li.put textarea {
-            white-space: pre;
-            word-wrap: normal;
-        }
-    </style>
   <script type="text/javascript" src="lib/shred.bundle.js"></script>
   <script src='lib/jquery-1.8.0.min.js' type='text/javascript'></script>
   <script src='lib/jquery.slideto.min.js' type='text/javascript'></script>
@@ -42,35 +22,11 @@
   <!--<script src="https://s3.amazonaws.com/backand.net/backand/js/backand.js" type="text/javascript"></script>-->
   <script src="lib/backand.js" type="text/javascript"></script>
   <script src="lib/jquery.backand.js" type="text/javascript"></script>
-    
+
   <!-- enabling this will enable oauth2 implicit scope support -->
   <script src='lib/swagger-oauth.js' type='text/javascript'></script>
   <script type="text/javascript">
-      $(function () {
-
-          var putJsonDictionary = {};
-          var postJsonDictionary = {};
-
-          $(window).bind('snippetToTextArea', function (e, data) {
-              var code = data.tr.find("code");
-              if (code.attr("rest-action") == "put") {
-                  var id = code.attr('rest-id');
-                  var name = code.attr('rest-name');
-                  try {
-                      data.textArea.val(putJsonDictionary[name][id]);
-                  }
-                  catch (err) { }
-              }
-              else if (code.attr("rest-action") == "post") {
-                  var name = code.attr('rest-name');
-                  try {
-                      data.textArea.val(postJsonDictionary[name]);
-                  }
-                  catch (err) { }
-              }
-
-          });
-
+    $(function () {
       var url = window.location.search.match(/url=([^&]+)/);
       if (url && url.length > 1) {
         url = url[1];
@@ -87,15 +43,13 @@
         supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
         onComplete: function(swaggerApi, swaggerUi){
             //log("Loaded SwaggerUI");
-            backand.options.url = "http://localhost:4109/backapi"; //swaggerApi.scheme + "://" + swaggerApi.host; //'http://api.backand.info:8099';
+            backand.options.url = swaggerApi.scheme + "://" + swaggerApi.host; //'http://api.backand.info:8099';
             if (useToken == 'true')
                 initExternalToken();
             else
             {
                 initBackandAPI();
-                populateTableSelect();
-                populateDashboardSelect();
-                operatorsLink();
+                populateSelect();
             }
 
             $('.footer').hide();
@@ -111,22 +65,6 @@
         docExpansion: "none",
         sorter : ""
       });
-
-      function operatorsLink() {
-          var operatorsLink = $(".operators-link");
-          operatorsLink.click(function () {
-              var operators = $(".operators");
-              var hidden = operators.css('display') == "none";
-              if (hidden) {
-                  operators.show();
-                  operatorsLink.text(operatorsLink.text().replace("More", "Less"));
-              }
-              else {
-                  operators.hide();
-                  operatorsLink.text(operatorsLink.text().replace("Less", "More"));
-              }
-          });
-      }
 
       function addApiKeyAuthorization() {
         var key = $('#input_apiKey')[0].value;
@@ -159,27 +97,20 @@
           //let parent know the iframe is ready
           window.parent.postMessage(["ready", ''], "*");
 
-
           function setToken(event) {
               window.authorizations.add("api_key", new ApiKeyAuthorization("Authorization", event.data.auth, "header"));
-              window.authorizations.add("api_key1", new ApiKeyAuthorization("AppName", event.data.appName, "header"));
               backand.security.authentication.token = event.data.auth;
               backand.security.authentication.appName = event.data.appName;
-              populateTableSelect();
-              populateDashboardSelect();
+              populateSelect();
           }
 
       }
 
       function initBackandAPI() { 
             
-            //var username = $('#username').val()!='' ? $('#username').val() : 'guest@backand.com';
-            //var password = $('#password').val()!='' ? $('#password').val() : 'guest1234';
-          //var appname = $('#app').val()!='' ? $('#app').val() : 'restdemo';
-          var username = $('#username').val() != '' ? $('#username').val() : 'admin03@devitout.com';
-          var password = $('#password').val() != '' ? $('#password').val() : '123456';
-          var appname = $('#app').val() != '' ? $('#app').val() : 'qa55';
-
+            var username = $('#username').val()!='' ? $('#username').val() : 'guest@backand.com';
+            var password = $('#password').val()!='' ? $('#password').val() : 'guest1234';
+            var appname = $('#app').val()!='' ? $('#app').val() : 'restdemo';
             $('.active-app').text(appname);
             $('.active-app').attr('href', 'http://' + appname + '.backand.net');
 
@@ -197,10 +128,8 @@
                     function (xhr, textStatus, err) {
                         if (xhr) alert(JSON.stringify(xhr));
                     });
-      }
-
-
-        function populateTableSelect()
+        }
+        function populateSelect()
       {
             try {
                 var listViews;
@@ -209,7 +138,7 @@
                 backand.api.view.config.getList(null, null, 1000, filter, sort, null, function (data) {
                     listViews = data;
                 })
-                $('select.parameter[name=name]').each(function () {
+                $('select.parameter').each(function () {
                     var viewSelect = $(this);
                     //viewSelect[0].options[0].remove(); //remove the first option
                     var o = viewSelect[0].options[0]; //get selected option
@@ -222,167 +151,6 @@
                         var view = this;
                         o = new Option(view.captionText, view.name);
                         viewSelect.append(o);
-                    });
-
-                    if (viewSelect.parents('li.put').length == 1)
-                        handlePut(viewSelect);
-                    else if (viewSelect.parents('li.post').length == 1)
-                        handlePost(viewSelect);
-                });
-            }
-            catch (ex) { }
-        }
-
-        function handlePost(viewSelect) {
-            viewSelect.change(function () {
-                var form = viewSelect.parents("form:first");
-                if (form.length == 0) return;
-
-                var name = viewSelect.val();
-
-                var model = form.find("code");
-                if (model.length == 0) return;
-
-                model.html("");
-
-                if (!name) return;
-
-                model.removeAttr('rest-name');
-
-                backand.api.view.config.getItem(name, function (data) {
-                    var o = {};
-
-                    var type = "string";
-                    $(data.fields).each(function () {
-                        var field = this;
-                        switch (field.type) {
-                            case 'Numeric':
-                                type = "number";
-                                break;
-                            case 'DateTime':
-                                type = JSON.stringify(new Date());
-                                break;
-                            case 'SingleSelect':
-                                type = 'parent'
-                                break;
-                            case 'MultiSelect':
-                                type = 'children'
-                                break;
-                            case 'Boolean':
-                                type = 'boolean';
-                                break;
-                            default:
-                                type = 'string'
-
-                                break;
-                        }
-                        if (type != "children" && !field.form.hideInCreate)
-                            o[field.name] = type;
-                    })
-
-                    var json = JSON.stringify(o, null, "\t");
-                    var prettyJson = json.replace(/\n/g, "<br>");
-                    model.html(prettyJson);
-                    model.attr('rest-name', name);
-                    postJsonDictionary[name] = json;
-                    if (!model.attr("rest-action")) model.attr("rest-action", "post");
-                }, function (error) {
-                    if (error && error.status == 404) {
-                        alert("This table does not exist.")
-                    }
-                    else if (error.responseJSON && error.responseJSON.error_description) {
-                        model.html(error.responseJSON.error_description);
-                    }
-                    else if (error.responseText) {
-                        model.html(error.responseText);
-
-                    }
-                });
-            });
-        }
-
-        function handlePut(viewSelect) {
-            var form = viewSelect.parents("form:first");
-            if (form.length == 0) return;
-
-            var idInput = form.find('input[name=id]');
-            idInput.width(idInput.width() - 40);
-            var button = idInput.parent().append("<input type='button' value='get' class='get-for-put'/>")
-
-            button.click(function () {
-                if ($(event.target).attr('class') != 'get-for-put')
-                    return;
-
-                if (idInput.length != 1)
-                    return;
-
-                if (!viewSelect.val()) {
-                    alert("Please select a table or view.")
-                    viewSelect.focus();
-                    return;
-                }
-
-                if (!idInput.val()) {
-                    alert("Please enter an id.")
-                    idInput.focus();
-                    return;
-                }
-
-                var model = form.find("code");
-                if (model.length == 0) return;
-
-                var name = viewSelect.val();
-                var id = idInput.val();
-
-                model.html("");
-
-                model.removeAttr('rest-id');
-                model.removeAttr('rest-name');
-
-                backand.api.view.data.getItem(name, id, false, function (data) {
-                    data.__metadata = undefined;
-                    var json = JSON.stringify(data, null, "\t");
-                    var prettyJson = json.replace(/\n/g, "<br>");
-                    model.html(prettyJson);
-                    model.attr('rest-id', id);
-                    model.attr('rest-name', name);
-                    putJsonDictionary[name] = {};
-                    putJsonDictionary[name][id] = json;
-                    if (!model.attr("rest-action")) model.attr("rest-action", "put");
-                }, function (error) {
-                    if (error && error.status == 404) {
-                        alert("This object does not exist. Please open the \"Get list of records\" and take one of the ids from there.")
-                    }
-                    else if (error.responseJSON && error.responseJSON.error_description) {
-                        model.html(error.responseJSON.error_description);
-                    }
-                    else if (error.responseText) {
-                        model.html(error.responseText);
-
-                    }
-                });
-
-            })
-            
-        }
-
-        function populateDashboardSelect() {
-            try {
-                backand.api.dashboard.config.getList(null, null, 1000, null, null, null, function (data) {
-                    $('select.parameter[name=id]').each(function () {
-                        var dashboardSelect = $(this);
-
-                        var o = dashboardSelect[0].options[0]; //get selected option
-                        o.label = " -- Select a Table or View --";
-                        o.value = "";
-                        o.selected = true;
-                        //viewSelect.append(o);
-                        dashboardSelect[0].multiple = false;
-                        $(data.data).each(function () {
-                            var dashboard = this;
-                            o = new Option(dashboard.name, dashboard.id);
-                            dashboardSelect.append(o);
-                        });
                     });
                 });
             }

@@ -5,9 +5,9 @@
         "description": "Backand is the backend API for AngularJS",
         "version": "1.2.0"
     },
-    "host": "api.backand.com:8080",
+    "host": "localhost:4109/backapi",
     "schemes": [
-        "https"
+        "http"
     ],
     "basePath": "/1",
     "produces": [
@@ -28,54 +28,6 @@
         }
     ],
     "paths": {
-        "/app/config": {
-            "get": {
-                "summary": "App main UI configuration and metadata",
-                "description": "The app config information includes menu as pages...\n",
-                "tags": [
-                    "App Configuration"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of products",
-                        "schema": {
-                            "$ref": "Config"
-                        }
-                    }
-                }
-            }
-        },
-        "/view/config/{name}": {
-            "get": {
-                "summary": "View Configuration",
-                "description": "Return the view configuration based on the settings in the console",
-                "tags": [
-                    "Database Tables Configuration"
-                ],
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "path",
-                        "description": "The table or view name.",
-                        "default": "Customers",
-                        "required": true,
-                        "type": "array",
-                        "format": "string",
-                        "enum": [
-                            "blank"
-                        ]
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of products",
-                        "schema": {
-                            "$ref": "View"
-                        }
-                    }
-                }
-            }
-        },
         "/view/data/{name}": {
             "get": {
                 "summary": "Get list of records",
@@ -112,13 +64,46 @@
                         "default": 1
                     },
                     {
-                        "name": "post",
-                        "in": "body",
-                        "description": "Post parameters",
+                        "name": "filter",
+                        "in": "query",
+                        "description": "A filter array were each item has the properties fieldName, operator and value.<br>The operator options depend on the field type.<br><a class=\"operators-link\">More for the opertors options</a><br><div class=operators><ul>numeric or date fields<li>equals</li><li>notEquals</li><li>greaterThan</li><li>greaterThanOrEqualsTo</li><li>lessThan</li><li>lessThanOrEqualsTo</li><li>empty</li><li>notEmpty</li></ul><ul>textual fields<li>equals</li><li>notEquals</li><li>startsWith</li><li>contains</li><li>notContains</li><li>empty</li><li>notEmpty</li></ul><ul>related fields<li>in</li></ul></div>",
                         "required": false,
+                        "type": "array",
                         "schema": {
-                            "$ref": "ViewInput"
+                            "$ref": "Filter"
                         }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "A sort array were each item has the properties fieldName and order.<br>The order options are \"asc\" or \"desc\".",
+                        "required": false,
+                        "type": "array",
+                        "schema": {
+                            "$ref": "Sort"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Free text search",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "deep",
+                        "in": "query",
+                        "description": "When set to true, brings the related parent rows in the relatedTables property",
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "name": "withSelectOptions",
+                        "in": "query",
+                        "description": "Get a text value collection to load select options",
+                        "required": false,
+                        "type": "boolean",
+                        "default": false
                     }
                 ],
                 "responses": {
@@ -153,6 +138,13 @@
                         "description": "The record id",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "name": "deep",
+                        "in": "query",
+                        "description": "When set to true, brings the related parent and child rows into the json structure",
+                        "type": "boolean",
+                        "default": false
                     }
                 ],
                 "responses": {
@@ -165,7 +157,7 @@
                 }
             },
             "put": {
-                "summary": "update a record",
+                "summary": "Update a record",
                 "description": "Update a single record. In order to update JUST copy the Json of the GET as is and update the fields values OR includes the fields that need to be updated.",
                 "tags": [
                     "Database Tables Data"
@@ -190,9 +182,17 @@
                         "type": "string"
                     },
                     {
-                        "name": "post",
+                        "name": "returnObject",
+                        "in": "query",
+                        "description": "Set this to true when you have server side business rules that causes additional changes to the object. In that case this request will return the updated object",
+                        "required": false,
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "name": "object",
                         "in": "body",
-                        "description": "Post parameters",
+                        "description": "The object that you want to update",
                         "required": false,
                         "schema": {
                             "$ref": "Fields"
@@ -201,12 +201,12 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "returns no data"
+                        "description": "By default, returns no data, unless returnObject is set to true, then it returns the updated object"
                     }
                 }
             },
             "post": {
-                "summary": "create new record",
+                "summary": "Create new record",
                 "description": "Create a new record. In order to create new record you must include the required fields and any other field to be included in the new record. You can JUST copy the Json of the GET and update the values.",
                 "tags": [
                     "Database Tables Data"
@@ -224,9 +224,17 @@
                         ]
                     },
                     {
-                        "name": "post",
+                        "name": "returnObject",
+                        "in": "query",
+                        "description": "Set this to true when you have server side business rules that causes additional changes to the object. In that case this request will return the created object",
+                        "required": false,
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "name": "object",
                         "in": "body",
-                        "description": "Post parameters",
+                        "description": "The object that you want to create",
                         "required": false,
                         "schema": {
                             "$ref": "Fields"
@@ -235,16 +243,13 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "returns the new record primary key (id)",
-                        "schema": {
-                            "$ref": "_metadata"
-                        }
+                        "description": "By default, returns the new record primary key (id), unless returnObject is set to true, then it returns the created object"
                     }
                 }
             },
             "delete": {
                 "summary": "delete a record",
-                "description": "delete a record. Must provide the PK of the record",
+                "description": "Delete a record. Must provide the PK of the record",
                 "tags": [
                     "Database Tables Data"
                 ],
@@ -270,7 +275,55 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "no data returns"
+                        "description": "Returns the deleted record primary key (id)"
+                    }
+                }
+            }
+        },
+        "/view/config/{name}": {
+            "get": {
+                "summary": "View Configuration",
+                "description": "Return the view configuration based on the settings in the console",
+                "tags": [
+                    "Database Tables Configuration"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The table or view name.",
+                        "default": "Customers",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of products",
+                        "schema": {
+                            "$ref": "View"
+                        }
+                    }
+                }
+            }
+        },
+        "/app/config": {
+            "get": {
+                "summary": "App main UI configuration and metadata",
+                "description": "The app config information includes menu as pages...\n",
+                "tags": [
+                    "App Configuration"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of products",
+                        "schema": {
+                            "$ref": "Config"
+                        }
                     }
                 }
             }
@@ -288,7 +341,11 @@
                         "in": "path",
                         "description": "The dashboard id.",
                         "required": true,
-                        "type": "string"
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
                     }
                 ],
                 "responses": {
@@ -314,7 +371,11 @@
                         "in": "path",
                         "description": "The dashboard id.",
                         "required": true,
-                        "type": "string"
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
                     }
                 ],
                 "responses": {
@@ -322,12 +383,6 @@
                         "description": "An array of products",
                         "schema": {
                             "$ref": "Dashboard"
-                        }
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "Error"
                         }
                     }
                 }
@@ -429,11 +484,7 @@
                 "order": {
                     "optional": false,
                     "type": "string",
-                    "description": "asc or desc",
-                    "enum": [
-                        "asc",
-                        "desc"
-                    ]
+                    "description": "asc or desc"
                 }
             }
         },
@@ -443,12 +494,7 @@
                     "type": "string"
                 },
                 "operator": {
-                    "type": "string",
-                    "description": "equals or notEquals",
-                    "enum": [
-                        "equals",
-                        "notEquals"
-                    ]
+                    "type": "string"
                 },
                 "value": {
                     "type": "string"
@@ -466,7 +512,7 @@
             "properties": {
                 "fieldName": {
                     "type": "string",
-                    "descripttion": "date in javascript syntax"
+                    "descripttion": "Date in javascript syntax"
                 }
             }
         },
@@ -496,25 +542,6 @@
         },
         "Fields": {
             "empty": null
-        },
-        "ViewInput": {
-            "properties": {
-                "sort": {
-                    "$ref": "Sort"
-                },
-                "filter": {
-                    "type": "array",
-                    "$ref": "Filter"
-                },
-                "withSelectOptions": {
-                    "type": "boolean",
-                    "description": "Load the drop-down values"
-                },
-                "searchText": {
-                    "type": "string",
-                    "description": "Search filter string on scalar fields"
-                }
-            }
         },
         "ViewPost": {
             "properties": {
