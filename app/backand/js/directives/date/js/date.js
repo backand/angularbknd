@@ -92,7 +92,7 @@ angular.module('backAnd.directives')
              */
             scope.$watch("mydate", function (newValue, oldValue) {
                 if (newValue)
-                    scope.value.val = JSON.stringify(newValue);
+                    scope.value.val = newValue;
                 else
                     scope.value.val = null;
             });
