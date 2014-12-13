@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Backand REST API",
+        "title": "Backand REST API Playground",
         "description": "Backand is the backend API for AngularJS",
         "version": "1.2.0"
     },
