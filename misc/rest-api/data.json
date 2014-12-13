@@ -108,7 +108,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "An array of recoeds"
+                        "description": "An array of records"
                     }
                 }
             }
@@ -116,9 +116,9 @@
         "/view/data/{name}/{id}": {
             "get": {
                 "summary": "Get single record",
-                "description": "Return single record data includes information on dropdowns.",
+                "description": "Return single record data includes information on drop downs.",
                 "tags": [
-                    "Database Tables Data"
+                    "Database Table Data"
                 ],
                 "parameters": [
                     {
@@ -149,7 +149,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Return __metadata with the record primary key and all the fileds data that the user can view",
+                        "description": "Return __metadata with the record primary key and all the fields data that the user can view",
                         "schema": {
                             "$ref": "ViewPost"
                         }
@@ -160,7 +160,7 @@
                 "summary": "Update a record",
                 "description": "Update a single record. In order to update JUST copy the Json of the GET as is and update the fields values OR includes the fields that need to be updated.",
                 "tags": [
-                    "Database Tables Data"
+                    "Database Table Data"
                 ],
                 "parameters": [
                     {
@@ -209,7 +209,7 @@
                 "summary": "Create new record",
                 "description": "Create a new record. In order to create new record you must include the required fields and any other field to be included in the new record. You can JUST copy the Json of the GET and update the values.",
                 "tags": [
-                    "Database Tables Data"
+                    "Database Table Data"
                 ],
                 "parameters": [
                     {
@@ -248,10 +248,10 @@
                 }
             },
             "delete": {
-                "summary": "delete a record",
+                "summary": "Delete a record",
                 "description": "Delete a record. Must provide the PK of the record",
                 "tags": [
-                    "Database Tables Data"
+                    "Database Table Data"
                 ],
                 "parameters": [
                     {
@@ -282,10 +282,10 @@
         },
         "/view/config/{name}": {
             "get": {
-                "summary": "Table Configuration",
+                "summary": "Table configuration",
                 "description": "Return the view configuration based on the settings in the console",
                 "tags": [
-                    "Database Table Configuration"
+                    "Table Configuration"
                 ],
                 "parameters": [
                     {
@@ -330,7 +330,7 @@
         },
         "/dashboard/data/{id}": {
             "get": {
-                "summary": "Dashboard Data",
+                "summary": "Dashboard data",
                 "description": "Return the dashboard data based on the settings in the console.",
                 "tags": [
                     "Dashboard Data"
@@ -360,7 +360,7 @@
         },
         "/dashboard/config/{id}": {
             "get": {
-                "summary": "Dashboard Configuration",
+                "summary": "Dashboard configuration",
                 "description": "Return the dashboard configuration based on the settings in the console.",
                 "tags": [
                     "Dashboard Configuration"

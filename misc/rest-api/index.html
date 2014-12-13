@@ -441,31 +441,31 @@
 </head>
 
 <body class="swagger-section">
-<div id='header' style="display:none;min-height: 24px;">
-  <div class="swagger-ui-wrap">
-      <div class="bknd-app">
-        <a id="logo" class="active-app"></a>&nbsp;&nbsp;&nbsp;<a onclick="doLogoff(); return false;" href="#" style="color:white;">Connect another app</a>
-      </div>
-      <div class="bknd-logon" style="display:none">
-          <form id='api_selector' style="margin-right: 250px;">
-              <div class='input'><input placeholder="Username" id="username" name="username" type="text" required/></div>
-              <div class='input' style="display:none;"><input placeholder="Usernamehide" id="username-hide" name="username" type="hidden" required /></div> <!--For chrome so it won't add username-->
-              <div class='input'><input placeholder="Password" id="password" name="password" type="password" required/></div>
-              <div class='input'><input placeholder="App Name" id="app" name="app" type="text" required/></div>
-              <div class='input'><a id="logon" onclick="doLogon(); return false;" href="#">Log On</a></div>&nbsp;&nbsp;
-              <div style="display: inline-block;margin-top: 5px;"><a style="margin-top:15px;" onclick="cancelLogon()" href="#">cancel</a></div>
-          </form>
-      </div>
-  </div>
 
-</div>
 <br/>
 <div id="bknd_message" class="swagger-ui-wrap" style="border: solid 1px gray; padding: 5px; display: none;">
-    <p>Backand generates a REST API to your database&apos;s app.  By providing a simple data access layer you can jump start your app&apos;s backend without writing any code. It just works - no matter which database you are using.</p>
+    <p>By providing a simple data access layer, Backand jump starts your app&apos;s backend without writing any code.  It just works - no matter which database you are using - the restdemo, shown below, or your own.</p>
     <p>You can easily get started by connecting your database <a href="https://www.backand.com/sign-up" target="_parent">here</a>.</p>
-    <p>Check out the Backand playground to get a hands-on experience with the REST API and the automatic back office. Any changes you make in the back office will be immediately reflected in the REST API.</p>
-    <p>Try it now!</p>
-    <p><b>Playground: </b><a href="http://restdemo.backand.net" target="_blank">restdemo.backand.net</a> , <b>Username:</b> guest@backand.com , <b>Password:</b> guest1234</p>
+    <p>You can play with the Backand playground below and get a hands-on experience with the REST API.  Check out Backand&apos;s automatic back office and make changes that will be immediately reflected in the REST API.</p>
+    <p><b>Back office: </b><a href="http://restdemo.backand.net" target="_blank">restdemo.backand.net</a> , <b>Username:</b> guest@backand.com , <b>Password:</b> guest1234</p>
+</div>
+<br/><br/>
+<div id='header' style="display:none;min-height: 24px;max-width: 960px;margin-left: auto;margin-right: auto;">
+    <div class="swagger-ui-wrap">
+        <div class="bknd-app">
+            <div style="font-size: 1.5em;font-weight: bold;color: white;display: inline;padding-left: 5px;">App:</div> <a id="logo" class="active-app" style="text-decoration: underline;padding:0px;"></a>
+        </div>
+        <div class="bknd-logon" style="display:none">
+            <form id='api_selector' style="margin-right: 250px;">
+                <div class='input'><input placeholder="Username" id="username" name="username" type="text" required/></div>
+                <div class='input' style="display:none;"><input placeholder="Usernamehide" id="username-hide" name="username" type="hidden" required /></div> <!--For chrome so it won't add username-->
+                <div class='input'><input placeholder="Password" id="password" name="password" type="password" required/></div>
+                <div class='input'><input placeholder="App Name" id="app" name="app" type="text" required/></div>
+                <div class='input'><a id="logon" onclick="doLogon(); return false;" href="#">Log On</a></div>&nbsp;&nbsp;
+                <div style="display: inline-block;margin-top: 5px;"><a style="margin-top:15px;" onclick="cancelLogon()" href="#">cancel</a></div>
+            </form>
+        </div>
+    </div>
 </div>
 <div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
 <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
