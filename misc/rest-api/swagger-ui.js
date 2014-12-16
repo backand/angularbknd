@@ -2032,8 +2032,10 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
     OperationView.prototype.showResponse = function(response) {
       var prettyJson;
-      prettyJson = JSON.stringify(response, null, "\t").replace(/\n/g, "<br>");
-      return $(".response_body", $(this.el)).html(escape(prettyJson));
+      prettyJson = escape(JSON.stringify(response, null, "\t").replace(/\n/g, "<br>"));
+      var responseBody = $(".response_body", $(this.el));
+
+      return responseBody.html(prettyJson);
     };
 
     OperationView.prototype.showErrorStatus = function(data, parent) {
@@ -2158,6 +2160,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       $(".request_url pre", $(this.el)).text(url);
       $(".response_code", $(this.el)).html("<pre>" + response.status + "</pre>");
       $(".response_body", $(this.el)).html(response_body);
+      $(window).trigger('showResponse', { prettyJson: response_body, responseBody: $(".response_body", $(this.el)), swagger: this });
+
+
       $(".response_headers", $(this.el)).html("<pre>" + _.escape(JSON.stringify(response.headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>");
       $(".response", $(this.el)).slideDown();
       $(".response_hider", $(this.el)).show();

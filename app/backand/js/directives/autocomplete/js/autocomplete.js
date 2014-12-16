@@ -30,6 +30,7 @@ angular.module('backAnd.directives')
     	templateUrl: 'backand/js/directives/autocomplete/partials/autocomplete.html',
     	controller: ['$scope', '$http', function ($scope, $http) {
     	    $scope.options = function (query) {
+    	        $scope.firstTime = true;
 				if($scope.firstTime){
 					$scope.firstTime = false;
 					return null;
