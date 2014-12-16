@@ -12,6 +12,8 @@ angular.module('backAnd', [
     'ngGrid',
 	'cgBusy',
     'ui.bootstrap',
+    'ngSanitize', 
+    'MassAutoComplete', 
     'backAnd.filters',
     'backAnd.services',
     'backAnd.directives',

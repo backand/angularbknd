@@ -1,0 +1,11 @@
+<ng-form name="innerForm">
+	<ul class="list-inline" ng-show="field.show">
+       <li ng-repeat="tag in tags">{{ tag.label }}<i class="fa fa-times multi-select-close" ng-disabled="field.disabled" ng-click="clickDelete(tag.value)"></i></li>
+    </ul>
+	<div ng-if="field.small" single-select field="dropdownStructure" value="dropdownValue" form="" input-class="" errors=""></div>
+	<div ng-if="!field.small" mass-autocomplete>
+        <input ng-disabled="field.disabled" mass-autocomplete-item="autocomplete_options" name="field" class="form-control" ng-required="field.required" ng-model="dirty.value" ng-show="field.show" ng-disabled="field.disabled" ng-class="inputClass">
+    </div>
+    
+    <div class="alert alert-danger" role="alert" ng-show="tags.length == 0">Missing</div>
+</ng-form>
