@@ -77,6 +77,10 @@
             text-decoration: underline;
             color: black;
         }
+
+        .back-office-title{
+            margin-top:34px;
+        }
     </style>
   <script type="text/javascript" src="lib/shred.bundle.js"></script>
   <script src='lib/jquery-1.8.0.min.js' type='text/javascript'></script>
@@ -100,6 +104,17 @@
 
   <script type="text/javascript">
       $(function () {
+
+          function qs(key) {
+              var vars = [], hash;
+              var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('#')[0].split('&');
+              for (var i = 0; i < hashes.length; i++) {
+                  hash = hashes[i].split('=');
+                  vars.push(hash[0]);
+                  vars[hash[0]] = hash[1];
+              }
+              return vars[key];
+          }
 
           var putJsonDictionary = {};
           var postJsonDictionary = {};
@@ -149,6 +164,7 @@
                 populateTableSelect();
                 populateDashboardSelect();
                 operatorsLink();
+                changeFilterAndSortToTextArea();
                 codeSamples();
             }
 
@@ -182,6 +198,22 @@
           });
       }
 
+      function changeFilterAndSortToTextArea() {
+          var filterTextArea = $('<textarea class="parameter" minlength="0" name="filter" placeholder=""></textarea>');
+          var filterInput = $('#Database_Tables_Data_view_data_name_get_content input[name=filter]');
+          var width = filterInput.width();
+          filterInput.replaceWith(filterTextArea);
+          filterTextArea.width(width - 4);
+          filterTextArea.height(110);
+
+          var sortTextArea = $('<textarea class="parameter" minlength="0" name="sort" placeholder=""></textarea>');
+          var sortInput = $('#Database_Tables_Data_view_data_name_get_content input[name=sort]');
+          var width = sortInput.width();
+          sortInput.replaceWith(sortTextArea);
+          sortTextArea.width(width - 4);
+          sortTextArea.height(90);
+      }
+
       
       function getCurrentReponse(crud) {
           if (!currentResponse[crud])
@@ -191,7 +223,10 @@
       }
 
       function getDefaultResponse() {
-          return 0;
+          if (qs("orm") == "restangular")
+              return 1;
+          else
+              return 0;
       }
 
       var currentResponse = [getDefaultResponse(), getDefaultResponse(), getDefaultResponse(), getDefaultResponse(), getDefaultResponse()];
@@ -272,8 +307,8 @@
               var name = $('#Database_Tables_Data_endpoint_list').find('form.sandbox select:first').val();
               var pageSize = $('#Database_Tables_Data_endpoint_list').find('input[name=pageSize]:first').val();
               var pageNumber = $('#Database_Tables_Data_endpoint_list').find('input[name=pageNumber]:first').val();
-              var filter = $('#Database_Tables_Data_endpoint_list').find('input[name=filter]:first').val();
-              var sort = $('#Database_Tables_Data_endpoint_list').find('input[name=sort]:first').val();
+              var filter = $('#Database_Tables_Data_endpoint_list').find('[name=filter]:first').val();
+              var sort = $('#Database_Tables_Data_endpoint_list').find('[name=sort]:first').val();
               var search = $('#Database_Tables_Data_endpoint_list').find('input[name=search]:first').val();
               var deep = $('#Database_Tables_Data_endpoint_list').find('select[name=deep]:first').val();
               var withSelectOptions = $('#Database_Tables_Data_endpoint_list').find('select[name=withSelectOptions]:first').val();
@@ -301,12 +336,29 @@
           return html;
       }
 
-      var codeCache = [{ responseBody: "", restangular: "", resource: "" }, { responseBody: "", restangular: "", resource: "" }, { responseBody: "", restangular: "", resource: "" }, { responseBody: "", restangular: "", resource: "" }, { responseBody: "", restangular: "", resource: "" }];
+      var codeCache = [
+          { responseBody: "", restangular: "", resource: "" },
+          { responseBody: "", restangular: "", resource: "" },
+          { responseBody: "", restangular: "", resource: "" },
+          { responseBody: "", restangular: "", resource: "" },
+          { responseBody: "", restangular: "", resource: "" }];
 
       function codeSamples() {
-          var options = '<div><ul class="response-options"><li class="response-body"><a' + (getDefaultResponse() == 0 ? ' class="active"' : '') + '><h4>Response Body</h4></a></li><li class="restangular"><a' + (getDefaultResponse() == 1 ? ' class="active"' : '') + '><h4>Restangular</h4></a></li><li class="resource"><a' + (getDefaultResponse() == 2 ? ' class="active"' : '') + '><h4>$resource</h4></a></li></ul></div>';
 
-          var responses = $(".response");
+          if (getDefaultResponse() == 0) {
+              $('#resource_Database_Tables_Configuration').prepend($("<div class=\"info_title back-office-title\">Back Office  REST API</div>"));
+          }
+          else {
+              $("#resources").children().each(function () {
+                  if ($(this).attr("id") != "resource_Database_Tables_Data") {
+                      $(this).remove();
+                  }
+              });
+          }
+
+          var options = '<div><ul class="response-options"><li class="response-body"><a' + (getDefaultResponse() == 0 ? ' class="active"' : '') + '><h4>Response Body</h4></a></li><li class="restangular"><a' + (getDefaultResponse() == 1 ? ' class="active"' : '') + '><h4>Restangular</h4></a></li></ul></div>'; //<li class="resource"><a' + (getDefaultResponse() == 2 ? ' class="active"' : '') + '><h4>$resource</h4></a></li>
+
+          var responses = $("#resource_Database_Tables_Data .response");
           responses.each(function () {
               var response = $(this);
               response.find("h4:eq(1)").replaceWith(options);
