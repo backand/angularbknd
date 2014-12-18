@@ -31,7 +31,7 @@ backAndControllers.controller('demoController', ['$scope', '$http', '$location',
                     if (status == 401) {
                         localStorage.removeItem('AuthorizationDemo');
                         $location.path('/');
-                        window.location.reload()
+                        //window.location.reload()
                     }
                     var error_description = "The server is busy. Please contact your administrator or try again later.";
                     if (data && data.error_description)
@@ -49,7 +49,7 @@ backAndControllers.controller('demoController', ['$scope', '$http', '$location',
             var token = localStorage['AuthorizationDemo'];
             if (token) {
                 $http.defaults.headers.common['Authorization'] = token;
-                checkAuthenticationToken();
+                //checkAuthenticationToken();
                 return;
             }
 
@@ -59,7 +59,7 @@ backAndControllers.controller('demoController', ['$scope', '$http', '$location',
                 grant_type: "password",
                 username: 'guest@backand.com',
                 password: 'guest1234',
-                appname: 'demoapp1',
+                appname: 'demoapp1'
             });
             var request = $http({
                 method: 'POST',

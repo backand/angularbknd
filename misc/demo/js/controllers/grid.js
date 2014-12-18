@@ -37,6 +37,7 @@ backAndControllers.controller('filterGridController', ['$scope', 'dataListServic
             }, function (data) {
                 
                 $scope.Job_TitleOptions = data.data;
+
             });
         }
 

@@ -140,7 +140,7 @@
         supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
         onComplete: function(swaggerApi, swaggerUi){
             //log("Loaded SwaggerUI");
-            backand.options.url = "http://localhost:4109/backapi"; //swaggerApi.scheme + "://" + swaggerApi.host; //'http://api.backand.info:8099';
+            backand.options.url = swaggerApi.scheme + "://" + swaggerApi.host; //'http://api.backand.info:8099';
             if (useToken == 'true')
                 initExternalToken();
             else
@@ -387,12 +387,9 @@
 
       function initBackandAPI() { 
             
-            //var username = $('#username').val()!='' ? $('#username').val() : 'guest@backand.com';
-            //var password = $('#password').val()!='' ? $('#password').val() : 'guest1234';
-          //var appname = $('#app').val()!='' ? $('#app').val() : 'restdemo';
-          var username = $('#username').val() != '' ? $('#username').val() : 'admin03@devitout.com';
-          var password = $('#password').val() != '' ? $('#password').val() : '123456';
-          var appname = $('#app').val() != '' ? $('#app').val() : 'qa55';
+            var username = $('#username').val()!='' ? $('#username').val() : 'guest@backand.com';
+            var password = $('#password').val()!='' ? $('#password').val() : 'guest1234';
+            var appname = $('#app').val()!='' ? $('#app').val() : 'restdemo';
 
             $('.active-app').text(appname);
             $('.active-app').attr('href', 'http://' + appname + '.backand.net');

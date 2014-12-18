@@ -22,14 +22,14 @@
                                 <legend>
                                     Find Employees By:
                                 </legend>
-                                <div ng-repeat="filterOption in filterOptions">
+                                <div ng-repeat="filterOption in filterOptions" class="col-md-3">
                                     <label ng-if="filterOption.fieldName=='First_Name'" class="col-md-6">
                                         First Name:
-                                        <input ng-model="filterOption.value" />
+                                        <input ng-model="filterOption.value" class="form-control" style="width:200px;"/>
                                     </label>
                                     <label ng-if="filterOption.fieldName=='Job_Title'" class="col-md-6">
                                         Job Title:
-                                        <select ng-model="filterOption.value">
+                                        <select ng-model="filterOption.value" class="form-control" style="width:200px;">
                                             <option ng-repeat="Job_TitleOption in Job_TitleOptions" value="{{Job_TitleOption.Id}}">
                                                 {{Job_TitleOption.Name}}
                                             </option>
