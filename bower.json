@@ -48,7 +48,8 @@
 	"angular-busy" : "ygalbel/angular-busy#master",
     "angular-mass-autocomplete": "latest",
     "angular-sanitize": "latest",
-    "underscore": "latest"
+    "underscore": "latest",
+    "angularjs-dropdown-multiselect": "latest"
   },
   "resolutions": {
     "jquery": "^1.10",

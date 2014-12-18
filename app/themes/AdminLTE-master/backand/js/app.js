@@ -14,6 +14,7 @@ angular.module('backAnd', [
     'ui.bootstrap',
     'ngSanitize', 
     'MassAutoComplete', 
+    'angularjs-dropdown-multiselect',
     'backAnd.filters',
     'backAnd.services',
     'backAnd.directives',

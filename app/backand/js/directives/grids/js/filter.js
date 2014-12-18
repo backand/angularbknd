@@ -32,10 +32,30 @@ angular.module('backAnd.directives')
                 }
             }, true);
 
+            scope.multiSelectEvents = {
+                onItemSelect: function(item) {
+                    scope.filterChanged();
+                },
+                onItemDeselect: function(item) {
+                    scope.filterChanged();
+                },
+                // onSelectAll: function() {},
+                // onUnselectAll: function() {}
+            };
+
+            scope.multiSelectExtraSettings = {
+                showCheckAll: false,
+                showUncheckAll: false,
+                idProp: "value",
+                displayProp: "name",
+                buttonClasses: "btn btn-lg multi-filter multiselect-button"
+            }
+
+            // scope.example1model = []; 
+            // scope.example1data = [ {id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
             
             scope.filterChanged = function () {
                 scope.$emit('onfilter', scope.getFilter(), scope);
-
             }
 
             scope.getFilter = function () {

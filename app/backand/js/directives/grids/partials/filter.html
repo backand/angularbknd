@@ -22,6 +22,7 @@
                                         {{option.name}}
                                     </option>
                                 </select>
+                                <div ng-switch-when="multiSelectRelation" name="item.fieldName" ng-dropdown-multiselect class="multi-filter" options="item.selectOptions" selected-model="item.value" events="multiSelectEvents" extra-settings="multiSelectExtraSettings" class="form-control filter-item" ></div>
                                 <input ng-switch-default="text" type="text" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
                             </div>
                             <div class="btn-group" dropdown ng-show="showOperators && item.fieldType != 'relation' && item.fieldType != 'boolean'">
