@@ -171,7 +171,7 @@
 
             $('.footer').hide();
             resize();
-            initUI(useToken);
+            initUI(useToken,getDefaultResponse());
           $('pre code').each(function(i, e) {
             hljs.highlightBlock(e)
           });
@@ -453,7 +453,7 @@
             
             var username = $('#username').val()!='' ? $('#username').val() : 'guest@backand.com';
             var password = $('#password').val()!='' ? $('#password').val() : 'guest1234';
-            var appname = $('#app').val()!='' ? $('#app').val() : 'restdemoqa';
+            var appname = $('#app').val()!='' ? $('#app').val() : 'restdemo';
 
             $('.active-app').text(appname);
             $('.active-app').attr('href', 'http://' + appname + '.backand.net');
@@ -699,7 +699,7 @@
         window.parent.postMessage(["setHeight", height], "*");
     }
 
-    function initUI(useToken) {
+    function initUI(useToken, isORM) {
         if(window.parent != window) {
             setInterval('resize()', 500);
             $('body').css('overflow','hidden');
@@ -708,7 +708,10 @@
         if(!useToken)
         {
             $('#header').show();
-            $('#bknd_message').show();
+            if (isORM == 0)
+                $('#bknd_message_rest').show();
+            else
+                $('#bknd_message_orm').show();
         }
     }
 
@@ -717,11 +720,18 @@
 
 <body class="swagger-section">
 <br/>
-<div id="bknd_message" class="swagger-ui-wrap" style="border: solid 1px gray; padding: 5px; display: none;">
+<div id="bknd_message_rest" class="swagger-ui-wrap" style="border: solid 1px gray; padding: 5px; display: none;">
     <p>By providing a simple data access layer, Backand jump starts your app&apos;s backend without writing any code.  It just works - no matter which database you are using - the restdemo, shown below, or your own.</p>
     <p>You can easily get started by connecting your database <a href="https://www.backand.com/sign-up" target="_parent">here</a>.</p>
     <p>You can play with the Backand playground below and get a hands-on experience with the REST API.  Check out Backand&apos;s automatic back office and make changes that will be immediately reflected in the REST API.</p>
-    <p><b>Back office: </b><a href="http://restdemo.backand.net" target="_blank">restdemo.backand.net</a>&nbsp;&nbsp;<b>Username:</b> guest@backand.com&nbsp;&nbsp;<b>Password:</b> guest1234</p>
+    <p><b>Back office URL: </b><a href="http://restdemo.backand.net" target="_blank">restdemo.backand.net</a>&nbsp;&nbsp;<b>Username:</b> guest@backand.com&nbsp;&nbsp;<b>Password:</b> guest1234</p>
+</div>
+<div id="bknd_message_orm" class="swagger-ui-wrap" style="border: solid 1px gray; padding: 5px; display: none;">
+    <p>With Backand&apos;s ORM, you simply encapsulate 'CRUD' functions within a class or object that represents a given record in the database. In essence, the objects you create to represent your data in Angular also manipulate that data on the back end.</p>
+    <p>You can easily get started by connecting your database <a href="https://www.backand.com/sign-up" target="_parent">here</a>.</p>
+    <p>You can simply copy the code snippet and get hands-on experience with Backand&apos;s ORM with Restangular. Just select any of the CRUD functionality with any of the advanced parameters to get the code you need in Angular.</p>
+    <p>To manipulate the data you can use Backand&apos;s automatic back office:</p>
+    <p><b>Back office URL: </b><a href="http://restdemo.backand.net" target="_blank">restdemo.backand.net</a>&nbsp;&nbsp;<b>Username:</b> guest@backand.com&nbsp;&nbsp;<b>Password:</b> guest1234</p>
 </div>
 <br/><br/>
 <div id='header' style="display:none;min-height: 24px;max-width: 960px;margin-left: auto;margin-right: auto;">

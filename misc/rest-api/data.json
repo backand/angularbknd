@@ -3,11 +3,11 @@
     "info": {
         "title": "Backand REST API Playground",
         "description": "",
-        "version": "1.2.0"
+        "version": "1.5.0"
     },
-    "host": "api.backand.info:8099",
+    "host": "api.backand.com:8080",
     "schemes": [
-        "http"
+        "https"
     ],
     "basePath": "/1",
     "produces": [
@@ -28,7 +28,7 @@
         }
     ],
     "paths": {
-        "/view/data/{name}": {
+        "/table/data/{name}": {
             "get": {
                 "summary": "Get list of records",
                 "description": "Return list of records from a table or view based on paging, filter or sort parameters.",
@@ -113,7 +113,7 @@
                 }
             }
         },
-        "/view/data/{name}/{id}": {
+        "/table/data/{name}/{id}": {
             "get": {
                 "summary": "Get single record",
                 "description": "Return single record data includes information on drop downs.",
@@ -149,9 +149,9 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Return __metadata with the record primary key and all the fields data that the user can view",
+                        "description": "Return __metadata with the record primary key and all the fields data that the user can Table",
                         "schema": {
-                            "$ref": "ViewPost"
+                            "$ref": "TablePost"
                         }
                     }
                 }
@@ -280,10 +280,10 @@
                 }
             }
         },
-        "/view/config/{name}": {
+        "/table/config/{name}": {
             "get": {
                 "summary": "Table configuration",
-                "description": "Return the view configuration based on the settings in the console",
+                "description": "Return the table configuration based on the settings in the console",
                 "tags": [
                     "Table Configuration"
                 ],
@@ -305,7 +305,7 @@
                     "200": {
                         "description": "An array of products",
                         "schema": {
-                            "$ref": "View"
+                            "$ref": "table"
                         }
                     }
                 }
@@ -401,7 +401,7 @@
                 },
                 "partType": {
                     "type": "string",
-                    "description": "Page object type: view or dashboard"
+                    "description": "Page object type: table or dashboard"
                 },
                 "partId": {
                     "type": "number",
@@ -461,7 +461,7 @@
                 }
             }
         },
-        "View": {
+        "Table": {
             "properties": {
                 "totalRows": {
                     "type": "number"
@@ -501,14 +501,14 @@
                 }
             }
         },
-        "ViewAutocomplete": {
+        "TableAutocomplete": {
             "properties": {
-                "viewName": {
+                "TableName": {
                     "type": "object"
                 }
             }
         },
-        "ViewDates": {
+        "TableDates": {
             "properties": {
                 "fieldName": {
                     "type": "string",
@@ -524,11 +524,11 @@
                 },
                 "autocomplete": {
                     "type": "array",
-                    "$ref": "ViewAutocomplete"
+                    "$ref": "TableAutocomplete"
                 },
                 "dates": {
                     "type": "array",
-                    "$ref": "ViewDates"
+                    "$ref": "TableDates"
                 }
             }
         },
@@ -543,7 +543,7 @@
         "Fields": {
             "empty": null
         },
-        "ViewPost": {
+        "TablePost": {
             "properties": {
                 "__metadata": {
                     "$ref": "__metadata"
