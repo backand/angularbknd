@@ -486,23 +486,25 @@
                 })
                 $('select.parameter[name=name]').each(function () {
                     var viewSelect = $(this);
-                    //viewSelect[0].options[0].remove(); //remove the first option
-                    var o = viewSelect[0].options[0]; //get selected option
-                    o.label = " -- Select a Table or View --";
-                    o.value = "";
-                    o.selected = true;
-                    //viewSelect.append(o);
-                    viewSelect[0].multiple = false;
-                    $(listViews.data).each(function () {
-                        var view = this;
-                        o = new Option(view.captionText, view.name);
-                        viewSelect.append(o);
-                    });
+                    if(viewSelect[0].options.length == 1) {
+                        //viewSelect[0].options[0].remove(); //remove the first option
+                        var o = viewSelect[0].options[0]; //get selected option
+                        o.label = " -- Select a Table or View --";
+                        o.value = "";
+                        o.selected = true;
+                        //viewSelect.append(o);
+                        viewSelect[0].multiple = false;
+                        $(listViews.data).each(function () {
+                            var view = this;
+                            o = new Option(view.captionText, view.name);
+                            viewSelect.append(o);
+                        });
 
-                    if (viewSelect.parents('li.put').length == 1)
-                        handlePut(viewSelect);
-                    else if (viewSelect.parents('li.post').length == 1)
-                        handlePost(viewSelect);
+                        if (viewSelect.parents('li.put').length == 1)
+                            handlePut(viewSelect);
+                        else if (viewSelect.parents('li.post').length == 1)
+                            handlePost(viewSelect);
+                    }
                 });
             }
             catch (ex) { }
@@ -646,18 +648,20 @@
                 backand.api.dashboard.config.getList(null, null, 1000, null, null, null, function (data) {
                     $('select.parameter[name=id]').each(function () {
                         var dashboardSelect = $(this);
-
-                        var o = dashboardSelect[0].options[0]; //get selected option
-                        o.label = " -- Select a Table or View --";
-                        o.value = "";
-                        o.selected = true;
-                        //viewSelect.append(o);
-                        dashboardSelect[0].multiple = false;
-                        $(data.data).each(function () {
-                            var dashboard = this;
-                            o = new Option(dashboard.name, dashboard.id);
-                            dashboardSelect.append(o);
-                        });
+                        if(dashboardSelect[0].options.length == 1)
+                        {
+                            var o = dashboardSelect[0].options[0]; //get selected option
+                            o.label = " -- Select a Table or View --";
+                            o.value = "";
+                            o.selected = true;
+                            //viewSelect.append(o);
+                            dashboardSelect[0].multiple = false;
+                            $(data.data).each(function () {
+                                var dashboard = this;
+                                o = new Option(dashboard.name, dashboard.id);
+                                dashboardSelect.append(o);
+                            });
+                        }
                     });
                 });
             }
