@@ -647,7 +647,7 @@ angular.module('backAnd')
  * @name controller.menuController
  */
 angular.module('backAnd.controllers')
-    .controller('menuController', ['$scope', 'Global', '$compile', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
+    .controller('initController', ['$scope', 'Global', '$compile', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
         function ($scope, Global, $compile, menuService, $timeout, $rootScope, $http, $location) {
 
             $scope.global = Global;
@@ -655,12 +655,58 @@ angular.module('backAnd.controllers')
 
             /**
              * @ngdoc function
+             * @name init
+             * @methodOf backand.js.controllers:menuController
+             * @description initiate the configuration of the menu
+             */
+            $scope.init = function () {
+
+                if (!localStorage.getItem('Authorization')) {
+                    $location.path('/login');
+                } else {
+                    if ($location.$$path == "/login") {
+                        $location.path('/');
+                    }
+                    $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
+                    backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
+
+                }
+            }
+
+            $scope.isGrid = function () {
+                return $location.path().indexOf('grid') != -1;
+            }
+        }
+
+
+    ])
+;'use strict';
+
+/**
+ * @ngdoc overview
+ * @name controller.menuController
+ */
+angular.module('backAnd.controllers')
+    .controller('menuController', ['$scope', 'Global', '$compile', 'menuService', '$timeout', '$rootScope', '$http', '$location', '$route',
+        function ($scope, Global, $compile, menuService, $timeout, $rootScope, $http, $location) {
+
+            $scope.global = Global;
+
+            
+            /**
+             * @ngdoc function
              * @name loadMenu
              * @methodOf backand.js.controllers:menuController
              * @description loads the menu with api
              * @param {object} workspaceId, required, each workspace have a different menu
              */
-            $scope.loadMenu = function (workspaceId) {
+            $scope.loadMenu = function (workspaceId, changeHomePage) {
+                if (workspaceId == undefined) {
+                    var search = $location.search();
+                    if (search && search.workspaceId)
+                        workspaceId = search.workspaceId;
+                }
+
                 menuService.queryjsonp({ workspaceId: workspaceId },
                     function success(data) {
                         $scope.currentWorkspace = data.workspace;
@@ -678,7 +724,7 @@ angular.module('backAnd.controllers')
                             $(window).trigger("appConfigCompleted", data);
                         });
 
-                        if (!$location.search().viewName && !$location.search().dashboardId && !$location.search().contentId && $scope.currentWorkspace.homePage) {
+                        if (changeHomePage) {
                             var homePage = $scope.getHomePage($scope.currentWorkspace, $scope.currentWorkspace.homePage);
 
                             if (homePage)
@@ -686,11 +732,26 @@ angular.module('backAnd.controllers')
                         }
                     },
                     function err(error) {
+
                         if (error.status == 401) {
                             localStorage.removeItem("Authorization");
-                            window.location.reload();
+                            $location.path('/login');
+                            //window.location.reload();
                         }
                     });
+            }
+
+            //$scope.loadMenu();
+
+            $scope.$on('signedIn', function (data) {
+                $scope.loadMenu();
+            });
+
+            $scope.changeWorkspace = function (workspaceId) {
+                $scope.loadMenu(workspaceId, true);
+                //if (!$location.search().viewName && !$location.search().dashboardId && !$location.search().contentId && $scope.currentWorkspace.homePage) {
+                    
+                //}
             }
 
             $scope.getHomePage = function (parent, id) {
@@ -763,29 +824,29 @@ angular.module('backAnd.controllers')
              * @methodOf backand.js.controllers:menuController
              * @description initiate the configuration of the menu
              */
-            $scope.init = function () {
+            //$scope.init = function () {
 
-                if (!localStorage.getItem('Authorization')) {
-                    $location.path('/login');
-                } else {
-                    if ($location.$$path == "/login") {
-                        $location.path('/');
-                    }
-                    $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
-                    backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
+            //    if (!localStorage.getItem('Authorization')) {
+            //        $location.path('/login');
+            //    } else {
+            //        if ($location.$$path == "/login") {
+            //            $location.path('/');
+            //        }
+            //        $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
+            //        backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
 
-                    var workspaceId = null;
-                    var search = $location.search();
-                    if (search && search.workspaceId)
-                        workspaceId = search.workspaceId;
+            //        var workspaceId = null;
+            //        var search = $location.search();
+            //        if (search && search.workspaceId)
+            //            workspaceId = search.workspaceId;
 
-                    $scope.loadMenu(workspaceId);
-                }
-            }
+            //        $scope.loadMenu(workspaceId);
+            //    }
+            //}
 
-            $scope.isGrid = function () {
-                return $location.path().indexOf('grid') != -1;
-            }
+            //$scope.isGrid = function () {
+            //    return $location.path().indexOf('grid') != -1;
+            //}
         }
 
 
@@ -965,9 +1026,14 @@ angular.module('backAnd.controllers')
                 AuthService.signIn($scope.user, $scope.password, $scope.appName,
                 function (data, status, headers, config) {
                     localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
+                    $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
                     backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
+
                     $location.path('/');
-                    window.location.reload()
+
+                    $rootScope.$broadcast('signedIn', data);
+
+                    //window.location.reload()
                 },
                 function (data, status, headers, config) {
                     var error_description = "The server is busy. Please contact your administrator or try again later.";
@@ -1504,7 +1570,13 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                             cellTemplate = '<div class="ngCellText" ng-class="" ng-style="{\'text-align\': \'' + scope.getTextAlignment(col, view) + '\'}"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
                             break;
                         case 'MultiSelect':
-                            cellTemplate = '<div class="ngCellText" ng-class="" style="white-space: normal;"><a href ng-click="renderSubGridUrl(\'' + col.name + '\',row.entity.__metadata.id)">' + col.displayName + '</a></div>';
+                            if (col.displayFormat == "CheckList")
+                                cellTemplate = '<div class="ngCellText" ng-class="" ng-style="{\'text-align\': \'' + scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity.__metadata.descriptives["' + col.name + '"].label}}</span></div>';
+                            else
+                                cellTemplate = '<div class="ngCellText" ng-class="" style="white-space: normal;"><a href ng-click="renderSubGridUrl(\'' + col.name + '\',row.entity.__metadata.id)">' + col.displayName + '</a></div>';
+                            break;
+                        case 'SingleSelect':
+                            cellTemplate = '<div class="ngCellText" ng-class="" ng-style="{\'text-align\': \'' + scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity.__metadata.descriptives["' + col.name + '"].label}}</span></div>';
                             break;
                         default:
                             cellTemplate = '<div class="ngCellText" ng-class="" ng-style="{\'text-align\': \'' + scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';
@@ -1650,10 +1722,30 @@ angular.module('backAnd.directives')
                 }
             }, true);
 
+            scope.multiSelectEvents = {
+                onItemSelect: function(item) {
+                    scope.filterChanged();
+                },
+                onItemDeselect: function(item) {
+                    scope.filterChanged();
+                },
+                // onSelectAll: function() {},
+                // onUnselectAll: function() {}
+            };
+
+            scope.multiSelectExtraSettings = {
+                showCheckAll: false,
+                showUncheckAll: false,
+                idProp: "value",
+                displayProp: "name",
+                buttonClasses: "btn btn-lg multi-filter multiselect-button"
+            }
+
+            // scope.example1model = []; 
+            // scope.example1data = [ {id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
             
             scope.filterChanged = function () {
                 scope.$emit('onfilter', scope.getFilter(), scope);
-
             }
 
             scope.getFilter = function () {
@@ -3060,7 +3152,7 @@ angular.module('backAnd.directives')
                                 f.value.val = val.value;
                         }
                         else {
-                            f.selected = dataItem.__metadata.autocomplete[f.name];
+                            f.selected = dataItem.__metadata.descriptives[f.name].label;
                         }
                     }
                     else if (type == "currency") {
@@ -3546,7 +3638,13 @@ angular.module('backAnd.directives')
         },
     	templateUrl: 'backand/js/directives/autocomplete/partials/autocomplete.html',
     	controller: ['$scope', '$http', function ($scope, $http) {
+    	    $scope.firstTime = true;
+
     	    $scope.options = function (query) {
+    	        if($scope.firstTime){
+					$scope.firstTime = false;
+					return [];
+				}
     	        return $http.get(backandGlobal.url + "/1/view/data/autocomplete/" + $scope.field.viewName + '/' + $scope.field.name, {
     	            params: { term: query, limit: 20 }
     	        })
@@ -3554,13 +3652,11 @@ angular.module('backAnd.directives')
                     return response.data;
                 });
     	    };
-
-    	    $scope.setPcode = function (item) {
+		   $scope.setPcode = function (item) {
     	        $scope.field.value.val = item.value;
     	    };
     	}],
-    	link: function(scope) {
-
+    	link: function(scope, elm, attrs, ctrl) {
     	}
     }
 }]);;'use strict';
@@ -3771,6 +3867,8 @@ angular.module('backAnd.directives')
 
 
             function getFormattedDate(date) {
+                if (!date)
+                    return null;
                 var year = date.getFullYear();
                 var month = (1 + date.getMonth()).toString();
                 month = month.length > 1 ? month : '0' + month;
@@ -3824,7 +3922,7 @@ angular.module('backAnd.directives')
              */
             scope.$watch("mydate", function (newValue, oldValue) {
                 if (newValue)
-                    scope.value.val = JSON.stringify(newValue);
+                    scope.value.val = newValue;
                 else
                     scope.value.val = null;
             });
@@ -3994,7 +4092,7 @@ angular.module('backAnd.directives')
   $templateCache.put('backand/js/directives/autocomplete/partials/autocomplete.html',
     "<ng-form name=\"innerForm\">\r" +
     "\n" +
-    "    <input typeahead-on-select=\"setPcode($item)\" typeahead-editable=\"false\" type=\"text\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"field.selected\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" min-length=\"2\" typeahead=\"option.label for option in options($viewValue)\">\r" +
+    "    <input typeahead-on-select=\"setPcode($item)\" typeahead-editable=\"firstTime\" type=\"text\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"field.selected\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\" min-length=\"2\" typeahead=\"option.label for option in options($viewValue)\">\r" +
     "\n" +
     "    <div ng-if=\"field.required\" class=\"alert alert-danger\" role=\"alert\" ng-show=\"innerForm.field.$error.required\">Missing</div>\r" +
     "\n" +
@@ -4382,6 +4480,8 @@ angular.module('backAnd.directives')
     "\n" +
     "        </div>\r" +
     "\n" +
+    "       <!--  <div ng-switch-when=\"multiSelect\" multi-select field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div> -->\r" +
+    "\n" +
     "        <div ng-switch-default input field=\"field\" value=\"field.value\" form=\"\" input-class=\"\" errors=\"field.errors\"></div>\r" +
     "\n" +
     "    </div>\r" +
@@ -4457,6 +4557,8 @@ angular.module('backAnd.directives')
     "                                    </option>\r" +
     "\n" +
     "                                </select>\r" +
+    "\n" +
+    "                                <div ng-switch-when=\"multiSelectRelation\" name=\"item.fieldName\" ng-dropdown-multiselect class=\"multi-filter\" options=\"item.selectOptions\" selected-model=\"item.value\" events=\"multiSelectEvents\" extra-settings=\"multiSelectExtraSettings\" class=\"form-control filter-item\" ></div>\r" +
     "\n" +
     "                                <input ng-switch-default=\"text\" type=\"text\" name=\"item.fieldName\" value=\"item.value\" ng-model=\"item.value\" ng-change=\"filterChanged()\" class=\"form-control filter-item\" />\r" +
     "\n" +
@@ -4814,7 +4916,7 @@ angular.module('backAnd.directives')
     "\n" +
     "                        <label for=\"checkboxOpen\">\r" +
     "\n" +
-    "                            <input type=\"checkbox\" id=\"checkboxOpen\" class=\"\" ng-model=\"value.target\" ng-true-value=\"null\" ng-false-value=\"_blank\">\r" +
+    "                            <input type=\"checkbox\" id=\"checkboxOpen\" class=\"\" ng-model=\"value.target\">\r" +
     "\n" +
     "                            Open in same tab\r" +
     "\n" +
@@ -4842,6 +4944,31 @@ angular.module('backAnd.directives')
     "\n" +
     "</ng-form>\r" +
     "\n"
+  );
+
+
+  $templateCache.put('backand/js/directives/multiSelect/partials/multiSelect.html',
+    "<ng-form name=\"innerForm\">\r" +
+    "\n" +
+    "\t<ul class=\"list-inline\" ng-show=\"field.show\">\r" +
+    "\n" +
+    "       <li ng-repeat=\"tag in tags\">{{ tag.label }}<i class=\"fa fa-times multi-select-close\" ng-disabled=\"field.disabled\" ng-click=\"clickDelete(tag.value)\"></i></li>\r" +
+    "\n" +
+    "    </ul>\r" +
+    "\n" +
+    "\t<div ng-if=\"field.small\" single-select field=\"dropdownStructure\" value=\"dropdownValue\" form=\"\" input-class=\"\" errors=\"\"></div>\r" +
+    "\n" +
+    "\t<div ng-if=\"!field.small\" mass-autocomplete>\r" +
+    "\n" +
+    "        <input ng-disabled=\"field.disabled\" mass-autocomplete-item=\"autocomplete_options\" name=\"field\" class=\"form-control\" ng-required=\"field.required\" ng-model=\"dirty.value\" ng-show=\"field.show\" ng-disabled=\"field.disabled\" ng-class=\"inputClass\">\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    \r" +
+    "\n" +
+    "    <div class=\"alert alert-danger\" role=\"alert\" ng-show=\"tags.length == 0\">Missing</div>\r" +
+    "\n" +
+    "</ng-form>"
   );
 
 
