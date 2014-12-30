@@ -3,66 +3,64 @@
 <!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> 
-<html lang="en" ng-app="backAnd" class="no-js" data-ng-controller="menuController" ng-init="init()">
+<html lang="en" ng-app="backAnd" class="no-js" data-ng-controller="initController" ng-init="init()">
 <!--<![endif]-->
-    <head>
-        <meta charset="UTF-8">
-        <title>Backand</title>
-        <!-- backand ver 0.0.2.30 -->
-        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-       <!--  favicon -->
-        <link rel="shortcut icon" href="backand/img/back_favicon.ico" />
-        <!-- bootstrap 3.0.2 -->
-        <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <!-- font Awesome -->
-        <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="bower_components/ionicons/css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- Morris chart -->
-        <link href="bower_components/morrisjs/morris.css" rel="stylesheet" type="text/css" />
-        <!-- jvectormap -->
-        <link href="bower_components/jvectormap/jquery-jvectormap.css" rel="stylesheet" type="text/css" />
-        <!-- fullCalendar -->
-        <link href="bower_components/fullcalendar/dist/fullcalendar.css" rel="stylesheet" type="text/css" />    
-        <!-- Daterange picker -->
-        <link href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="bower_components/bootstrap-wysihtml5/dist/bootstrap-wysihtml5-0.0.2.css" rel="stylesheet" type="text/css" />
+<head>
+    <meta charset="UTF-8">
+    <title>Backand</title>
+    <!-- backand ver 0.0.2.30 -->
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <!--  favicon -->
+    <link rel="shortcut icon" href="backand/img/back_favicon.ico" />
+    <!-- bootstrap 3.0.2 -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- font Awesome -->
+    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- Ionicons -->
+    <link href="bower_components/ionicons/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <!-- Morris chart -->
+    <link href="bower_components/morrisjs/morris.css" rel="stylesheet" type="text/css" />
+    <!-- jvectormap -->
+    <link href="bower_components/jvectormap/jquery-jvectormap.css" rel="stylesheet" type="text/css" />
+    <!-- fullCalendar -->
+    <link href="bower_components/fullcalendar/dist/fullcalendar.css" rel="stylesheet" type="text/css" />
+    <!-- Daterange picker -->
+    <link href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link href="bower_components/bootstrap-wysihtml5/dist/bootstrap-wysihtml5-0.0.2.css" rel="stylesheet" type="text/css" />
 
-        <!-- NG-GRID STUFF !-->
-        <link href="bower_components/ng-grid/ng-grid.min.css" rel="stylesheet" type="text/css" />
+    <!-- NG-GRID STUFF !-->
+    <link href="bower_components/ng-grid/ng-grid.min.css" rel="stylesheet" type="text/css" />
 
-        <!-- Theme style -->
-        <link href="themes/devoops-master/css/style.css" rel="stylesheet" type="text/css" />
+    <!-- Theme style -->
+    <link href="themes/devoops-master/css/style.css" rel="stylesheet" type="text/css" />
 
-        <!-- textAngular stuff editor -->
-        <link href="backand/js/directives/editor/css/editor.css" rel="stylesheet" type="text/css" />
+    <!-- textAngular stuff editor -->
+    <link href="backand/js/directives/editor/css/editor.css" rel="stylesheet" type="text/css" />
 
-        <!-- date and time -->
-        <link href="backand/js/directives/date/css/date.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css" />
+    <!-- date and time -->
+    <link href="backand/js/directives/date/css/date.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css" />
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-        <![endif]-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <!-- backand general style -->
+    <link href="backand/dist/angularbknd.min.css" rel="stylesheet" type="text/css" />
 
-        <!-- backand general style -->
-        <link href="backand/dist/angularbknd.min.css" rel="stylesheet" type="text/css" />
+    <!-- backand theme style -->
+    <link href="themes/devoops-master/backand/css/app.css" rel="stylesheet" type="text/css" />
 
-        <!-- backand theme style -->
-        <link href="themes/devoops-master/backand/css/app.css" rel="stylesheet" type="text/css" />
-
-    </head>
+</head>
 
 <body class="skin-blue">
 
     <!--Start Main Theme Body-->
     <ng-include src="'themes/devoops-master/backand/partials/index/index.html'"></ng-include>
     <!--End Main Theme Body-->
-
     <!-- jQuery 2.0.2 -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
@@ -104,8 +102,7 @@
     <!--<script src="backand/dist/angularbknd.debug.js"></script>-->
     <!--<script src="backand/dist/angularbknd.min.js"></script>-->
     <script>var myUrl = "https://api.backand.com:8080/";</script>
-<!--<script>var myUrl = "http://localhost:4109/backapi/";</script>-->
-
+    <!--<script>var myUrl = "http://localhost:4109/backapi/";</script>-->
     <!-- BACKAND Debug !-->
     <script src="backand/js/backand.js"></script>
     <script src="backand/js/jquery.backand.js"></script>
@@ -115,6 +112,7 @@
     <script src="backand/js/services/config.js"></script>
     <script src="backand/js/services/constants.js"></script>
     <script src="backand/js/services/global.js"></script>
+    <script src="backand/js/controllers/init.js"></script>
     <script src="backand/js/controllers/menu.js"></script>
     <script src="backand/js/controllers/profile.js"></script>
     <script src="backand/js/services/auth.js"></script>
@@ -142,10 +140,10 @@
     <script src="backand/js/directives/grids/js/disabledGrids.js"></script>
     <script src="backand/js/directives/image/js/image.js"></script>
     <script src="backand/js/directives/email/js/email.js"></script>
-    
+
     <!-- Use this controller to customise the menu -->
     <script src="themes/devoops-master/my-pages/menuController.js"></script>
-    
+
     <!---------------------------------------------------------------------------------------->
     <!-- To view a new custom page example, page1, please do the following: ------------------>
     <!-- 1. Uncomment the $on events in   \themes\devoops-master\my-pages\menuController.js -->

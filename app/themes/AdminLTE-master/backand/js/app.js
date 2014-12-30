@@ -28,13 +28,6 @@ angular.module('backAnd', [
         $routeProvider
             .when('/', {
                 templateUrl: 'themes/AdminLTE-master/backand/partials/default/default.html',
-//                resolve: {
-//                    loginState : function (loginManager, $location) {
-//                        (loginManager.isLoggedIn()) ?
-//                            return true;
-//                            : $location.url('/login');
-//                    }
-//                }
             })
 
             .when('/login', {

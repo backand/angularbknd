@@ -466,7 +466,13 @@ angular.module('backAnd.directives', ['ui.bootstrap', 'textAngular', 'ui.bootstr
                             cellTemplate = '<div class="ngCellText" ng-class="" ng-style="{\'text-align\': \'' + scope.getTextAlignment(col, view) + '\'}"><p ng-bind-html="renderUrl(\'{{row.entity[\'' + col.name + '\']}}\')"></p></div>';
                             break;
                         case 'MultiSelect':
-                            cellTemplate = '<div class="ngCellText" ng-class="" style="white-space: normal;"><a href ng-click="renderSubGridUrl(\'' + col.name + '\',row.entity.__metadata.id)">' + col.displayName + '</a></div>';
+                            if (col.displayFormat == "CheckList")
+                                cellTemplate = '<div class="ngCellText" ng-class="" ng-style="{\'text-align\': \'' + scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity.__metadata.descriptives["' + col.name + '"].label}}</span></div>';
+                            else
+                                cellTemplate = '<div class="ngCellText" ng-class="" style="white-space: normal;"><a href ng-click="renderSubGridUrl(\'' + col.name + '\',row.entity.__metadata.id)">' + col.displayName + '</a></div>';
+                            break;
+                        case 'SingleSelect':
+                            cellTemplate = '<div class="ngCellText" ng-class="" ng-style="{\'text-align\': \'' + scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity.__metadata.descriptives["' + col.name + '"].label}}</span></div>';
                             break;
                         default:
                             cellTemplate = '<div class="ngCellText" ng-class="" ng-style="{\'text-align\': \'' + scope.getTextAlignment(col, view) + '\'}"><span ng-cell-text>{{row.entity["' + col.name + '"]}}</span></div>';

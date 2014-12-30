@@ -29,11 +29,12 @@ angular.module('backAnd.directives')
         },
     	templateUrl: 'backand/js/directives/autocomplete/partials/autocomplete.html',
     	controller: ['$scope', '$http', function ($scope, $http) {
+    	    $scope.firstTime = true;
+
     	    $scope.options = function (query) {
-    	        $scope.firstTime = true;
-				if($scope.firstTime){
+    	        if($scope.firstTime){
 					$scope.firstTime = false;
-					return null;
+					return [];
 				}
     	        return $http.get(backandGlobal.url + "/1/view/data/autocomplete/" + $scope.field.viewName + '/' + $scope.field.name, {
     	            params: { term: query, limit: 20 }

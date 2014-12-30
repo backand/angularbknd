@@ -10,7 +10,7 @@ angular.module('backAnd.controllers')
 
             $scope.global = Global;
 
-
+            
             /**
              * @ngdoc function
              * @name loadMenu
@@ -18,7 +18,13 @@ angular.module('backAnd.controllers')
              * @description loads the menu with api
              * @param {object} workspaceId, required, each workspace have a different menu
              */
-            $scope.loadMenu = function (workspaceId) {
+            $scope.loadMenu = function (workspaceId, changeHomePage) {
+                if (workspaceId == undefined) {
+                    var search = $location.search();
+                    if (search && search.workspaceId)
+                        workspaceId = search.workspaceId;
+                }
+
                 menuService.queryjsonp({ workspaceId: workspaceId },
                     function success(data) {
                         $scope.currentWorkspace = data.workspace;
@@ -36,7 +42,7 @@ angular.module('backAnd.controllers')
                             $(window).trigger("appConfigCompleted", data);
                         });
 
-                        if (!$location.search().viewName && !$location.search().dashboardId && !$location.search().contentId && $scope.currentWorkspace.homePage) {
+                        if (changeHomePage) {
                             var homePage = $scope.getHomePage($scope.currentWorkspace, $scope.currentWorkspace.homePage);
 
                             if (homePage)
@@ -44,11 +50,26 @@ angular.module('backAnd.controllers')
                         }
                     },
                     function err(error) {
+
                         if (error.status == 401) {
                             localStorage.removeItem("Authorization");
-                            window.location.reload();
+                            $location.path('/login');
+                            //window.location.reload();
                         }
                     });
+            }
+
+            //$scope.loadMenu();
+
+            $scope.$on('signedIn', function (data) {
+                $scope.loadMenu();
+            });
+
+            $scope.changeWorkspace = function (workspaceId) {
+                $scope.loadMenu(workspaceId, true);
+                //if (!$location.search().viewName && !$location.search().dashboardId && !$location.search().contentId && $scope.currentWorkspace.homePage) {
+                    
+                //}
             }
 
             $scope.getHomePage = function (parent, id) {
@@ -121,29 +142,29 @@ angular.module('backAnd.controllers')
              * @methodOf backand.js.controllers:menuController
              * @description initiate the configuration of the menu
              */
-            $scope.init = function () {
+            //$scope.init = function () {
 
-                if (!localStorage.getItem('Authorization')) {
-                    $location.path('/login');
-                } else {
-                    if ($location.$$path == "/login") {
-                        $location.path('/');
-                    }
-                    $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
-                    backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
+            //    if (!localStorage.getItem('Authorization')) {
+            //        $location.path('/login');
+            //    } else {
+            //        if ($location.$$path == "/login") {
+            //            $location.path('/');
+            //        }
+            //        $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
+            //        backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
 
-                    var workspaceId = null;
-                    var search = $location.search();
-                    if (search && search.workspaceId)
-                        workspaceId = search.workspaceId;
+            //        var workspaceId = null;
+            //        var search = $location.search();
+            //        if (search && search.workspaceId)
+            //            workspaceId = search.workspaceId;
 
-                    $scope.loadMenu(workspaceId);
-                }
-            }
+            //        $scope.loadMenu(workspaceId);
+            //    }
+            //}
 
-            $scope.isGrid = function () {
-                return $location.path().indexOf('grid') != -1;
-            }
+            //$scope.isGrid = function () {
+            //    return $location.path().indexOf('grid') != -1;
+            //}
         }
 
 
