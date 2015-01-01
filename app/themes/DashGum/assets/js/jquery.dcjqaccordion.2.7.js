@@ -124,8 +124,9 @@
 						$('> a',this).addClass(defaults.classParent).append($arrow);
 					}
 				});
-				$('> ul',obj).hide();
-				if(defaults.showCount == true){
+				$('> ul', obj).hide();
+				$('.workspaces ul.dropdown-menu').removeAttr("style");
+				if (defaults.showCount == true) {
 					$('li.'+classParentLi,obj).each(function(){
 						if(defaults.disableLink == true){
 							var getCount = parseInt($('ul a:not(.'+defaults.classParent+')',this).length);
@@ -189,7 +190,8 @@
 		// Reset accordion using active links
 		function resetAccordion(){
 			$('ul',obj).hide();
-			$allActiveLi = $('a.'+defaults.classActive,obj);
+			$('.workspaces ul.dropdown-menu').removeAttr("style");
+			$allActiveLi = $('a.' + defaults.classActive, obj);
 			$allActiveLi.siblings('ul').show();
 		}
 		});
