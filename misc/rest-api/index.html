@@ -201,14 +201,14 @@
 
       function changeFilterAndSortToTextArea() {
           var filterTextArea = $('<textarea class="parameter" minlength="0" name="filter" placeholder=""></textarea>');
-          var filterInput = $('#Database_Table_Data_view_data_name_get_content input[name=filter]');
+          var filterInput = $('#Database_Table_Data_table_data_name_get_content input[name=filter]');
           var width = filterInput.width();
           filterInput.replaceWith(filterTextArea);
           filterTextArea.width(width - 4);
           filterTextArea.height(110);
 
           var sortTextArea = $('<textarea class="parameter" minlength="0" name="sort" placeholder=""></textarea>');
-          var sortInput = $('#Database_Table_Data_view_data_name_get_content input[name=sort]');
+          var sortInput = $('#Database_Table_Data_table_data_name_get_content input[name=sort]');
           var width = sortInput.width();
           sortInput.replaceWith(sortTextArea);
           sortTextArea.width(width - 4);
@@ -239,13 +239,13 @@
       function getCurrentCrud(responseBody) {
           var operation = responseBody.parents("li.operation:first");
           var id = operation.attr("id");
-          if (id == "Database_Table_Data_view_data_name_id_get")
+          if (id == "Database_Table_Data_table_data_name_id_get")
               return crudEnum.item;
-          else if (id == "Database_Table_Data_view_data_name_id_put")
+          else if (id == "Database_Table_Data_table_data_name_id_put")
               return crudEnum.update;
-          else if (id == "Database_Table_Data_view_data_name_id_post")
+          else if (id == "Database_Table_Data_table_data_name_id_post")
               return crudEnum.create;
-          else if (id == "Database_Table_Data_view_data_name_id_delete")
+          else if (id == "Database_Table_Data_table_data_name_id_delete")
               return crudEnum.remove;
           else
               return crudEnum.list;
@@ -277,30 +277,30 @@
           var codeArray = null;
           
           if (crud == crudEnum.item) {
-              var name = $('#Database_Table_Data_view_data_name_id_get').find('form.sandbox select:first').val();
-              var id = $('#Database_Table_Data_view_data_name_id_get').find('input[name=id]:first').val();
-              var deep = $('#Database_Table_Data_view_data_name_id_get').find('select[name=deep]:first').val();
+              var name = $('#Database_Table_Data_table_data_name_id_get').find('form.sandbox select:first').val();
+              var id = $('#Database_Table_Data_table_data_name_id_get').find('input[name=id]:first').val();
+              var deep = $('#Database_Table_Data_table_data_name_id_get').find('select[name=deep]:first').val();
 
               codeArray = r.getItem(name, id, deep);
           }
           else if (crud == crudEnum.create) {
-              var name = $('#Database_Table_Data_view_data_name_id_post').find('form.sandbox select:first').val();
-              var returnObject = $('#Database_Table_Data_view_data_name_id_post').find('select[name=returnObject]:first').val();
-              var object = $('#Database_Table_Data_view_data_name_id_post').find('textarea[name=object]:first').val();
+              var name = $('#Database_Table_Data_table_data_name_id_post').find('form.sandbox select:first').val();
+              var returnObject = $('#Database_Table_Data_table_data_name_id_post').find('select[name=returnObject]:first').val();
+              var object = $('#Database_Table_Data_table_data_name_id_post').find('textarea[name=object]:first').val();
 
               codeArray = r.getCreate(name, returnObject, object);
           }
           else if (crud == crudEnum.update) {
-              var name = $('#Database_Table_Data_view_data_name_id_put').find('form.sandbox select:first').val();
-              var id = $('#Database_Table_Data_view_data_name_id_put').find('input[name=id]:first').val();
-              var returnObject = $('#Database_Table_Data_view_data_name_id_put').find('select[name=returnObject]:first').val();
-              var object = $('#Database_Table_Data_view_data_name_id_put').find('textarea[name=object]:first').val();
+              var name = $('#Database_Table_Data_table_data_name_id_put').find('form.sandbox select:first').val();
+              var id = $('#Database_Table_Data_table_data_name_id_put').find('input[name=id]:first').val();
+              var returnObject = $('#Database_Table_Data_table_data_name_id_put').find('select[name=returnObject]:first').val();
+              var object = $('#Database_Table_Data_table_data_name_id_put').find('textarea[name=object]:first').val();
 
               codeArray = r.getUpdate(name, id, returnObject, object);
           }
           else if (crud == crudEnum.remove) {
-              var name = $('#Database_Table_Data_view_data_name_id_delete').find('form.sandbox select:first').val();
-              var id = $('#Database_Table_Data_view_data_name_id_delete').find('input[name=id]:first').val();
+              var name = $('#Database_Table_Data_table_data_name_id_delete').find('form.sandbox select:first').val();
+              var id = $('#Database_Table_Data_table_data_name_id_delete').find('input[name=id]:first').val();
 
               codeArray = r.getDelete(name, id);
           }
