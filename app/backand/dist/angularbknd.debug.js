@@ -7,7 +7,7 @@
 * backand JavaScript Library
 * Authors: backand 
 * License: MIT (http://www.opensource.org/licenses/mit-license.php)
-* Compiled At: 06/24/2014 
+* Compiled At: 06/24/2014 v0.9.5
 ***********************************************/
 
 var backand = {
