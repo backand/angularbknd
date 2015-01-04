@@ -29,7 +29,13 @@ angular.module('backAnd.directives')
         },
     	templateUrl: 'backand/js/directives/autocomplete/partials/autocomplete.html',
     	controller: ['$scope', '$http', function ($scope, $http) {
+    	    $scope.firstTime = true;
+
     	    $scope.options = function (query) {
+    	        if($scope.firstTime){
+					$scope.firstTime = false;
+					return [];
+				}
     	        return $http.get(backandGlobal.url + "/1/view/data/autocomplete/" + $scope.field.viewName + '/' + $scope.field.name, {
     	            params: { term: query, limit: 20 }
     	        })
@@ -37,13 +43,11 @@ angular.module('backAnd.directives')
                     return response.data;
                 });
     	    };
-
-    	    $scope.setPcode = function (item) {
+		   $scope.setPcode = function (item) {
     	        $scope.field.value.val = item.value;
     	    };
     	}],
-    	link: function(scope) {
-
+    	link: function(scope, elm, attrs, ctrl) {
     	}
     }
 }]);

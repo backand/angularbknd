@@ -1,30 +1,34 @@
-<div class="sidebar-form" data-ng-controller="myMenuController" ng-init="init()">
-    <div class="input-group">
-        <div class="btn-group" dropdown is-open="status.isopen">
-            <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled" ng-style="{'width':'198px', 'text-align':'left'}">
-                {{currentWorkspace.name}} <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li ng-repeat="workspace in additionalWorkspaces" ng-click="loadMenu(workspace.id)"><a href=" #">{{workspace.name}}</a></li>
-            </ul>
+<div data-ng-controller="menuController" ng-init="loadMenu()">
+    <div data-ng-controller="myMenuController">
+        <div class="sidebar-form">
+            <div class="input-group">
+                <div class="btn-group" dropdown is-open="status.isopen">
+                    <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle ng-disabled="disabled" ng-style="{'width':'198px', 'text-align':'left'}">
+                        {{currentWorkspace.name}} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-repeat="workspace in additionalWorkspaces" ng-click="changeWorkspace(workspace.id)"><a href="">{{workspace.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-<ul class="sidebar-menu">
-    <li class="treeview" ng-repeat="p in currentWorkspace.pages" data-ng-if="p.partType == 'table' || p.partType == 'dashboard'|| p.partType == 'content'" ng-click="setCurrentMenuSelection({partId:p.partId, name:p.name ,index :$index ,partType:p.partType}, null)">
-        <a href="">
-            <i class="fa custom-icon" icon-type="p.partType"></i>
-            <span>{{p.name}}</span>
-            <i class="fa fa-angle-left pull-right" ng-show="p.pages"></i>
-        </a>
-        <ul class="treeview-menu" ng-show="p.pages">
-            <li ng-repeat="page in p.pages" data-ng-if="page.partType == 'table' || page.partType == 'dashboard'|| page.partType == 'content'" ng-click="setCurrentMenuSelection({partId:page.partId, name:page.name ,index:$index ,partType:page.partType}, {partId:p.partId, name:p.name ,index :$index ,partType:p.partType}); $event.stopPropagation()">
+        <ul class="sidebar-menu">
+            <li class="treeview" ng-repeat="p in currentWorkspace.pages" data-ng-if="p.partType == 'table' || p.partType == 'dashboard'|| p.partType == 'content'" ng-click="setCurrentMenuSelection({partId:p.partId, name:p.name ,index :$index ,partType:p.partType}, null)">
                 <a href="">
-                    <i class="fa custom-icon" icon-type="page.partType"></i>
-                    <span>{{page.name}}</span>
+                    <i class="fa custom-icon" icon-type="p.partType"></i>
+                    <span>{{p.name}}</span>
+                    <i class="fa fa-angle-left pull-right" ng-show="p.pages"></i>
                 </a>
+                <ul class="treeview-menu" ng-show="p.pages">
+                    <li ng-repeat="page in p.pages" data-ng-if="page.partType == 'table' || page.partType == 'dashboard'|| page.partType == 'content'" ng-click="setCurrentMenuSelection({partId:page.partId, name:page.name ,index:$index ,partType:page.partType}, {partId:p.partId, name:p.name ,index :$index ,partType:p.partType}); $event.stopPropagation()">
+                        <a href="">
+                            <i class="fa custom-icon" icon-type="page.partType"></i>
+                            <span>{{page.name}}</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
-    </li>
-</ul>
+    </div>
+</div>

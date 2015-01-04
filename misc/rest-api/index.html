@@ -7,6 +7,81 @@
   <link href='css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
   <link href='css/reset.css' media='print' rel='stylesheet' type='text/css'/>
   <link href='css/screen.css' media='print' rel='stylesheet' type='text/css'/>
+    <style>
+        .operators-link {
+            cursor:pointer;
+        }
+        .operators{
+            display:none;
+        } 
+        .operators ul {
+            font-weight: bold;
+        }
+        .operators ul li {
+            font-weight: normal;
+            margin-left: 10px;
+        }
+        code.json{max-width:300px;}
+        li.put textarea {
+            white-space: pre;
+            word-wrap: normal;
+        }
+        .response-options {
+            overflow: hidden;
+            padding: 0;
+            display: flex;
+            clear: none;
+            margin: 14px 10px 0 0;
+        }
+
+        .response-options li {
+            float: left;
+            clear: none;
+            margin: 0;
+            padding: 2px 10px;
+            border-right: 1px solid #dddddd;
+        }
+        .response-options li.response-body {
+            padding: 2px 10px 2px 0px;
+        }
+
+        .response-options li a {
+            cursor:pointer;
+        }
+
+
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.delete div.content a.active h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.put div.content a.active h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.post div.content a.active h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.get div.content a.active h4 {
+            color: black;
+        }
+
+
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.delete div.content .response-options li a:hover h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.delete div.content .response-options li a::selection h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.delete div.content .response-options li a:active h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.delete div.content .response-options li a:focus h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.put div.content .response-options li a:hover h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.put div.content .response-options li a::selection h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.put div.content .response-options li a:active h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.put div.content .response-options li a:focus h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.post div.content .response-options li a:hover h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.post div.content .response-options li a::selection h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.post div.content .response-options li a:active h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.post div.content .response-options li a:focus h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.get div.content .response-options li a:hover h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.get div.content .response-options li a::selection h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.get div.content .response-options li a:active h4,
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.get div.content .response-options li a:focus h4 {
+            text-decoration: underline;
+            color: black;
+        }
+
+        .back-office-title{
+            margin-top:34px;
+        }
+    </style>
   <script type="text/javascript" src="lib/shred.bundle.js"></script>
   <script src='lib/jquery-1.8.0.min.js' type='text/javascript'></script>
   <script src='lib/jquery.slideto.min.js' type='text/javascript'></script>
@@ -22,11 +97,48 @@
   <!--<script src="https://s3.amazonaws.com/backand.net/backand/js/backand.js" type="text/javascript"></script>-->
   <script src="lib/backand.js" type="text/javascript"></script>
   <script src="lib/jquery.backand.js" type="text/javascript"></script>
-
+    
   <!-- enabling this will enable oauth2 implicit scope support -->
   <script src='lib/swagger-oauth.js' type='text/javascript'></script>
+  <script src="lib/codeBuilder.js"></script>
+
   <script type="text/javascript">
-    $(function () {
+      $(function () {
+
+          function qs(key) {
+              var vars = [], hash;
+              var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('#')[0].split('&');
+              for (var i = 0; i < hashes.length; i++) {
+                  hash = hashes[i].split('=');
+                  vars.push(hash[0]);
+                  vars[hash[0]] = hash[1];
+              }
+              return vars[key];
+          }
+
+          var putJsonDictionary = {};
+          var postJsonDictionary = {};
+
+          $(window).bind('snippetToTextArea', function (e, data) {
+              var code = data.tr.find("code");
+              if (code.attr("rest-action") == "put") {
+                  var id = code.attr('rest-id');
+                  var name = code.attr('rest-name');
+                  try {
+                      data.textArea.val(putJsonDictionary[name][id]);
+                  }
+                  catch (err) { }
+              }
+              else if (code.attr("rest-action") == "post") {
+                  var name = code.attr('rest-name');
+                  try {
+                      data.textArea.val(postJsonDictionary[name]);
+                  }
+                  catch (err) { }
+              }
+
+          });
+
       var url = window.location.search.match(/url=([^&]+)/);
       if (url && url.length > 1) {
         url = url[1];
@@ -49,12 +161,17 @@
             else
             {
                 initBackandAPI();
-                populateSelect();
+                populateTableSelect();
+                populateDashboardSelect();
+                operatorsLink();
+                changeFilterAndSortToTextArea();
+                codeSamples();
+                $('#swagger-ui-container').show();
             }
 
             $('.footer').hide();
             resize();
-            initUI(useToken);
+            initUI(useToken,getDefaultResponse());
           $('pre code').each(function(i, e) {
             hljs.highlightBlock(e)
           });
@@ -66,6 +183,225 @@
         sorter : ""
       });
 
+      function operatorsLink() {
+          var operatorsLink = $(".operators-link");
+          operatorsLink.click(function () {
+              var operators = $(".operators");
+              var hidden = operators.css('display') == "none";
+              if (hidden) {
+                  operators.show();
+                  operatorsLink.text(operatorsLink.text().replace("More", "Less"));
+              }
+              else {
+                  operators.hide();
+                  operatorsLink.text(operatorsLink.text().replace("Less", "More"));
+              }
+          });
+      }
+
+      function changeFilterAndSortToTextArea() {
+          var filterTextArea = $('<textarea class="parameter" minlength="0" name="filter" placeholder=""></textarea>');
+          var filterInput = $('#Database_Table_Data_table_data_name_get_content input[name=filter]');
+          var width = filterInput.width();
+          filterInput.replaceWith(filterTextArea);
+          filterTextArea.width(width - 4);
+          filterTextArea.height(110);
+
+          var sortTextArea = $('<textarea class="parameter" minlength="0" name="sort" placeholder=""></textarea>');
+          var sortInput = $('#Database_Table_Data_table_data_name_get_content input[name=sort]');
+          var width = sortInput.width();
+          sortInput.replaceWith(sortTextArea);
+          sortTextArea.width(width - 4);
+          sortTextArea.height(90);
+      }
+
+      
+      function getCurrentReponse(crud) {
+          if (!currentResponse[crud])
+              currentResponse[crud] = getDefaultResponse();
+
+          return currentResponse[crud];
+      }
+
+      function getDefaultResponse() {
+          if (qs("orm") == "restangular")
+              return 1;
+          else
+              return 0;
+      }
+
+      var currentResponse = [getDefaultResponse(), getDefaultResponse(), getDefaultResponse(), getDefaultResponse(), getDefaultResponse()];
+
+
+      var responseOptionEnum = { responseBody: 0, restangular: 1, resource: 2 };
+      var crudEnum = { list: 0, item: 1, create: 2, update: 3, remove: 4 };
+    
+      function getCurrentCrud(responseBody) {
+          var operation = responseBody.parents("li.operation:first");
+          var id = operation.attr("id");
+          if (id == "Database_Table_Data_table_data_name_id_get")
+              return crudEnum.item;
+          else if (id == "Database_Table_Data_table_data_name_id_put")
+              return crudEnum.update;
+          else if (id == "Database_Table_Data_table_data_name_id_post")
+              return crudEnum.create;
+          else if (id == "Database_Table_Data_table_data_name_id_delete")
+              return crudEnum.remove;
+          else
+              return crudEnum.list;
+      }
+
+      function showCodeSample(responseBody, responseOption, crud) {
+          if (responseOption == responseOptionEnum.responseBody) {
+              responseBody.html(codeCache[crud].responseBody);
+          }
+          else if (responseOption == responseOptionEnum.restangular) {
+              if (!codeCache[crud].restangular) {
+                  codeCache[crud].restangular = getRestangularCode(crud, responseBody);
+              }
+              responseBody.html(codeCache[crud].restangular);
+          }
+          else if (responseOption == responseOptionEnum.resource) {
+              if (!codeCache[crud].resource) {
+                  codeCache[crud].resource = getResourceCode(crud, responseBody);
+              }
+              responseBody.html(codeCache[crud].resource);
+          }
+
+
+      }
+
+      function getRestangularCode(crud, responseBody) {
+          var r = restAngularCodeBulider();
+
+          var codeArray = null;
+          
+          if (crud == crudEnum.item) {
+              var name = $('#Database_Table_Data_table_data_name_id_get').find('form.sandbox select:first').val();
+              var id = $('#Database_Table_Data_table_data_name_id_get').find('input[name=id]:first').val();
+              var deep = $('#Database_Table_Data_table_data_name_id_get').find('select[name=deep]:first').val();
+
+              codeArray = r.getItem(name, id, deep);
+          }
+          else if (crud == crudEnum.create) {
+              var name = $('#Database_Table_Data_table_data_name_id_post').find('form.sandbox select:first').val();
+              var returnObject = $('#Database_Table_Data_table_data_name_id_post').find('select[name=returnObject]:first').val();
+              var object = $('#Database_Table_Data_table_data_name_id_post').find('textarea[name=object]:first').val();
+
+              codeArray = r.getCreate(name, returnObject, object);
+          }
+          else if (crud == crudEnum.update) {
+              var name = $('#Database_Table_Data_table_data_name_id_put').find('form.sandbox select:first').val();
+              var id = $('#Database_Table_Data_table_data_name_id_put').find('input[name=id]:first').val();
+              var returnObject = $('#Database_Table_Data_table_data_name_id_put').find('select[name=returnObject]:first').val();
+              var object = $('#Database_Table_Data_table_data_name_id_put').find('textarea[name=object]:first').val();
+
+              codeArray = r.getUpdate(name, id, returnObject, object);
+          }
+          else if (crud == crudEnum.remove) {
+              var name = $('#Database_Table_Data_table_data_name_id_delete').find('form.sandbox select:first').val();
+              var id = $('#Database_Table_Data_table_data_name_id_delete').find('input[name=id]:first').val();
+
+              codeArray = r.getDelete(name, id);
+          }
+          else {
+              var name = $('#Database_Table_Data_endpoint_list').find('form.sandbox select:first').val();
+              var pageSize = $('#Database_Table_Data_endpoint_list').find('input[name=pageSize]:first').val();
+              var pageNumber = $('#Database_Table_Data_endpoint_list').find('input[name=pageNumber]:first').val();
+              var filter = $('#Database_Table_Data_endpoint_list').find('[name=filter]:first').val();
+              var sort = $('#Database_Table_Data_endpoint_list').find('[name=sort]:first').val();
+              var search = $('#Database_Table_Data_endpoint_list').find('input[name=search]:first').val();
+              var deep = $('#Database_Table_Data_endpoint_list').find('select[name=deep]:first').val();
+              var withSelectOptions = $('#Database_Table_Data_endpoint_list').find('select[name=withSelectOptions]:first').val();
+
+              codeArray = r.getList(name, pageSize, pageNumber, filter, sort, search, deep, withSelectOptions);
+          }
+          var code = '';
+          var i = 0;
+          $(codeArray).each(function () {
+              
+              code += "// " + this.description + "\n";
+              code += this.code;
+              if (i < codeArray.length - 1) {
+                  code += "\n";
+                  code += "\n";
+                  code += "\n";
+                  code += "// or\n";
+              }
+              i++;
+          })
+
+          var code = $('<code />').text(code);
+          var html = $('<pre class="json" />').append(code);
+
+          return html;
+      }
+
+      var codeCache = [
+          { responseBody: "", restangular: "", resource: "" },
+          { responseBody: "", restangular: "", resource: "" },
+          { responseBody: "", restangular: "", resource: "" },
+          { responseBody: "", restangular: "", resource: "" },
+          { responseBody: "", restangular: "", resource: "" }];
+
+      var alreadyUp = false;
+      function codeSamples() {
+          if(alreadyUp)
+            return;
+          else
+            alreadyUp = true;
+          if (getDefaultResponse() == 0) {
+              if($('#resource_Table_Configuration .back-office-title').length == 0)
+                $('#resource_Table_Configuration').prepend($("<div class=\"info_title back-office-title\">Back Office REST API</div>"));
+          }
+          else {
+              $("#resources").children().each(function () {
+                  if ($(this).attr("id") != "resource_Database_Table_Data") {
+                      $(this).remove();
+                  }
+              });
+              $('.info_title').text('Backand ORM with Restangular');
+          }
+          $('#swagger-ui-container').show();
+          var options = '<div><ul class="response-options"><li class="response-body"><a' + (getDefaultResponse() == 0 ? ' class="active"' : '') + '><h4>Response Body</h4></a></li><li class="restangular"><a' + (getDefaultResponse() == 1 ? ' class="active"' : '') + '><h4>Restangular</h4></a></li></ul></div>'; //<li class="resource"><a' + (getDefaultResponse() == 2 ? ' class="active"' : '') + '><h4>$resource</h4></a></li>
+
+          var responses = $("#resource_Database_Table_Data .response");
+          responses.each(function () {
+              var response = $(this);
+              response.find("h4:eq(1)").replaceWith(options);
+          });
+
+          $('.response-options a').click(function () {
+              $(this).parents(".response-options:first").find("a").removeClass("active");
+              $(this).addClass("active");
+
+              var responseBody = $(this).parents(".response:first").find(".response_body");
+
+              var crud = getCurrentCrud(responseBody);
+
+
+              if ($(this).parent().attr("class") == "restangular")
+                  currentResponse[crud] = 1;
+              else if ($(this).parent().attr("class") == "resource")
+                  currentResponse[crud] = 2;
+              else
+                  currentResponse[crud] = 0;
+
+              showCodeSample(responseBody, currentResponse[crud], crud);
+          });
+
+          $(window).bind('showResponse', function (e, data) {
+              var crud = getCurrentCrud(data.responseBody);
+              
+              codeCache[crud] = { responseBody: data.prettyJson };
+
+              showCodeSample(data.responseBody, currentResponse[crud], crud);
+          });
+
+          window.parent.postMessage(["complete"], "*");
+      }
+
+      
       function addApiKeyAuthorization() {
         var key = $('#input_apiKey')[0].value;
         log("key: " + key);
@@ -97,11 +433,18 @@
           //let parent know the iframe is ready
           window.parent.postMessage(["ready", ''], "*");
 
+
           function setToken(event) {
               window.authorizations.add("api_key", new ApiKeyAuthorization("Authorization", event.data.auth, "header"));
+              window.authorizations.add("api_key1", new ApiKeyAuthorization("AppName", event.data.appName, "header"));
               backand.security.authentication.token = event.data.auth;
               backand.security.authentication.appName = event.data.appName;
-              populateSelect();
+              populateTableSelect();
+              populateDashboardSelect();
+              operatorsLink();
+              changeFilterAndSortToTextArea();
+              codeSamples();
+
           }
 
       }
@@ -111,6 +454,7 @@
             var username = $('#username').val()!='' ? $('#username').val() : 'guest@backand.com';
             var password = $('#password').val()!='' ? $('#password').val() : 'guest1234';
             var appname = $('#app').val()!='' ? $('#app').val() : 'restdemo';
+
             $('.active-app').text(appname);
             $('.active-app').attr('href', 'http://' + appname + '.backand.net');
 
@@ -128,8 +472,10 @@
                     function (xhr, textStatus, err) {
                         if (xhr) alert(JSON.stringify(xhr));
                     });
-        }
-        function populateSelect()
+      }
+
+
+        function populateTableSelect()
       {
             try {
                 var listViews;
@@ -138,19 +484,184 @@
                 backand.api.view.config.getList(null, null, 1000, filter, sort, null, function (data) {
                     listViews = data;
                 })
-                $('select.parameter').each(function () {
+                $('select.parameter[name=name]').each(function () {
                     var viewSelect = $(this);
-                    //viewSelect[0].options[0].remove(); //remove the first option
-                    var o = viewSelect[0].options[0]; //get selected option
-                    o.label = " -- Select a Table or View --";
-                    o.value = "";
-                    o.selected = true;
-                    //viewSelect.append(o);
-                    viewSelect[0].multiple = false;
-                    $(listViews.data).each(function () {
-                        var view = this;
-                        o = new Option(view.captionText, view.name);
-                        viewSelect.append(o);
+                    if(viewSelect[0].options.length == 1) {
+                        //viewSelect[0].options[0].remove(); //remove the first option
+                        var o = viewSelect[0].options[0]; //get selected option
+                        o.label = " -- Select a Table or View --";
+                        o.value = "";
+                        o.selected = true;
+                        //viewSelect.append(o);
+                        viewSelect[0].multiple = false;
+                        $(listViews.data).each(function () {
+                            var view = this;
+                            o = new Option(view.captionText, view.name);
+                            viewSelect.append(o);
+                        });
+
+                        if (viewSelect.parents('li.put').length == 1)
+                            handlePut(viewSelect);
+                        else if (viewSelect.parents('li.post').length == 1)
+                            handlePost(viewSelect);
+                    }
+                });
+            }
+            catch (ex) { }
+        }
+
+        function handlePost(viewSelect) {
+            viewSelect.change(function () {
+                var form = viewSelect.parents("form:first");
+                if (form.length == 0) return;
+
+                var name = viewSelect.val();
+
+                var model = form.find("code");
+                if (model.length == 0) return;
+
+                model.html("");
+
+                if (!name) return;
+
+                model.removeAttr('rest-name');
+
+                backand.api.view.config.getItem(name, function (data) {
+                    var o = {};
+
+                    var type = "string";
+                    $(data.fields).each(function () {
+                        var field = this;
+                        switch (field.type) {
+                            case 'Numeric':
+                                type = "number";
+                                break;
+                            case 'DateTime':
+                                type = JSON.stringify(new Date());
+                                break;
+                            case 'SingleSelect':
+                                type = 'parent'
+                                break;
+                            case 'MultiSelect':
+                                type = 'children'
+                                break;
+                            case 'Boolean':
+                                type = 'boolean';
+                                break;
+                            default:
+                                type = 'string'
+
+                                break;
+                        }
+                        if (type != "children" && !field.form.hideInCreate)
+                            o[field.name] = type;
+                    })
+
+                    var json = JSON.stringify(o, null, "\t");
+                    var prettyJson = json.replace(/\n/g, "<br>");
+                    model.html(prettyJson);
+                    model.attr('rest-name', name);
+                    postJsonDictionary[name] = json;
+                    if (!model.attr("rest-action")) model.attr("rest-action", "post");
+                }, function (error) {
+                    if (error && error.status == 404) {
+                        alert("This table does not exist.")
+                    }
+                    else if (error.responseJSON && error.responseJSON.error_description) {
+                        model.html(error.responseJSON.error_description);
+                    }
+                    else if (error.responseText) {
+                        model.html(error.responseText);
+
+                    }
+                });
+            });
+        }
+
+        function handlePut(viewSelect) {
+            var form = viewSelect.parents("form:first");
+            if (form.length == 0) return;
+
+            var idInput = form.find('input[name=id]');
+            idInput.width(idInput.width() - 40);
+            var button = idInput.parent().append("<input type='button' value='get' class='get-for-put'/>")
+
+            button.click(function () {
+                if ($(event.target).attr('class') != 'get-for-put')
+                    return;
+
+                if (idInput.length != 1)
+                    return;
+
+                if (!viewSelect.val()) {
+                    alert("Please select a table or view.")
+                    viewSelect.focus();
+                    return;
+                }
+
+                if (!idInput.val()) {
+                    alert("Please enter an id.")
+                    idInput.focus();
+                    return;
+                }
+
+                var model = form.find("code");
+                if (model.length == 0) return;
+
+                var name = viewSelect.val();
+                var id = idInput.val();
+
+                model.html("");
+
+                model.removeAttr('rest-id');
+                model.removeAttr('rest-name');
+
+                backand.api.view.data.getItem(name, id, false, function (data) {
+                    data.__metadata = undefined;
+                    var json = JSON.stringify(data, null, "\t");
+                    var prettyJson = json.replace(/\n/g, "<br>");
+                    model.html(prettyJson);
+                    model.attr('rest-id', id);
+                    model.attr('rest-name', name);
+                    putJsonDictionary[name] = {};
+                    putJsonDictionary[name][id] = json;
+                    if (!model.attr("rest-action")) model.attr("rest-action", "put");
+                }, function (error) {
+                    if (error && error.status == 404) {
+                        alert("This object does not exist. Please open the \"Get list of records\" and take one of the ids from there.")
+                    }
+                    else if (error.responseJSON && error.responseJSON.error_description) {
+                        model.html(error.responseJSON.error_description);
+                    }
+                    else if (error.responseText) {
+                        model.html(error.responseText);
+
+                    }
+                });
+
+            })
+            
+        }
+
+        function populateDashboardSelect() {
+            try {
+                backand.api.dashboard.config.getList(null, null, 1000, null, null, null, function (data) {
+                    $('select.parameter[name=id]').each(function () {
+                        var dashboardSelect = $(this);
+                        if(dashboardSelect[0].options.length == 1)
+                        {
+                            var o = dashboardSelect[0].options[0]; //get selected option
+                            o.label = " -- Select a Table or View --";
+                            o.value = "";
+                            o.selected = true;
+                            //viewSelect.append(o);
+                            dashboardSelect[0].multiple = false;
+                            $(data.data).each(function () {
+                                var dashboard = this;
+                                o = new Option(dashboard.name, dashboard.id);
+                                dashboardSelect.append(o);
+                            });
+                        }
                     });
                 });
             }
@@ -192,7 +703,7 @@
         window.parent.postMessage(["setHeight", height], "*");
     }
 
-    function initUI(useToken) {
+    function initUI(useToken, isORM) {
         if(window.parent != window) {
             setInterval('resize()', 500);
             $('body').css('overflow','hidden');
@@ -201,7 +712,10 @@
         if(!useToken)
         {
             $('#header').show();
-            $('#bknd_message').show();
+            if (isORM == 0)
+                $('#bknd_message_rest').show();
+            else
+                $('#bknd_message_orm').show();
         }
     }
 
@@ -209,32 +723,39 @@
 </head>
 
 <body class="swagger-section">
-<div id='header' style="display:none;min-height: 24px;">
-  <div class="swagger-ui-wrap">
-      <div class="bknd-app">
-        <a id="logo" class="active-app"></a>&nbsp;&nbsp;&nbsp;<a onclick="doLogoff(); return false;" href="#" style="color:white;">Connect another app</a>
-      </div>
-      <div class="bknd-logon" style="display:none">
-          <form id='api_selector' style="margin-right: 250px;">
-              <div class='input'><input placeholder="Username" id="username" name="username" type="text" required/></div>
-              <div class='input' style="display:none;"><input placeholder="Usernamehide" id="username-hide" name="username" type="hidden" required /></div> <!--For chrome so it won't add username-->
-              <div class='input'><input placeholder="Password" id="password" name="password" type="password" required/></div>
-              <div class='input'><input placeholder="App Name" id="app" name="app" type="text" required/></div>
-              <div class='input'><a id="logon" onclick="doLogon(); return false;" href="#">Log On</a></div>&nbsp;&nbsp;
-              <div style="display: inline-block;margin-top: 5px;"><a style="margin-top:15px;" onclick="cancelLogon()" href="#">cancel</a></div>
-          </form>
-      </div>
-  </div>
-
-</div>
 <br/>
-<div id="bknd_message" class="swagger-ui-wrap" style="border: solid 1px gray; padding: 5px; display: none;">
-    <p>Backand generate REST API to your database's app, that help jump start your app's backend without writing any code.</p>
-    <p>Backand provides a simple data access layer that just works, no matter what database you're using</p>
-    <p>To connect your database just <a href="https://www.backand.com/connect">sign-up</a></p>
-    <p><a onclick="doLogoff(); return false;" href="void:javascript(0);"><img src="images/connect-all.png" style="height: 27px;width: auto;"></a></p>
+<div id="bknd_message_rest" class="swagger-ui-wrap" style="border: solid 1px gray; padding: 5px; display: none;">
+    <p>By providing a simple data access layer, Backand jump starts your app&apos;s backend without writing any code.  It just works - no matter which database you are using - the restdemo, shown below, or your own.</p>
+    <p>You can easily get started by connecting your database <a href="https://www.backand.com/sign-up" target="_parent">here</a>.</p>
+    <p>You can play with the Backand playground below and get a hands-on experience with the REST API.  Check out Backand&apos;s automatic back office and make changes that will be immediately reflected in the REST API.</p>
+    <p><b>Back office URL: </b><a href="http://restdemo.backand.net" target="_blank">restdemo.backand.net</a>&nbsp;&nbsp;<b>Username:</b> guest@backand.com&nbsp;&nbsp;<b>Password:</b> guest1234</p>
+</div>
+<div id="bknd_message_orm" class="swagger-ui-wrap" style="border: solid 1px gray; padding: 5px; display: none;">
+    <p>With Backand&apos;s ORM, you simply encapsulate 'CRUD' functions within a class or object that represents a given record in the database. In essence, the objects you create to represent your data in Angular also manipulate that data on the back end.</p>
+    <p>You can easily get started by connecting your database <a href="https://www.backand.com/sign-up" target="_parent">here</a>.</p>
+    <p>You can simply copy the code snippet and get hands-on experience with Backand&apos;s ORM with Restangular. Just select any of the CRUD functionality with any of the advanced parameters to get the code you need in Angular.</p>
+    <p>To manipulate the data you can use Backand&apos;s automatic back office:</p>
+    <p><b>Back office URL: </b><a href="http://restdemo.backand.net" target="_blank">restdemo.backand.net</a>&nbsp;&nbsp;<b>Username:</b> guest@backand.com&nbsp;&nbsp;<b>Password:</b> guest1234</p>
+</div>
+<br/><br/>
+<div id='header' style="display:none;min-height: 24px;max-width: 960px;margin-left: auto;margin-right: auto;">
+    <div class="swagger-ui-wrap">
+        <div class="bknd-app">
+            <div style="font-size: 1.5em;font-weight: bold;color: white;display: inline;padding-left: 5px;">App:</div> <a id="logo" class="active-app" style="text-decoration: underline;padding:0px;"></a>
+        </div>
+        <div class="bknd-logon" style="display:none">
+            <form id='api_selector' style="margin-right: 250px;">
+                <div class='input'><input placeholder="Username" id="username" name="username" type="text" required/></div>
+                <div class='input' style="display:none;"><input placeholder="Usernamehide" id="username-hide" name="username" type="hidden" required /></div> <!--For chrome so it won't add username-->
+                <div class='input'><input placeholder="Password" id="password" name="password" type="password" required/></div>
+                <div class='input'><input placeholder="App Name" id="app" name="app" type="text" required/></div>
+                <div class='input'><a id="logon" onclick="doLogon(); return false;" href="#">Log On</a></div>&nbsp;&nbsp;
+                <div style="display: inline-block;margin-top: 5px;"><a style="margin-top:15px;" onclick="cancelLogon()" href="#">cancel</a></div>
+            </form>
+        </div>
+    </div>
 </div>
 <div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
-<div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+<div id="swagger-ui-container" class="swagger-ui-wrap" style="display:none;"></div>
 </body>
 </html>

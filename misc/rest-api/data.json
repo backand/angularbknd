@@ -1,9 +1,9 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Backand REST API",
-        "description": "Backand is the backend API for AngularJS",
-        "version": "1.2.0"
+        "title": "Backand REST API Playground",
+        "description": "",
+        "version": "1.5.0"
     },
     "host": "api.backand.com:8080",
     "schemes": [
@@ -15,10 +15,10 @@
     ],
     "tags": [
         {
-            "name": "Database Tables Data"
+            "name": "Database Table Data"
         },
         {
-            "name": "Database Tables Configuration"
+            "name": "Database Table Configuration"
         },
         {
             "name": "App Configuration"
@@ -28,12 +28,12 @@
         }
     ],
     "paths": {
-        "/view/data/{name}": {
+        "/table/data/{name}": {
             "get": {
                 "summary": "Get list of records",
                 "description": "Return list of records from a table or view based on paging, filter or sort parameters.",
                 "tags": [
-                    "Database Tables Data"
+                    "Database Table Data"
                 ],
                 "parameters": [
                     {
@@ -64,28 +64,61 @@
                         "default": 1
                     },
                     {
-                        "name": "post",
-                        "in": "body",
-                        "description": "Post parameters",
+                        "name": "filter",
+                        "in": "query",
+                        "description": "A filter array were each item has the properties fieldName, operator and value.<br>The operator options depend on the field type.<br><a class=\"operators-link\">More for the opertors options</a><br><div class=operators><ul>numeric or date fields<li>equals</li><li>notEquals</li><li>greaterThan</li><li>greaterThanOrEqualsTo</li><li>lessThan</li><li>lessThanOrEqualsTo</li><li>empty</li><li>notEmpty</li></ul><ul>textual fields<li>equals</li><li>notEquals</li><li>startsWith</li><li>contains</li><li>notContains</li><li>empty</li><li>notEmpty</li></ul><ul>related fields<li>in</li></ul></div>",
                         "required": false,
+                        "type": "array",
                         "schema": {
-                            "$ref": "ViewInput"
+                            "$ref": "Filter"
                         }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "A sort array were each item has the properties fieldName and order.<br>The order options are \"asc\" or \"desc\".",
+                        "required": false,
+                        "type": "array",
+                        "schema": {
+                            "$ref": "Sort"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Free text search",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "deep",
+                        "in": "query",
+                        "description": "When set to true, brings the related parent rows in the relatedTables property",
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "name": "withSelectOptions",
+                        "in": "query",
+                        "description": "Get a text value collection to load select options",
+                        "required": false,
+                        "type": "boolean",
+                        "default": false
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "An array of recoeds"
+                        "description": "An array of records"
                     }
                 }
             }
         },
-        "/view/data/{name}/{id}": {
+        "/table/data/{name}/{id}": {
             "get": {
                 "summary": "Get single record",
-                "description": "Return single record data includes information on dropdowns.",
+                "description": "Return single record data includes information on drop downs.",
                 "tags": [
-                    "Database Tables Data"
+                    "Database Table Data"
                 ],
                 "parameters": [
                     {
@@ -105,22 +138,29 @@
                         "description": "The record id",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "name": "deep",
+                        "in": "query",
+                        "description": "When set to true, brings the related parent and child rows into the json structure",
+                        "type": "boolean",
+                        "default": false
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Return __metadata with the record primary key and all the fileds data that the user can view",
+                        "description": "Return __metadata with the record primary key and all the fields data that the user can Table",
                         "schema": {
-                            "$ref": "ViewPost"
+                            "$ref": "TablePost"
                         }
                     }
                 }
             },
             "put": {
-                "summary": "update a record",
+                "summary": "Update a record",
                 "description": "Update a single record. In order to update JUST copy the Json of the GET as is and update the fields values OR includes the fields that need to be updated.",
                 "tags": [
-                    "Database Tables Data"
+                    "Database Table Data"
                 ],
                 "parameters": [
                     {
@@ -142,9 +182,17 @@
                         "type": "string"
                     },
                     {
-                        "name": "post",
+                        "name": "returnObject",
+                        "in": "query",
+                        "description": "Set this to true when you have server side business rules that causes additional changes to the object. In that case this request will return the updated object",
+                        "required": false,
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "name": "object",
                         "in": "body",
-                        "description": "Post parameters",
+                        "description": "The object that you want to update",
                         "required": false,
                         "schema": {
                             "$ref": "Fields"
@@ -153,15 +201,15 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "returns no data"
+                        "description": "By default, returns no data, unless returnObject is set to true, then it returns the updated object"
                     }
                 }
             },
             "post": {
-                "summary": "create new record",
+                "summary": "Create new record",
                 "description": "Create a new record. In order to create new record you must include the required fields and any other field to be included in the new record. You can JUST copy the Json of the GET and update the values.",
                 "tags": [
-                    "Database Tables Data"
+                    "Database Table Data"
                 ],
                 "parameters": [
                     {
@@ -176,9 +224,17 @@
                         ]
                     },
                     {
-                        "name": "post",
+                        "name": "returnObject",
+                        "in": "query",
+                        "description": "Set this to true when you have server side business rules that causes additional changes to the object. In that case this request will return the created object",
+                        "required": false,
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "name": "object",
                         "in": "body",
-                        "description": "Post parameters",
+                        "description": "The object that you want to create",
                         "required": false,
                         "schema": {
                             "$ref": "Fields"
@@ -187,18 +243,15 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "returns the new record primary key (id)",
-                        "schema": {
-                            "$ref": "_metadata"
-                        }
+                        "description": "By default, returns the new record primary key (id), unless returnObject is set to true, then it returns the created object"
                     }
                 }
             },
             "delete": {
-                "summary": "delete a record",
-                "description": "delete a record. Must provide the PK of the record",
+                "summary": "Delete a record",
+                "description": "Delete a record. Must provide the PK of the record",
                 "tags": [
-                    "Database Tables Data"
+                    "Database Table Data"
                 ],
                 "parameters": [
                     {
@@ -222,17 +275,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "no data returns"
+                        "description": "Returns the deleted record primary key (id)"
                     }
                 }
             }
         },
-        "/view/config/{name}": {
+        "/table/config/{name}": {
             "get": {
-                "summary": "View Configuration",
-                "description": "Return the view configuration based on the settings in the console",
+                "summary": "Table configuration",
+                "description": "Return the table configuration based on the settings in the console",
                 "tags": [
-                    "Database Tables Configuration"
+                    "Table Configuration"
                 ],
                 "parameters": [
                     {
@@ -252,7 +305,7 @@
                     "200": {
                         "description": "An array of products",
                         "schema": {
-                            "$ref": "View"
+                            "$ref": "table"
                         }
                     }
                 }
@@ -277,7 +330,7 @@
         },
         "/dashboard/data/{id}": {
             "get": {
-                "summary": "Dashboard Data",
+                "summary": "Dashboard data",
                 "description": "Return the dashboard data based on the settings in the console.",
                 "tags": [
                     "Dashboard Data"
@@ -288,7 +341,11 @@
                         "in": "path",
                         "description": "The dashboard id.",
                         "required": true,
-                        "type": "string"
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
                     }
                 ],
                 "responses": {
@@ -303,7 +360,7 @@
         },
         "/dashboard/config/{id}": {
             "get": {
-                "summary": "Dashboard Configuration",
+                "summary": "Dashboard configuration",
                 "description": "Return the dashboard configuration based on the settings in the console.",
                 "tags": [
                     "Dashboard Configuration"
@@ -314,7 +371,11 @@
                         "in": "path",
                         "description": "The dashboard id.",
                         "required": true,
-                        "type": "string"
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
                     }
                 ],
                 "responses": {
@@ -322,12 +383,6 @@
                         "description": "An array of products",
                         "schema": {
                             "$ref": "Dashboard"
-                        }
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "Error"
                         }
                     }
                 }
@@ -346,7 +401,7 @@
                 },
                 "partType": {
                     "type": "string",
-                    "description": "Page object type: view or dashboard"
+                    "description": "Page object type: table or dashboard"
                 },
                 "partId": {
                     "type": "number",
@@ -406,7 +461,7 @@
                 }
             }
         },
-        "View": {
+        "Table": {
             "properties": {
                 "totalRows": {
                     "type": "number"
@@ -429,11 +484,7 @@
                 "order": {
                     "optional": false,
                     "type": "string",
-                    "description": "asc or desc",
-                    "enum": [
-                        "asc",
-                        "desc"
-                    ]
+                    "description": "asc or desc"
                 }
             }
         },
@@ -443,30 +494,25 @@
                     "type": "string"
                 },
                 "operator": {
-                    "type": "string",
-                    "description": "equals or notEquals",
-                    "enum": [
-                        "equals",
-                        "notEquals"
-                    ]
+                    "type": "string"
                 },
                 "value": {
                     "type": "string"
                 }
             }
         },
-        "ViewAutocomplete": {
+        "TableAutocomplete": {
             "properties": {
-                "viewName": {
+                "TableName": {
                     "type": "object"
                 }
             }
         },
-        "ViewDates": {
+        "TableDates": {
             "properties": {
                 "fieldName": {
                     "type": "string",
-                    "descripttion": "date in javascript syntax"
+                    "descripttion": "Date in javascript syntax"
                 }
             }
         },
@@ -478,11 +524,11 @@
                 },
                 "autocomplete": {
                     "type": "array",
-                    "$ref": "ViewAutocomplete"
+                    "$ref": "TableAutocomplete"
                 },
                 "dates": {
                     "type": "array",
-                    "$ref": "ViewDates"
+                    "$ref": "TableDates"
                 }
             }
         },
@@ -497,26 +543,7 @@
         "Fields": {
             "empty": null
         },
-        "ViewInput": {
-            "properties": {
-                "sort": {
-                    "$ref": "Sort"
-                },
-                "filter": {
-                    "type": "array",
-                    "$ref": "Filter"
-                },
-                "withSelectOptions": {
-                    "type": "boolean",
-                    "description": "Load the drop-down values"
-                },
-                "searchText": {
-                    "type": "string",
-                    "description": "Search filter string on scalar fields"
-                }
-            }
-        },
-        "ViewPost": {
+        "TablePost": {
             "properties": {
                 "__metadata": {
                     "$ref": "__metadata"

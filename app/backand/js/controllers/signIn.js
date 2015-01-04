@@ -103,9 +103,14 @@ angular.module('backAnd.controllers')
                 AuthService.signIn($scope.user, $scope.password, $scope.appName,
                 function (data, status, headers, config) {
                     localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
+                    $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
                     backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
+
                     $location.path('/');
-                    window.location.reload()
+
+                    $rootScope.$broadcast('signedIn', data);
+
+                    //window.location.reload()
                 },
                 function (data, status, headers, config) {
                     var error_description = "The server is busy. Please contact your administrator or try again later.";

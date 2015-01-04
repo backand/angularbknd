@@ -1853,7 +1853,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       }
       form = $('.sandbox', $(this.el));
       error_free = true;
-      form.find("input.required").each(function() {
+      form.find("input.required, select[name=name]").each(function() {
         var _this = this;
         $(this).removeClass("error");
         if (jQuery.trim($(this).val()) === "") {
@@ -2032,8 +2032,10 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
     OperationView.prototype.showResponse = function(response) {
       var prettyJson;
-      prettyJson = JSON.stringify(response, null, "\t").replace(/\n/g, "<br>");
-      return $(".response_body", $(this.el)).html(escape(prettyJson));
+      prettyJson = escape(JSON.stringify(response, null, "\t").replace(/\n/g, "<br>"));
+      var responseBody = $(".response_body", $(this.el));
+
+      return responseBody.html(prettyJson);
     };
 
     OperationView.prototype.showErrorStatus = function(data, parent) {
@@ -2158,6 +2160,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       $(".request_url pre", $(this.el)).text(url);
       $(".response_code", $(this.el)).html("<pre>" + response.status + "</pre>");
       $(".response_body", $(this.el)).html(response_body);
+      $(window).trigger('showResponse', { prettyJson: response_body, responseBody: $(".response_body", $(this.el)), swagger: this });
+
+
       $(".response_headers", $(this.el)).html("<pre>" + _.escape(JSON.stringify(response.headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>");
       $(".response", $(this.el)).slideDown();
       $(".response_hider", $(this.el)).show();
@@ -2382,14 +2387,17 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     SignatureView.prototype.snippetToTextArea = function(e) {
       var textArea;
       if (this.isParam) {
-        if (e != null) {
-          e.preventDefault();
-        }
-        textArea = $('textarea', $(this.el.parentNode.parentNode.parentNode));
+          if (e != null) {
+              e.preventDefault();
+          }
+          textArea = $('textarea, input', $(this.el.parentNode.parentNode.parentNode));
+          var rt = null;
         if ($.trim(textArea.val()) === '') {
-          return textArea.val(this.model.sampleJSON);
+            var rt = textArea.val(this.model.sampleJSON.replace(' ', ''));
+            $(window).trigger('snippetToTextArea', { textArea: textArea, tr: $(this.el.parentNode.parentNode.parentNode), swagger: this });
         }
-      }
+        return rt;
+    }
     };
 
     return SignatureView;

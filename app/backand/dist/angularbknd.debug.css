@@ -111,6 +111,24 @@
     margin-left: 4px;
 }
 
+.multi-select-close {
+    color: #808080;
+}
 
+.multiselect-parent {
+    width: 100%;
+}
 
+.multiselect-button {
+    height: 34px;
+    margin-right: 0px;
+    padding-bottom: 9px;
+}
 
+.multiselect-parent  .btn {
+    background-color: white;
+}
+
+.multi-filter {
+    min-width: 100%;
+}

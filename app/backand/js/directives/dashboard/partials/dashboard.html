@@ -2,13 +2,13 @@
  	<div class="container-fluid">	
  		<div data-ng-repeat="chart in chartData">
  			<div class="col-xs-{{numCol}}" ng-switch on="chart.type">
-                 <barchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Bar" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)">	</barchart>	
-                 <linechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Line" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)">  </linechart>
-                 <donutchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Pie" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)"> </donutchart>
-                 <columnchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Column" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)"> </columnchart>
-                 <splinechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="spline" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)">  </splinechart>
-                 <areachart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Area" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)">  </areachart>
-                 <bubblechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="bubble" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)">  </bubblechart>
+                 <barchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Bar" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)"  dashboard-scope="this">	</barchart>	
+                 <linechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Line" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)" dashboard-scope="this" >  </linechart>
+                 <donutchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Pie" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)" dashboard-scope="this"> </donutchart>
+                 <columnchart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Column" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)" dashboard-scope="this"> </columnchart>
+                 <splinechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="spline" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)" dashboard-scope="this">  </splinechart>
+                 <areachart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="Area" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)" dashboard-scope="this">  </areachart>
+                 <bubblechart chart-id="chart.id" chart-type="{{chart.type}}" ng-switch-when="bubble" filter-options="getChartFilterOptions()" colors-options="getColorOptions(chart.type)" dashboard-scope="this">  </bubblechart>
  			</div>
  		</div>
  	</div>

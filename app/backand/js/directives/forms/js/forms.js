@@ -486,7 +486,7 @@ angular.module('backAnd.directives')
                                 f.value.val = val.value;
                         }
                         else {
-                            f.selected = dataItem.__metadata.autocomplete[f.name];
+                            f.selected = dataItem.__metadata.descriptives[f.name].label;
                         }
                     }
                     else if (type == "currency") {
