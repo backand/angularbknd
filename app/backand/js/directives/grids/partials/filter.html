@@ -17,12 +17,7 @@
                                     <option value="true">Yes</option>
                                     <option value="false">No</option>
                                 </select>
-                                <select ng-switch-when="relation" name="item.fieldName" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item">
-                                    <option ng-repeat="option in item.selectOptions" value="{{option.value}}" ng-selected="item.value == option.value">
-                                        {{option.name}}
-                                    </option>
-                                </select>
-                                <div ng-switch-when="multiSelectRelation" name="item.fieldName" ng-dropdown-multiselect class="multi-filter" options="item.selectOptions" selected-model="item.value" events="multiSelectEvents" extra-settings="multiSelectExtraSettings" class="form-control filter-item" ></div>
+                                <div ng-switch-when="relation" name="item.fieldName" ng-dropdown-multiselect="" class="multi-filter" options="item.selectOptions" selected-model="item.relation" events="multiSelectEvents" extra-settings="multiSelectExtraSettings" class="form-control filter-item"></div>
                                 <input ng-switch-default="text" type="text" name="item.fieldName" value="item.value" ng-model="item.value" ng-change="filterChanged()" class="form-control filter-item" />
                             </div>
                             <div class="btn-group" dropdown ng-show="showOperators && item.fieldType != 'relation' && item.fieldType != 'boolean'">
