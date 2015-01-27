@@ -5,9 +5,9 @@
         "description": "",
         "version": "1.5.0"
     },
-    "host": "localhost:4109/backapi",
+    "host": "api.backand.com:8080",
     "schemes": [
-        "http"
+        "https"
     ],
     "basePath": "/1",
     "produces": [
