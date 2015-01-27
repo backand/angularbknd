@@ -25,7 +25,23 @@ angular.module('backAnd.directives')
 
             scope.$watch('filterOptions', function () {
                 if (scope.filterOptions) {
-                    scope.filterOptionsOutput = angular.copy(scope.filterOptions);
+                 
+                    scope.filterOptionsOutput = _.map(angular.copy(scope.filterOptions), function(o) {
+                        if (o.fieldType == "relation") {
+                            if (o.value){
+                                o.relation = _.map(o.value.split(","), function(s) {
+                                    return { value: s };
+                                });
+
+                            }
+                            else{
+                                o.relation = [];
+                            }
+                            
+                        } 
+                        return o;
+                    });
+
                     // if there are default values then emit the filter in the first time
                     if (scope.getFilter().length > 0)
                         scope.$emit('onfilter', scope.getFilter(), scope);
@@ -48,11 +64,9 @@ angular.module('backAnd.directives')
                 showUncheckAll: false,
                 idProp: "value",
                 displayProp: "name",
+                externalIdProp: "value",
                 buttonClasses: "btn btn-lg multi-filter multiselect-button"
             }
-
-            // scope.example1model = []; 
-            // scope.example1data = [ {id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
             
             scope.filterChanged = function () {
                 scope.$emit('onfilter', scope.getFilter(), scope);
@@ -61,8 +75,15 @@ angular.module('backAnd.directives')
             scope.getFilter = function () {
                 var filter = [];
                 angular.forEach(scope.filterOptionsOutput, function (option) {
-                    if (option.value || option.operator == 'empty' || option.operator == 'notEmpty') {
-                        filter.push({ "fieldName": option.fieldName, "operator": option.operator, "value": option.value });
+                    if (option.fieldType != "relation") {
+                        if (option.value || option.operator == 'empty' || option.operator == 'notEmpty') {
+                           filter.push({ "fieldName": option.fieldName, "operator": option.operator, "value": option.value }); 
+                        } 
+                    }
+                    else  {
+                        if (option.relation || option.operator == 'empty' || option.operator == 'notEmpty') {
+                           filter.push({ "fieldName": option.fieldName, "operator": option.operator, "value": _.pluck(option.relation, "value").join(",") }); 
+                        };                      
                     }
                 });
                 return filter;

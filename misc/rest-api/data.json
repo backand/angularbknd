@@ -18,6 +18,12 @@
             "name": "Database Table Data"
         },
         {
+            "name": "Rules"
+        },
+        {
+            "name": "Users"
+        },
+        {
             "name": "Database Table Configuration"
         },
         {
@@ -276,6 +282,116 @@
                 "responses": {
                     "200": {
                         "description": "Returns the deleted record primary key (id)"
+                    }
+                }
+            }
+        },
+        "/user/signup": {
+            "post": {
+                "summary": "Sign Up",
+                "description": "Sign up a user to the app",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "SignUpToken",
+                        "in": "header",
+                        "description": "A security token to prevent malicious attacks",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "The user to be signed up",
+                        "required": true,
+                        "schema": {
+                            "$ref": "NewUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return __metadata with the record primary key and all the fields data that the user can Table",
+                        "schema": {
+                            "$ref": "SignUpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/verify": {
+            "get": {
+                "summary": "Verify",
+                "description": "Verify the user's email",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "appName",
+                        "in": "query",
+                        "description": "the app name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "parameters",
+                        "in": "query",
+                        "description": "encrypted user identification",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "the response is a redirect to a pre defined url of the app sign in page."
+                    }
+                }
+            }
+        },
+        "/table/rule/{name}/{id}": {
+            "get": {
+                "summary": "OnDemand",
+                "description": "Perform a Rule on Demand",
+                "tags": [
+                    "Rules"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The table or view name",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The record id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ruleName",
+                        "in": "query",
+                        "description": "The rule name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "parameters",
+                        "in": "query",
+                        "description": "json object with all predefined rule's parameters",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "no data is returned"
                     }
                 }
             }
@@ -564,6 +680,79 @@
                 },
                 "fields": {
                     "type": "string"
+                }
+            }
+        },
+        "NewUser": {
+            "properties": {
+                "firstName": {
+                    "type": "string",
+                    "desription": "The user's first name"
+                },
+                "lastName": {
+                    "type": "string",
+                    "desription": "The user's last name"
+                },
+                "email": {
+                    "type": "string",
+                    "desription": "The user's email"
+                },
+                "password": {
+                    "type": "string",
+                    "desription": "The user's password"
+                },
+                "confirmPassword": {
+                    "type": "string",
+                    "desription": "Confirmation on the user's password"
+                }
+            }
+        },
+        "SignUpResponse": {
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "desription": "The user's username which is his email"
+                },
+                "currentStatus": {
+                    "type": "integer",
+                    "desription": "The signup status code"
+                },
+                "message": {
+                    "type": "string",
+                    "desription": "The signup status desription"
+                },
+                "listOfPossibleStatus": {
+                    "type": "array",
+                    "$ref": "SignupStatus",
+                    "desription": "A list of all the sign up possible status"
+                }
+            }
+        },
+        "SignupStatus": {
+            "properties": {
+                "status": {
+                    "type": "integer",
+                    "desription": "The signup status code"
+                },
+                "message": {
+                    "type": "string",
+                    "desription": "The signup status desription"
+                }
+            }
+        },
+        "SignInResponse": {
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "desription": "an OAuth2 access token"
+                },
+                "token_type": {
+                    "type": "string",
+                    "desription": "fixed \"bearer\""
+                },
+                "expires_in": {
+                    "type": "integer",
+                    "desription": "expiration due in seconds"
                 }
             }
         }

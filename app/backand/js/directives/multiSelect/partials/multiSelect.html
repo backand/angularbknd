@@ -1,6 +1,6 @@
 <ng-form name="innerForm">
 	<ul class="list-inline" ng-show="field.show">
-       <li ng-repeat="tag in tags">{{ tag.label }}<i class="fa fa-times multi-select-close" ng-disabled="field.disabled" ng-click="clickDelete(tag.value)"></i></li>
+       <li ng-repeat="tag in tags">{{ tag }}<i class="fa fa-times multi-select-close" ng-disabled="field.disabled" ng-click="clickDelete(tag)"></i></li>
     </ul>
 	<div ng-if="field.small" single-select field="dropdownStructure" value="dropdownValue" form="" input-class="" errors=""></div>
 	<div ng-if="!field.small" mass-autocomplete>
