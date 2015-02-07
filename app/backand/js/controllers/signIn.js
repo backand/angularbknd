@@ -1,9 +1,13 @@
 'use strict';
 
+/**
+* @ngdoc overview
+* @name controller.signInController
+*/
 
 angular.module('backAnd.controllers')
- .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope','$route', '$routeParams',
-        function ($scope, Global, $http, $location, $rootScope, $route, $routeParams) {
+    .controller('signInController', ['$scope', 'Global', '$http', '$location', '$rootScope','$route', 'AuthService',
+        function ($scope, Global, $http, $location, $rootScope, $route, AuthService) {
             $scope.global = Global;
 
             function toQueryString(obj) {
@@ -27,56 +31,99 @@ angular.module('backAnd.controllers')
                 return '';
             }
 
+            /**
+            * @name appName
+            * @propertyOf directive.signInController {string} 
+            * @description application name
+            */
             $scope.appName = getDefaultApp();
+
             if ($location.search().username)
                 $scope.user = $location.search().username;
             if ($location.search().password)
                 $scope.password = $location.search().password;
+
+            /**
+            * @name waiting
+            * @propertyOf directive.signInController {boolean} 
+            * @description on and off switch to display waiting while authentication is processed
+            */
             $scope.waiting = false;
 
-            $scope.authentication = function() {
+            /**
+            * @ngdoc function
+            * @name authentication
+            * @methodOf backand.js.controllers:signInController
+            * @description authenticate the user
+            */
+            //$scope.authentication = function() {
+            //    $scope.loginError = '';
+            //    $scope.waiting = true;
+            //    localStorage.removeItem("Authorization");
+            //    var data = toQueryString({
+            //        grant_type: "password",
+            //        username: $scope.user,
+            //        password: $scope.password,
+            //        appname: $scope.appName,
+            //    });
+            //    var request = $http({
+            //        method: 'POST',
+            //        url: backandGlobal.url + "/token",
+            //        data: data,
+            //        headers: {
+            //            'Accept': '*/*',
+            //            'Content-Type': 'application/x-www-form-urlencoded'
+            //        }
+            //    });
+            //    request.success(function(data, status, headers, config) {
+            //        $http.defaults.headers.common['Authorization'] = data.token_type + ' ' + data.access_token;
+            //        localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
+            //        backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
+            //        $location.path('/');
+            //        window.location.reload()
+            //    });
+            //    request.error(function (data, status, headers, config) {
+            //        var error_description = "The server is busy. Please contact your administrator or try again later.";
+            //        if (data && data.error_description)
+            //            error_description = data.error_description;
+            //        else {
+            //            console.error(error_description, { data: data, status: status, headers: headers, config: config })
+            //        }
+            //        $scope.loginError = error_description;
+            //        //console.log(status)
+            //        $scope.waiting = false;
+            //    });
+
+            //}
+
+            $scope.authentication = function () {
                 $scope.loginError = '';
                 $scope.waiting = true;
-                localStorage.removeItem("Authorization");
-                var data = toQueryString({
-                    grant_type: "password",
-                    username: $scope.user,
-                    password: $scope.password,
-                    appname: $scope.appName,
-                });
-                var request = $http({
-                    method: 'POST',
-                    url: backandGlobal.url + "/token",
-                    data: data,
-                    headers: {
-                        'Accept': '*/*',
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                });
-                request.success(function(data, status, headers, config) {
-                    successLogin(data.token_type,data.access_token);
-                });
-                request.error(function (data, status, headers, config) {
+
+                AuthService.signIn($scope.user, $scope.password, $scope.appName,
+                function (data, status, headers, config) {
+                    localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
+                    $http.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
+                    backand.security.authentication.token = $http.defaults.headers.common['Authorization'];
+
+                    $location.path('/');
+
+                    $rootScope.$broadcast('signedIn', data);
+
+                    //window.location.reload()
+                },
+                function (data, status, headers, config) {
                     var error_description = "The server is busy. Please contact your administrator or try again later.";
                     if (data && data.error_description)
                         error_description = data.error_description;
                     else {
-                        //console.error(error_description, { data: data, status: status, headers: headers, config: config })
+                        console.error(error_description, { data: data, status: status, headers: headers, config: config })
                     }
                     $scope.loginError = error_description;
-                    console.log(status)
+                    //console.log(status)
                     $scope.waiting = false;
-                });
-
+                })
             }
-
-   var successLogin = function (tokenType, tokenData) {
-                $http.defaults.headers.common['Authorization'] = tokenType+ ' ' + tokenData;
-                localStorage.setItem('Authorization', $http.defaults.headers.common['Authorization']);
-                $location.path('/');
-                window.location.reload()
-            }
-
             $scope.externalAuthorizationList;
 
 			
@@ -124,4 +171,6 @@ angular.module('backAnd.controllers')
 			
             $scope.loadExternalAuthentification();
         }
+
+        
     ])
