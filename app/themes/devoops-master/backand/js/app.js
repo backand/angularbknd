@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('backAnd.directives', []);
+angular.module('backAnd.directives', ['angularFileUpload']);
 angular.module('backAnd.filters', []);
 angular.module('backAnd.controllers', []);
 angular.module('backAnd.services', []);
@@ -10,6 +10,7 @@ angular.module('backAnd', [
     'ngResource',
     'ngGrid',
     'ui.bootstrap',
+	'angularFileUpload',
     'backAnd.filters',
     'backAnd.services',
     'backAnd.directives',

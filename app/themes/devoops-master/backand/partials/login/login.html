@@ -15,6 +15,9 @@
                     <div class="form-group">
                         <input type="text" class="form-control input-lg" ng-model="appName" placeholder="Application" required>
                     </div>
+					<div ng-repeat="provider in externalAuthorizationList" class="form-group">
+                        <a class="btn btn-primary btn-lg btn-block" ng-click="externalSignin(provider.Url)">Sign in with {{provider.Name}}</a>
+                    </div>
                     <div class="">
                         <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In" ng-show="!waiting">
                         <img class="img-responsive center-block" ng-show="waiting" src="backand/img/ajax-loader.gif" />
