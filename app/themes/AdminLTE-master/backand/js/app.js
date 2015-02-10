@@ -1,6 +1,6 @@
 'use strict';
   
-angular.module('backAnd.directives', []);
+angular.module('backAnd.directives', ['angularFileUpload']);
 angular.module('backAnd.filters', []);
 angular.module('backAnd.controllers', []);
 angular.module('backAnd.services', []);
@@ -15,6 +15,7 @@ angular.module('backAnd', [
     'ngSanitize', 
     'MassAutoComplete', 
     'angularjs-dropdown-multiselect',
+	'angularFileUpload',
     'backAnd.filters',
     'backAnd.services',
     'backAnd.directives',

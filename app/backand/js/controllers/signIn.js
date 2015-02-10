@@ -124,7 +124,53 @@ angular.module('backAnd.controllers')
                     $scope.waiting = false;
                 })
             }
+            $scope.externalAuthorizationList;
 
+			
 
+			$scope.externalSignin = function (url) {
+			    if ($scope.appName == '' || typeof $scope.appName == 'undefined') {
+			        $scope.loginError = "Please insert application name";
+			        return;
+			    }
+				
+				var returnUrl =  $location.absUrl().indexOf('#') > 0 ? $location.absUrl() : $location.absUrl() + "#"; // pad location with # 
+																											     // because angular allow querystring params
+																											     // only after a #
+																												 
+			    window.location = backandGlobal.url + '/api/' + url + "&appname=" + encodeURIComponent($scope.appName) + "&returnAddress=" + encodeURIComponent(returnUrl);			
+			};
+
+            $scope.loadExternalAuthentification = function () {
+                var data = toQueryString({
+                    returnUrl: "http://localhost:44300/singin-google", // should be as appear in google console manager
+                    generateState: "false"
+                });
+
+                var request = $http({
+                    method: 'GET',
+                    url: backandGlobal.url + "/api/account/ExternalLogins?" + data,
+                    
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/json'
+                    }
+                  
+                });
+
+                request.success(function (data, status, headers, config) {
+                    console.log(data);
+                    $scope.externalAuthorizationList = data;
+                });
+
+                request.error(function (data, status, headers, config) {
+                    // don't do anything, user will not see any external login
+                });
+            };
+
+			
+            $scope.loadExternalAuthentification();
         }
+
+        
     ])
