@@ -1,11 +1,10 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Backand REST API Playground",
         "description": "",
         "version": "1.5.0"
     },
-    "host": "api.backand.com:8080",
+    "host": "api.backand.com:8078",
     "schemes": [
         "https"
     ],
@@ -15,10 +14,16 @@
     ],
     "tags": [
         {
-            "name": "Database Table Data"
+            "name": "Security & Authentication"
         },
         {
-            "name": "Rules"
+            "name": "Objects"
+        },
+        {
+            "name": "Actions"
+        },
+        {
+            "name": "Queries"
         },
         {
             "name": "Users"
@@ -34,18 +39,101 @@
         }
     ],
     "paths": {
-        "/table/data/{name}": {
-            "get": {
-                "summary": "Get list of records",
-                "description": "Return list of records from a table or view based on paging, filter or sort parameters.",
+        "/token": {
+            "post": {
+                "summary": "sign in",
+                "description": "Backand API requires an access_token. A Backand user can get one by authenticating with Backand's username and password (It will be valid for 24 hours)",
                 "tags": [
-                    "Database Table Data"
+                    "Security & Authentication"
+                ],
+                "parameters": [
+                    {
+                        "name": "grant_type",
+                        "in": "form",
+                        "description": "The value is always \"password\"",
+                        "required": true,
+                        "type": "string",
+                        "defaultValue": "password"
+                    },
+                    {
+                        "name": "username",
+                        "in": "form",
+                        "description": "Backand username",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "form",
+                        "description": "Backand password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "appname",
+                        "in": "form",
+                        "description": "Backand app",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "access_token"
+                    }
+                },
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ]
+            }
+        },
+        "/user/signup": {
+            "post": {
+                "summary": "Sign Up",
+                "description": "Sign up a user to the app",
+                "tags": [
+                    "Security & Authentication"
+                ],
+                "parameters": [
+                    {
+                        "name": "SignUpToken",
+                        "in": "header",
+                        "description": "A security token to prevent malicious attacks",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "The user to be signed up",
+                        "required": true,
+                        "schema": {
+                            "$ref": "NewUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return __metadata with the total number of the entire items of the list and the items array",
+                        "schema": {
+                            "$ref": "SignUpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/objects/{name}": {
+            "get": {
+                "summary": "Get list of items",
+                "description": "Get list of items with filter, sort and paging parameters",
+                "tags": [
+                    "Objects"
                 ],
                 "parameters": [
                     {
                         "name": "name",
                         "in": "path",
-                        "description": "The table or view name",
+                        "description": "The object name",
                         "required": true,
                         "type": "array",
                         "format": "string",
@@ -56,7 +144,7 @@
                     {
                         "name": "pageSize",
                         "in": "query",
-                        "description": "How many records per page",
+                        "description": "How many items per page",
                         "required": false,
                         "type": "number",
                         "default": 20
@@ -99,129 +187,28 @@
                     {
                         "name": "deep",
                         "in": "query",
-                        "description": "When set to true, brings the related parent rows in the relatedTables property",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    {
-                        "name": "withSelectOptions",
-                        "in": "query",
-                        "description": "Get a text value collection to load select options",
-                        "required": false,
+                        "description": "When set to true, brings the related items from the related objects",
                         "type": "boolean",
                         "default": false
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "An array of records"
-                    }
-                }
-            }
-        },
-        "/table/data/{name}/{id}": {
-            "get": {
-                "summary": "Get single record",
-                "description": "Return single record data includes information on drop downs.",
-                "tags": [
-                    "Database Table Data"
-                ],
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "path",
-                        "description": "The table or view name",
-                        "required": true,
-                        "type": "array",
-                        "format": "string",
-                        "enum": [
-                            "blank"
-                        ]
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The record id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "deep",
-                        "in": "query",
-                        "description": "When set to true, brings the related parent and child rows into the json structure",
-                        "type": "boolean",
-                        "default": false
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Return __metadata with the record primary key and all the fields data that the user can Table",
-                        "schema": {
-                            "$ref": "TablePost"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "summary": "Update a record",
-                "description": "Update a single record. In order to update JUST copy the Json of the GET as is and update the fields values OR includes the fields that need to be updated.",
-                "tags": [
-                    "Database Table Data"
-                ],
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "path",
-                        "description": "The table or view name",
-                        "required": true,
-                        "type": "array",
-                        "format": "string",
-                        "enum": [
-                            "blank"
-                        ]
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The record id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "returnObject",
-                        "in": "query",
-                        "description": "Set this to true when you have server side business rules that causes additional changes to the object. In that case this request will return the updated object",
-                        "required": false,
-                        "type": "boolean",
-                        "default": false
-                    },
-                    {
-                        "name": "object",
-                        "in": "body",
-                        "description": "The object that you want to update",
-                        "required": false,
-                        "schema": {
-                            "$ref": "Fields"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "By default, returns no data, unless returnObject is set to true, then it returns the updated object"
+                        "description": "An array of items"
                     }
                 }
             },
             "post": {
-                "summary": "Create new record",
-                "description": "Create a new record. In order to create new record you must include the required fields and any other field to be included in the new record. You can JUST copy the Json of the GET and update the values.",
+                "summary": "Create new item",
+                "description": "Create a new item. In order to create new item you must include the required fields and any other field to be included in the new item. You can JUST copy the Json of the GET and update the values.",
                 "tags": [
-                    "Database Table Data"
+                    "Objects"
                 ],
                 "parameters": [
                     {
                         "name": "name",
                         "in": "path",
-                        "description": "The table or view name",
+                        "description": "The object name",
                         "required": true,
                         "type": "array",
                         "format": "string",
@@ -249,21 +236,114 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "By default, returns the new record primary key (id), unless returnObject is set to true, then it returns the created object"
+                        "description": "By default, returns the new item identity (id), unless returnObject is set to true, then it returns the created object"
+                    }
+                }
+            }
+        },
+        "/objects/{name}/{id}": {
+            "get": {
+                "summary": "Get single item",
+                "description": "Return single item includes lists of related objects.",
+                "tags": [
+                    "Objects"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The object name",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The item identity (id)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "deep",
+                        "in": "query",
+                        "description": "When set to true, brings the related parent and child rows into the json structure",
+                        "type": "boolean",
+                        "default": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return __metadata with the object identity",
+                        "schema": {
+                            "$ref": "TablePost"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an item",
+                "description": "Update a single item. In order to update JUST copy the Json of the GET as is and update the fields values OR includes the fields that need to be updated.",
+                "tags": [
+                    "Objects"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "The object name",
+                        "required": true,
+                        "type": "array",
+                        "format": "string",
+                        "enum": [
+                            "blank"
+                        ]
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The item identity (id)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "returnObject",
+                        "in": "query",
+                        "description": "Set this to true when you have server side business rules that causes additional changes to the object. In that case this request will return the updated object",
+                        "required": false,
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "name": "object",
+                        "in": "body",
+                        "description": "The object that you want to update",
+                        "required": false,
+                        "schema": {
+                            "$ref": "Fields"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "By default, returns no data, unless returnObject is set to true, then it returns the updated object"
                     }
                 }
             },
             "delete": {
-                "summary": "Delete a record",
-                "description": "Delete a record. Must provide the PK of the record",
+                "summary": "Delete an item",
+                "description": "Delete an item. Must provide the item identity (id)",
                 "tags": [
-                    "Database Table Data"
+                    "Objects"
                 ],
                 "parameters": [
                     {
                         "name": "name",
                         "in": "path",
-                        "description": "The table or view name",
+                        "description": "The object name",
                         "required": true,
                         "type": "array",
                         "format": "string",
@@ -274,93 +354,30 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "The record pk",
+                        "description": "The item identity (id)",
                         "required": true,
                         "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Returns the deleted record primary key (id)"
+                        "description": "Returns the deleted item identity (id)"
                     }
                 }
             }
         },
-        "/user/signup": {
-            "post": {
-                "summary": "Sign Up",
-                "description": "Sign up a user to the app",
-                "tags": [
-                    "Users"
-                ],
-                "parameters": [
-                    {
-                        "name": "SignUpToken",
-                        "in": "header",
-                        "description": "A security token to prevent malicious attacks",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "user",
-                        "in": "body",
-                        "description": "The user to be signed up",
-                        "required": true,
-                        "schema": {
-                            "$ref": "NewUser"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Return __metadata with the record primary key and all the fields data that the user can Table",
-                        "schema": {
-                            "$ref": "SignUpResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/verify": {
+        "/objects/action/{objectName}/{id}": {
             "get": {
-                "summary": "Verify",
-                "description": "Verify the user's email",
+                "summary": "Custom Action",
+                "description": "Perform a Custom Action",
                 "tags": [
-                    "Users"
+                    "Actions"
                 ],
                 "parameters": [
                     {
-                        "name": "appName",
-                        "in": "query",
-                        "description": "the app name",
-                        "type": "string"
-                    },
-                    {
-                        "name": "parameters",
-                        "in": "query",
-                        "description": "encrypted user identification",
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "the response is a redirect to a pre defined url of the app sign in page."
-                    }
-                }
-            }
-        },
-        "/table/rule/{name}/{id}": {
-            "get": {
-                "summary": "OnDemand",
-                "description": "Perform a Rule on Demand",
-                "tags": [
-                    "Rules"
-                ],
-                "parameters": [
-                    {
-                        "name": "name",
+                        "name": "objectName",
                         "in": "path",
-                        "description": "The table or view name",
+                        "description": "The object name",
                         "required": true,
                         "type": "array",
                         "format": "string",
@@ -371,135 +388,56 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "The record id",
-                        "required": true,
+                        "description": "The item identity (id)",
+                        "required": false,
                         "type": "string"
                     },
                     {
-                        "name": "ruleName",
+                        "name": "actionName",
                         "in": "query",
-                        "description": "The rule name",
+                        "description": "The action name",
                         "required": true,
                         "type": "string"
                     },
                     {
                         "name": "parameters",
                         "in": "query",
-                        "description": "json object with all predefined rule's parameters",
+                        "description": "json object with all predefined action's parameters",
                         "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "no data is returned"
+                        "description": "The returned object from the action"
                     }
                 }
             }
         },
-        "/table/config/{name}": {
+        "/query/data/{queryName}": {
             "get": {
-                "summary": "Table configuration",
-                "description": "Return the table configuration based on the settings in the console",
+                "summary": "Custom Action",
+                "description": "Perform a Custom Action",
                 "tags": [
-                    "Table Configuration"
+                    "Queries"
                 ],
                 "parameters": [
                     {
-                        "name": "name",
+                        "name": "queryName",
                         "in": "path",
-                        "description": "The table or view name.",
-                        "default": "Customers",
+                        "description": "The query name",
                         "required": true,
-                        "type": "array",
-                        "format": "string",
-                        "enum": [
-                            "blank"
-                        ]
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of products",
-                        "schema": {
-                            "$ref": "table"
-                        }
-                    }
-                }
-            }
-        },
-        "/app/config": {
-            "get": {
-                "summary": "App main UI configuration and metadata",
-                "description": "The app config information includes menu as pages...\n",
-                "tags": [
-                    "App Configuration"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of products",
-                        "schema": {
-                            "$ref": "Config"
-                        }
-                    }
-                }
-            }
-        },
-        "/dashboard/data/{id}": {
-            "get": {
-                "summary": "Dashboard data",
-                "description": "Return the dashboard data based on the settings in the console.",
-                "tags": [
-                    "Dashboard Data"
-                ],
-                "parameters": [
+                        "type": "string"
+                    },
                     {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The dashboard id.",
-                        "required": true,
-                        "type": "array",
-                        "format": "string",
-                        "enum": [
-                            "blank"
-                        ]
+                        "name": "parameters",
+                        "in": "query",
+                        "description": "json object with all predefined query's parameters",
+                        "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "An array of products",
-                        "schema": {
-                            "$ref": "Dashboard"
-                        }
-                    }
-                }
-            }
-        },
-        "/dashboard/config/{id}": {
-            "get": {
-                "summary": "Dashboard configuration",
-                "description": "Return the dashboard configuration based on the settings in the console.",
-                "tags": [
-                    "Dashboard Configuration"
-                ],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The dashboard id.",
-                        "required": true,
-                        "type": "array",
-                        "format": "string",
-                        "enum": [
-                            "blank"
-                        ]
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of products",
-                        "schema": {
-                            "$ref": "Dashboard"
-                        }
+                        "description": "An array of items"
                     }
                 }
             }
@@ -636,7 +574,7 @@
             "properties": {
                 "id": {
                     "type": "number",
-                    "desription": "The primary key fo the record"
+                    "desription": "The item identity (id)"
                 },
                 "autocomplete": {
                     "type": "array",
@@ -652,7 +590,7 @@
             "properties": {
                 "id": {
                     "type": "number",
-                    "desription": "The primary key fo the record"
+                    "desription": "The item identity (id)"
                 }
             }
         },

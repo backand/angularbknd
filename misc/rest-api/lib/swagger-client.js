@@ -1006,7 +1006,7 @@ Operation.prototype.encodeCollection = function(type, name, value) {
  * TODO this encoding needs to be changed
  **/
 Operation.prototype.encodeQueryParam = function(arg) {
-    return escape(arg);
+    return encodeURIComponent(arg);
 }
 
 /**

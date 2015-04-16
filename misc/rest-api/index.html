@@ -149,8 +149,105 @@
       if (useToken && useToken.length > 1) {
           useToken = useToken[1];
       }
+
+      var spec = null;
+
+      $.ajax({
+          url: 'data.json',
+          async: false,
+          dataType: 'json',
+          success: function (response) {
+              spec = removeHiddenSpec(response);
+          }
+      });
+
+      function removeHiddenSpec(spec) {
+          var a1 = window.location.href.split('#');
+         
+          if (a1.length <= 1)
+              return spec;
+
+          var a2 = a1[a1.length - 1].split('/');
+
+          var pathAndVerb = getPathAndVerb(a2);
+         
+          if (!pathAndVerb) {
+              var onlyPath = getOnlyPath(a2);
+              if (!onlyPath) {
+                  return spec;
+              }
+              for (var key in spec.paths) {
+                  if (spec.paths.hasOwnProperty(key)) {
+                      //Now, object[key] is the current value
+                      for (var key2 in spec.paths[key]) {
+                          if (spec.paths[key][key2].tags[0] != onlyPath) {
+                              delete spec.paths[key];
+                              break;
+                          }
+                      }
+
+                      
+                  }
+              }
+              return spec;
+          }
+
+          var path = null;
+
+          for (var key in spec.paths) {
+              if (spec.paths.hasOwnProperty(key)) {
+                  //Now, object[key] is the current value
+                  if (key.replace('{', '').replace('}', '') != pathAndVerb.path)
+                      delete spec.paths[key];
+                  else
+                      path = key;
+              }
+          }
+
+          for (var key in spec.paths[path]) {
+              if (spec.paths[path].hasOwnProperty(key)) {
+                  //Now, object[key] is the current value
+                  if (key != pathAndVerb.verb)
+                      delete spec.paths[path][key];
+              }
+          }
+
+          return spec;
+      }
+
+      function getOnlyPath(a) {
+          if (a.length == 2) {
+              return a[1];
+          }
+
+          return null;
+      }
+
+      function getPathAndVerb(a) {
+          var path = '';
+          var verb = '';
+
+          if (a.length < 3)
+              return null;
+
+          var a3 = a[2].split('_');
+
+          var last = a3.length - 1
+          verb = a3[last];
+
+          a3.splice(last, 1);
+          path += '/' + a3.join('/');
+
+          return { path: path, verb: verb };
+      }
+
+      function getVerb(a) {
+          return a[a.length - 1];
+      }
+
       window.swaggerUi = new SwaggerUi({
-        url: url,
+          url: url,
+          spec:spec,
         dom_id: "swagger-ui-container",
         supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
         onComplete: function(swaggerApi, swaggerUi){
@@ -167,7 +264,10 @@
                 changeFilterAndSortToTextArea();
                 codeSamples();
                 $('#swagger-ui-container').show();
+                uiAdjustmaents();
             }
+
+            
 
             $('.footer').hide();
             resize();
@@ -182,6 +282,17 @@
         docExpansion: "none",
         sorter : ""
       });
+
+      function uiAdjustmaents() {
+          $('pre.http').each(function () {
+              $(this).html($(this).html().replace(/%3A/g, ":"));
+          });
+          $('ul.operations li div.content').each(function () {
+              if ($(this).find("[name=commit]").length <= 1)
+                $(this).prepend('<input class="submit" name="commit" type="button" value="Try it out!">');
+          })
+          setDefaultTable();
+      }
 
       function operatorsLink() {
           var operatorsLink = $(".operators-link");
@@ -201,14 +312,14 @@
 
       function changeFilterAndSortToTextArea() {
           var filterTextArea = $('<textarea class="parameter" minlength="0" name="filter" placeholder=""></textarea>');
-          var filterInput = $('#Database_Table_Data_table_data_name_get_content input[name=filter]');
+          var filterInput = $('#Objects_objects_name_get_content input[name=filter]');
           var width = filterInput.width();
           filterInput.replaceWith(filterTextArea);
           filterTextArea.width(width - 4);
           filterTextArea.height(110);
 
           var sortTextArea = $('<textarea class="parameter" minlength="0" name="sort" placeholder=""></textarea>');
-          var sortInput = $('#Database_Table_Data_table_data_name_get_content input[name=sort]');
+          var sortInput = $('#Objects_objects_name_get_content input[name=sort]');
           var width = sortInput.width();
           sortInput.replaceWith(sortTextArea);
           sortTextArea.width(width - 4);
@@ -239,13 +350,13 @@
       function getCurrentCrud(responseBody) {
           var operation = responseBody.parents("li.operation:first");
           var id = operation.attr("id");
-          if (id == "Database_Table_Data_table_data_name_id_get")
+          if (id == "Objects_objects_name_id_get")
               return crudEnum.item;
-          else if (id == "Database_Table_Data_table_data_name_id_put")
+          else if (id == "Objects_objects_name_id_put")
               return crudEnum.update;
-          else if (id == "Database_Table_Data_table_data_name_id_post")
+          else if (id == "Objects_objects_name_id_post")
               return crudEnum.create;
-          else if (id == "Database_Table_Data_table_data_name_id_delete")
+          else if (id == "Objects_objects_name_id_delete")
               return crudEnum.remove;
           else
               return crudEnum.list;
@@ -277,42 +388,42 @@
           var codeArray = null;
           
           if (crud == crudEnum.item) {
-              var name = $('#Database_Table_Data_table_data_name_id_get').find('form.sandbox select:first').val();
-              var id = $('#Database_Table_Data_table_data_name_id_get').find('input[name=id]:first').val();
-              var deep = $('#Database_Table_Data_table_data_name_id_get').find('select[name=deep]:first').val();
+              var name = $('#Objects_objects_name_id_get').find('form.sandbox select:first').val();
+              var id = $('#Objects_objects_name_id_get').find('input[name=id]:first').val();
+              var deep = $('#Objects_objects_name_id_get').find('select[name=deep]:first').val();
 
               codeArray = r.getItem(name, id, deep);
           }
           else if (crud == crudEnum.create) {
-              var name = $('#Database_Table_Data_table_data_name_id_post').find('form.sandbox select:first').val();
-              var returnObject = $('#Database_Table_Data_table_data_name_id_post').find('select[name=returnObject]:first').val();
-              var object = $('#Database_Table_Data_table_data_name_id_post').find('textarea[name=object]:first').val();
+              var name = $('#Objects_objects_name_id_post').find('form.sandbox select:first').val();
+              var returnObject = $('#Objects_objects_name_id_post').find('select[name=returnObject]:first').val();
+              var object = $('#Objects_objects_name_id_post').find('textarea[name=object]:first').val();
 
               codeArray = r.getCreate(name, returnObject, object);
           }
           else if (crud == crudEnum.update) {
-              var name = $('#Database_Table_Data_table_data_name_id_put').find('form.sandbox select:first').val();
-              var id = $('#Database_Table_Data_table_data_name_id_put').find('input[name=id]:first').val();
-              var returnObject = $('#Database_Table_Data_table_data_name_id_put').find('select[name=returnObject]:first').val();
-              var object = $('#Database_Table_Data_table_data_name_id_put').find('textarea[name=object]:first').val();
+              var name = $('#Objects_objects_name_id_put').find('form.sandbox select:first').val();
+              var id = $('#Objects_objects_name_id_put').find('input[name=id]:first').val();
+              var returnObject = $('#Objects_objects_name_id_put').find('select[name=returnObject]:first').val();
+              var object = $('#Objects_objects_name_id_put').find('textarea[name=object]:first').val();
 
               codeArray = r.getUpdate(name, id, returnObject, object);
           }
           else if (crud == crudEnum.remove) {
-              var name = $('#Database_Table_Data_table_data_name_id_delete').find('form.sandbox select:first').val();
-              var id = $('#Database_Table_Data_table_data_name_id_delete').find('input[name=id]:first').val();
+              var name = $('#Objects_objects_name_id_delete').find('form.sandbox select:first').val();
+              var id = $('#Objects_objects_name_id_delete').find('input[name=id]:first').val();
 
               codeArray = r.getDelete(name, id);
           }
           else {
-              var name = $('#Database_Table_Data_endpoint_list').find('form.sandbox select:first').val();
-              var pageSize = $('#Database_Table_Data_endpoint_list').find('input[name=pageSize]:first').val();
-              var pageNumber = $('#Database_Table_Data_endpoint_list').find('input[name=pageNumber]:first').val();
-              var filter = $('#Database_Table_Data_endpoint_list').find('[name=filter]:first').val();
-              var sort = $('#Database_Table_Data_endpoint_list').find('[name=sort]:first').val();
-              var search = $('#Database_Table_Data_endpoint_list').find('input[name=search]:first').val();
-              var deep = $('#Database_Table_Data_endpoint_list').find('select[name=deep]:first').val();
-              var withSelectOptions = $('#Database_Table_Data_endpoint_list').find('select[name=withSelectOptions]:first').val();
+              var name = $('#Objects_endpoint_list').find('form.sandbox select:first').val();
+              var pageSize = $('#Objects_endpoint_list').find('input[name=pageSize]:first').val();
+              var pageNumber = $('#Objects_endpoint_list').find('input[name=pageNumber]:first').val();
+              var filter = $('#Objects_endpoint_list').find('[name=filter]:first').val();
+              var sort = $('#Objects_endpoint_list').find('[name=sort]:first').val();
+              var search = $('#Objects_endpoint_list').find('input[name=search]:first').val();
+              var deep = $('#Objects_endpoint_list').find('select[name=deep]:first').val();
+              var withSelectOptions = $('#Objects_endpoint_list').find('select[name=withSelectOptions]:first').val();
 
               codeArray = r.getList(name, pageSize, pageNumber, filter, sort, search, deep, withSelectOptions);
           }
@@ -445,6 +556,7 @@
               changeFilterAndSortToTextArea();
               codeSamples();
 
+              uiAdjustmaents();
           }
 
       }
@@ -487,7 +599,7 @@
                 backand.api.view.config.getList(null, null, 1000, filter, sort, null, function (data) {
                     listViews = data;
                 })
-                $('select.parameter[name=name]').each(function () {
+                $('select.parameter[name=name], select.parameter[name=tableName]').each(function () {
                     var viewSelect = $(this);
                     if(viewSelect[0].options.length == 1) {
                         //viewSelect[0].options[0].remove(); //remove the first option
@@ -511,6 +623,20 @@
                 });
             }
             catch (ex) { }
+        }
+
+        function setDefaultTable() {
+            var tableName = qs("tableName");
+            if (!tableName) return;
+
+            $('select.parameter[name=name], select.parameter[name=tableName]').each(function () {
+                var viewSelect = $(this);
+                if (viewSelect.parent().find('input.object-name').length == 0) {
+                    viewSelect.val(tableName);
+                    viewSelect.hide();
+                    viewSelect.after("<input type=text class=\"parameter object-name\" disabled value=\"" + tableName + "\">");
+                }
+            });
         }
 
         function handlePost(viewSelect) {
@@ -726,6 +852,7 @@
 </head>
 
 <body class="swagger-section">
+    <!--
 <br/>
 <div id="bknd_message_rest" class="swagger-ui-wrap" style="border: solid 1px gray; padding: 5px; display: none;">
     <p>By providing a simple data access layer, Backand jump starts your app&apos;s backend without writing any code.  It just works - no matter which database you are using - the restdemo, shown below, or your own.</p>
@@ -741,6 +868,7 @@
     <p><b>Back office URL: </b><a href="http://restdemo.backand.net" target="_blank">restdemo.backand.net</a>&nbsp;&nbsp;<b>Username:</b> guest@backand.com&nbsp;&nbsp;<b>Password:</b> guest1234</p>
 </div>
 <br/><br/>
+        -->
 <div id='header' style="display:none;min-height: 24px;max-width: 960px;margin-left: auto;margin-right: auto;">
     <div class="swagger-ui-wrap">
         <div class="bknd-app">
@@ -758,7 +886,6 @@
         </div>
     </div>
 </div>
-<div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
 <div id="swagger-ui-container" class="swagger-ui-wrap" style="display:none;"></div>
 </body>
 </html>

@@ -123,3 +123,17 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+.swagger-section .swagger-ui-wrap ul.parameters {
+  margin-left: 20px;
+  margin-top: 10px;
+  list-style-type: disc;
+}
+.swagger-section .swagger-ui-wrap .content pre.http {
+  font-size: 14px;
+  line-height: 20px;
+}
+input.submit {
+    /*background-color: lawngreen;*/
+    padding: 6px 8px;
+    float:right;
+}
