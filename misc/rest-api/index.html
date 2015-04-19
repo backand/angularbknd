@@ -150,6 +150,11 @@
           useToken = useToken[1];
       }
 
+      var split = window.location.search.match(/split=([^&]+)/);
+      if (split && split.length > 1) {
+          split = split[1];
+      }
+
       var spec = null;
 
       $.ajax({
@@ -162,6 +167,8 @@
       });
 
       function removeHiddenSpec(spec) {
+          if (!split)
+              return spec;
           var a1 = window.location.href.split('#');
          
           if (a1.length <= 1)
@@ -467,7 +474,7 @@
           }
           else {
               $("#resources").children().each(function () {
-                  if ($(this).attr("id") != "resource_Database_Table_Data") {
+                  if ($(this).attr("id") != "resource_Objects") {
                       $(this).remove();
                   }
               });
@@ -476,7 +483,7 @@
           $('#swagger-ui-container').show();
           var options = '<div><ul class="response-options"><li class="response-body"><a' + (getDefaultResponse() == 0 ? ' class="active"' : '') + '><h4>Response Body</h4></a></li><li class="restangular"><a' + (getDefaultResponse() == 1 ? ' class="active"' : '') + '><h4>Restangular</h4></a></li></ul></div>'; //<li class="resource"><a' + (getDefaultResponse() == 2 ? ' class="active"' : '') + '><h4>$resource</h4></a></li>
 
-          var responses = $("#resource_Database_Table_Data .response");
+          var responses = $("#resource_Objects .response");
           responses.each(function () {
               var response = $(this);
               response.find("h4:eq(1)").replaceWith(options);
@@ -532,6 +539,9 @@
         $('#input_apiKey').val(apiKey);
         addApiKeyAuthorization();
       */
+
+      var appNameChanged = false;
+
       function initExternalToken()
       {
           //add listner from parent
@@ -550,6 +560,7 @@
               window.authorizations.add("api_key1", new ApiKeyAuthorization("AppName", event.data.appName, "header"));
               backand.security.authentication.token = event.data.auth;
               backand.security.authentication.appName = event.data.appName;
+              appNameChanged = true;
               populateTableSelect();
               populateDashboardSelect();
               operatorsLink();
@@ -601,10 +612,14 @@
                 })
                 $('select.parameter[name=name], select.parameter[name=tableName]').each(function () {
                     var viewSelect = $(this);
-                    if(viewSelect[0].options.length == 1) {
+                    if (appNameChanged) {
+                        viewSelect.empty();
+                        viewSelect.append(new Option("", ""));
+                    }
+                    if (viewSelect[0].options.length == 1 || appNameChanged) {
                         //viewSelect[0].options[0].remove(); //remove the first option
                         var o = viewSelect[0].options[0]; //get selected option
-                        o.label = " -- Select a Table or View --";
+                        o.label = " -- Select an object --";
                         o.value = "";
                         o.selected = true;
                         //viewSelect.append(o);
@@ -694,7 +709,7 @@
                     if (!model.attr("rest-action")) model.attr("rest-action", "post");
                 }, function (error) {
                     if (error && error.status == 404) {
-                        alert("This table does not exist.")
+                        alert("This object does not exist.")
                     }
                     else if (error.responseJSON && error.responseJSON.error_description) {
                         model.html(error.responseJSON.error_description);
@@ -723,7 +738,7 @@
                     return;
 
                 if (!viewSelect.val()) {
-                    alert("Please select a table or view.")
+                    alert("Please select an object.")
                     viewSelect.focus();
                     return;
                 }
@@ -780,7 +795,7 @@
                         if(dashboardSelect[0].options.length == 1)
                         {
                             var o = dashboardSelect[0].options[0]; //get selected option
-                            o.label = " -- Select a Table or View --";
+                            o.label = " -- Select an object --";
                             o.value = "";
                             o.selected = true;
                             //viewSelect.append(o);
