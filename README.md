@@ -100,13 +100,6 @@ bower update
 This will find the latest versions that match the version ranges specified in the `bower.json` file.
 
 
-### Running the App in Production
-
-Backand Service provide hosting not just the backend but also to the AngularJS code.
-- Login to Backand Console to update the Github reposiroty
-- The production URL will be at: yourapp.backand.net
-
-
 
 ## Contact
 
