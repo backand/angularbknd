@@ -1,18 +1,138 @@
-﻿    <!--
-    ****************************************************************
-    This JS Src will redirect to one of the index pages based on the
-﻿    configuration in Backand's services
-    ****************************************************************
-    -->
-﻿
-﻿
-    <script src="https://api.backand.com:8080/api/theme?id﻿"></script>
+﻿<!DOCTYPE html> 
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="backAnd" class="no-js" data-ng-controller="initController" ng-init="init()" ng-class="isGrid() ? 'no-v-scroll' : ''">
+<!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <title>Backand Admin</title>
+    <!-- backand ver 0.0.2.35 -->
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <!--  favicon -->
+    <link rel="shortcut icon" href="themes/AdminLTE-master/backand/img/back_favicon.ico" />
+    <!-- bootstrap 3.0.2 -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- font Awesome -->
+    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- Ionicons -->
+    <link href="bower_components/ionicons/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <!-- Morris chart -->
+    <link href="bower_components/morrisjs/morris.css" rel="stylesheet" type="text/css" />
+    <!-- jvectormap -->
+    <link href="bower_components/jvectormap/jquery-jvectormap.css" rel="stylesheet" type="text/css" />
+    <!-- fullCalendar -->
+    <link href="bower_components/fullcalendar/dist/fullcalendar.css" rel="stylesheet" type="text/css" />
+    <!-- Daterange picker -->
+    <link href="bower_components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link href="bower_components/bootstrap-wysihtml5/dist/bootstrap-wysihtml5-0.0.2.css" rel="stylesheet" type="text/css" />
 
-    <!--
-    ****************************************************************
-    ﻿In order to start just browse this page or select one of the other index pages like
-    ﻿index-lte.html or index-devoops.html (and more)
-﻿
-    ﻿index-seed use as simple index page for AngularJS seed project without the use of Backand Services.
-    ****************************************************************
-    -->
+    <!-- NG-GRID STUFF !-->
+    <link href="//cdn.backand.net/bower_components/ng-grid/ng-grid.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- mass autocomplete -->
+    <link href="bower_components/angular-mass-autocomplete/massautocomplete.theme.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <!-- Theme base style -->
+    <link href="themes/AdminLTE-master/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+
+    <!-- Backand general style -->
+    <link href="//cdn.backand.net/backand/dist/angularbknd.min.css" rel="stylesheet" type="text/css" />
+    <!--<link href="//cdn.backand.net/backand/dist/angularbknd.debug.css" rel="stylesheet" type="text/css" />-->
+    <!-- Backand theme style -->
+    <link href="themes/AdminLTE-master/backand/css/app.css" rel="stylesheet" type="text/css" />
+
+    <link href="bower_components/angular-busy/dist/angular-busy.min.css" rel="stylesheet" type="text/css" />
+
+
+
+</head>
+<body class="skin-blue">
+
+    <!--Start Main Theme Body-->
+    <header ng-include="'themes/AdminLTE-master/backand/partials/header/header.html'" class="header"></header>
+    <ng-include src="'themes/AdminLTE-master/backand/partials/index/index.html'"></ng-include>
+
+    <!--End Main Theme Body-->
+    <!-- jQuery 2.0.2 -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- jQuery UI 1.10.3 -->
+    <script src="bower_components/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <!-- Bootstrap -->
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <!-- undercore -->
+    <script src="bower_components/underscore/underscore-min.js" type="text/javascript"></script>
+
+    <!-- Morris.js charts -->
+    <script src="bower_components/raphael/raphael-min.js"></script>
+    <script src="bower_components/morrisjs/morris.min.js"></script>
+
+
+    <!-- angular -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+
+    <!-- angular-ui-bootstrap -->
+    <!--<script src="//cdn.backand.net/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>-->
+    <!-- angular-ui-bootstrap -->
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- NG-GRID STUFF !-->
+    <script src="//cdn.backand.net/bower_components/ng-grid/build/ng-grid.min.js"></script>
+    <script src="//cdn.backand.net/bower_components/ng-grid/plugins/ng-grid-flexible-height.js"></script>
+    <script src="//cdn.backand.net/bower_components/ng-grid/plugins/ng-grid-layout.js"></script>
+
+    <!-- textAngular stuff editor -->
+    <script src="bower_components/textAngular/dist/textAngular-rangy.min.js"></script>
+    <script src="bower_components/textAngular/dist/textAngular-sanitize.min.js"></script>
+    <script src="bower_components/textAngular/dist/textAngular.min.js"></script>
+
+    <!-- datetime stuff editor -->
+    <script type="text/javascript" src="bower_components/moment/moment.js"></script>
+    <script type="text/javascript" src="bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+
+
+    <!-- spinner loader -->
+    <script src="bower_components/angular-busy/dist/angular-busy.min.js"></script>
+
+    <!-- multi select dropdown -->
+    <script src="bower_components/lodash/dist/lodash.min.js"></script>.
+    <script src="bower_components/angularjs-dropdown-multiselect/dist/angularjs-dropdown-multiselect.min.js"></script>
+
+    <!-- THEME Route !-->
+    <script src="themes/AdminLTE-master/backand/js/app.js"></script>
+    <!-- theme js -->
+    <script src="themes/AdminLTE-master/js/AdminLTE/AdminLTE.js" type="text/javascript"></script>
+
+
+
+    <!-- BACKAND Main code !-->
+    <!--<script>var myUrl = "//api.backand.info:8099";</script>-->
+    <!--<script src="https://api.backand.com:8080/api/banner"></script>-->
+    <!--<script src="backand/dist/angularbknd.debug.js"></script>-->
+    <script src="backand/dist/angularbknd.min.js"></script>
+
+    <!-- Use this controller to customise the menu -->
+    <script src="themes/AdminLTE-master/my-pages/menuController.js"></script>
+
+    <!----------------------------------------------------------------------------------------->
+    <!-- To view a new custom page example, page1, please do the following: ------------------->
+    <!-- 1. Uncomment the $on events in   \themes\AdminLTE-master\my-pages\menuController.js -->
+    <!-- 2. Uncomment the routing in      \themes\AdminLTE-master\backand\js\app.js ----------->
+    <!-- 3. Uncomment the reference below ----------------------------------------------------->
+    <!----------------------------------------------------------------------------------------->
+    <!--<script src="themes/AdminLTE-master/my-pages/page1/page1Controller.js"></script>-->
+
+</body>
+
+</html>

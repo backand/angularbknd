@@ -1,4 +1,4 @@
-var url ="https://api.backand.com:8080";
+var url ="https://api.backand.com";
 try{url = myUrl} catch(err){}
 var backandGlobal = {
     url: url,//
