@@ -339,7 +339,7 @@ backand.security.authentication.login('nir', 123456789, 'manager', function (dat
         error: function (xhr, textStatus, err) { if (xhr, textStatus, err) erroCallback(xhr, textStatus, err); },
         success: function (data, textStatus, xhr) { if (successCallback) successCallback(data, textStatus, xhr); }
     });
-};var url ="https://api.backand.com:8080";
+};var url ="https://api.backand.com";
 try{url = myUrl} catch(err){}
 var backandGlobal = {
     url: url,//
@@ -589,7 +589,7 @@ angular.module('backAnd.services').factory('menuService', ['$resource',
 
 ;angular.module('backAnd.services')
     .constant('CONSTANTS', {
-        URL: "https://api.backand.com:8080",
+        URL: "https://api.backand.com",
         DEFAULT_APP: null,
         VERSION : '0.1'
     });;'use strict';
